@@ -70,7 +70,7 @@ CI = {
         "otter": {
             "name": "Otter.ai", "short": "Otter.ai", "url": "https://otter.ai/",
             "bf": "", "price": "$19.99/user/mo", "price_note": "Business, billed annually", "trial": "Free plan", "trial_short": "Free plan",
-            "g2": ("0", "", ""),
+            "g2": ("4.4", "505", "https://www.g2.com/products/otter-ai/reviews"),
             "scores": [4, 2, 2, 3, 5, 4.5],
             "what": "Otter.ai is an AI meeting notetaker. Its Business plan syncs notes to Salesforce or HubSpot for up to 5 users; the Sales Notetaker and live coaching are on Enterprise.",
             "who": "", "why": "", "pros": [], "cons": [], "skip": "",

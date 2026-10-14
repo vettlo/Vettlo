@@ -100,6 +100,7 @@ CATS = [
     ("best-sales-forecasting-software", "Sales Forecasting Software", "Roll-ups, pipeline inspection and forecast calls", False),
     ("best-revenue-intelligence-platforms", "Revenue Intelligence", "Activity capture and deal health across the funnel", False),
     ("best-b2b-data-providers", "B2B Contact Data Providers", "Enrichment, intent data and list building", True),
+    ("best-sales-dialers", "Sales Dialers", "Power, parallel and predictive dialing for outbound", True),
     ("best-cpq-software", "CPQ Software", "Configure, price and quote for complex deals", False),
     ("best-sales-commission-software", "Sales Commission Software", "Comp plans, payouts and rep-facing statements", False),
     ("best-sales-enablement-platforms", "Sales Enablement Platforms", "Content, playbooks and rep onboarding", False),
@@ -150,10 +151,10 @@ page("/", "Vettlo: Software Reviews for Revenue Teams",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-sales-dialers/">Best sales dialers</a></h3><p class="muted small">Power dialers vs AI parallel dialers, and which plan the dialer actually sits on.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-conversation-intelligence-software/">Best conversation intelligence tools</a></h3><p class="muted small">Coaching, deal insights and CRM sync, and which features sit behind add-ons.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-b2b-data-providers/">Best B2B contact data providers</a></h3><p class="muted small">Coverage, phone data and how each vendor's credits actually work.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-sales-engagement-software/">Best sales engagement platforms</a></h3><p class="muted small">Sequencing, deliverability and data, plus which vendors hide their prices.</p></article>
-<article><div class="meta"><span>Comparison</span><span>Oct 14, 2026</span></div><h3><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></h3><p class="muted small">Where the free tiers stop, and what a 10-rep team actually pays for automation on each.</p></article>
 </div>
 </div></section>
 
