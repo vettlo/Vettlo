@@ -21,3 +21,8 @@ The site runs as the Cloudflare Worker `vettlo-site` (static assets from `public
 vettlo.com and www.vettlo.com are attached to that Worker as custom domains.
 After editing `build.py` or `src/site.css`, run `python3 build.py` and commit both the source and `public/`. Pushing to `main` deploys the site automatically.
 The old Pages project `vettlo` is no longer used.
+
+## Search engines
+- Google Search Console: domain property `sc-domain:vettlo.com`, sitemap submitted Oct 14, 2026.
+- Bing / IndexNow: key file `public/<INDEXNOW_KEY>.txt` (key in build.py). After publishing new or changed pages, POST the URLs to https://www.bing.com/indexnow with host, key and keyLocation.
+- Cloudflare AI Crawl Control: no AI crawlers blocked (checked Oct 14, 2026).
