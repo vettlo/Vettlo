@@ -150,7 +150,7 @@ page("/", "Vettlo: Software Reviews for Revenue Teams",
 <p>Reviews in progress. Each one publishes when testing is done, not before.</p></div></div>
 <div class="bench">
 <article><div class="meta"><span>Shortlist</span><span>In testing</span></div><h3>Best sales engagement platforms</h3><p class="muted small">Sequencing, deliverability controls and how each tool handles reply detection.</p></article>
-<article><div class="meta"><span>Comparison</span><span>In testing</span></div><h3>HubSpot vs Pipedrive for teams under 25 reps</h3><p class="muted small">Where the free tiers stop, and what the jump to paid actually costs per seat.</p></article>
+<article><div class="meta"><span>Comparison</span><span>Published</span></div><h3><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></h3><p class="muted small">Where the free tiers stop, and what a 10-rep team actually pays for automation on each.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Scoping</span></div><h3>Best conversation intelligence software</h3><p class="muted small">Transcript accuracy on real discovery calls, and what managers do with the output.</p></article>
 <article><div class="meta"><span>Guide</span><span>Drafting</span></div><h3>How to run a CRM migration without losing pipeline history</h3><p class="muted small">Field mapping, deduplication and the cutover weekend checklist.</p></article>
 </div>
@@ -339,7 +339,7 @@ def crm_page():
 <div><h4>Who it's best for</h4><p>{t['who']}</p></div>
 <div><h4>Why it made the shortlist</h4><p>{t['why']}</p></div>
 <div class="pc"><div class="pros"><h4>Strengths</h4><ul>{pros}</ul></div><div class="cons"><h4>Watch-outs</h4><ul>{cons}</ul></div></div>
-<p class="small muted"><b>Skip it if:</b> {t['notavoid']}</p>
+<p class="small muted"><b>Skip it if:</b> {t['notavoid']}</p>{'<p class="small"><a href="/compare/hubspot-vs-pipedrive/">Compare HubSpot vs Pipedrive →</a></p>' if t['id'] in ('hubspot','pipedrive') else ''}
 <details class="breakdown"><summary>Score breakdown</summary><div class="criteria">{breakdown(t['id'])}</div></details>
 </div>
 </article>""")
@@ -414,7 +414,8 @@ def crm_page():
 
     ld = [
         {"@context": "https://schema.org", "@type": "Article", "headline": f"{len(TOOLS)} Best CRM Software for Sales Teams in {YEAR}",
-         "dateModified": UPDATED, "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
+         "datePublished": "2026-10-02", "dateModified": UPDATED, "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
+         "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
          "mainEntityOfPage": DOMAIN + "/tools/best-crm-software/"},
         {"@context": "https://schema.org", "@type": "ItemList", "name": "Best CRM software",
          "itemListElement": [{"@type": "ListItem", "position": i, "name": t["name"], "url": f"{DOMAIN}/tools/best-crm-software/#{t['id']}"} for i, t in enumerate(TOOLS, 1)]},
@@ -431,6 +432,109 @@ def crm_page():
 
 
 crm_page()
+
+# ---------- COMPARE: HUBSPOT VS PIPEDRIVE
+CMP_UPDATED = "2026-10-14"
+CMP_UPDATED_H = "Oct 14, 2026"
+CMP_FAQS = [
+    ("Is HubSpot or Pipedrive cheaper?", "At the entry level HubSpot is cheaper: Sales Hub Starter lists at $7 per seat per month billed annually, against $14 for Pipedrive Lite. Once you need email sequences, workflow automation and forecasting, Pipedrive is cheaper: those features are listed on Pipedrive Growth at $39 per seat per month, while HubSpot lists sequences and forecasting on Sales Hub Professional at $90 per seat per month plus a $1,500 one-time onboarding fee."),
+    ("Does HubSpot have a free CRM?", "Yes. HubSpot's free plan covers up to 2 users with no credit card required. Pipedrive has no free plan but offers a 14-day free trial on every paid plan."),
+    ("Which is easier for sales reps to use?", "Pipedrive is built around a visual deal pipeline and activity reminders, and small teams can usually work in it within a day. HubSpot is also approachable, but its wider feature set and shared marketing data take longer to configure well."),
+    ("Should a team that uses HubSpot Marketing Hub pick HubSpot Sales Hub?", "Usually yes. Sales and marketing then share one contact database, lifecycle stages and attribution, so RevOps doesn't have to maintain a sync between two systems."),
+    ("Can I switch from Pipedrive to HubSpot later?", "Yes, both tools support CSV import and export and have migration integrations. Plan field mapping, deduplication and activity history before the cutover, because history is the part teams most often lose."),
+]
+
+page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing, Features and Which to Choose | Vettlo",
+     "HubSpot Sales Hub vs Pipedrive compared on real list prices, plan features and team fit. See what a 10-rep team pays on each, and which CRM to pick.",
+     f"""<div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/best-crm-software/">CRM Software</a> / HubSpot vs Pipedrive</nav>
+<header class="article-head">
+<span class="eyebrow">Comparison · CRM software</span>
+<h1>HubSpot vs Pipedrive: Which CRM Should Your Sales Team Pick in {YEAR}?</h1>
+<div class="byline"><div class="avatar team-mark">{LOGO}</div><div class="who"><b>By <a href="/team/">Vettlo Editorial Team</a></b><span>Prices verified <time datetime="{CMP_UPDATED}">{CMP_UPDATED_H}</time></span></div></div>
+<p class="disclose">We may earn a commission when you click some links on this page. It never changes our verdict. See <a href="/how-we-make-money/">how we make money</a>.</p>
+</header>
+<div class="layout"><div class="main-col">
+
+<section class="verdict" aria-label="Quick verdict">
+<span class="label">Quick verdict</span>
+<div class="vs">
+<div><h3>Pick Pipedrive if…</h3><ul><li>You run a pipeline-first sales team of roughly 3 to 25 reps</li><li>You need email sequences, automation and forecast reports without enterprise pricing</li><li>Nobody on the team has time to be a CRM admin</li></ul></div>
+<div><h3>Pick HubSpot if…</h3><ul><li>Your marketing already runs on HubSpot, or will</li><li>You want a free or very cheap CRM for 1 or 2 users</li><li>You need deep custom reporting and can budget for Sales Hub Professional</li></ul></div>
+</div>
+<p class="small">In our <a href="/tools/best-crm-software/">CRM rankings</a>, HubSpot Sales Hub scores <b>{score("hubspot")}/100</b> and Pipedrive <b>{score("pipedrive")}/100</b>. HubSpot wins on reporting and integrations; Pipedrive wins on rep adoption and value.</p>
+</section>
+
+<section class="prose"><h2>The short answer</h2>
+<p>The two CRMs split at the point where a team needs sales automation. HubSpot is cheaper to start: its free plan covers 2 users and Sales Hub Starter lists at $7 per seat per month on annual billing. But HubSpot lists email sequences and forecasting on Sales Hub Professional, at $90 per seat per month plus a $1,500 one-time onboarding fee. Pipedrive lists sequences, workflow automation and forecast reports on its Growth plan at $39 per seat per month. For a team that needs those features, Pipedrive costs well under half as much.</p></section>
+
+<section id="cost"><h2>What a 10-rep team pays in year one</h2>
+<p class="prose">List prices, billed annually, for 10 seats. Taxes, add-ons and discounts excluded.</p>
+<div class="table-wrap"><table><thead><tr><th>Need</th><th>HubSpot plan</th><th>HubSpot year one</th><th>Pipedrive plan</th><th>Pipedrive year one</th></tr></thead><tbody>
+<tr><td>Basic pipeline and contacts</td><td>Starter ($7)</td><td class="num">$840</td><td>Lite ($14)</td><td class="num">$1,680</td></tr>
+<tr><td>Plus sequences, automation and forecasting</td><td>Professional ($90 + $1,500 onboarding)</td><td class="num">$12,300</td><td>Growth ($39)</td><td class="num">$4,680</td></tr>
+<tr><td>Plus custom reports</td><td>Professional ($90 + $1,500 onboarding)</td><td class="num">$12,300</td><td>Premium ($59)</td><td class="num">$7,080</td></tr>
+</tbody></table></div>
+<p class="small muted">Prices from <a href="https://www.hubspot.com/pricing/sales" target="_blank" rel="noopener">HubSpot</a> and <a href="https://www.pipedrive.com/en/pricing" target="_blank" rel="noopener">Pipedrive</a> pricing pages, checked {CMP_UPDATED_H}. Vendors change plans often; confirm before you buy.</p></section>
+
+<section id="features"><h2>Plan features side by side</h2>
+<div class="table-wrap"><table><thead><tr><th>Feature</th><th>HubSpot Sales Hub</th><th>Pipedrive</th></tr></thead><tbody>
+<tr><td>Free option</td><td>Free plan for up to 2 users</td><td>No free plan; 14-day free trial</td></tr>
+<tr><td>Entry paid plan</td><td>Starter, $7/seat/mo (annual), $20 monthly</td><td>Lite, $14/seat/mo (annual)</td></tr>
+<tr><td>Email sequences</td><td>Listed from Professional</td><td>Listed from Growth</td></tr>
+<tr><td>Workflow automation</td><td>Starter: up to 50 workflows with restricted triggers; Professional: up to 300</td><td>Listed from Growth</td></tr>
+<tr><td>Forecasting</td><td>Listed from Professional</td><td>Forecast reports from Growth</td></tr>
+<tr><td>Custom reports</td><td>Professional: up to 100 custom reports</td><td>Listed from Premium</td></tr>
+<tr><td>Lead routing</td><td>Not compared here</td><td>Listed from Premium</td></tr>
+<tr><td>Calling minutes</td><td>Starter 500, Professional 3,000</td><td>Not listed on pricing page</td></tr>
+<tr><td>Onboarding fee</td><td>$1,500 (Professional), $3,500 (Enterprise)</td><td>None listed</td></tr>
+<tr><td>G2 user rating</td><td class="num">{G2["hubspot"][0]}/5 ({G2["hubspot"][1]} reviews)</td><td class="num">{G2["pipedrive"][0]}/5 ({G2["pipedrive"][1]} reviews)</td></tr>
+<tr><td>Vettlo score</td><td class="num">{score("hubspot")}/100</td><td class="num">{score("pipedrive")}/100</td></tr>
+</tbody></table></div>
+<p class="small muted">"Listed from" means the feature first appears on that plan on the vendor's public pricing page. Feature availability by plan from vendor pricing pages, {CMP_UPDATED_H}.</p></section>
+
+<section class="prose"><h2>Where HubSpot is stronger</h2>
+<ul>
+<li><b>One database with marketing.</b> If marketing uses HubSpot, leads, lifecycle stages and attribution flow into sales records without a sync to maintain.</li>
+<li><b>A real free tier.</b> Two users can run a pipeline at no cost, which is useful for founders before the first sales hire.</li>
+<li><b>Reporting depth at Professional.</b> Custom reports and forecasting at Professional go further than Pipedrive's equivalents.</li>
+<li><b>Ecosystem.</b> A large integration marketplace and partner network.</li>
+</ul>
+<h2>Where Pipedrive is stronger</h2>
+<ul>
+<li><b>Price of automation.</b> Sequences, automation and forecast reports arrive on a $39 plan instead of a $90 plan with an onboarding fee.</li>
+<li><b>Rep adoption.</b> The visual pipeline and activity prompts keep reps focused on the next step on every deal, with little setup.</li>
+<li><b>No admin required.</b> Small teams can run it without a dedicated RevOps person.</li>
+</ul>
+<h2>How to decide in one afternoon</h2>
+<ol>
+<li>List the three workflows your team can't live without, for example "follow-up sequence after a demo" or "weekly forecast call".</li>
+<li>Check which plan on each side includes all three. That's your real price, not the entry price.</li>
+<li>Multiply by your seat count for 12 months, and add HubSpot's onboarding fee if you land on Professional.</li>
+<li>Start both trials with a slice of your real pipeline and have two reps use each for a week.</li>
+</ol></section>
+
+<section id="faq"><h2>HubSpot vs Pipedrive FAQ</h2><div>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in CMP_FAQS)}</div></section>
+
+<section class="prose"><h2>Other options</h2><p>If neither fits, see our full <a href="/tools/best-crm-software/">ranking of {len(TOOLS)} CRMs for sales teams</a>, including Salesforce for complex enterprise processes and Zoho CRM for budget-conscious teams that want depth.</p></section>
+
+<section class="author-box"><div class="avatar team-mark">{LOGO}</div><div><b>Vettlo Editorial Team</b><p class="small muted">Researched and written by the Vettlo editorial team using our <a href="/methodology/">methodology</a>. Prices and plan features come from each vendor's public pricing page.</p></div></section>
+</div>
+<nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#cost">Year-one cost</a><a href="#features">Features</a><a href="#faq">FAQ</a></nav>
+</div></div>
+{newsletter()}""", cur="/best-tools/", ptype="article", jsonld=[
+        {"@context": "https://schema.org", "@type": "Article", "headline": f"HubSpot vs Pipedrive: Which CRM Should Your Sales Team Pick in {YEAR}?",
+         "datePublished": CMP_UPDATED, "dateModified": CMP_UPDATED,
+         "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
+         "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
+         "mainEntityOfPage": DOMAIN + "/compare/hubspot-vs-pipedrive/"},
+        {"@context": "https://schema.org", "@type": "FAQPage",
+         "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in CMP_FAQS]},
+        {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
+            {"@type": "ListItem", "position": 2, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"},
+            {"@type": "ListItem", "position": 3, "name": "HubSpot vs Pipedrive", "item": DOMAIN + "/compare/hubspot-vs-pipedrive/"}]},
+    ])
 
 # ---------- METHODOLOGY
 page("/methodology/", "Our Software Review Methodology | Vettlo",
@@ -554,7 +658,7 @@ page("/team/", "Vettlo Editorial Team",
 <li>Scores labeled <b>Desk research</b> are based on vendor documentation, pricing pages and verified user reviews. They're replaced with hands-on scores once testing is complete.</li>
 <li>Advertising and affiliate relationships never affect inclusion, order or scores. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Published reviews</h2>
-<ul><li><a href="/tools/best-crm-software/">Best CRM Software for Sales Teams</a></li></ul>
+<ul><li><a href="/tools/best-crm-software/">Best CRM Software for Sales Teams</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li></ul>
 <h2>Join us</h2>
 <p>We're looking for practitioners who have run sales teams or owned a CRM to test tools and write reviews. See <a href="/write-for-us/">write for us</a>.</p>
 </div></div>""", jsonld=[{"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo Editorial Team", "parentOrganization": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}}])
@@ -633,7 +737,8 @@ def head_block(path, p, css_href):
     return (f'<title>{p["title"]}</title><meta name="description" content="{p["desc"]}">{robots}'
             f'<link rel="canonical" href="{canon}"><meta property="og:type" content="{p["ptype"]}"><meta property="og:site_name" content="Vettlo">'
             f'<meta property="og:title" content="{p["title"]}"><meta property="og:description" content="{p["desc"]}"><meta property="og:url" content="{canon}">'
-            f'<meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/logo.svg" type="image/svg+xml">'
+            f'<meta property="og:image" content="{DOMAIN}/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+            f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{DOMAIN}/assets/og.png"><link rel="icon" href="/assets/logo.svg" type="image/svg+xml">'
             f'{FONTS}<link rel="stylesheet" href="{css_href}">{ld}')
 
 
@@ -674,6 +779,7 @@ def build():
     for d in (site, prev):
         (d / "assets").mkdir(parents=True)
         shutil.copy(ROOT / "src" / "site.css", d / "assets" / "site.css")
+        shutil.copy(ROOT / "src" / "og.png", d / "assets" / "og.png")
         (d / "assets" / "logo.svg").write_text(LOGO.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replace("var(--brand-ink)", "#ffffff").replace("var(--brand)", "#2347d6"))
     for path, p in PAGES.items():
         rel = out_file(path)
@@ -694,7 +800,8 @@ def build():
         g.parent.mkdir(parents=True, exist_ok=True)
         g.write_text(pdoc)
 
-    urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{UPDATED}</lastmod></url>" for p in PAGES if p != "/404/")
+    lastmod = {"/compare/hubspot-vs-pipedrive/": "2026-10-14", "/team/": "2026-10-14", "/privacy/": "2026-10-14", "/terms/": "2026-10-14", "/": "2026-10-14"}
+    urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p != "/404/")
     (site / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"""# Vettlo
@@ -705,6 +812,7 @@ Rankings are editorial only and based on published, weighted criteria per catego
 
 ## Reviews
 - [Best CRM Software for Sales Teams]({DOMAIN}/tools/best-crm-software/): shortlist of {len(TOOLS)} CRMs scored on pipeline management, automation, reporting, integrations, usability and value
+- [HubSpot vs Pipedrive]({DOMAIN}/compare/hubspot-vs-pipedrive/): list prices, plan features and year-one cost for a 10-rep team
 - [All categories]({DOMAIN}/best-tools/)
 
 ## Trust
@@ -712,6 +820,7 @@ Rankings are editorial only and based on published, weighted criteria per catego
 - [How we make money]({DOMAIN}/how-we-make-money/)
 - [Editorial standards]({DOMAIN}/editorial-standards/)
 - [About Vettlo]({DOMAIN}/about/)
+- [Editorial team]({DOMAIN}/team/)
 """)
     (site / "_redirects").write_text("/author/editor/ /team/ 301\n/author/editor /team/ 301\n")
     (site / "_headers").write_text("/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n" + ("  X-Robots-Tag: noindex, nofollow\n" if PRELAUNCH_NOINDEX else ""))

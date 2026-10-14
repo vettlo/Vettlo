@@ -261,3 +261,12 @@ details.breakdown summary { cursor: pointer; font-weight: 700; color: var(--bran
 details.breakdown .criteria { margin-top: .8rem; }
 .avatar.team-mark { background: transparent; border: 0; padding: 0; }
 .avatar.team-mark svg { width: 100%; height: 100%; }
+.verdict { border: 2px solid var(--brand); border-radius: 14px; padding: 1.3rem 1.4rem; display: grid; gap: 1rem; background: var(--card); }
+.verdict > .label { color: var(--brand); font-family: var(--f-head); font-size: 1rem; font-weight: 750; }
+.verdict .vs { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.verdict .vs > div { background: var(--band); border-radius: 8px; padding: 1rem 1.1rem; }
+.verdict .vs ul { margin: .5rem 0 0; padding-left: 1.1rem; }
+.verdict .vs li + li { margin-top: .3rem; }
+.bench h3 a { color: var(--ink); }
+.bench h3 a:hover { color: var(--brand); }
+.prose > h2:first-child { margin-top: 0; }

@@ -6,6 +6,7 @@ Rankings are editorial only and based on published, weighted criteria per catego
 
 ## Reviews
 - [Best CRM Software for Sales Teams](https://vettlo.com/tools/best-crm-software/): shortlist of 7 CRMs scored on pipeline management, automation, reporting, integrations, usability and value
+- [HubSpot vs Pipedrive](https://vettlo.com/compare/hubspot-vs-pipedrive/): list prices, plan features and year-one cost for a 10-rep team
 - [All categories](https://vettlo.com/best-tools/)
 
 ## Trust
@@ -13,3 +14,4 @@ Rankings are editorial only and based on published, weighted criteria per catego
 - [How we make money](https://vettlo.com/how-we-make-money/)
 - [Editorial standards](https://vettlo.com/editorial-standards/)
 - [About Vettlo](https://vettlo.com/about/)
+- [Editorial team](https://vettlo.com/team/)
