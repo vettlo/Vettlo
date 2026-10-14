@@ -270,3 +270,6 @@ details.breakdown .criteria { margin-top: .8rem; }
 .bench h3 a { color: var(--ink); }
 .bench h3 a:hover { color: var(--brand); }
 .prose > h2:first-child { margin-top: 0; }
+a.card { color: var(--ink); }
+a.card:hover { text-decoration: none; border-color: var(--brand); box-shadow: inset 0 0 0 1px var(--brand); }
+tr.ref td { background: var(--band); }
