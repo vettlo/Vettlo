@@ -14,6 +14,7 @@ DOMAIN = "https://vettlo.com"
 UPDATED = "2026-10-02"
 # Pre-launch: keep the whole site out of search results until placeholders are filled.
 PRELAUNCH_NOINDEX = False
+INDEXNOW_KEY = "c3fbbb23bcc5213c7fb866222a0f102b"
 UPDATED_H = "Oct 2, 2026"
 YEAR = 2026
 
@@ -1080,6 +1081,7 @@ Rankings are editorial only and based on published, weighted criteria per catego
 - [About Vettlo]({DOMAIN}/about/)
 - [Editorial team]({DOMAIN}/team/)
 """)
+    (site / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY)
     (site / "_redirects").write_text("/author/editor/ /team/ 301\n/author/editor /team/ 301\n")
     (site / "_headers").write_text("/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n" + ("  X-Robots-Tag: noindex, nofollow\n" if PRELAUNCH_NOINDEX else ""))
     pub = ROOT / "public"
