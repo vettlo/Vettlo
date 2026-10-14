@@ -99,7 +99,7 @@ CATS = [
     ("best-conversation-intelligence-software", "Conversation Intelligence", "Call recording, transcripts and deal risk signals", False),
     ("best-sales-forecasting-software", "Sales Forecasting Software", "Roll-ups, pipeline inspection and forecast calls", False),
     ("best-revenue-intelligence-platforms", "Revenue Intelligence", "Activity capture and deal health across the funnel", False),
-    ("best-b2b-data-providers", "B2B Contact Data Providers", "Enrichment, intent data and list building", False),
+    ("best-b2b-data-providers", "B2B Contact Data Providers", "Enrichment, intent data and list building", True),
     ("best-cpq-software", "CPQ Software", "Configure, price and quote for complex deals", False),
     ("best-sales-commission-software", "Sales Commission Software", "Comp plans, payouts and rep-facing statements", False),
     ("best-sales-enablement-platforms", "Sales Enablement Platforms", "Content, playbooks and rep onboarding", False),
@@ -1038,7 +1038,7 @@ def relativize(html, path, out_rel):
 def build():
     if CATEGORY_PAGES:
         cards = "".join(f'<a class="card" href="{u}"><span class="label">{k}</span><h3>{t}</h3><p class="muted small">{b}</p></a>' for u, t, b, k in CATEGORY_PAGES)
-        PAGES["/best-tools/"]["body"] = PAGES["/best-tools/"]["body"].replace("<!--CATGUIDES-->", f'<h2 style="margin:2.5rem 0 1rem">Sales engagement guides</h2><div class="cards3">{cards}</div>')
+        PAGES["/best-tools/"]["body"] = PAGES["/best-tools/"]["body"].replace("<!--CATGUIDES-->", f'<h2 style="margin:2.5rem 0 1rem">Prospecting and outreach guides</h2><div class="cards3">{cards}</div>')
     if DIST.exists():
         shutil.rmtree(DIST)
     site, prev = DIST / "site", DIST / "preview"
