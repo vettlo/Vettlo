@@ -37,7 +37,7 @@ STAMP = ('<svg class="stamp stamp-anim" viewBox="0 0 120 120" aria-hidden="true"
 DRAFT = ('<div class="draftbar"><div class="wrap"><strong>Draft preview.</strong> Dashed fields '
          '<span class="fill">like this</span> must be filled with verified information before launch.</div></div>')
 
-NAV = [("/best-tools/", "Tools"), ("/topics/", "Guides"), ("/methodology/", "How we vet"), ("/about/", "About")]
+NAV = [("/reviews/", "All reviews"), ("/best-tools/", "Categories"), ("/methodology/", "How we vet"), ("/about/", "About")]
 
 
 def header(cur):
@@ -55,7 +55,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <div class="cols">
 <div><a class="brand" href="/">{LOGO}<b>vettlo</b></a>
 <p>Independent reviews of the software revenue teams run on. Rankings are never for sale.</p></div>
-<div><h4>Tools</h4><ul><li><a href="/tools/best-crm-software/">CRM software</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
+<div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
 <div><h4>Trust</h4><ul><li><a href="/methodology/">Review methodology</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
 <div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/advertise/">Advertise</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
 </div>
@@ -66,7 +66,7 @@ NL_SCRIPT = """<script>
 document.querySelectorAll('form[data-nl]').forEach(function(f){
   f.addEventListener('submit', function(e){ e.preventDefault();
     var m = f.parentElement.querySelector('.nl-note');
-    if (m) m.textContent = 'Thanks. Sign-ups open when the briefing launches; connect your email tool before going live.';
+    if (m) m.textContent = 'Thanks. The briefing hasn't launched yet, so we didn't save your email. Check back soon.';
   });
 });
 </script>"""
@@ -149,7 +149,7 @@ page("/", "Vettlo: Software Reviews for Revenue Teams",
 
 <section class="section"><div class="wrap">
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
-<p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div></div>
+<p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
 <article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-sales-dialers/">Best sales dialers</a></h3><p class="muted small">Power dialers vs AI parallel dialers, and which plan the dialer actually sits on.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-conversation-intelligence-software/">Best conversation intelligence tools</a></h3><p class="muted small">Coaching, deal insights and CRM sync, and which features sit behind add-ons.</p></article>
@@ -177,7 +177,7 @@ page("/best-tools/", "Best Sales & Revenue Software by Category | Vettlo",
 <p>Each category gets one shortlist, scored on criteria built for that job. Live reviews link through; the rest are being tested.</p></div>
 <div class="page-body">{stack_grid()}
 <p class="muted small" style="margin-top:1.25rem">Missing a category your team buys? <a href="/contact/">Tell us</a> and we'll add it to the bench.</p>
-<h2 style="margin:2.5rem 0 1rem">CRM guides</h2>
+<h2 style="margin:2.5rem 0 1rem">CRM reviews</h2>
 <div class="cards3">
 <a class="card" href="/tools/best-crm-software/"><span class="label">Shortlist</span><h3>Best CRM Software for Sales Teams</h3><p class="muted small">Our CRM shortlist, scored on six weighted criteria.</p></a>
 <a class="card" href="/compare/hubspot-vs-pipedrive/"><span class="label">Comparison</span><h3>HubSpot vs Pipedrive</h3><p class="muted small">What a 10-rep team pays for automation on each.</p></a>
@@ -189,17 +189,7 @@ page("/best-tools/", "Best Sales & Revenue Software by Category | Vettlo",
 </div></div>
 {newsletter()}""", cur="/best-tools/")
 
-# ---------- TOPICS
-page("/topics/", "Guides for Sales & RevOps Leaders | Vettlo",
-     "Guides on choosing, rolling out and getting value from revenue software.",
-     """<div class="wrap"><div class="page-head"><span class="eyebrow">Guides</span><h1>Guides for people who own the revenue stack</h1>
-<p>Buying, rolling out and getting adoption on the tools your reps use every day.</p></div>
-<div class="page-body"><div class="cards3">
-<div class="card"><span class="label">RevOps</span><h3>Tech stack audits</h3><p class="muted small">Finding overlap, shelfware and missing data flows.</p><span class="status is-bench">First guide drafting</span></div>
-<div class="card"><span class="label">Buying</span><h3>Running a software evaluation</h3><p class="muted small">Requirements, trials, reference calls and negotiation.</p><span class="status is-bench">First guide drafting</span></div>
-<div class="card"><span class="label">Rollout</span><h3>Adoption and change management</h3><p class="muted small">Getting reps to actually log activity in the new tool.</p><span class="status is-bench">First guide drafting</span></div>
-<div class="card"><span class="label">Leadership</span><h3>Interviews with revenue leaders</h3><p class="muted small">CROs and RevOps heads on the tools they kept and the ones they cut.</p><span class="status is-bench">Interviews scheduling</span></div>
-</div></div></div>""", cur="/topics/")
+
 
 # ---------- CRM REVIEW (flagship template)
 TOOLS = [
@@ -1036,10 +1026,40 @@ def relativize(html, path, out_rel):
     return re.sub(r'(href|src)="(/[^"]*)"', fix, html)
 
 
+CRM_PAGES = [
+    ("/tools/best-crm-software/", "Best CRM Software for Sales Teams", "Our CRM shortlist, scored on six weighted criteria.", "Shortlist"),
+    ("/tools/best-crm-for-small-business/", "Best CRM for Small Businesses", "Weighted toward ease of use and price, with free plans.", "Shortlist"),
+    ("/compare/hubspot-vs-pipedrive/", "HubSpot vs Pipedrive", "What a 10-rep team pays for automation on each.", "Comparison"),
+    ("/tools/best-pipedrive-alternatives/", "Best Pipedrive Alternatives", "Six CRMs for teams outgrowing Pipedrive.", "Alternatives"),
+    ("/tools/best-hubspot-alternatives/", "Best HubSpot Alternatives", "Six CRMs for teams leaving HubSpot Sales Hub.", "Alternatives"),
+]
+
+
+def reviews_page():
+    allp = CRM_PAGES + CATEGORY_PAGES
+    groups = [("Shortlists", "Shortlist", "Ranked lists for one software category, scored on weighted criteria."),
+              ("Alternatives", "Alternatives", "Where to go when a popular tool stops fitting, and what you give up."),
+              ("Comparisons", "Comparison", "Two tools side by side, with real year-one costs.")]
+    body = f'''<div class="wrap"><div class="page-head"><span class="eyebrow">Reviews</span><h1>All reviews</h1>
+<p>Every shortlist, alternatives guide and comparison we've published ({len(allp)} so far). Prices on each page were checked on the date it shows.</p></div>
+<div class="page-body">'''
+    for h, k, sub in groups:
+        cards = "".join(f'<a class="card" href="{u}"><span class="label">{kk}</span><h3>{t}</h3><p class="muted small">{b}</p></a>' for u, t, b, kk in allp if kk == k)
+        if cards:
+            body += f'<h2 style="margin:2rem 0 .3rem">{h}</h2><p class="muted small" style="margin:0 0 1rem">{sub}</p><div class="cards3">{cards}</div>'
+    body += "</div></div>" + newsletter()
+    items = [{"@type": "ListItem", "position": i + 1, "url": DOMAIN + u, "name": t} for i, (u, t, b, k) in enumerate(allp)]
+    page("/reviews/", "All Sales Software Reviews | Vettlo",
+         "Every Vettlo shortlist, alternatives guide and comparison of sales and RevOps software, in one place.",
+         body, cur="/reviews/", jsonld=[{"@context": "https://schema.org", "@type": "CollectionPage", "name": "All reviews", "url": DOMAIN + "/reviews/",
+                                          "mainEntity": {"@type": "ItemList", "itemListElement": items}}])
+
+
 def build():
+    reviews_page()
     if CATEGORY_PAGES:
         cards = "".join(f'<a class="card" href="{u}"><span class="label">{k}</span><h3>{t}</h3><p class="muted small">{b}</p></a>' for u, t, b, k in CATEGORY_PAGES)
-        PAGES["/best-tools/"]["body"] = PAGES["/best-tools/"]["body"].replace("<!--CATGUIDES-->", f'<h2 style="margin:2.5rem 0 1rem">Prospecting and outreach guides</h2><div class="cards3">{cards}</div>')
+        PAGES["/best-tools/"]["body"] = PAGES["/best-tools/"]["body"].replace("<!--CATGUIDES-->", f'<h2 style="margin:2.5rem 0 1rem">Prospecting and outreach reviews</h2><div class="cards3">{cards}</div>')
     if DIST.exists():
         shutil.rmtree(DIST)
     site, prev = DIST / "site", DIST / "preview"
@@ -1095,7 +1115,7 @@ Rankings are editorial only and based on published, weighted criteria per catego
 - [Editorial team]({DOMAIN}/team/)
 """)
     (site / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY)
-    (site / "_redirects").write_text("/author/editor/ /team/ 301\n/author/editor /team/ 301\n")
+    (site / "_redirects").write_text("/author/editor/ /team/ 301\n/author/editor /team/ 301\n/topics/ /reviews/ 301\n/topics /reviews/ 301\n")
     (site / "_headers").write_text("/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n" + ("  X-Robots-Tag: noindex, nofollow\n" if PRELAUNCH_NOINDEX else ""))
     pub = ROOT / "public"
     if pub.exists():
