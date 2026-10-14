@@ -1,0 +1,15 @@
+# Vettlo
+
+> Vettlo is an independent publication that reviews sales and revenue operations software (CRM, sales engagement, conversation intelligence, forecasting, CPQ, commissions, B2B data) for CROs, sales leaders and RevOps teams.
+
+Rankings are editorial only and based on published, weighted criteria per category. Vendors cannot pay for inclusion, position or scores. Sponsored placements are labeled and kept outside ranked lists. Reviews are re-verified every 90 days.
+
+## Reviews
+- [Best CRM Software for Sales Teams](https://vettlo.com/tools/best-crm-software/): shortlist of 7 CRMs scored on pipeline management, automation, reporting, integrations, usability and value
+- [All categories](https://vettlo.com/best-tools/)
+
+## Trust
+- [Review methodology](https://vettlo.com/methodology/)
+- [How we make money](https://vettlo.com/how-we-make-money/)
+- [Editorial standards](https://vettlo.com/editorial-standards/)
+- [About Vettlo](https://vettlo.com/about/)
