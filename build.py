@@ -19,7 +19,7 @@ UPDATED_H = "Oct 2, 2026"
 YEAR = 2026
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">')
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">')
 
 LOGO = ('<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--brand)"/>'
         '<path d="M8.5 10.5l6.2 12.2c.5 1 1.9 1 2.4 0L24.5 8" fill="none" stroke="var(--brand-ink)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -44,10 +44,9 @@ def header(cur):
     links = "".join(
         f'<a href="{h}"{" aria-current=\"page\"" if cur == h else ""}>{t}</a>' for h, t in NAV)
     return f"""<a href="#main" class="eyebrow" style="position:absolute;left:-999px">Skip to content</a>
-<div class="topbar"><div class="wrap"><a href="/write-for-us/">Write for us</a><a href="/advertise/">Advertise</a><a href="/contact/">Contact</a></div></div>
 <header class="site-head"><div class="wrap">
 <a class="brand" href="/">{LOGO}<b>vettlo</b></a>
-<nav class="nav" aria-label="Main">{links}<a class="btn small" href="/#newsletter">Get the briefing</a></nav>
+<nav class="nav" aria-label="Main">{links}<a class="btn small" href="/contact/">Suggest a tool</a></nav>
 </div></header>"""
 
 
@@ -106,7 +105,6 @@ CATS = [
     ("best-sales-enablement-platforms", "Sales Enablement Platforms", "Content, playbooks and rep onboarding", False),
     ("best-lead-routing-software", "Lead Routing Software", "Speed-to-lead, round robin and territory rules", False),
     ("best-contract-management-software", "Contract Management", "Redlines, e-signature and renewal dates", False),
-    ("best-sales-dialers", "Sales Dialers", "Power and parallel dialing for outbound teams", False),
 ]
 
 
@@ -114,9 +112,9 @@ def stack_grid(limit=None):
     out = []
     for slug, name, sub, live in CATS[:limit] if limit else CATS:
         if live:
-            out.append(f'<a href="/tools/{slug}/"><span class="status is-live">Live review</span><span class="t">{name}</span><span class="s">{sub}</span></a>')
+            out.append(f'<a href="/tools/{slug}/"><span class="status is-live">Reviewed</span><span class="t">{name}</span><span class="s">{sub}</span></a>')
         else:
-            out.append(f'<div class="tile"><span class="status is-bench">On the bench</span><span class="t">{name}</span><span class="s">{sub}</span></div>')
+            out.append(f'<div class="tile"><span class="status is-bench">In research</span><span class="t">{name}</span><span class="s">{sub}</span></div>')
     return '<div class="stack-grid">' + "".join(out) + "</div>"
 
 
@@ -126,18 +124,12 @@ page("/", "Vettlo: Software Reviews for Revenue Teams",
      f"""
 <section class="hero"><div class="wrap">
 <div>
-<span class="eyebrow">For sales &amp; RevOps leaders</span>
-<h1 style="margin-top:.8rem">Software for revenue teams, <em>vetted</em> before you sign the contract.</h1>
-<p class="lede">We dig into the CRMs, dialers and forecasting tools your team will live in, score them against published criteria built for each category, and tell you who each one is actually for.</p>
-<div class="ctas"><a class="btn" href="/tools/best-crm-software/">Read the CRM review</a><a class="btn ghost" href="/methodology/">How we vet tools</a></div>
+<h1>Sales software, scored in the open.</h1>
+<p class="lede">Independent shortlists of the CRMs, dialers, data providers and call tools revenue teams buy. Every score is broken down by published criteria, every price is checked against the vendor's own page, and no vendor can pay for a rank.</p>
+<div class="ctas"><a class="btn" href="/reviews/">Browse all reviews</a><a class="btn ghost" href="/methodology/">How we score</a></div>
+<!--HEROFACTS-->
 </div>
-<aside class="seal-card" aria-label="Our review commitments">
-<h3 class="card-title">Every Vettlo review</h3>
-<div class="check-row">{CHECK}<span>Built on category-specific criteria with published weights</span></div>
-<div class="check-row">{CHECK}<span>Names who should <em>not</em> buy the tool</span></div>
-<div class="check-row">{CHECK}<span>Labels every sponsored slot, and keeps it outside the ranking</span></div>
-<div class="check-row">{CHECK}<span>Re-checked for pricing and features every 90 days</span></div>
-</aside>
+<!--SCOREBOARD-->
 </div></section>
 
 <section class="section band"><div class="wrap">
@@ -323,7 +315,7 @@ def also_considered():
 
 
 def crm_page():
-    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{t["id"]}">{t["name"]}</a><br><span class="bf">{t["bf"]}</span></span><a class="btn ghost small" href="#{t["id"]}">Review</a></li>'
+    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{t["id"]}">{t["name"]}</a><br><span class="bf">{t["bf"]}</span></span><span class="sc">{score(t["id"])}<small>/100</small></span><a class="btn ghost small" href="#{t["id"]}">Review</a></li>'
                     for i, t in enumerate(TOOLS, 1))
     rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{t["id"]}"><b>{t["name"]}</b></a></td><td>{t["bf"].replace("Best for ", "")[:1].upper() + t["bf"].replace("Best for ", "")[1:]}</td>'
                    f'<td>{PRICING[t["id"]]["short"]}</td><td class="num">From {PRICING[t["id"]]["price"]}</td><td class="num">{G2[t["id"]][0]}/5</td><td class="num"><b>{score(t["id"])}</b>/100</td></tr>'
@@ -447,7 +439,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
     tfull = TOOL_BY_ID[target]["name"]
     url = f"/tools/{slug}/"
     n = len(picks)
-    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{tid}">{TOOL_BY_ID[tid]["name"]}</a><br><span class="bf">{fit}</span></span><a class="btn ghost small" href="#{tid}">Details</a></li>'
+    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{tid}">{TOOL_BY_ID[tid]["name"]}</a><br><span class="bf">{fit}</span></span><span class="sc">{score(tid)}<small>/100</small></span><a class="btn ghost small" href="#{tid}">Details</a></li>'
                     for i, (tid, fit, _, _) in enumerate(picks, 1))
     rows = "".join(f'<tr><td><a href="#{tid}"><b>{TOOL_BY_ID[tid]["name"]}</b></a></td><td>{fit}</td><td class="num">From {PRICING[tid]["price"]}</td><td>{PRICING[tid]["short"]}</td><td class="num">${ENTRY_PRICE[tid]*120:,}</td><td class="num"><b>{score(tid)}</b>/100</td></tr>'
                    for tid, fit, _, _ in picks)
@@ -607,7 +599,7 @@ SB_FAQS = [
 
 def sb_page():
     order = SB_ORDER
-    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{t}">{TOOL_BY_ID[t]["name"]}</a><br><span class="bf">{SB_FIT[t][0]}</span></span><a class="btn ghost small" href="#{t}">Details</a></li>' for i, t in enumerate(order, 1))
+    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{t}">{TOOL_BY_ID[t]["name"]}</a><br><span class="bf">{SB_FIT[t][0]}</span></span><span class="sc">{sb_score(t)}<small>/100</small></span><a class="btn ghost small" href="#{t}">Details</a></li>' for i, t in enumerate(order, 1))
     rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{t}"><b>{TOOL_BY_ID[t]["name"]}</b></a></td><td>{SB_FIT[t][0].replace("Best ", "").capitalize()}</td><td class="num">From {PRICING[t]["price"]}</td><td>{PRICING[t]["short"]}</td><td class="num">${ENTRY_PRICE[t]*60:,}</td><td class="num"><b>{sb_score(t)}</b>/100</td></tr>' for i, t in enumerate(order, 1))
     cards = []
     for i, t in enumerate(order, 1):
@@ -1055,8 +1047,20 @@ def reviews_page():
                                           "mainEntity": {"@type": "ItemList", "itemListElement": items}}])
 
 
+def scoreboard():
+    rows = [("CRM", TOOLS[0]["name"], score(TOOLS[0]["id"]), "/tools/best-crm-software/", len(CONSIDERED))] + SCOREBOARD
+    lis = "".join(f'<li><a href="{u}"><span class="cat">{c}</span><span class="tool-n">{n}</span><span class="sc">{v}<small>/100</small></span><span class="meter"><i style="width:{v}%"></i></span></a></li>' for c, n, v, u, _ in rows)
+    board = (f'<aside class="board" aria-label="Top-ranked tool in each category"><div class="board-head"><h2>Top of each shortlist</h2><span>Updated Oct 14, 2026</span></div>'
+             f'<ol>{lis}</ol><div class="board-foot">Scores out of 100 from weighted criteria. <a href="/methodology/">How scoring works</a></div></aside>')
+    tools_n = sum(r[4] for r in rows)
+    facts = (f'<div class="facts-line"><div><b>{len(CRM_PAGES) + len(CATEGORY_PAGES)}</b>reviews published</div>'
+             f'<div><b>{tools_n}</b>tools scored</div><div><b>0</b>paid rankings</div></div>')
+    PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--SCOREBOARD-->", board).replace("<!--HEROFACTS-->", facts)
+
+
 def build():
     reviews_page()
+    scoreboard()
     if CATEGORY_PAGES:
         cards = "".join(f'<a class="card" href="{u}"><span class="label">{k}</span><h3>{t}</h3><p class="muted small">{b}</p></a>' for u, t, b, k in CATEGORY_PAGES)
         PAGES["/best-tools/"]["body"] = PAGES["/best-tools/"]["body"].replace("<!--CATGUIDES-->", f'<h2 style="margin:2.5rem 0 1rem">Prospecting and outreach reviews</h2><div class="cards3">{cards}</div>')

@@ -55,10 +55,11 @@ def category_page(cat):
     ranked = sorted([k for k in tools if cat_score(cat, k) >= THRESHOLD], key=lambda k: (-cat_score(cat, k), -float(tools[k]["g2"][0])))
     excluded = [k for k in tools if cat_score(cat, k) < THRESHOLD]
     cat["_ranked"] = ranked
+    SCOREBOARD.append((cat["crumb"], tools[ranked[0]]["name"], cat_score(cat, ranked[0]), f"/tools/{cat['slug']}/", len(tools)))
     url = f"/tools/{cat['slug']}/"
     n = len(ranked)
     h1 = f"{n} Best {cat['plural']} in {YEAR}"
-    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{tools[k]["bf"]}</span></span><a class="btn ghost small" href="#{k}">Review</a></li>' for i, k in enumerate(ranked, 1))
+    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{tools[k]["bf"]}</span></span><span class="sc">{cat_score(cat, k)}<small>/100</small></span><a class="btn ghost small" href="#{k}">Review</a></li>' for i, k in enumerate(ranked, 1))
     rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{tools[k]["bf"].replace("Best for ", "").capitalize()}</td><td>{tools[k]["trial_short"]}</td><td class="num">{tools[k]["price"]}</td><td class="num">{tools[k]["g2"][0]}/5</td><td class="num"><b>{cat_score(cat, k)}</b>/100</td></tr>' for i, k in enumerate(ranked, 1))
     cards = []
     for i, k in enumerate(ranked, 1):
@@ -119,7 +120,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
     url = f"/tools/{slug}/"
     n = len(picks)
     h1 = f"{n} Best {tname} Alternatives in {YEAR}"
-    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{fit}</span></span><a class="btn ghost small" href="#{k}">Details</a></li>' for i, (k, fit, _, _) in enumerate(picks, 1))
+    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{fit}</span></span><span class="sc">{cat_score(cat, k)}<small>/100</small></span><a class="btn ghost small" href="#{k}">Details</a></li>' for i, (k, fit, _, _) in enumerate(picks, 1))
     ref = tools[target]
     rows = (f'<tr class="ref"><td><b>{ref["name"]}</b> <span class="small muted">(for reference)</span></td><td>{ref["bf"].replace("Best for ", "").capitalize()}</td><td class="num">{ref["price"]}</td><td>{ref["trial_short"]}</td><td class="num"><b>{cat_score(cat, target)}</b>/100</td></tr>'
             + "".join(f'<tr><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{fit}</td><td class="num">{tools[k]["price"]}</td><td>{tools[k]["trial_short"]}</td><td class="num"><b>{cat_score(cat, k)}</b>/100</td></tr>' for k, fit, _, _ in picks))
@@ -159,3 +160,4 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 
 
 CATEGORY_PAGES = []  # (url, title, blurb, kind) collected for hubs and llms.txt
+SCOREBOARD = []  # (category, top tool, score, url, tools scored) for the home scoreboard
