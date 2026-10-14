@@ -1,6 +1,6 @@
 # Vettlo site source
 
-Static site for vettlo.com, hosted on Cloudflare Pages (project: `vettlo`, account: esenzeynepsevval@gmail.com).
+Static site for vettlo.com, hosted on Cloudflare (Worker `vettlo-site`).
 
 ## How it's built
 - `build.py` holds every page's content and the shared header/footer. Edit content there.
@@ -17,5 +17,7 @@ Static site for vettlo.com, hosted on Cloudflare Pages (project: `vettlo`, accou
 - Domains: vettlo.com and www.vettlo.com point to vettlo.pages.dev (CNAME, proxied).
 
 ## Deploy
-Cloudflare Pages is connected to this repo. `public/` is the published folder (no build command).
-After editing `build.py` or `src/site.css`, run `python3 build.py` and commit both the source and `public/`. Pushing to `main` deploys the site.
+The site runs as the Cloudflare Worker `vettlo-site` (static assets from `public/`, see `wrangler.jsonc`), connected to this repo.
+vettlo.com and www.vettlo.com are attached to that Worker as custom domains.
+After editing `build.py` or `src/site.css`, run `python3 build.py` and commit both the source and `public/`. Pushing to `main` deploys the site automatically.
+The old Pages project `vettlo` is no longer used.
