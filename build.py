@@ -95,7 +95,7 @@ ORG = {"@context": "https://schema.org", "@type": "Organization", "name": "Vettl
 
 CATS = [
     ("best-crm-software", "CRM Software", "Pipelines, contacts and deal tracking", True),
-    ("best-sales-engagement-software", "Sales Engagement Platforms", "Sequenced outreach across email, calls and LinkedIn", False),
+    ("best-sales-engagement-software", "Sales Engagement Platforms", "Sequenced outreach across email, calls and LinkedIn", True),
     ("best-conversation-intelligence-software", "Conversation Intelligence", "Call recording, transcripts and deal risk signals", False),
     ("best-sales-forecasting-software", "Sales Forecasting Software", "Roll-ups, pipeline inspection and forecast calls", False),
     ("best-revenue-intelligence-platforms", "Revenue Intelligence", "Activity capture and deal health across the funnel", False),
@@ -150,7 +150,7 @@ page("/", "Vettlo: Software Reviews for Revenue Teams",
 <div class="section-head"><div><span class="eyebrow">On the bench</span><h2 style="margin-top:.4rem">What we're testing right now</h2>
 <p>Reviews in progress. Each one publishes when testing is done, not before.</p></div></div>
 <div class="bench">
-<article><div class="meta"><span>Shortlist</span><span>In testing</span></div><h3>Best sales engagement platforms</h3><p class="muted small">Sequencing, deliverability controls and how each tool handles reply detection.</p></article>
+<article><div class="meta"><span>Shortlist</span><span>Published</span></div><h3><a href="/tools/best-sales-engagement-software/">Best sales engagement platforms</a></h3><p class="muted small">Sequencing, deliverability and data, plus which vendors hide their prices.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Published</span></div><h3><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></h3><p class="muted small">Where the free tiers stop, and what a 10-rep team actually pays for automation on each.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Scoping</span></div><h3>Best conversation intelligence software</h3><p class="muted small">Transcript accuracy on real discovery calls, and what managers do with the output.</p></article>
 <article><div class="meta"><span>Guide</span><span>Drafting</span></div><h3>How to run a CRM migration without losing pipeline history</h3><p class="muted small">Field mapping, deduplication and the cutover weekend checklist.</p></article>
@@ -183,7 +183,9 @@ page("/best-tools/", "Best Sales & Revenue Software by Category | Vettlo",
 <a class="card" href="/tools/best-pipedrive-alternatives/"><span class="label">Alternatives</span><h3>Best Pipedrive Alternatives</h3><p class="muted small">Six CRMs for teams outgrowing Pipedrive.</p></a>
 <a class="card" href="/tools/best-hubspot-alternatives/"><span class="label">Alternatives</span><h3>Best HubSpot Alternatives</h3><p class="muted small">Six CRMs for teams leaving HubSpot Sales Hub.</p></a>
 <a class="card" href="/tools/best-crm-for-small-business/"><span class="label">Shortlist</span><h3>Best CRM for Small Businesses</h3><p class="muted small">Weighted toward ease of use and price, with free plans.</p></a>
-</div></div></div>
+</div>
+<!--CATGUIDES-->
+</div></div>
 {newsletter()}""", cur="/best-tools/")
 
 # ---------- TOPICS
@@ -792,6 +794,11 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
             {"@type": "ListItem", "position": 3, "name": "HubSpot vs Pipedrive", "item": DOMAIN + "/compare/hubspot-vs-pipedrive/"}]},
     ])
 
+# ---------- CATEGORY MODULES
+exec(open(ROOT / "catlib.py").read())
+for _f in sorted((ROOT / "categories").glob("*.py")):
+    exec(open(_f).read())
+
 # ---------- METHODOLOGY
 page("/methodology/", "Our Software Review Methodology | Vettlo",
      "How Vettlo selects, tests and scores sales and revenue software, and how we keep rankings independent of advertising.",
@@ -1029,6 +1036,9 @@ def relativize(html, path, out_rel):
 
 
 def build():
+    if CATEGORY_PAGES:
+        cards = "".join(f'<a class="card" href="{u}"><span class="label">{k}</span><h3>{t}</h3><p class="muted small">{b}</p></a>' for u, t, b, k in CATEGORY_PAGES)
+        PAGES["/best-tools/"]["body"] = PAGES["/best-tools/"]["body"].replace("<!--CATGUIDES-->", f'<h2 style="margin:2.5rem 0 1rem">Sales engagement guides</h2><div class="cards3">{cards}</div>')
     if DIST.exists():
         shutil.rmtree(DIST)
     site, prev = DIST / "site", DIST / "preview"
@@ -1057,6 +1067,8 @@ def build():
         g.write_text(pdoc)
 
     lastmod = {"/compare/hubspot-vs-pipedrive/": "2026-10-14", "/tools/best-pipedrive-alternatives/": "2026-10-14", "/tools/best-hubspot-alternatives/": "2026-10-14", "/tools/best-crm-for-small-business/": "2026-10-14", "/team/": "2026-10-14", "/privacy/": "2026-10-14", "/terms/": "2026-10-14", "/": "2026-10-14"}
+    for u, *_ in CATEGORY_PAGES:
+        lastmod.setdefault(u, "2026-10-14")
     urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p != "/404/")
     (site / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
@@ -1072,7 +1084,7 @@ Rankings are editorial only and based on published, weighted criteria per catego
 - [Best Pipedrive alternatives]({DOMAIN}/tools/best-pipedrive-alternatives/): 6 CRMs for teams leaving Pipedrive, with what you gain and give up
 - [Best HubSpot alternatives]({DOMAIN}/tools/best-hubspot-alternatives/): 6 CRMs for teams leaving HubSpot Sales Hub
 - [Best CRM for small businesses]({DOMAIN}/tools/best-crm-for-small-business/): CRMs for teams of 1 to 20, weighted toward ease of use and price, with free-plan details
-- [All categories]({DOMAIN}/best-tools/)
+{"".join(f"- [{t}]({DOMAIN}{u}): {b}" + chr(10) for u, t, b, k in CATEGORY_PAGES)}- [All categories]({DOMAIN}/best-tools/)
 
 ## Trust
 - [Review methodology]({DOMAIN}/methodology/)
