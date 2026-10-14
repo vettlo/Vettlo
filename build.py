@@ -13,7 +13,7 @@ DIST = ROOT / "dist"
 DOMAIN = "https://vettlo.com"
 UPDATED = "2026-10-02"
 # Pre-launch: keep the whole site out of search results until placeholders are filled.
-PRELAUNCH_NOINDEX = True
+PRELAUNCH_NOINDEX = False
 UPDATED_H = "Oct 2, 2026"
 YEAR = 2026
 
