@@ -96,7 +96,7 @@ ORG = {"@context": "https://schema.org", "@type": "Organization", "name": "Vettl
 CATS = [
     ("best-crm-software", "CRM Software", "Pipelines, contacts and deal tracking", True),
     ("best-sales-engagement-software", "Sales Engagement Platforms", "Sequenced outreach across email, calls and LinkedIn", True),
-    ("best-conversation-intelligence-software", "Conversation Intelligence", "Call recording, transcripts and deal risk signals", False),
+    ("best-conversation-intelligence-software", "Conversation Intelligence", "Call recording, transcripts and deal risk signals", True),
     ("best-sales-forecasting-software", "Sales Forecasting Software", "Roll-ups, pipeline inspection and forecast calls", False),
     ("best-revenue-intelligence-platforms", "Revenue Intelligence", "Activity capture and deal health across the funnel", False),
     ("best-b2b-data-providers", "B2B Contact Data Providers", "Enrichment, intent data and list building", True),
@@ -141,19 +141,19 @@ page("/", "Vettlo: Software Reviews for Revenue Teams",
 
 <section class="section band"><div class="wrap">
 <div class="section-head"><div><span class="eyebrow">The revenue tech stack</span><h2 style="margin-top:.4rem">Categories we cover</h2>
-<p>One shortlist per category. Live reviews are open; the rest are on the bench being tested now.</p></div>
+<p>One shortlist per category. Live reviews are open; the rest are in research.</p></div>
 <a class="btn ghost small" href="/best-tools/">All categories</a></div>
 {stack_grid(8)}
 </div></section>
 
 <section class="section"><div class="wrap">
-<div class="section-head"><div><span class="eyebrow">On the bench</span><h2 style="margin-top:.4rem">What we're testing right now</h2>
-<p>Reviews in progress. Each one publishes when testing is done, not before.</p></div></div>
+<div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
+<p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div></div>
 <div class="bench">
-<article><div class="meta"><span>Shortlist</span><span>Published</span></div><h3><a href="/tools/best-sales-engagement-software/">Best sales engagement platforms</a></h3><p class="muted small">Sequencing, deliverability and data, plus which vendors hide their prices.</p></article>
-<article><div class="meta"><span>Comparison</span><span>Published</span></div><h3><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></h3><p class="muted small">Where the free tiers stop, and what a 10-rep team actually pays for automation on each.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Scoping</span></div><h3>Best conversation intelligence software</h3><p class="muted small">Transcript accuracy on real discovery calls, and what managers do with the output.</p></article>
-<article><div class="meta"><span>Guide</span><span>Drafting</span></div><h3>How to run a CRM migration without losing pipeline history</h3><p class="muted small">Field mapping, deduplication and the cutover weekend checklist.</p></article>
+<article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-conversation-intelligence-software/">Best conversation intelligence tools</a></h3><p class="muted small">Coaching, deal insights and CRM sync, and which features sit behind add-ons.</p></article>
+<article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-b2b-data-providers/">Best B2B contact data providers</a></h3><p class="muted small">Coverage, phone data and how each vendor's credits actually work.</p></article>
+<article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-sales-engagement-software/">Best sales engagement platforms</a></h3><p class="muted small">Sequencing, deliverability and data, plus which vendors hide their prices.</p></article>
+<article><div class="meta"><span>Comparison</span><span>Oct 14, 2026</span></div><h3><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></h3><p class="muted small">Where the free tiers stop, and what a 10-rep team actually pays for automation on each.</p></article>
 </div>
 </div></section>
 
