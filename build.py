@@ -181,6 +181,7 @@ page("/best-tools/", "Best Sales & Revenue Software by Category | Vettlo",
 <a class="card" href="/compare/hubspot-vs-pipedrive/"><span class="label">Comparison</span><h3>HubSpot vs Pipedrive</h3><p class="muted small">What a 10-rep team pays for automation on each.</p></a>
 <a class="card" href="/tools/best-pipedrive-alternatives/"><span class="label">Alternatives</span><h3>Best Pipedrive Alternatives</h3><p class="muted small">Six CRMs for teams outgrowing Pipedrive.</p></a>
 <a class="card" href="/tools/best-hubspot-alternatives/"><span class="label">Alternatives</span><h3>Best HubSpot Alternatives</h3><p class="muted small">Six CRMs for teams leaving HubSpot Sales Hub.</p></a>
+<a class="card" href="/tools/best-crm-for-small-business/"><span class="label">Shortlist</span><h3>Best CRM for Small Businesses</h3><p class="muted small">Weighted toward ease of use and price, with free plans.</p></a>
 </div></div></div>
 {newsletter()}""", cur="/best-tools/")
 
@@ -307,7 +308,7 @@ EXCLUDED = [t for t in TOOLS if score(t["id"]) < THRESHOLD]
 TOOLS = sorted([t for t in TOOLS if score(t["id"]) >= THRESHOLD], key=lambda t: -score(t["id"]))
 
 FAQS = [
-    ("What is the best CRM for a small sales team?", "For teams under about 10 reps, ease of adoption usually matters more than feature depth. Pipedrive and HubSpot's entry tiers are the most common starting points; Attio suits founder-led teams that want a flexible setup, and folk is a lighter option for relationship-led work. Start a trial with your real pipeline before deciding."),
+    ("What is the best CRM for a small sales team?", "For teams under about 10 reps, ease of adoption usually matters more than feature depth. Pipedrive and HubSpot's entry tiers are the most common starting points; Attio suits founder-led teams that want a flexible setup, and folk is a lighter option for relationship-led work. See our guide to the best CRM for small businesses. Start a trial with your real pipeline before deciding."),
     ("How much does CRM software cost?", "Most CRMs price per seat per month, with free or entry tiers for small teams and steep jumps for automation, forecasting and custom objects. Budget for implementation, data migration and integrations too, which can exceed license cost at enterprise scale."),
     ("Should sales and marketing share one CRM?", "Sharing one database removes sync work and makes attribution easier. It matters most for inbound-led motions. Outbound-heavy teams with separate marketing tools can run well with a sales-first CRM and a clean integration."),
     ("How long does a CRM migration take?", "Small teams can move in days. Mid-market migrations with custom fields, historical activity and integrations commonly take several weeks. Plan field mapping and deduplication before the cutover."),
@@ -323,7 +324,7 @@ def breakdown(tid):
 def also_considered():
     if not EXCLUDED:
         return ""
-    items = "".join(f'<li><b>{t["name"]}</b> scored {score(t["id"])}/100. {t["what"]} It\'s a good fit for {t["who"][0].lower() + t["who"][1:]} It fell short of our {THRESHOLD}-point bar mainly on reporting and forecasting, which matter for most sales teams.</li>' for t in EXCLUDED)
+    items = "".join(f'<li><b>{t["name"]}</b> scored {score(t["id"])}/100. {t["what"]} It\'s a good fit for {t["who"][0].lower() + t["who"][1:]} It fell short of our {THRESHOLD}-point bar mainly on reporting and forecasting, which matter for most sales teams. It does make our <a href="/tools/best-crm-for-small-business/">CRM shortlist for small businesses</a>, where ease of use and price carry more weight.</li>' for t in EXCLUDED)
     return f'<section id="also"><h2>Also considered</h2><ul class="prose">{items}</ul></section>'
 
 
@@ -578,6 +579,115 @@ alt_page("hubspot", "best-hubspot-alternatives",
           ("Should I leave HubSpot if my marketing runs on it?", "Usually not. The shared database between marketing and sales is HubSpot's biggest advantage. Leaving means maintaining a sync between two systems.")],
          [("/compare/hubspot-vs-pipedrive/", "HubSpot vs Pipedrive"), ("/tools/best-pipedrive-alternatives/", "Best Pipedrive alternatives"), ("/tools/best-crm-software/", "Best CRM software for sales teams")])
 
+# ---------- BEST CRM FOR SMALL BUSINESS
+SB_WEIGHTS = [20, 15, 10, 5, 25, 25]  # same order as CRITERIA
+SB_DATE = "2026-10-14"
+SB_DATE_H = "Oct 14, 2026"
+ENTRY_PRICE["folk"] = 24
+
+
+def sb_score(tid):
+    return int(sum(w * r for w, r in zip(SB_WEIGHTS, SCORES[tid])) / 5 + 0.5)
+
+
+SB_FIT = {
+    "pipedrive": ("Best overall for small sales teams", "Reps can work the pipeline within a day, and sequences, automation and forecast reports arrive on the $39 Growth plan."),
+    "hubspot": ("Best free CRM to start with", "The free plan covers up to 2 users, and you can grow into marketing and sales on one database later."),
+    "zoho": ("Best for depth on a small budget", "Workflow automation, territories and analytics at entry-level prices, plus a free edition for up to 3 users."),
+    "freshsales": ("Best low-cost all-in-one", "Phone, email and AI-assisted lead scoring in one product from $9 per user per month on annual billing."),
+    "attio": ("Best for startups with a non-standard process", "Model partners, investors or a product-led funnel without an admin, with a free plan for up to 3 seats."),
+    "close": ("Best for small phone-based sales teams", "Calling, SMS and email sequences inside the CRM; a $9 Solo plan covers a single user."),
+    "salesforce": ("Best if you expect to scale fast", "Starter Suite from $25 per user per month gives you a path into the deepest CRM platform without migrating later."),
+    "folk": ("Best for founders and relationship-led work", "Very little setup or upkeep, easy contact enrichment and simple outreach for teams where nobody owns the CRM full time."),
+}
+SB_ORDER = sorted([t for t in SB_FIT if sb_score(t) >= THRESHOLD], key=lambda t: (-sb_score(t), ENTRY_PRICE[t]))
+
+SB_FAQS = [
+    ("What is the best CRM for a small business?", f"For most small sales teams, Pipedrive: it scores highest in our small-business ranking ({sb_score('pipedrive')}/100) because reps adopt it quickly and it lists sequences, automation and forecast reports on its $39 Growth plan. If you need a free start, HubSpot's free plan covers up to 2 users."),
+    ("What is the best free CRM for a small business?", "HubSpot's free plan covers up to 2 users, Zoho CRM's free edition covers up to 3 users, and Attio's free plan covers up to 3 seats. Pipedrive, Freshsales, Close and folk offer free trials instead of free plans."),
+    ("How much should a small business spend on a CRM?", "Entry plans on our list run from $7 to $35 per user per month on annual billing, so a 5-person team pays roughly $420 to $2,100 in year one. Plans with sales automation usually cost $35 to $100 per user per month."),
+    ("Does a small business need a CRM?", "Once more than one person is following up with leads or customers, a shared CRM stops deals from slipping through spreadsheets and inboxes. Many teams start on a free plan and move to paid when they need automation."),
+    ("Is Salesforce good for small businesses?", "Salesforce Starter Suite is priced for small teams, and it suits companies that expect to grow quickly. Most small teams without an admin will find Pipedrive, HubSpot or Zoho faster to set up."),
+]
+
+
+def sb_page():
+    order = SB_ORDER
+    short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{t}">{TOOL_BY_ID[t]["name"]}</a><br><span class="bf">{SB_FIT[t][0]}</span></span><a class="btn ghost small" href="#{t}">Details</a></li>' for i, t in enumerate(order, 1))
+    rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{t}"><b>{TOOL_BY_ID[t]["name"]}</b></a></td><td>{SB_FIT[t][0].replace("Best ", "").capitalize()}</td><td class="num">From {PRICING[t]["price"]}</td><td>{PRICING[t]["short"]}</td><td class="num">${ENTRY_PRICE[t]*60:,}</td><td class="num"><b>{sb_score(t)}</b>/100</td></tr>' for i, t in enumerate(order, 1))
+    cards = []
+    for i, t in enumerate(order, 1):
+        tool = TOOL_BY_ID[t]
+        pros = "".join(f"<li>{p}</li>" for p in tool["pros"])
+        cons = "".join(f"<li>{c}</li>" for c in tool["cons"])
+        cards.append(f"""<article class="tool" id="{t}">
+<div class="tool-head"><span class="num">{i}</span><div><h3>{tool['name']}</h3><div class="bestfor">{SB_FIT[t][0]}</div></div>
+<a class="btn small" href="{URLS[t]}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div>
+<div class="spec"><div><span class="label">Starting price</span><b>From {PRICING[t]['price']}</b><span class="small muted">{PRICING[t]['note']}</span></div><div><span class="label">Free trial / plan</span><b>{PRICING[t]['trial']}</b></div><div><span class="label">Small-business score</span><b>{sb_score(t)}/100</b><span class="small muted">Desk research</span></div><div><span class="label">G2 user rating</span><b>{G2[t][0]}/5</b><a class="small" href="{G2[t][2]}" target="_blank" rel="noopener">{G2[t][1]} reviews</a></div></div>
+<div class="tool-body">
+<p><b>Why it suits small businesses:</b> {SB_FIT[t][1]}</p>
+<p>{tool['what']}</p>
+<div class="pc"><div class="pros"><h4>Strengths</h4><ul>{pros}</ul></div><div class="cons"><h4>Watch-outs</h4><ul>{cons}</ul></div></div>
+<p class="small muted"><b>Skip it if:</b> {tool['notavoid']}</p>
+</div></article>""")
+    wrows = "".join(f'<tr><td>{n}</td><td class="num">{w}%</td><td class="num">{sw}%</td></tr>' for (n, w), sw in zip(CRITERIA, SB_WEIGHTS))
+    faq = "".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in SB_FAQS)
+    n = len(order)
+    h1 = f"{n} Best CRM Software for Small Businesses in {YEAR}"
+    body = f"""<div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/best-crm-software/">CRM Software</a> / Small business</nav>
+<header class="article-head">
+<span class="eyebrow">Shortlist · CRM for small business</span>
+<h1>{h1}</h1>
+<div class="byline"><div class="avatar team-mark">{LOGO}</div><div class="who"><b>By <a href="/team/">Vettlo Editorial Team</a></b><span>Published <time datetime="{SB_DATE}">{SB_DATE_H}</time> · Prices verified {PRICES_CHECKED}</span></div></div>
+<p class="disclose">We may earn a commission when you click some links on this page. It never changes which tools we include or how we rank them. See <a href="/how-we-make-money/">how we make money</a>.</p>
+</header>
+<div class="layout"><div class="main-col">
+<section class="prose"><p>A small business needs a CRM its team will actually use, at a price that makes sense for a handful of seats. This guide covers teams of roughly 1 to 20 people. We used the same ratings as our <a href="/tools/best-crm-software/">main CRM ranking</a>, but weighted ease of use and price more heavily, because those matter most when nobody on the team is a full-time CRM admin.</p></section>
+<section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
+<section id="compare"><h2>Small-business CRMs compared</h2>
+<div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Best for</th><th>Starting price</th><th>Free plan / trial</th><th>5 users, year one*</th><th>Score</th></tr></thead><tbody>{rows}</tbody></table></div>
+<p class="small muted">*Entry plan list price × 5 users × 12 months, billed annually, from each vendor's pricing page on {PRICES_CHECKED}. Entry plans differ in features; check each tool below.</p></section>
+<section class="prose" id="free"><h2>Best free CRMs for small businesses</h2>
+<ul><li><b>HubSpot:</b> free plan for up to 2 users, no credit card required.</li><li><b>Zoho CRM:</b> free edition for up to 3 users.</li><li><b>Attio:</b> free plan for up to 3 seats.</li></ul>
+<p>Pipedrive, Freshsales, Close and folk offer free trials of 14 to 21 days instead. Salesforce offers a Free Suite and a free trial.</p></section>
+<section id="reviews"><h2>The reviews</h2>{''.join(cards)}</section>
+<section id="weights"><h2>How we scored CRMs for small businesses</h2>
+<p class="prose">Each tool keeps the same 0 to 5 ratings it has in our <a href="/tools/best-crm-software/">main CRM ranking</a>. For this guide we changed only the weights, then included every tool that scores 70 or higher. Ratings come from desk research: vendor documentation, current pricing pages and G2 reviews. See our <a href="/methodology/">methodology</a>.</p>
+<div class="table-wrap"><table><thead><tr><th>Criterion</th><th>Main ranking</th><th>Small business</th></tr></thead><tbody>{wrows}</tbody></table></div></section>
+<section class="prose" id="choose"><h2>How to choose a CRM for a small business</h2>
+<ol><li><b>Start with who will use it daily.</b> If it's two founders, a free plan may be enough. If it's a sales team, pick the plan that includes the follow-up automation you need.</li>
+<li><b>Price the plan you'll need in six months,</b> not the entry plan. Automation, forecasting and custom reports are usually one or two tiers up.</li>
+<li><b>Test with real deals.</b> Import 20 live deals during the trial and run your normal week in the tool.</li>
+<li><b>Check the exit.</b> Make sure you can export contacts, deals and activity history before you commit.</li></ol></section>
+<section id="faq"><h2>Small business CRM FAQ</h2><div>{faq}</div></section>
+<section class="prose"><h2>Related</h2><ul><li><a href="/tools/best-crm-software/">Best CRM software for sales teams</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li><li><a href="/tools/best-pipedrive-alternatives/">Best Pipedrive alternatives</a></li><li><a href="/tools/best-hubspot-alternatives/">Best HubSpot alternatives</a></li></ul></section>
+<section class="author-box"><div class="avatar team-mark">{LOGO}</div><div><b>Vettlo Editorial Team</b><p class="small muted">Researched and written by the Vettlo editorial team using our <a href="/methodology/">methodology</a>.</p></div></section>
+</div>
+<nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#shortlist">Shortlist</a><a href="#compare">Comparison table</a><a href="#free">Free CRMs</a><a href="#reviews">Reviews</a><a href="#weights">How we scored</a><a href="#faq">FAQ</a></nav>
+</div></div>
+{newsletter()}"""
+    url = "/tools/best-crm-for-small-business/"
+    ld = [
+        {"@context": "https://schema.org", "@type": "Article", "headline": h1, "datePublished": SB_DATE, "dateModified": SB_DATE,
+         "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
+         "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}, "mainEntityOfPage": DOMAIN + url},
+        {"@context": "https://schema.org", "@type": "ItemList", "name": "Best CRM software for small businesses",
+         "itemListElement": [{"@type": "ListItem", "position": i, "name": TOOL_BY_ID[t]["name"], "url": f"{DOMAIN}{url}#{t}"} for i, t in enumerate(order, 1)]},
+        {"@context": "https://schema.org", "@type": "FAQPage",
+         "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in SB_FAQS]},
+        {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
+            {"@type": "ListItem", "position": 2, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"},
+            {"@type": "ListItem", "position": 3, "name": "Small business", "item": DOMAIN + url}]},
+    ]
+    page(url, f"{n} Best CRM Software for Small Businesses ({YEAR}) | Vettlo",
+         "The best CRMs for small businesses and small sales teams, scored with extra weight on ease of use and price. Free plans, year-one cost for 5 users and who each CRM suits.",
+         body, cur="/best-tools/", jsonld=ld, ptype="article")
+
+
+sb_page()
+
 # ---------- COMPARE: HUBSPOT VS PIPEDRIVE
 CMP_UPDATED = "2026-10-14"
 CMP_UPDATED_H = "Oct 14, 2026"
@@ -803,7 +913,7 @@ page("/team/", "Vettlo Editorial Team",
 <li>Scores labeled <b>Desk research</b> are based on vendor documentation, pricing pages and verified user reviews. They're replaced with hands-on scores once testing is complete.</li>
 <li>Advertising and affiliate relationships never affect inclusion, order or scores. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Published reviews</h2>
-<ul><li><a href="/tools/best-crm-software/">Best CRM Software for Sales Teams</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li><li><a href="/tools/best-pipedrive-alternatives/">Best Pipedrive Alternatives</a></li><li><a href="/tools/best-hubspot-alternatives/">Best HubSpot Alternatives</a></li></ul>
+<ul><li><a href="/tools/best-crm-software/">Best CRM Software for Sales Teams</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li><li><a href="/tools/best-pipedrive-alternatives/">Best Pipedrive Alternatives</a></li><li><a href="/tools/best-hubspot-alternatives/">Best HubSpot Alternatives</a></li><li><a href="/tools/best-crm-for-small-business/">Best CRM for Small Businesses</a></li></ul>
 <h2>Join us</h2>
 <p>We're looking for practitioners who have run sales teams or owned a CRM to test tools and write reviews. See <a href="/write-for-us/">write for us</a>.</p>
 </div></div>""", jsonld=[{"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo Editorial Team", "parentOrganization": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}}])
@@ -945,7 +1055,7 @@ def build():
         g.parent.mkdir(parents=True, exist_ok=True)
         g.write_text(pdoc)
 
-    lastmod = {"/compare/hubspot-vs-pipedrive/": "2026-10-14", "/tools/best-pipedrive-alternatives/": "2026-10-14", "/tools/best-hubspot-alternatives/": "2026-10-14", "/team/": "2026-10-14", "/privacy/": "2026-10-14", "/terms/": "2026-10-14", "/": "2026-10-14"}
+    lastmod = {"/compare/hubspot-vs-pipedrive/": "2026-10-14", "/tools/best-pipedrive-alternatives/": "2026-10-14", "/tools/best-hubspot-alternatives/": "2026-10-14", "/tools/best-crm-for-small-business/": "2026-10-14", "/team/": "2026-10-14", "/privacy/": "2026-10-14", "/terms/": "2026-10-14", "/": "2026-10-14"}
     urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p != "/404/")
     (site / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
@@ -960,6 +1070,7 @@ Rankings are editorial only and based on published, weighted criteria per catego
 - [HubSpot vs Pipedrive]({DOMAIN}/compare/hubspot-vs-pipedrive/): list prices, plan features and year-one cost for a 10-rep team
 - [Best Pipedrive alternatives]({DOMAIN}/tools/best-pipedrive-alternatives/): 6 CRMs for teams leaving Pipedrive, with what you gain and give up
 - [Best HubSpot alternatives]({DOMAIN}/tools/best-hubspot-alternatives/): 6 CRMs for teams leaving HubSpot Sales Hub
+- [Best CRM for small businesses]({DOMAIN}/tools/best-crm-for-small-business/): CRMs for teams of 1 to 20, weighted toward ease of use and price, with free-plan details
 - [All categories]({DOMAIN}/best-tools/)
 
 ## Trust
