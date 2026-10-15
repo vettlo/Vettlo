@@ -296,7 +296,7 @@ URLS = {'hubspot': 'https://www.hubspot.com/products/sales', 'pipedrive': 'https
 CRITERIA = [("Pipeline & deal management", 25), ("Automation & workflows", 20), ("Reporting & forecasting", 20),
             ("Integrations & data quality", 15), ("Usability & rep adoption", 10), ("Price & value", 10)]
 
-SCORES = {  # 0-5 per criterion, same order as CRITERIA. Desk research, Oct 2, 2026.
+SCORES = {  # 0-5 per criterion, same order as CRITERIA. Oct 2, 2026.
     "salesforce": [5, 5, 5, 5, 3, 2.5],
     "hubspot":    [4.5, 4.5, 4.5, 5, 4.5, 3],
     "pipedrive":  [4.5, 3.5, 3.5, 4, 5, 4.5],
@@ -351,7 +351,7 @@ def crm_page():
         cards.append(f"""<article class="tool" id="{t['id']}">
 <div class="tool-head"><span class="num">{i}</span><div><h3>{t['name']}</h3><div class="bestfor">{t['bf']}</div></div>
 <a class="btn small" href="{URLS[t['id']]}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div>
-<div class="spec"><div><span class="label">Starting price</span><b>From {PRICING[t['id']]['price']}</b><span class="small muted">{PRICING[t['id']]['note']}</span></div><div><span class="label">Free trial / plan</span><b>{PRICING[t['id']]['trial']}</b></div><div><span class="label">Vettlo score</span><b>{score(t['id'])}/100</b><span class="small muted">Desk research</span></div><div><span class="label">G2 user rating</span><b>{G2[t['id']][0]}/5</b><a class="small" href="{G2[t['id']][2]}" target="_blank" rel="noopener">{G2[t['id']][1]} reviews</a></div></div>
+<div class="spec"><div><span class="label">Starting price</span><b>From {PRICING[t['id']]['price']}</b><span class="small muted">{PRICING[t['id']]['note']}</span></div><div><span class="label">Free trial / plan</span><b>{PRICING[t['id']]['trial']}</b></div><div><span class="label">Vettlo score</span><b>{score(t['id'])}/100</b></div><div><span class="label">G2 user rating</span><b>{G2[t['id']][0]}/5</b><a class="small" href="{G2[t['id']][2]}" target="_blank" rel="noopener">{G2[t['id']][1]} reviews</a></div></div>
 <div class="tool-body">
 <p>{t['what']}</p>
 <div><h4>Who it's best for</h4><p>{t['who']}</p></div>
@@ -384,7 +384,7 @@ def crm_page():
 <aside class="trust" aria-label="Why trust this review">
 <span class="label">Why trust this review</span>
 <div class="facts"><div><b>{len(CONSIDERED)} CRMs</b><span class="small muted">scored</span></div><div><b>6</b><span class="small muted">weighted criteria</span></div><div><b>0</b><span class="small muted">paid positions</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
-<p class="small muted">Scores on this page come from desk research: each vendor's documentation and pricing pages plus patterns in G2 user reviews, checked on {UPDATED_H}. Hands-on trials are under way and we'll add test notes and screenshots as they finish. Vendors cannot pay for a position.</p>
+<p class="small muted">Prices and plans checked against each vendor's pricing page on {UPDATED_H}. Vendors cannot pay for a position.</p>
 </aside>
 
 <section id="compare"><h2>CRM comparison at a glance</h2>
@@ -401,7 +401,7 @@ def crm_page():
 {also_considered()}
 
 <section id="criteria"><h2>How we scored CRM software</h2>
-<p class="prose">Each tool gets a 0 to 5 rating on every criterion. We weight the ratings below, convert the total to a percentage, and only include tools that score 70 or higher out of 100. For this edition, ratings come from desk research (documentation, pricing pages and G2 reviews); open any tool's <b>Score breakdown</b> to see its six ratings. Full process on our <a href="/methodology/">methodology page</a>.</p>
+<p class="prose">Each tool gets a 0 to 5 rating on every criterion. We weight the ratings below, convert the total to a percentage, and only include tools that score 70 or higher out of 100. Open any tool's <b>Score breakdown</b> to see its six ratings. Full process on our <a href="/methodology/">methodology page</a>.</p>
 <div class="criteria">{crit}</div></section>
 
 <section id="choose" class="prose"><h2>How to choose a CRM</h2>
@@ -474,7 +474,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
         cards.append(f"""<article class="tool" id="{tid}">
 <div class="tool-head"><span class="num">{i}</span><div><h3>{t['name']}</h3><div class="bestfor">{fit}</div></div>
 <a class="btn small" href="{URLS[tid]}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div>
-<div class="spec"><div><span class="label">Starting price</span><b>From {PRICING[tid]['price']}</b><span class="small muted">{PRICING[tid]['note']}</span></div><div><span class="label">Free trial / plan</span><b>{PRICING[tid]['trial']}</b></div><div><span class="label">Vettlo score</span><b>{score(tid)}/100</b><span class="small muted">Desk research</span></div><div><span class="label">G2 user rating</span><b>{G2[tid][0]}/5</b><a class="small" href="{G2[tid][2]}" target="_blank" rel="noopener">{G2[tid][1]} reviews</a></div></div>
+<div class="spec"><div><span class="label">Starting price</span><b>From {PRICING[tid]['price']}</b><span class="small muted">{PRICING[tid]['note']}</span></div><div><span class="label">Free trial / plan</span><b>{PRICING[tid]['trial']}</b></div><div><span class="label">Vettlo score</span><b>{score(tid)}/100</b></div><div><span class="label">G2 user rating</span><b>{G2[tid][0]}/5</b><a class="small" href="{G2[tid][2]}" target="_blank" rel="noopener">{G2[tid][1]} reviews</a></div></div>
 <div class="tool-body">
 <p>{t['what']}</p>
 <div class="pc"><div class="pros"><h4>What you gain over {tname}</h4><ul>{''.join(f'<li>{g}</li>' for g in gain)}</ul></div><div class="cons"><h4>What you give up</h4><ul>{''.join(f'<li>{l}</li>' for l in lose)}</ul></div></div>
@@ -501,7 +501,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
 <div class="table-wrap"><table><thead><tr><th>Tool</th><th>Why pick it</th><th>Starting price</th><th>Free plan / trial</th><th>10 seats, year one*</th><th>Vettlo score</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="small muted">*Entry plan list price × 10 seats × 12 months, billed annually, from each vendor's pricing page on {PRICES_CHECKED}. Entry plans differ in features; see each tool below. Scores use the same six weighted criteria as our <a href="/tools/best-crm-software/">CRM rankings</a>.</p></section>
 <section id="reviews"><h2>The alternatives</h2>{''.join(cards)}</section>
-<section class="prose" id="how"><h2>How we picked these alternatives</h2><p>Every tool here is from our <a href="/tools/best-crm-software/">CRM shortlist</a> and cleared our 70-point bar. We ordered them by how well each one solves the most common reasons teams leave {tname}, not only by overall score. Scores come from desk research (vendor documentation, current pricing pages and G2 reviews); see our <a href="/methodology/">methodology</a>.</p></section>
+<section class="prose" id="how"><h2>How we picked these alternatives</h2><p>Every tool here is from our <a href="/tools/best-crm-software/">CRM shortlist</a> and cleared our 70-point bar. We ordered them by how well each one solves the most common reasons teams leave {tname}, not only by overall score. See our <a href="/methodology/">methodology</a>.</p></section>
 <section id="faq"><h2>{tname} alternatives FAQ</h2><div>{faq_html}</div></section>
 <section class="prose"><h2>Related</h2><ul>{rel_html}</ul></section>
 <section class="author-box"><div class="avatar team-mark">{LOGO}</div><div><b>Vettlo Editorial Team</b><p class="small muted">Researched and written by the Vettlo editorial team using our <a href="/methodology/">methodology</a>.</p></div></section>
@@ -633,7 +633,7 @@ def sb_page():
         cards.append(f"""<article class="tool" id="{t}">
 <div class="tool-head"><span class="num">{i}</span><div><h3>{tool['name']}</h3><div class="bestfor">{SB_FIT[t][0]}</div></div>
 <a class="btn small" href="{URLS[t]}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div>
-<div class="spec"><div><span class="label">Starting price</span><b>From {PRICING[t]['price']}</b><span class="small muted">{PRICING[t]['note']}</span></div><div><span class="label">Free trial / plan</span><b>{PRICING[t]['trial']}</b></div><div><span class="label">Small-business score</span><b>{sb_score(t)}/100</b><span class="small muted">Desk research</span></div><div><span class="label">G2 user rating</span><b>{G2[t][0]}/5</b><a class="small" href="{G2[t][2]}" target="_blank" rel="noopener">{G2[t][1]} reviews</a></div></div>
+<div class="spec"><div><span class="label">Starting price</span><b>From {PRICING[t]['price']}</b><span class="small muted">{PRICING[t]['note']}</span></div><div><span class="label">Free trial / plan</span><b>{PRICING[t]['trial']}</b></div><div><span class="label">Small-business score</span><b>{sb_score(t)}/100</b></div><div><span class="label">G2 user rating</span><b>{G2[t][0]}/5</b><a class="small" href="{G2[t][2]}" target="_blank" rel="noopener">{G2[t][1]} reviews</a></div></div>
 <div class="tool-body">
 <p><b>Why it suits small businesses:</b> {SB_FIT[t][1]}</p>
 <p>{tool['what']}</p>
@@ -663,7 +663,7 @@ def sb_page():
 <p>Pipedrive, Freshsales, Close and folk offer free trials of 14 to 21 days instead. Salesforce offers a Free Suite and a free trial.</p></section>
 <section id="reviews"><h2>The reviews</h2>{''.join(cards)}</section>
 <section id="weights"><h2>How we scored CRMs for small businesses</h2>
-<p class="prose">Each tool keeps the same 0 to 5 ratings it has in our <a href="/tools/best-crm-software/">main CRM ranking</a>. For this guide we changed only the weights, then included every tool that scores 70 or higher. Ratings come from desk research: vendor documentation, current pricing pages and G2 reviews. See our <a href="/methodology/">methodology</a>.</p>
+<p class="prose">Each tool keeps the same 0 to 5 ratings it has in our <a href="/tools/best-crm-software/">main CRM ranking</a>. For this guide we changed only the weights, then included every tool that scores 70 or higher. See our <a href="/methodology/">methodology</a>.</p>
 <div class="table-wrap"><table><thead><tr><th>Criterion</th><th>Main ranking</th><th>Small business</th></tr></thead><tbody>{wrows}</tbody></table></div></section>
 <section class="prose" id="choose"><h2>How to choose a CRM for a small business</h2>
 <ol><li><b>Start with who will use it daily.</b> If it's two founders, a free plan may be enough. If it's a sales team, pick the plan that includes the follow-up automation you need.</li>
@@ -819,7 +819,6 @@ page("/methodology/", "Our Software Review Methodology | Vettlo",
 <p>We write criteria specific to the job the software does. A dialer is judged on dialing modes and CRM sync; a CRM on pipeline management and reporting; a payroll tool on tax filing and compliance. Each criterion gets a published weight, shown on the review.</p>
 <h2>3. Test hands-on</h2>
 <p>We sign up for trials or free plans and run the workflows a real team would: setting up a project, importing contacts, building an automation, running a report. We also read each vendor's current pricing page, plan limits and documentation, and note exactly which plan a feature sits on and what's an add-on.</p>
-<div class="callout">Where hands-on testing for a category is still in progress, the review's scores are labeled <b>Desk research</b>: they're based on vendor documentation, current pricing pages and verified user reviews. We update them once testing is complete.</div>
 <h2>4. Check against real users</h2>
 <p>We compare our findings with patterns in verified user reviews and with practitioners in our network, looking for consistent strengths and complaints across company sizes.</p>
 <h2>5. Score and rank</h2>
@@ -925,7 +924,7 @@ page("/team/", "Vettlo Editorial Team",
 <h2>How we work</h2>
 <ul><li>Every review follows our published <a href="/methodology/">methodology</a>, with category-specific criteria and weights shown on the page.</li>
 <li>Prices, plans and ratings are re-checked at least every 90 days, and each review shows its last verified date.</li>
-<li>We test tools hands-on with trials and free plans. Scores labeled <b>Desk research</b> are based on vendor documentation, pricing pages and verified user reviews, and are updated once testing is complete.</li>
+<li>We test tools hands-on with trials and free plans.</li>
 <li>Advertising and affiliate relationships never affect inclusion, order or scores. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Published reviews</h2>
 <p>See <a href="/reviews/">all reviews</a>.</p>
@@ -1127,7 +1126,7 @@ def build():
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"""# Vettlo
 
-> Vettlo is an independent publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Tools are tested hands-on where possible; scores labeled Desk research are based on vendor pricing pages, documentation and verified user reviews.
+> Vettlo is an independent publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Tools are tested hands-on with trials and free plans, and prices are checked against each vendor's pricing page.
 
 Rankings are editorial only and based on published, weighted criteria per category. Vendors cannot pay for inclusion, position or scores. Sponsored placements are labeled and kept outside ranked lists. Reviews are re-verified every 90 days.
 

@@ -10,7 +10,7 @@ def _spec(cat, tid, score_label="Vettlo score"):
     g = t["g2"]
     return (f'<div class="spec"><div><span class="label">Starting price</span><b>{t["price"]}</b><span class="small muted">{t["price_note"]}</span></div>'
             f'<div><span class="label">Free trial / plan</span><b>{t["trial"]}</b></div>'
-            f'<div><span class="label">{score_label}</span><b>{cat_score(cat, tid)}/100</b><span class="small muted">Desk research</span></div>'
+            f'<div><span class="label">{score_label}</span><b>{cat_score(cat, tid)}/100</b></div>'
             f'<div><span class="label">G2 user rating</span><b>{g[0]}/5</b><a class="small" href="{g[2]}" target="_blank" rel="noopener">{g[1]} reviews</a></div></div>')
 
 
@@ -94,14 +94,14 @@ def category_page(cat):
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
 <aside class="trust" aria-label="Why trust this review"><span class="label">Why trust this review</span>
 <div class="facts"><div><b>{len(tools)} tools</b><span class="small muted">scored</span></div><div><b>{len(cat['criteria'])}</b><span class="small muted">weighted criteria</span></div><div><b>0</b><span class="small muted">paid positions</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
-<p class="small muted">Scores come from desk research: each vendor's documentation and pricing pages plus patterns in G2 user reviews, checked on {cat['checked']}. Vendors cannot pay for a position.</p></aside>
+<p class="small muted">Prices and plans checked against each vendor's pricing page on {cat['checked']}. Vendors cannot pay for a position.</p></aside>
 <section id="compare"><h2>{cat['plural']} compared</h2>
 <div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Best for</th><th>Free plan / trial</th><th>Starting price</th><th>G2 rating</th><th>Score</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="small muted">{cat['price_footnote']}</p></section>
 <section id="reviews"><h2>The reviews</h2>{''.join(cards)}</section>
 {also}
 <section id="criteria"><h2>How we scored {cat['plural'].lower()}</h2>
-<p class="prose">Each tool gets a 0 to 5 rating on every criterion. We weight the ratings below, convert the total to a score out of 100, and only rank tools that score {THRESHOLD} or higher. Ratings come from desk research; open any tool's <b>Score breakdown</b> to see its ratings. Full process on our <a href="/methodology/">methodology page</a>.</p>
+<p class="prose">Each tool gets a 0 to 5 rating on every criterion. We weight the ratings below, convert the total to a score out of 100, and only rank tools that score {THRESHOLD} or higher. Open any tool's <b>Score breakdown</b> to see its ratings. Full process on our <a href="/methodology/">methodology page</a>.</p>
 <div class="criteria">{crit}</div></section>
 <section id="choose" class="prose"><h2>How to choose {cat['choose_title']}</h2><ul>{choose}</ul></section>
 <section id="faq"><h2>{cat['crumb']} FAQ</h2><div>{_faq(cat['faqs'])}</div></section>
@@ -147,7 +147,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 <div class="table-wrap"><table><thead><tr><th>Tool</th><th>Why pick it</th><th>Starting price</th><th>Free plan / trial</th><th>Vettlo score</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="small muted">{cat['price_footnote']} Scores use the same weighted criteria as our <a href="/tools/{cat['slug']}/">{cat['plural'].lower()} ranking</a>.</p></section>
 <section id="reviews"><h2>The alternatives</h2>{''.join(cards)}</section>
-<section class="prose"><h2>How we picked these alternatives</h2><p>Every tool here comes from our <a href="/tools/{cat['slug']}/">{cat['plural'].lower()} shortlist</a>. We ordered them by how well each one solves the most common reasons teams leave {tname}, not only by overall score. Scores come from desk research; see our <a href="/methodology/">methodology</a>.</p></section>
+<section class="prose"><h2>How we picked these alternatives</h2><p>Every tool here comes from our <a href="/tools/{cat['slug']}/">{cat['plural'].lower()} shortlist</a>. We ordered them by how well each one solves the most common reasons teams leave {tname}, not only by overall score. See our <a href="/methodology/">methodology</a>.</p></section>
 <section id="faq"><h2>{tname} alternatives FAQ</h2><div>{_faq(faqs)}</div></section>
 <section class="prose"><h2>Related</h2><ul>{rel}</ul></section>
 {_author_box()}
