@@ -1058,6 +1058,10 @@ def scoreboard():
     PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--SCOREBOARD-->", board).replace("<!--HEROFACTS-->", facts)
 
 
+import hashlib
+CSS_V = hashlib.md5((ROOT / "src" / "site.css").read_bytes()).hexdigest()[:8]
+
+
 def build():
     reviews_page()
     scoreboard()
@@ -1076,7 +1080,7 @@ def build():
         rel = out_file(path)
         # deploy version
         doc = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
-               f'{head_block(path, p, "/assets/site.css")}</head><body>{body_block(p, path)}</body></html>')
+               f'{head_block(path, p, "/assets/site.css?v=" + CSS_V)}</head><body>{body_block(p, path)}</body></html>')
         f = site / rel
         f.parent.mkdir(parents=True, exist_ok=True)
         f.write_text(doc)
@@ -1085,7 +1089,7 @@ def build():
             pdoc = f'<title>Vettlo Site Preview</title>{FONTS}<link rel="stylesheet" href="assets/site.css">{body_block(p, path)}'
         else:
             pdoc = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
-                    f'<title>{p["title"]}</title>{FONTS}<link rel="stylesheet" href="/assets/site.css"></head><body>{body_block(p, path)}</body></html>')
+                    f'<title>{p["title"]}</title>{FONTS}<link rel="stylesheet" href="/assets/site.css?v={CSS_V}"></head><body>{body_block(p, path)}</body></html>')
         pdoc = relativize(pdoc, path, rel)
         g = prev / rel
         g.parent.mkdir(parents=True, exist_ok=True)
