@@ -86,6 +86,9 @@ PAGES = {}
 
 
 def page(path, title, desc, body, cur=None, jsonld=None, ptype="website"):
+    if len(desc) > 158:  # keep meta descriptions inside Google's snippet width
+        cut = desc[:155].rsplit(" ", 1)[0].rstrip(",;:")
+        desc = cut + "…"
     PAGES[path] = dict(title=title, desc=desc, body=body, cur=cur, jsonld=jsonld or [], ptype=ptype)
 
 
@@ -1121,6 +1124,13 @@ def build():
     lastmod = {"/compare/hubspot-vs-pipedrive/": "2026-10-14", "/tools/best-pipedrive-alternatives/": "2026-10-14", "/tools/best-hubspot-alternatives/": "2026-10-14", "/tools/best-crm-for-small-business/": "2026-10-14", "/team/": "2026-10-14", "/privacy/": "2026-10-14", "/terms/": "2026-10-14", "/": "2026-10-14"}
     for u, *_ in CATEGORY_PAGES:
         lastmod.setdefault(u, "2026-10-14")
+    for u, pg in PAGES.items():
+        for j in pg["jsonld"]:
+            if isinstance(j, dict) and j.get("dateModified"):
+                lastmod[u] = max(lastmod.get(u, ""), j["dateModified"])
+    newest = max(lastmod.values())
+    for u in ("/", "/best-tools/", "/reviews/"):
+        lastmod[u] = newest
     urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p != "/404/")
     (site / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
