@@ -5,7 +5,8 @@ Builds two outputs from the same page definitions:
   dist/site/     -> deploy-ready (Cloudflare Pages / Netlify), clean URLs, full <head> SEO
   dist/preview/  -> artifact preview: relative links to .../index.html, root page without skeleton
 """
-import json, os, re, shutil
+import json
+import html, os, re, shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -56,7 +57,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <p>Independent reviews of the software businesses run on. Rankings are never for sale.</p></div>
 <div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
 <div><h4>Trust</h4><ul><li><a href="/methodology/">Review methodology</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
-<div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/advertise/">Advertise</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/advertise/">Advertise</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
 </div>
 <div class="legal"><span>© {YEAR} Vettlo. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span></div>
 </div></footer>"""
@@ -1073,6 +1074,45 @@ def reviews_page():
                                           "mainEntity": {"@type": "ItemList", "itemListElement": items}}])
 
 
+def badge_svg(top, cat):
+    label = f"Top pick {YEAR}" if top else f"Shortlisted {YEAR}"
+    cat = html.escape(cat)
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" width="260" height="84" viewBox="0 0 260 84" role="img" aria-label="Vettlo {label}: {cat}">
+<rect width="260" height="84" rx="12" fill="#0b2018"/><rect x="0.5" y="0.5" width="259" height="83" rx="11.5" fill="none" stroke="#1d3d31"/>
+<rect x="16" y="16" width="26" height="26" rx="7" fill="#00a372"/><path d="M22.9 24.5l5 9.9c.4.8 1.5.8 1.9 0l5.9-12.3" fill="none" stroke="#fff" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="50" y="35" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#eef6f1" letter-spacing="-0.4">vettlo</text>
+<text x="16" y="62" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="{'#5fe3b4' if top else '#eef6f1'}">{label}</text>
+<text x="16" y="76" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="11" fill="#93aea1">{cat}</text></svg>"""
+
+
+def badges_page():
+    rows = [("CRM", "best-crm-software", t["id"], t["name"], i) for i, t in enumerate(TOOLS, 1)] + BADGES
+    groups = {}
+    for cat, slug, tid, name, rank in rows:
+        groups.setdefault((cat, slug), []).append((tid, name, rank))
+    blocks = []
+    for (cat, slug), items in groups.items():
+        cards = []
+        for tid, name, rank in items:
+            fn = f"{slug}-{tid}.svg"
+            BADGE_FILES[fn] = badge_svg(rank == 1, cat)
+            alt = f"{name}: {'Top pick' if rank == 1 else 'Shortlisted'} in Vettlo's best {cat.lower()} {YEAR}"
+            code = f'<a href="{DOMAIN}/tools/{slug}/"><img src="{DOMAIN}/badges/{fn}" alt="{alt}" width="260" height="84"></a>'
+            cards.append(f'<div class="card badge-card"><img src="/badges/{fn}" alt="{html.escape(alt)}" width="260" height="84" loading="lazy">'
+                         f'<h3>{name}</h3><p class="muted small">{"Top pick" if rank == 1 else "Shortlisted"}, ranked #{rank}</p>'
+                         f'<label class="small">Embed code<textarea readonly rows="3" onclick="this.select()">{html.escape(code)}</textarea></label></div>')
+        blocks.append(f'<h2 class="dept-h"><a href="/tools/{slug}/">{cat}</a></h2><div class="cards3">{"".join(cards)}</div>')
+    body = f"""<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Vettlo badges</h1>
+<p>If your product is ranked on a Vettlo shortlist, you're welcome to show it. Copy the embed code for your badge and paste it on your website, review page or press kit. Badges are free and never sold.</p></div>
+<div class="page-body">
+<div class="prose" style="margin-bottom:2rem"><p><b>Rules:</b> use the badge for the product and category shown, keep the link to the review, and don't alter the design. If a product drops off a shortlist at a re-check, its badge should come down. Questions? <a href="/contact/">Contact us</a>.</p></div>
+{"".join(blocks)}
+</div></div>"""
+    page("/badges/", "Vettlo Badges for Ranked Software | Vettlo",
+         "Free badges for software ranked on a Vettlo shortlist, with embed code that links to the review.",
+         body, cur=None)
+
+
 def scoreboard():
     rows = [("CRM", TOOLS[0]["name"], score(TOOLS[0]["id"]), "/tools/best-crm-software/", len(CONSIDERED))] + SCOREBOARD
     lis = "".join(f'<li><a href="{u}"><span class="cat">{c}</span><span class="tool-n">{n}</span><span class="sc">{v}<small>/100</small></span><span class="meter"><i style="width:{v}%"></i></span></a></li>' for c, n, v, u, _ in rows)
@@ -1088,8 +1128,12 @@ import hashlib
 CSS_V = hashlib.md5((ROOT / "src" / "site.css").read_bytes()).hexdigest()[:8]
 
 
+BADGE_FILES = {}
+
+
 def build():
     reviews_page()
+    badges_page()
     scoreboard()
     if CATEGORY_PAGES:
         cards = "".join(f'<a class="card" href="{u}"><span class="label">{k}</span><h3>{t}</h3><p class="muted small">{b}</p></a>' for u, t, b, k in CATEGORY_PAGES)
@@ -1100,6 +1144,9 @@ def build():
     for d in (site, prev):
         (d / "assets").mkdir(parents=True)
         shutil.copy(ROOT / "src" / "site.css", d / "assets" / "site.css")
+        (d / "badges").mkdir(exist_ok=True)
+        for fn, svg in BADGE_FILES.items():
+            (d / "badges" / fn).write_text(svg)
         shutil.copy(ROOT / "src" / "og.png", d / "assets" / "og.png")
         (d / "assets" / "logo.svg").write_text(LOGO.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replace("var(--brand-ink)", "#ffffff").replace("var(--brand)", "#2347d6"))
     for path, p in PAGES.items():

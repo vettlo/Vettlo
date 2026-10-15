@@ -352,3 +352,7 @@ details.breakdown .criteria { margin-top: .9rem; }
 .tile.dept li.soon { color: var(--ink-3); }
 .stack-grid > a.tile-cta { background: var(--bg); align-content: center; }
 .stack-grid > a.tile-cta .t { color: var(--brand); }
+.badge-card img { border-radius: 12px; }
+.badge-card textarea { width: 100%; font: .78rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; padding: .55rem .6rem; border: 1px solid var(--line-2); border-radius: 8px; background: var(--bg); color: var(--ink-2); resize: none; margin-top: .3rem; }
+.dept-h a { color: var(--ink); font-weight: inherit; }
+.dept-h a:hover { color: var(--brand); }

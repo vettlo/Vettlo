@@ -55,6 +55,7 @@ def category_page(cat):
     ranked = sorted([k for k in tools if cat_score(cat, k) >= THRESHOLD], key=lambda k: (-cat_score(cat, k), -float(tools[k]["g2"][0])))
     excluded = [k for k in tools if cat_score(cat, k) < THRESHOLD]
     cat["_ranked"] = ranked
+    BADGES.extend((cat["crumb"], cat["slug"], k, tools[k]["name"], i) for i, k in enumerate(ranked, 1))
     SCOREBOARD.append((cat["crumb"], tools[ranked[0]]["name"], cat_score(cat, ranked[0]), f"/tools/{cat['slug']}/", len(tools)))
     url = f"/tools/{cat['slug']}/"
     n = len(ranked)
@@ -160,4 +161,5 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 
 
 CATEGORY_PAGES = []  # (url, title, blurb, kind) collected for hubs and llms.txt
+BADGES = []  # (category, slug, tool id, tool name, rank) for /badges/
 SCOREBOARD = []  # (category, top tool, score, url, tools scored) for the home scoreboard
