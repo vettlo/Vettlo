@@ -356,3 +356,5 @@ details.breakdown .criteria { margin-top: .9rem; }
 .badge-card textarea { width: 100%; font: .78rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; padding: .55rem .6rem; border: 1px solid var(--line-2); border-radius: 8px; background: var(--bg); color: var(--ink-2); resize: none; margin-top: .3rem; }
 .dept-h a { color: var(--ink); font-weight: inherit; }
 .dept-h a:hover { color: var(--brand); }
+.badge-samples { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: .5rem; }
+.badge-samples img { border-radius: 12px; }

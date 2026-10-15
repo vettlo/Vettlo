@@ -1090,26 +1090,32 @@ def badges_page():
     groups = {}
     for cat, slug, tid, name, rank in rows:
         groups.setdefault((cat, slug), []).append((tid, name, rank))
-    blocks = []
     for (cat, slug), items in groups.items():
-        cards = []
         for tid, name, rank in items:
             fn = f"{slug}-{tid}.svg"
             BADGE_FILES[fn] = badge_svg(rank == 1, cat)
             alt = f"{name}: {'Top pick' if rank == 1 else 'Shortlisted'} in Vettlo's best {cat.lower()} {YEAR}"
-            code = f'<a href="{DOMAIN}/tools/{slug}/"><img src="{DOMAIN}/badges/{fn}" alt="{alt}" width="260" height="84"></a>'
-            cards.append(f'<div class="card badge-card"><img src="/badges/{fn}" alt="{html.escape(alt)}" width="260" height="84" loading="lazy">'
-                         f'<h3>{name}</h3><p class="muted small">{"Top pick" if rank == 1 else "Shortlisted"}, ranked #{rank}</p>'
-                         f'<label class="small">Embed code<textarea readonly rows="3" onclick="this.select()">{html.escape(code)}</textarea></label></div>')
-        blocks.append(f'<h2 class="dept-h"><a href="/tools/{slug}/">{cat}</a></h2><div class="cards3">{"".join(cards)}</div>')
-    body = f"""<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Vettlo badges</h1>
-<p>If your product is ranked on a Vettlo shortlist, you're welcome to show it. Copy the embed code for your badge and paste it on your website, review page or press kit. Badges are free and never sold.</p></div>
-<div class="page-body">
-<div class="prose" style="margin-bottom:2rem"><p><b>Rules:</b> use the badge for the product and category shown, keep the link to the review, and don't alter the design. If a product drops off a shortlist at a re-check, its badge should come down. Questions? <a href="/contact/">Contact us</a>.</p></div>
-{"".join(blocks)}
+            BADGE_CODES.append((name, cat, rank, f'<a href="{DOMAIN}/tools/{slug}/"><img src="{DOMAIN}/badges/{fn}" alt="{alt}" width="260" height="84"></a>'))
+    BADGE_FILES["sample-top-pick.svg"] = badge_svg(True, "Project management")
+    BADGE_FILES["sample-shortlisted.svg"] = badge_svg(False, "Project management")
+    body = """<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Vettlo badges</h1>
+<p>Products ranked on a Vettlo shortlist can show it on their own website with a badge. Badges are free and never sold.</p></div>
+<div class="page-body prose">
+<div class="badge-samples"><img src="/badges/sample-top-pick.svg" alt="Sample Vettlo Top pick badge" width="260" height="84"><img src="/badges/sample-shortlisted.svg" alt="Sample Vettlo Shortlisted badge" width="260" height="84"></div>
+<h2>Two badges</h2>
+<ul><li><b>Top pick</b> goes to the product ranked first on a shortlist.</li>
+<li><b>Shortlisted</b> goes to every other product in the ranked list.</li></ul>
+<p>Each badge names the category and year, and links to the review it comes from.</p>
+<h2>How to get yours</h2>
+<p>If your product is ranked on one of our <a href="/reviews/">shortlists</a>, <a href="/contact/">contact us</a> from your company email and we'll send the embed code for your product.</p>
+<h2>Rules</h2>
+<ul><li>Use the badge only for the product, category and year it was issued for.</li>
+<li>Keep the link to the review and don't change the design.</li>
+<li>If a product drops off a shortlist at a re-check, its badge should come down.</li>
+<li>Badges are never a condition of being reviewed, and showing one doesn't affect rankings.</li></ul>
 </div></div>"""
     page("/badges/", "Vettlo Badges for Ranked Software | Vettlo",
-         "Free badges for software ranked on a Vettlo shortlist, with embed code that links to the review.",
+         "How software vendors ranked on a Vettlo shortlist can get a free Top pick or Shortlisted badge for their website.",
          body, cur=None)
 
 
@@ -1129,6 +1135,7 @@ CSS_V = hashlib.md5((ROOT / "src" / "site.css").read_bytes()).hexdigest()[:8]
 
 
 BADGE_FILES = {}
+BADGE_CODES = []  # (tool, category, rank, embed html) for outreach emails
 
 
 def build():
