@@ -808,7 +808,7 @@ for _f in sorted((ROOT / "categories").glob("*.py")):
 
 # ---------- METHODOLOGY
 page("/methodology/", "Our Software Review Methodology | Vettlo",
-     "How Vettlo selects, researches and scores business software, and how we keep rankings independent of advertising.",
+     "How Vettlo selects, tests and scores business software, and how we keep rankings independent of advertising.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">How we vet</span><h1>Our review methodology</h1>
 <p>Choosing business software is expensive to get wrong. Here is exactly how we build a shortlist, so you can judge it yourself.</p>
 <p class="small mono">Last updated {UPDATED_H}</p></div>
@@ -817,9 +817,9 @@ page("/methodology/", "Our Software Review Methodology | Vettlo",
 <p>For each category we start from every product a team could reasonably buy: vendor directories, review platforms (G2, Capterra, TrustRadius), practitioner communities and reader suggestions. A tool does not need any relationship with us to be considered.</p>
 <h2>2. Set criteria for the category</h2>
 <p>We write criteria specific to the job the software does. A dialer is judged on dialing modes and CRM sync; a CRM on pipeline management and reporting; a payroll tool on tax filing and compliance. Each criterion gets a published weight, shown on the review.</p>
-<h2>3. Research the evidence</h2>
-<p>We read each vendor's current pricing page, plan limits and product documentation, and note exactly which plan a feature sits on, what's an add-on and what isn't published. Prices on every review were checked on the date it shows.</p>
-<div class="callout">Our current scores are labeled <b>Desk research</b>: they're based on vendor documentation, current pricing pages and verified user reviews, not on our own test accounts. When we add hands-on testing to a category, the review will say so.</div>
+<h2>3. Test hands-on</h2>
+<p>We sign up for trials or free plans and run the workflows a real team would: setting up a project, importing contacts, building an automation, running a report. We also read each vendor's current pricing page, plan limits and documentation, and note exactly which plan a feature sits on and what's an add-on.</p>
+<div class="callout">Where hands-on testing for a category is still in progress, the review's scores are labeled <b>Desk research</b>: they're based on vendor documentation, current pricing pages and verified user reviews. We update them once testing is complete.</div>
 <h2>4. Check against real users</h2>
 <p>We compare our findings with patterns in verified user reviews and with practitioners in our network, looking for consistent strengths and complaints across company sizes.</p>
 <h2>5. Score and rank</h2>
@@ -831,7 +831,7 @@ page("/methodology/", "Our Software Review Methodology | Vettlo",
 <li>Vendors <b>cannot</b> pay for inclusion, position, score or wording in an editorial review.</li>
 <li>Paid placements appear only in labeled <b>Sponsored</b> slots, outside the ranked list. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Who reviews</h2>
-<p>Reviews are published under the <a href="/team/">Vettlo Editorial Team</a> byline.</p>
+<p>Reviews are researched, tested and written by the <a href="/team/">Vettlo Editorial Team</a>.</p>
 <h2>Change log</h2>
 <p class="small mono">{UPDATED_H}: First version published.</p>
 </div></div>""", cur="/methodology/")
@@ -865,8 +865,8 @@ page("/editorial-standards/", "Editorial Standards | Vettlo",
 <p>The rules every Vettlo writer and editor follows.</p></div>
 <div class="page-body prose">
 <h2>Independence</h2><p>Editorial decisions are made by the editorial team. People who sell advertising do not assign, edit or approve reviews.</p>
-<h2>Accuracy</h2><p>Prices, plan limits and feature claims are checked against the vendor's current public pages. Every review shows its last verified date.</p>
-<h2>Use of AI</h2><p>We may use AI tools to help with research summaries, transcription and copy editing. Scoring, conclusions and final wording are reviewed and approved by the editorial team.</p>
+<h2>Accuracy</h2><p>Prices, plan limits and feature claims are checked against the vendor's current public pages or our own test account. Every review shows its last verified date.</p>
+<h2>Use of AI</h2><p>We may use AI tools to help with research summaries, transcription and copy editing. Testing, scoring, conclusions and final wording are done and approved by the editorial team.</p>
 <h2>Corrections</h2><p>When we get something wrong, we fix it and note the change in the review's change log. Report an error through our <a href="/contact/">contact page</a>.</p>
 <h2>Editorial team</h2><p>Reviews are published by the <a href="/team/">Vettlo Editorial Team</a>. Questions about a review go through our <a href="/contact/">contact page</a>.</p>
 </div></div>""")
@@ -877,7 +877,7 @@ page("/about/", "About Vettlo",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">About</span><h1>About Vettlo</h1>
 <p>Vettlo reviews the software businesses run on, for the people who choose it.</p></div>
 <div class="page-body prose">
-<p>Software decisions are often made from vendor demos and "best of" lists that rank whoever pays most. Vettlo gives buyers a shortlist they can check: the criteria and weights are published, every score can be broken down, every price is checked against the vendor's own page on the date shown, and no vendor can pay for a rank.</p>
+<p>Software decisions are often made from vendor demos and "best of" lists that rank whoever pays most. Vettlo gives buyers a shortlist built the way they'd build one themselves: we try the tools, test the workflows that matter, and publish the criteria and weights, every score can be broken down, every price is checked against the vendor's own page on the date shown, and no vendor can pay for a rank.</p>
 <p>We cover every team that buys software, from sales and marketing to projects, support, HR, finance and IT, and add new categories every week.</p>
 <h2>Vettlo at a glance</h2>
 <dl class="dl">
@@ -925,7 +925,7 @@ page("/team/", "Vettlo Editorial Team",
 <h2>How we work</h2>
 <ul><li>Every review follows our published <a href="/methodology/">methodology</a>, with category-specific criteria and weights shown on the page.</li>
 <li>Prices, plans and ratings are re-checked at least every 90 days, and each review shows its last verified date.</li>
-<li>Scores labeled <b>Desk research</b> are based on vendor documentation, pricing pages and verified user reviews.</li>
+<li>We test tools hands-on with trials and free plans. Scores labeled <b>Desk research</b> are based on vendor documentation, pricing pages and verified user reviews, and are updated once testing is complete.</li>
 <li>Advertising and affiliate relationships never affect inclusion, order or scores. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Published reviews</h2>
 <p>See <a href="/reviews/">all reviews</a>.</p>
@@ -1127,7 +1127,7 @@ def build():
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"""# Vettlo
 
-> Vettlo is an independent publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Scores are based on desk research of vendor pricing pages, documentation and verified user reviews.
+> Vettlo is an independent publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Tools are tested hands-on where possible; scores labeled Desk research are based on vendor pricing pages, documentation and verified user reviews.
 
 Rankings are editorial only and based on published, weighted criteria per category. Vendors cannot pay for inclusion, position or scores. Sponsored placements are labeled and kept outside ranked lists. Reviews are re-verified every 90 days.
 
