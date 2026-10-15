@@ -53,7 +53,7 @@ def header(cur):
 FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <div class="cols">
 <div><a class="brand" href="/">{LOGO}<b>vettlo</b></a>
-<p>Independent reviews of the software revenue teams run on. Rankings are never for sale.</p></div>
+<p>Independent reviews of the software businesses run on. Rankings are never for sale.</p></div>
 <div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
 <div><h4>Trust</h4><ul><li><a href="/methodology/">Review methodology</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
 <div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/advertise/">Advertise</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
@@ -73,8 +73,8 @@ document.querySelectorAll('form[data-nl]').forEach(function(f){
 
 def newsletter():
     return """<section class="section" id="newsletter"><div class="wrap"><div class="newsletter">
-<div><span class="eyebrow">The Vettlo Briefing</span><h2>One email a week for people who own the revenue stack.</h2>
-<p>New reviews, pricing changes we spotted, and what other sales leaders are switching to.</p></div>
+<div><span class="eyebrow">The Vettlo Briefing</span><h2>One email a week for people who buy software for their team.</h2>
+<p>New reviews, price changes we spotted, and what other teams are switching to.</p></div>
 <div><form class="nl-form" data-nl><label for="nl-email" style="position:absolute;left:-999px">Work email</label>
 <input id="nl-email" type="email" required placeholder="you@company.com" autocomplete="email"><button class="btn" type="submit">Subscribe</button></form>
 <p class="nl-note">Free. Unsubscribe anytime.</p></div>
@@ -90,42 +90,75 @@ def page(path, title, desc, body, cur=None, jsonld=None, ptype="website"):
 
 
 ORG = {"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo", "url": DOMAIN,
-       "logo": DOMAIN + "/assets/logo.svg", "description": "Independent reviews of B2B software for sales and revenue operations leaders."}
+       "logo": DOMAIN + "/assets/logo.svg", "description": "Independent reviews of business software, scored on published criteria."}
 
-CATS = [
-    ("best-crm-software", "CRM Software", "Pipelines, contacts and deal tracking", True),
-    ("best-sales-engagement-software", "Sales Engagement Platforms", "Sequenced outreach across email, calls and LinkedIn", True),
-    ("best-conversation-intelligence-software", "Conversation Intelligence", "Call recording, transcripts and deal risk signals", True),
-    ("best-sales-forecasting-software", "Sales Forecasting Software", "Roll-ups, pipeline inspection and forecast calls", False),
-    ("best-revenue-intelligence-platforms", "Revenue Intelligence", "Activity capture and deal health across the funnel", False),
-    ("best-b2b-data-providers", "B2B Contact Data Providers", "Enrichment, intent data and list building", True),
-    ("best-sales-dialers", "Sales Dialers", "Power, parallel and predictive dialing for outbound", True),
-    ("best-cpq-software", "CPQ Software", "Configure, price and quote for complex deals", False),
-    ("best-sales-commission-software", "Sales Commission Software", "Comp plans, payouts and rep-facing statements", False),
-    ("best-sales-enablement-platforms", "Sales Enablement Platforms", "Content, playbooks and rep onboarding", False),
-    ("best-lead-routing-software", "Lead Routing Software", "Speed-to-lead, round robin and territory rules", False),
-    ("best-contract-management-software", "Contract Management", "Redlines, e-signature and renewal dates", False),
+DEPTS = [
+    ("Sales", "Pipeline, prospecting and calling", [
+        ("best-crm-software", "CRM Software", "Pipelines, contacts and deal tracking", True),
+        ("best-sales-engagement-software", "Sales Engagement Platforms", "Sequenced outreach across email, calls and LinkedIn", True),
+        ("best-conversation-intelligence-software", "Conversation Intelligence", "Call recording, coaching and deal insights", True),
+        ("best-b2b-data-providers", "B2B Contact Data Providers", "Emails, mobile numbers and enrichment", True),
+        ("best-sales-dialers", "Sales Dialers", "Power, parallel and predictive dialing", True),
+        ("best-sales-commission-software", "Sales Commission Software", "Comp plans, payouts and statements", False)]),
+    ("Marketing", "Email, automation and search", [
+        ("best-email-marketing-software", "Email Marketing Software", "Newsletters, campaigns and automations", False),
+        ("best-marketing-automation-software", "Marketing Automation", "Lead nurturing, scoring and journeys", False),
+        ("best-seo-tools", "SEO Tools", "Rank tracking, audits and keyword research", False),
+        ("best-social-media-management-tools", "Social Media Management", "Scheduling, inbox and analytics", False)]),
+    ("Projects & operations", "Planning, tracking and docs", [
+        ("best-project-management-software", "Project Management Software", "Tasks, timelines and team workload", False),
+        ("best-time-tracking-software", "Time Tracking Software", "Timesheets, billable hours and reports", False),
+        ("best-knowledge-base-software", "Knowledge Base Software", "Internal wikis and documentation", False)]),
+    ("Customer support", "Tickets, chat and feedback", [
+        ("best-help-desk-software", "Help Desk Software", "Ticketing, SLAs and shared inboxes", False),
+        ("best-live-chat-software", "Live Chat Software", "Website chat, bots and routing", False)]),
+    ("HR & people", "Hiring, payroll and people data", [
+        ("best-hris-software", "HRIS Software", "Employee records, time off and onboarding", False),
+        ("best-payroll-software", "Payroll Software", "Pay runs, taxes and benefits", False),
+        ("best-applicant-tracking-systems", "Applicant Tracking Systems", "Job posts, pipelines and interviews", False)]),
+    ("Finance", "Books, spend and payables", [
+        ("best-accounting-software", "Accounting Software", "Bookkeeping, invoicing and reporting", False),
+        ("best-expense-management-software", "Expense Management", "Cards, receipts and reimbursements", False),
+        ("best-accounts-payable-software", "Accounts Payable Automation", "Bill capture, approvals and payments", False)]),
+    ("IT & security", "Devices, access and incidents", [
+        ("best-password-managers-for-business", "Password Managers", "Shared vaults, SSO and access policies", False),
+        ("best-mdm-software", "Mobile Device Management", "Device enrollment, policies and remote wipe", False),
+        ("best-incident-management-software", "Incident Management", "On-call, alerting and postmortems", False)]),
 ]
+CATS = [c for _, _, cs in DEPTS for c in cs]
 
 
 def stack_grid(limit=None):
+    """Category tiles grouped by department (full) or a department overview (limit set, used on home)."""
+    if limit:
+        tiles = []
+        for name, sub, cs in DEPTS:
+            live = sum(1 for c in cs if c[3])
+            items = "".join((f'<li><a href="/tools/{sl}/">{n}</a></li>' if lv else f'<li class="soon">{n}</li>') for sl, n, _, lv in cs)
+            state = f'<span class="status is-live">{live} reviewed</span>' if live else '<span class="status is-bench">In research</span>'
+            tiles.append(f'<div class="tile dept">{state}<span class="t">{name}</span><span class="s">{sub}</span><ul>{items}</ul></div>')
+        tiles.append('<a class="tile-cta" href="/contact/"><span class="t">Missing a category?</span><span class="s">Tell us what your team is buying and we\'ll add it to the research queue.</span></a>')
+        return '<div class="stack-grid">' + "".join(tiles) + "</div>"
     out = []
-    for slug, name, sub, live in CATS[:limit] if limit else CATS:
-        if live:
-            out.append(f'<a href="/tools/{slug}/"><span class="status is-live">Reviewed</span><span class="t">{name}</span><span class="s">{sub}</span></a>')
-        else:
-            out.append(f'<div class="tile"><span class="status is-bench">In research</span><span class="t">{name}</span><span class="s">{sub}</span></div>')
-    return '<div class="stack-grid">' + "".join(out) + "</div>"
+    for name, sub, cs in DEPTS:
+        tiles = []
+        for slug, n, sb, live in cs:
+            if live:
+                tiles.append(f'<a href="/tools/{slug}/"><span class="status is-live">Reviewed</span><span class="t">{n}</span><span class="s">{sb}</span></a>')
+            else:
+                tiles.append(f'<div class="tile"><span class="status is-bench">In research</span><span class="t">{n}</span><span class="s">{sb}</span></div>')
+        out.append(f'<h2 class="dept-h">{name}</h2><div class="stack-grid">{"".join(tiles)}</div>')
+    return "".join(out)
 
 
 # ---------- HOME
-page("/", "Vettlo: Software Reviews for Revenue Teams",
-     "Independent reviews of CRM, sales engagement and revenue software for sales and RevOps leaders, scored on published criteria. Rankings are never for sale.",
+page("/", "Vettlo: Independent Business Software Reviews",
+     "Independent reviews of business software, from CRM and project management to payroll, help desk and security, scored on published criteria. Rankings are never for sale.",
      f"""
 <section class="hero"><div class="wrap">
 <div>
-<h1>Sales software, scored in the open.</h1>
-<p class="lede">Independent shortlists of the CRMs, dialers, data providers and call tools revenue teams buy. Every score is broken down by published criteria, every price is checked against the vendor's own page, and no vendor can pay for a rank.</p>
+<h1>Business software, scored in the open.</h1>
+<p class="lede">Independent shortlists of the software companies run on, from CRM and project management to payroll, help desk and security. Every score is broken down by published criteria, every price is checked against the vendor's own page, and no vendor can pay for a rank.</p>
 <div class="ctas"><a class="btn" href="/reviews/">Browse all reviews</a><a class="btn ghost" href="/methodology/">How we score</a></div>
 <!--HEROFACTS-->
 </div>
@@ -133,10 +166,10 @@ page("/", "Vettlo: Software Reviews for Revenue Teams",
 </div></section>
 
 <section class="section band"><div class="wrap">
-<div class="section-head"><div><span class="eyebrow">The revenue tech stack</span><h2 style="margin-top:.4rem">Categories we cover</h2>
-<p>One shortlist per category. Live reviews are open; the rest are in research.</p></div>
+<div class="section-head"><div><span class="eyebrow">Coverage</span><h2 style="margin-top:.4rem">Software for every team</h2>
+<p>One shortlist per category, grouped by the team that buys it. We publish new categories every week.</p></div>
 <a class="btn ghost small" href="/best-tools/">All categories</a></div>
-{stack_grid(8)}
+{stack_grid(1)}
 </div></section>
 
 <section class="section"><div class="wrap">
@@ -163,21 +196,12 @@ page("/", "Vettlo: Software Reviews for Revenue Teams",
 """, cur="/", jsonld=[ORG, {"@context": "https://schema.org", "@type": "WebSite", "name": "Vettlo", "url": DOMAIN}])
 
 # ---------- TOOLS HUB
-page("/best-tools/", "Best Sales & Revenue Software by Category | Vettlo",
-     "Every software category Vettlo reviews for sales and revenue operations teams, from CRM to commission software.",
-     f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Tools</span><h1>The revenue stack, one category at a time</h1>
-<p>Each category gets one shortlist, scored on criteria built for that job. Live reviews link through; the rest are being tested.</p></div>
+page("/best-tools/", "Best Business Software by Category | Vettlo",
+     "Every software category Vettlo reviews, grouped by team: sales, marketing, projects, support, HR, finance and IT.",
+     f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Categories</span><h1>Every category we review</h1>
+<p>Grouped by the team that buys it. Reviewed categories link to their shortlist; the rest are in research and publish as soon as pricing and data are verified.</p></div>
 <div class="page-body">{stack_grid()}
-<p class="muted small" style="margin-top:1.25rem">Missing a category your team buys? <a href="/contact/">Tell us</a> and we'll add it to the bench.</p>
-<h2 style="margin:2.5rem 0 1rem">CRM reviews</h2>
-<div class="cards3">
-<a class="card" href="/tools/best-crm-software/"><span class="label">Shortlist</span><h3>Best CRM Software for Sales Teams</h3><p class="muted small">Our CRM shortlist, scored on six weighted criteria.</p></a>
-<a class="card" href="/compare/hubspot-vs-pipedrive/"><span class="label">Comparison</span><h3>HubSpot vs Pipedrive</h3><p class="muted small">What a 10-rep team pays for automation on each.</p></a>
-<a class="card" href="/tools/best-pipedrive-alternatives/"><span class="label">Alternatives</span><h3>Best Pipedrive Alternatives</h3><p class="muted small">Six CRMs for teams outgrowing Pipedrive.</p></a>
-<a class="card" href="/tools/best-hubspot-alternatives/"><span class="label">Alternatives</span><h3>Best HubSpot Alternatives</h3><p class="muted small">Six CRMs for teams leaving HubSpot Sales Hub.</p></a>
-<a class="card" href="/tools/best-crm-for-small-business/"><span class="label">Shortlist</span><h3>Best CRM for Small Businesses</h3><p class="muted small">Weighted toward ease of use and price, with free plans.</p></a>
-</div>
-<!--CATGUIDES-->
+<p class="muted small" style="margin-top:2rem">Missing a category your team buys? <a href="/contact/">Tell us</a> and we'll add it. Looking for a specific article? See <a href="/reviews/">all reviews</a>.</p>
 </div></div>
 {newsletter()}""", cur="/best-tools/")
 
@@ -784,18 +808,18 @@ for _f in sorted((ROOT / "categories").glob("*.py")):
 
 # ---------- METHODOLOGY
 page("/methodology/", "Our Software Review Methodology | Vettlo",
-     "How Vettlo selects, tests and scores sales and revenue software, and how we keep rankings independent of advertising.",
+     "How Vettlo selects, researches and scores business software, and how we keep rankings independent of advertising.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">How we vet</span><h1>Our review methodology</h1>
-<p>Choosing revenue software is expensive to get wrong. Here is exactly how we build a shortlist, so you can judge it yourself.</p>
+<p>Choosing business software is expensive to get wrong. Here is exactly how we build a shortlist, so you can judge it yourself.</p>
 <p class="small mono">Last updated {UPDATED_H}</p></div>
 <div class="page-body prose">
 <h2>1. Build the long list</h2>
-<p>For each category we start from every product a sales or RevOps team could reasonably buy: vendor directories, review platforms (G2, Capterra, TrustRadius), practitioner communities and reader suggestions. A tool does not need any relationship with us to be considered.</p>
+<p>For each category we start from every product a team could reasonably buy: vendor directories, review platforms (G2, Capterra, TrustRadius), practitioner communities and reader suggestions. A tool does not need any relationship with us to be considered.</p>
 <h2>2. Set criteria for the category</h2>
-<p>We write criteria specific to the job the software does. A dialer is judged on connect rates and compliance controls; a CRM on pipeline management and forecasting. Each criterion gets a published weight, shown on the review.</p>
-<h2>3. Test hands-on</h2>
-<p>Reviewers sign up for trials or demo accounts and run the workflows a real team would: importing a pipeline, building a sequence, routing a lead, producing a forecast. We take our own screenshots and note setup time, limits and anything that surprised us.</p>
-<div class="callout">Where hands-on testing for a category is still in progress, the review says so and its scores are labeled <b>Desk research</b>: they're based on vendor documentation, current pricing pages and verified user reviews. We replace them with hands-on scores once testing is complete.</div>
+<p>We write criteria specific to the job the software does. A dialer is judged on dialing modes and CRM sync; a CRM on pipeline management and reporting; a payroll tool on tax filing and compliance. Each criterion gets a published weight, shown on the review.</p>
+<h2>3. Research the evidence</h2>
+<p>We read each vendor's current pricing page, plan limits and product documentation, and note exactly which plan a feature sits on, what's an add-on and what isn't published. Prices on every review were checked on the date it shows.</p>
+<div class="callout">Our current scores are labeled <b>Desk research</b>: they're based on vendor documentation, current pricing pages and verified user reviews, not on our own test accounts. When we add hands-on testing to a category, the review will say so.</div>
 <h2>4. Check against real users</h2>
 <p>We compare our findings with patterns in verified user reviews and with practitioners in our network, looking for consistent strengths and complaints across company sizes.</p>
 <h2>5. Score and rank</h2>
@@ -807,7 +831,7 @@ page("/methodology/", "Our Software Review Methodology | Vettlo",
 <li>Vendors <b>cannot</b> pay for inclusion, position, score or wording in an editorial review.</li>
 <li>Paid placements appear only in labeled <b>Sponsored</b> slots, outside the ranked list. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Who reviews</h2>
-<p>Reviews are published under the <a href="/team/">Vettlo Editorial Team</a> byline. When a named reviewer completes hands-on testing for a category, their name and a profile describing their experience are added to that review.</p>
+<p>Reviews are published under the <a href="/team/">Vettlo Editorial Team</a> byline.</p>
 <h2>Change log</h2>
 <p class="small mono">{UPDATED_H}: First version published.</p>
 </div></div>""", cur="/methodology/")
@@ -841,26 +865,26 @@ page("/editorial-standards/", "Editorial Standards | Vettlo",
 <p>The rules every Vettlo writer and editor follows.</p></div>
 <div class="page-body prose">
 <h2>Independence</h2><p>Editorial decisions are made by the editorial team. People who sell advertising do not assign, edit or approve reviews.</p>
-<h2>Accuracy</h2><p>Prices, plan limits and feature claims are checked against the vendor's current public pages or our own test account. Every review shows its last verified date.</p>
-<h2>Experience</h2><p>We assign reviews to people who have used tools in the category in a real job. Author pages list that experience.</p>
-<h2>Use of AI</h2><p>We may use AI tools to help with research summaries, transcription and copy editing. Testing, scoring, conclusions and final wording are done and approved by a named human editor.</p>
+<h2>Accuracy</h2><p>Prices, plan limits and feature claims are checked against the vendor's current public pages. Every review shows its last verified date.</p>
+<h2>Use of AI</h2><p>We may use AI tools to help with research summaries, transcription and copy editing. Scoring, conclusions and final wording are reviewed and approved by the editorial team.</p>
 <h2>Corrections</h2><p>When we get something wrong, we fix it and note the change in the review's change log. Report an error through our <a href="/contact/">contact page</a>.</p>
 <h2>Editorial team</h2><p>Reviews are published by the <a href="/team/">Vettlo Editorial Team</a>. Questions about a review go through our <a href="/contact/">contact page</a>.</p>
 </div></div>""")
 
 # ---------- ABOUT (facts)
 page("/about/", "About Vettlo",
-     "Vettlo is an independent publication that reviews sales and revenue operations software for the leaders who buy it.",
+     "Vettlo is an independent publication that reviews business software across every team, scored on published criteria.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">About</span><h1>About Vettlo</h1>
-<p>Vettlo reviews the software revenue teams run on, for the sales and RevOps leaders who choose it.</p></div>
+<p>Vettlo reviews the software businesses run on, for the people who choose it.</p></div>
 <div class="page-body prose">
-<p>Sales leaders make five- and six-figure software decisions based on vendor demos and listicles that rank whoever pays most. We started Vettlo to give them a shortlist built the way they'd build one themselves: trial the tool, test the hard workflows, and write down who it's actually for.</p>
+<p>Software decisions are often made from vendor demos and "best of" lists that rank whoever pays most. Vettlo gives buyers a shortlist they can check: the criteria and weights are published, every score can be broken down, every price is checked against the vendor's own page on the date shown, and no vendor can pay for a rank.</p>
+<p>We cover every team that buys software, from sales and marketing to projects, support, HR, finance and IT, and add new categories every week.</p>
 <h2>Vettlo at a glance</h2>
 <dl class="dl">
-<dt>What</dt><dd>Independent reviews and comparisons of sales and revenue operations software</dd>
-<dt>Audience</dt><dd>CROs, VPs of Sales, sales managers and RevOps leaders</dd>
+<dt>What</dt><dd>Independent shortlists, alternatives guides and comparisons of business software</dd>
+<dt>Audience</dt><dd>Founders, team leads and operations, IT and finance managers who choose software for their company</dd>
 <dt>Founded</dt><dd>{YEAR}</dd>
-<dt>Coverage</dt><dd>CRM, sales engagement, conversation intelligence, forecasting, CPQ, commissions, data providers and more</dd>
+<dt>Coverage</dt><dd>Sales, marketing, projects and operations, customer support, HR, finance, and IT and security. <a href="/best-tools/">All categories</a></dd>
 <dt>Revenue</dt><dd>Affiliate commissions, labeled sponsored slots and newsletter sponsorships. <a href="/how-we-make-money/">Details</a></dd>
 <dt>Rankings</dt><dd>Editorial only, based on published weighted criteria. Never sold.</dd>
 <dt>Contact</dt><dd><a href="/contact/">Contact form</a></dd>
@@ -870,52 +894,52 @@ page("/about/", "About Vettlo",
 
 # ---------- ADVERTISE
 page("/advertise/", "Advertise with Vettlo",
-     "Reach sales and RevOps leaders while they evaluate software. Featured slots, pay-per-click listings and newsletter sponsorships, always clearly labeled.",
-     """<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Reach revenue leaders while they're choosing software</h1>
+     "Reach software buyers while they evaluate tools. Featured slots, pay-per-click listings and newsletter sponsorships, always clearly labeled.",
+     """<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Reach buyers while they're choosing software</h1>
 <p>Our readers arrive with a buying question. Put your product in front of them, with placements that are labeled and that buyers still trust.</p></div>
 <div class="page-body" style="display:grid;gap:2.5rem">
 <div class="cards3">
 <div class="card"><span class="label">Demand capture</span><h3>Pay-per-click listings</h3><p class="muted small">Pay only when a reader clicks through to your site from a category page. Bids never change editorial order.</p><span class="price">CPC · pricing on request</span></div>
 <div class="card"><span class="label">Visibility</span><h3>Featured category slot</h3><p class="muted small">A labeled Sponsored placement on a category shortlist page, outside the ranked list.</p><span class="price">Monthly · pricing on request</span></div>
-<div class="card"><span class="label">Awareness</span><h3>Newsletter sponsorship</h3><p class="muted small">One sponsor per issue of The Vettlo Briefing, sent weekly to revenue leaders.</p><span class="price">Per issue · pricing on request</span></div>
+<div class="card"><span class="label">Awareness</span><h3>Newsletter sponsorship</h3><p class="muted small">One sponsor per issue of The Vettlo Briefing, sent weekly to software buyers.</p><span class="price">Per issue · pricing on request</span></div>
 <div class="card"><span class="label">Thought leadership</span><h3>Sponsored guides &amp; events</h3><p class="muted small">Co-produced webinars and guides, labeled Sponsored and kept separate from reviews.</p><span class="price">Custom</span></div>
 </div>
 <div class="prose"><h2>The one thing we don't sell</h2><p>Ranking positions, scores and review wording are editorial only. That's what makes a placement next to them worth paying for. Read the full <a href="/how-we-make-money/">disclosure</a>.</p></div>
-<div class="prose"><h2>Audience</h2><p>Vettlo is written for CROs, VPs of Sales, sales managers and RevOps leaders. We'll publish audited traffic and newsletter numbers after our first full quarter. Until then, <a href="/contact/">ask us</a> for current figures.</p></div>
+<div class="prose"><h2>Audience</h2><p>Vettlo is written for the people who choose software for their company: founders, team leads, and operations, IT and finance managers. We'll publish audited traffic and newsletter numbers after our first full quarter. Until then, <a href="/contact/">ask us</a> for current figures.</p></div>
 <div><h2 style="margin-bottom:1rem">Talk to us</h2>
 <form class="form" id="adv-form"><label for="a-name">Name<input id="a-name" required autocomplete="name"></label>
 <label for="a-email">Work email<input id="a-email" type="email" required autocomplete="email"></label>
 <label for="a-company">Company website<input id="a-company" required placeholder="https://"></label>
 <label for="a-int">Interested in<select id="a-int"><option>Pay-per-click listings</option><option>Featured category slot</option><option>Newsletter sponsorship</option><option>Sponsored guides &amp; events</option></select></label>
 <button class="btn" type="submit">Send inquiry</button><p class="form-msg" id="adv-msg" aria-live="polite"></p></form>
-<script>document.getElementById('adv-form').addEventListener('submit',function(e){e.preventDefault();document.getElementById('adv-msg').textContent='Form is a preview. Connect it to your inbox or a form service before launch.';});</script>
+<script>document.getElementById('adv-form').addEventListener('submit',function(e){e.preventDefault();document.getElementById('adv-msg').textContent='This form isn\\'t connected yet. Please reach us through the contact page.';});</script>
 </div></div></div>""")
 
 # ---------- TEAM
 page("/team/", "Vettlo Editorial Team",
      "Who writes Vettlo's software reviews and how the editorial team works.",
      f"""<div class="wrap"><div class="page-head" style="grid-template-columns:auto minmax(0,1fr);align-items:center;gap:1.25rem"><div class="avatar team-mark" style="width:88px;height:88px">{LOGO}</div>
-<div style="display:grid;gap:.4rem"><span class="eyebrow">Editorial team</span><h1>Vettlo Editorial Team</h1><p class="small muted">Software reviews for sales and RevOps leaders</p></div></div>
+<div style="display:grid;gap:.4rem"><span class="eyebrow">Editorial team</span><h1>Vettlo Editorial Team</h1><p class="small muted">Independent business software reviews</p></div></div>
 <div class="page-body prose">
-<p>The Vettlo Editorial Team researches, scores and writes every review on this site. We cover the software revenue teams depend on: CRM, sales engagement, conversation intelligence, forecasting, CPQ, commissions and B2B data.</p>
+<p>The Vettlo Editorial Team researches, scores and writes every review on this site. We cover software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security.</p>
 <h2>How we work</h2>
 <ul><li>Every review follows our published <a href="/methodology/">methodology</a>, with category-specific criteria and weights shown on the page.</li>
 <li>Prices, plans and ratings are re-checked at least every 90 days, and each review shows its last verified date.</li>
-<li>Scores labeled <b>Desk research</b> are based on vendor documentation, pricing pages and verified user reviews. They're replaced with hands-on scores once testing is complete.</li>
+<li>Scores labeled <b>Desk research</b> are based on vendor documentation, pricing pages and verified user reviews.</li>
 <li>Advertising and affiliate relationships never affect inclusion, order or scores. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Published reviews</h2>
-<ul><li><a href="/tools/best-crm-software/">Best CRM Software for Sales Teams</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li><li><a href="/tools/best-pipedrive-alternatives/">Best Pipedrive Alternatives</a></li><li><a href="/tools/best-hubspot-alternatives/">Best HubSpot Alternatives</a></li><li><a href="/tools/best-crm-for-small-business/">Best CRM for Small Businesses</a></li></ul>
+<p>See <a href="/reviews/">all reviews</a>.</p>
 <h2>Join us</h2>
-<p>We're looking for practitioners who have run sales teams or owned a CRM to test tools and write reviews. See <a href="/write-for-us/">write for us</a>.</p>
+<p>We're looking for practitioners who have bought, rolled out or administered business software to write reviews. See <a href="/write-for-us/">write for us</a>.</p>
 </div></div>""", jsonld=[{"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo Editorial Team", "parentOrganization": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}}])
 
 # ---------- WRITE FOR US
 page("/write-for-us/", "Write for Vettlo",
-     "Pitch Vettlo if you've run sales teams or revenue operations and want to write about the tools and practices that work.",
+     "Pitch Vettlo if you've chosen, rolled out or run business software and want to write about the tools that work.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Contributors</span><h1>Write for Vettlo</h1>
-<p>We publish practitioners: people who have carried a number, run a sales floor or owned a CRM.</p></div>
+<p>We publish practitioners: people who have chosen, rolled out or run the software their team depends on.</p></div>
 <div class="page-body prose">
-<h2>What we're looking for</h2><ul><li>Hands-on tool reviews in a category you've worked in</li><li>Playbooks from real rollouts, migrations and stack consolidations</li><li>Opinionated takes on how revenue teams should work</li></ul>
+<h2>What we're looking for</h2><ul><li>Hands-on tool reviews in a category you've worked in</li><li>Playbooks from real rollouts, migrations and stack consolidations</li><li>Opinionated takes on buying and running software well</li></ul>
 <h2>What we don't accept</h2><ul><li>Pieces written on behalf of a vendor, or with links a vendor paid for</li><li>Generic or AI-generated drafts without first-hand experience</li></ul>
 <h2>How to pitch</h2><p>Send a short pitch, your LinkedIn profile and two writing samples through our <a href="/contact/">contact page</a>.</p>
 </div></div>""")
@@ -931,7 +955,7 @@ page("/contact/", "Contact Vettlo",
 <label for="c-topic">Topic<select id="c-topic"><option>Suggest a tool</option><option>Report an error</option><option>Pitch a story</option><option>Advertising</option><option>Something else</option></select></label>
 <label for="c-msg">Message<textarea id="c-msg" rows="5" required></textarea></label>
 <button class="btn" type="submit">Send message</button><p class="form-msg" id="c-out" aria-live="polite"></p></form>
-<script>document.getElementById('c-form').addEventListener('submit',function(e){e.preventDefault();document.getElementById('c-out').textContent='Form is a preview. Connect it to your inbox or a form service before launch.';});</script>
+<script>document.getElementById('c-form').addEventListener('submit',function(e){e.preventDefault();document.getElementById('c-out').textContent='This form isn\\'t connected yet, so your message was not sent.';});</script>
 </div></div>""")
 
 # ---------- PRIVACY / TERMS
@@ -1041,8 +1065,8 @@ def reviews_page():
             body += f'<h2 style="margin:2rem 0 .3rem">{h}</h2><p class="muted small" style="margin:0 0 1rem">{sub}</p><div class="cards3">{cards}</div>'
     body += "</div></div>" + newsletter()
     items = [{"@type": "ListItem", "position": i + 1, "url": DOMAIN + u, "name": t} for i, (u, t, b, k) in enumerate(allp)]
-    page("/reviews/", "All Sales Software Reviews | Vettlo",
-         "Every Vettlo shortlist, alternatives guide and comparison of sales and RevOps software, in one place.",
+    page("/reviews/", "All Software Reviews | Vettlo",
+         "Every Vettlo shortlist, alternatives guide and comparison of business software, in one place.",
          body, cur="/reviews/", jsonld=[{"@context": "https://schema.org", "@type": "CollectionPage", "name": "All reviews", "url": DOMAIN + "/reviews/",
                                           "mainEntity": {"@type": "ItemList", "itemListElement": items}}])
 
@@ -1067,7 +1091,7 @@ def build():
     scoreboard()
     if CATEGORY_PAGES:
         cards = "".join(f'<a class="card" href="{u}"><span class="label">{k}</span><h3>{t}</h3><p class="muted small">{b}</p></a>' for u, t, b, k in CATEGORY_PAGES)
-        PAGES["/best-tools/"]["body"] = PAGES["/best-tools/"]["body"].replace("<!--CATGUIDES-->", f'<h2 style="margin:2.5rem 0 1rem">Prospecting and outreach reviews</h2><div class="cards3">{cards}</div>')
+        pass
     if DIST.exists():
         shutil.rmtree(DIST)
     site, prev = DIST / "site", DIST / "preview"
@@ -1103,7 +1127,7 @@ def build():
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"""# Vettlo
 
-> Vettlo is an independent publication that reviews sales and revenue operations software (CRM, sales engagement, conversation intelligence, forecasting, CPQ, commissions, B2B data) for CROs, sales leaders and RevOps teams.
+> Vettlo is an independent publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Scores are based on desk research of vendor pricing pages, documentation and verified user reviews.
 
 Rankings are editorial only and based on published, weighted criteria per category. Vendors cannot pay for inclusion, position or scores. Sponsored placements are labeled and kept outside ranked lists. Reviews are re-verified every 90 days.
 

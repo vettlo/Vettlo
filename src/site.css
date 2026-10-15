@@ -146,11 +146,11 @@ code { font-size: .9em; background: var(--band); padding: .1em .35em; border-rad
 
 /* ruled grids: one container, hairline dividers, no per-item shadows */
 .stack-grid, .pledges { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: 0; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
-.stack-grid a, .stack-grid div.tile { display: grid; gap: .35rem; align-content: start; padding: 1.25rem 1.3rem 1.4rem; background: var(--card); color: var(--ink); min-height: 8.5rem; }
-.stack-grid a { transition: background-color .15s; }
-.stack-grid a:hover { text-decoration: none; background: var(--brand-tint); }
-.stack-grid a:hover .t { color: var(--brand); }
-.stack-grid div.tile { background: var(--bg); }
+.stack-grid > a, .stack-grid > div.tile { display: grid; gap: .35rem; align-content: start; padding: 1.25rem 1.3rem 1.4rem; background: var(--card); color: var(--ink); min-height: 8.5rem; }
+.stack-grid > a { transition: background-color .15s; }
+.stack-grid > a:hover { text-decoration: none; background: var(--brand-tint); }
+.stack-grid > a:hover .t { color: var(--brand); }
+.stack-grid > div.tile { background: var(--bg); }
 .stack-grid div.tile .t { color: var(--ink-3); }
 .stack-grid .t { font-weight: 600; font-size: 1.08rem; letter-spacing: -0.02em; }
 .stack-grid .s { font-size: .9rem; color: var(--ink-2); }
@@ -342,3 +342,13 @@ details.breakdown .criteria { margin-top: .9rem; }
 .stack-grid > *, .pledges > *, .cards3 > * { box-shadow: 1px 0 0 var(--line), 0 1px 0 var(--line); }
 .pledges { grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr)); }
 .byline { flex-wrap: nowrap; }
+.dept-h { font-size: 1.3rem; margin: 2.4rem 0 .9rem; }
+.page-body > .dept-h:first-child { margin-top: 0; }
+.stack-grid .tile.dept { background: var(--card); min-height: 0; }
+.stack-grid .tile.dept .t { color: var(--ink); font-size: 1.15rem; }
+.tile.dept ul { list-style: none; margin: .7rem 0 0; padding: .7rem 0 0; border-top: 1px solid var(--line); display: grid; gap: .3rem; font-size: .92rem; }
+.tile.dept li a { color: var(--ink); font-weight: 500; }
+.tile.dept li a:hover { color: var(--brand); }
+.tile.dept li.soon { color: var(--ink-3); }
+.stack-grid > a.tile-cta { background: var(--bg); align-content: center; }
+.stack-grid > a.tile-cta .t { color: var(--brand); }
