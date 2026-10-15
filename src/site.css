@@ -1,32 +1,34 @@
 /* Vettlo — "instrument panel" system.
-   Cool paper, deep slate ink, one electric indigo signal. Geist throughout; numbers are tabular.
+   Pale green-grey paper, deep forest ink, one emerald signal. Geist throughout; numbers are tabular.
    Boldness lives in one place: the dark scoreboard in the home hero and score readouts on reviews. */
 :root {
-  --bg: #f6f7f9;
+  --bg: #f6f8f6;
   --card: #ffffff;
-  --band: #eef0f4;
-  --ink: #0d1324;
-  --ink-2: #485065;
-  --ink-3: #737b8f;
-  --line: #e1e4eb;
-  --line-2: #cfd4de;
-  --brand: #4a3aff;
-  --brand-2: #3527e0;
+  --band: #edf2ee;
+  --ink: #0c1a14;
+  --ink-2: #45544c;
+  --ink-3: #6c7a73;
+  --line: #dfe6e1;
+  --line-2: #cad5ce;
+  --brand: #00865e;
+  --brand-2: #006f4e;
   --brand-ink: #ffffff;
-  --brand-tint: #eeecff;
-  --pick: #4a3aff;
+  --brand-tint: #e3f6ee;
+  --pick: #00865e;
   --pick-ink: #ffffff;
   --todo-bg: #fff1a8;
   --todo-ink: #5a4500;
-  --good: #0b8a5f;
+  --good: #00865e;
   --warn: #b44d12;
   --spon: #7a3fd1;
   --spon-tint: #f3ecff;
-  --dark: #0b1020;
-  --dark-2: #141a2e;
-  --dark-line: #232b45;
-  --on-dark: #e8ebf4;
-  --on-dark-2: #9aa3bb;
+  --dark: #0b2018;
+  --dark-2: #113026;
+  --dark-line: #1d3d31;
+  --on-dark: #eef6f1;
+  --on-dark-2: #93aea1;
+  --meter-a: #00c98c;
+  --meter-b: #9ff0cf;
 
   --f-head: "Geist", "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --f-text: "Geist", "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -38,17 +40,17 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0a0e1a; --card: #10162a; --band: #151c33; --ink: #eef1f8; --ink-2: #b2bad0; --ink-3: #8790a8; --line: #222a44; --line-2: #2e3756;
-    --brand: #8c82ff; --brand-2: #a49cff; --brand-ink: #0a0e1a; --brand-tint: #1d1f4a; --pick: #8c82ff; --pick-ink: #0a0e1a;
+    --bg: #07130e; --card: #0c1c15; --band: #11251c; --ink: #edf6f1; --ink-2: #b0c4b9; --ink-3: #85998f; --line: #1c3328; --line-2: #284437;
+    --brand: #2fd69b; --brand-2: #5fe3b4; --brand-ink: #062016; --brand-tint: #123a2b; --pick: #2fd69b; --pick-ink: #062016;
     --todo-bg: #4a3b00; --todo-ink: #ffe27a; --good: #45d19a; --warn: #f2995c; --spon: #b993ff; --spon-tint: #24193b;
-    --dark: #060912; --dark-2: #0e1324; --dark-line: #1e2640; color-scheme: dark;
+    --dark: #04100b; --dark-2: #0a1d15; --dark-line: #183327; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0a0e1a; --card: #10162a; --band: #151c33; --ink: #eef1f8; --ink-2: #b2bad0; --ink-3: #8790a8; --line: #222a44; --line-2: #2e3756;
-  --brand: #8c82ff; --brand-2: #a49cff; --brand-ink: #0a0e1a; --brand-tint: #1d1f4a; --pick: #8c82ff; --pick-ink: #0a0e1a;
+  --bg: #07130e; --card: #0c1c15; --band: #11251c; --ink: #edf6f1; --ink-2: #b0c4b9; --ink-3: #85998f; --line: #1c3328; --line-2: #284437;
+  --brand: #2fd69b; --brand-2: #5fe3b4; --brand-ink: #062016; --brand-tint: #123a2b; --pick: #2fd69b; --pick-ink: #062016;
   --todo-bg: #4a3b00; --todo-ink: #ffe27a; --good: #45d19a; --warn: #f2995c; --spon: #b993ff; --spon-tint: #24193b;
-  --dark: #060912; --dark-2: #0e1324; --dark-line: #1e2640; color-scheme: dark;
+  --dark: #04100b; --dark-2: #0a1d15; --dark-line: #183327; color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -134,7 +136,7 @@ code { font-size: .9em; background: var(--band); padding: .1em .35em; border-rad
 .board .sc { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-size: 1.65rem; font-weight: 600; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
 .board .sc small { font-size: .78rem; color: var(--on-dark-2); font-weight: 500; letter-spacing: 0; margin-left: .1rem; }
 .board .meter { grid-column: 1 / -1; height: 3px; background: var(--dark-line); border-radius: 2px; overflow: hidden; margin-top: .45rem; }
-.board .meter i { display: block; height: 100%; background: linear-gradient(90deg, #6b5cff, #a99fff); border-radius: 2px; transform-origin: left; animation: meter 1.1s cubic-bezier(.2, .7, .2, 1) both; }
+.board .meter i { display: block; height: 100%; background: linear-gradient(90deg, var(--meter-a), var(--meter-b)); border-radius: 2px; transform-origin: left; animation: meter 1.1s cubic-bezier(.2, .7, .2, 1) both; }
 .board li:nth-child(2) .meter i { animation-delay: .08s; } .board li:nth-child(3) .meter i { animation-delay: .16s; }
 .board li:nth-child(4) .meter i { animation-delay: .24s; } .board li:nth-child(5) .meter i { animation-delay: .32s; }
 @keyframes meter { from { transform: scaleX(0); } to { transform: scaleX(1); } }
