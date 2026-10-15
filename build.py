@@ -106,7 +106,7 @@ DEPTS = [
         ("best-seo-tools", "SEO Tools", "Rank tracking, audits and keyword research", False),
         ("best-social-media-management-tools", "Social Media Management", "Scheduling, inbox and analytics", False)]),
     ("Projects & operations", "Planning, tracking and docs", [
-        ("best-project-management-software", "Project Management Software", "Tasks, timelines and team workload", False),
+        ("best-project-management-software", "Project Management Software", "Tasks, timelines and team workload", True),
         ("best-time-tracking-software", "Time Tracking Software", "Timesheets, billable hours and reports", False),
         ("best-knowledge-base-software", "Knowledge Base Software", "Internal wikis and documentation", False)]),
     ("Customer support", "Tickets, chat and feedback", [
