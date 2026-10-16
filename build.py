@@ -93,6 +93,17 @@ def page(path, title, desc, body, cur=None, jsonld=None, ptype="website"):
     PAGES[path] = dict(title=title, desc=desc, body=body, cur=cur, jsonld=jsonld or [], ptype=ptype)
 
 
+def _bf(text):
+    t = text.strip().rstrip(".")
+    return t[0].lower() + t[1:] if t[:4] in ("Best", "best") else t
+
+
+def answer_box(lead, items):
+    """Answer-first summary at the top of a review: one quotable sentence plus a short pick list."""
+    lis = "".join(f"<li><b>{n}</b> ({v}/100): {_bf(x)}.</li>" for n, v, x in items)
+    return f'<section class="answer" id="answer" aria-label="Short answer"><h2>Short answer</h2><p>{lead}</p><ul>{lis}</ul></section>'
+
+
 ORG = {"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo", "url": DOMAIN,
        "logo": DOMAIN + "/assets/logo.svg", "description": "Independent reviews of business software, scored on published criteria."}
 
@@ -380,6 +391,7 @@ def crm_page():
 <div class="layout">
 <div class="main-col">
 
+{answer_box(f"<b>{TOOLS[0]['name']}</b> is our top pick among the {len(TOOLS)} CRMs we ranked, scoring {score(TOOLS[0]['id'])}/100. For smaller teams that want a free plan, HubSpot Sales Hub and Pipedrive are the strongest picks.", [(t["name"], score(t["id"]), t["bf"]) for t in TOOLS[:5]])}
 <section class="prose"><p>A CRM is the system your reps will open more than any other tool, so a bad pick shows up as missing activity data, unreliable forecasts and reps keeping deals in spreadsheets. We built this shortlist for sales and RevOps leaders choosing a CRM for a team of 5 to 500 reps.</p>
 <p>Each tool below was scored against six weighted criteria, listed in <a href="#criteria">How we scored</a>. For each one we say who it's for and, just as important, who should skip it.</p></section>
 
@@ -498,6 +510,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
 <p class="disclose">We may earn a commission when you click some links on this page. It never changes which tools we include or how we rank them. See <a href="/how-we-make-money/">how we make money</a>.</p>
 </header>
 <div class="layout"><div class="main-col">
+{answer_box(f"The best {tname} alternative for most teams is <b>{TOOL_BY_ID[picks[0][0]]['name']}</b>: {_bf(picks[0][1])}.", [(TOOL_BY_ID[t]["name"], score(t), f) for t, f, _, _ in picks[:5]])}
 <section class="prose"><p>{lede}</p></section>
 <section class="prose" id="why"><h2>Why teams look for {tname} alternatives</h2><ul>{reason_html}</ul></section>
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
@@ -657,6 +670,7 @@ def sb_page():
 <p class="disclose">We may earn a commission when you click some links on this page. It never changes which tools we include or how we rank them. See <a href="/how-we-make-money/">how we make money</a>.</p>
 </header>
 <div class="layout"><div class="main-col">
+{answer_box(f"<b>{TOOL_BY_ID[order[0]]['name']}</b> is the best CRM for most small businesses in our ranking, scoring {sb_score(order[0])}/100 on criteria weighted toward ease of use and price.", [(TOOL_BY_ID[t]["name"], sb_score(t), SB_FIT[t][0]) for t in order[:5]])}
 <section class="prose"><p>A small business needs a CRM its team will actually use, at a price that makes sense for a handful of seats. This guide covers teams of roughly 1 to 20 people. We used the same ratings as our <a href="/tools/best-crm-software/">main CRM ranking</a>, but weighted ease of use and price more heavily, because those matter most when nobody on the team is a full-time CRM admin.</p></section>
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
 <section id="compare"><h2>Small-business CRMs compared</h2>

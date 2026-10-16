@@ -358,3 +358,8 @@ details.breakdown .criteria { margin-top: .9rem; }
 .dept-h a:hover { color: var(--brand); }
 .badge-samples { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: .5rem; }
 .badge-samples img { border-radius: 12px; }
+.answer { background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--brand); border-radius: 0 var(--r) var(--r) 0; padding: 1.2rem 1.4rem; display: grid; gap: .6rem; }
+.answer h2 { font-size: 1.1rem; letter-spacing: -0.02em; }
+.answer p { font-size: 1.05rem; }
+.answer ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .3rem; color: var(--ink-2); font-size: .97rem; }
+.answer li b { color: var(--ink); }

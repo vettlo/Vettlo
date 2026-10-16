@@ -50,6 +50,11 @@ def _ld(h1, url, date, crumbs, items, faqs):
     ]
 
 
+def _noun(cat):
+    pl = cat["plural"].lower()
+    return pl.replace(" software", " tools") if pl.endswith(" software") else pl
+
+
 def category_page(cat):
     tools = cat["tools"]
     ranked = sorted([k for k in tools if cat_score(cat, k) >= THRESHOLD], key=lambda k: (-cat_score(cat, k), -float(tools[k]["g2"][0])))
@@ -86,11 +91,12 @@ def category_page(cat):
     crit = "".join(f'<div class="crit"><span class="nm">{nm}</span><span class="w">{w}%</span><span class="bar"><i style="width:{w*4}%"></i></span></div>' for nm, w in cat["criteria"])
     choose = "".join(f"<li><b>{a}</b> {b}</li>" for a, b in cat["choose"])
     rel = "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in cat.get("related", []))
-    toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("faq", "FAQ")])
+    toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("answer", "Short answer"), ("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("faq", "FAQ")])
     body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Tools</a> / {cat['crumb']}</nav>
 <header class="article-head"><span class="eyebrow">Shortlist · {cat['crumb']}</span><h1>{h1}</h1>{_byline(cat['date'], cat['date_h'], cat['checked'])}</header>
 <div class="layout"><div class="main-col">
+{answer_box(f"<b>{tools[ranked[0]]['name']}</b> is our top pick among the {n} {_noun(cat)} we ranked, scoring {cat_score(cat, ranked[0])}/100." + (f" Paid plans start at {tools[ranked[0]]['price'].replace('From ', '')}." if tools[ranked[0]]['price'][:1] in '$€F' else ""), [(tools[k]["name"], cat_score(cat, k), tools[k]["bf"]) for k in ranked[:5]])}
 <section class="prose">{''.join(f'<p>{p}</p>' for p in cat['intro'])}</section>
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
 <aside class="trust" aria-label="Why trust this review"><span class="label">Why trust this review</span>
@@ -141,6 +147,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {tname} alternatives</nav>
 <header class="article-head"><span class="eyebrow">Alternatives · {cat['crumb']}</span><h1>{h1}</h1>{_byline(cat['date'], cat['date_h'], cat['checked'])}</header>
 <div class="layout"><div class="main-col">
+{answer_box(f"The best {tname} alternative for most teams is <b>{tools[picks[0][0]]['name']}</b>: {_bf(picks[0][1])}.", [(tools[k]["name"], cat_score(cat, k), f) for k, f, _, _ in picks[:5]])}
 <section class="prose"><p>{lede}</p></section>
 <section class="prose" id="why"><h2>Why teams look for {tname} alternatives</h2><ul>{reason_html}</ul></section>
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
