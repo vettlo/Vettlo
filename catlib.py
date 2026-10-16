@@ -51,7 +51,7 @@ def _ld(h1, url, date, crumbs, items, faqs):
 
 
 def _noun(cat):
-    pl = cat["plural"].lower()
+    pl = cat["plural"].lower().replace("b2b", "B2B").replace("crm", "CRM")
     return pl.replace(" software", " tools") if pl.endswith(" software") else pl
 
 
