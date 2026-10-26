@@ -192,7 +192,7 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
     url = f"/compare/{slug}/"
     sa, sb = cat_score(cat, a), cat_score(cat, b)
     h1 = f"{an} vs {bn}: Which Should You Choose in {YEAR}?"
-    lead = (f"In our <a href=\"/tools/{cat['slug']}/\">{cat['crumb'].lower()} ranking</a>, <b>{A['name']}</b> scores <b>{sa}/100</b> "
+    lead = (f"In our <a href=\"/tools/{cat['slug']}/\">{' '.join(w if w.isupper() else w.lower() for w in cat['crumb'].split())} ranking</a>, <b>{A['name']}</b> scores <b>{sa}/100</b> "
             f"and <b>{B['name']}</b> scores <b>{sb}/100</b>. {summary}")
     li = lambda xs: "".join(f"<li>{x}</li>" for x in xs)
     cost = "".join(f'<tr><td>{n}</td><td>{ap}</td><td class="num">{ac}</td><td>{bp}</td><td class="num">{bc}</td></tr>' for n, ap, ac, bp, bc in cost_rows)
