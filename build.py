@@ -140,7 +140,7 @@ DEPTS = [
         ("best-sales-dialers", "Sales Dialers", "Power, parallel and predictive dialing", True),
         ("best-sales-commission-software", "Sales Commission Software", "Comp plans, payouts and statements", False)]),
     ("Marketing", "Email, automation and search", [
-        ("best-email-marketing-software", "Email Marketing Software", "Newsletters, campaigns and automations", False),
+        ("best-email-marketing-software", "Email Marketing Software", "Newsletters, campaigns and automations", True),
         ("best-marketing-automation-software", "Marketing Automation", "Lead nurturing, scoring and journeys", False),
         ("best-seo-tools", "SEO Tools", "Rank tracking, audits and keyword research", False),
         ("best-social-media-management-tools", "Social Media Management", "Scheduling, inbox and analytics", False)]),
@@ -233,10 +233,11 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-email-marketing-software/">Best email marketing software</a></h3><p class="muted small">Six tools priced at 1,000 contacts, and where automation limits kick in.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-accounting-software/">Best accounting software</a></h3><p class="muted small">QuickBooks, Xero and Zoho Books compared on regular prices after promotions end.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-help-desk-software/">Best help desk software</a></h3><p class="muted small">Seven help desks compared, including what AI resolutions add to the bill.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 15, 2026</span></div><h3><a href="/tools/best-project-management-software/">Best project management software</a></h3><p class="muted small">Which plan unlocks Gantt charts, automations and portfolios in each tool.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-sales-dialers/">Best sales dialers</a></h3><p class="muted small">Power dialers vs AI parallel dialers, and which plan the dialer actually sits on.</p></article>
+
+<article><div class="meta"><span>Comparison</span><span>Oct 26, 2026</span></div><h3><a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a></h3><p class="muted small">Year-one cost for a 10-person sales team, with forecasting on each.</p></article>
 </div>
 </div></section>
 
@@ -1218,7 +1219,7 @@ DEPT_INTRO = {
     "Projects & operations": "The tools teams use to plan and deliver work: project management for tasks and timelines, time tracking for billable hours and a knowledge base for the documentation everyone relies on. Each shortlist shows which plan unlocks the features that matter, at real per-seat prices.",
     "Customer support": "The software support teams use to answer customers: help desks for ticketing, SLAs and self-service, and live chat for real-time conversations. Each shortlist compares channels, AI and what you really pay per agent once AI resolutions are counted.",
     "Finance": "The software that keeps a company's books and spending in order: accounting for bookkeeping and reporting, expense management for cards and receipts, and accounts payable automation for bills. Each shortlist compares regular prices after introductory discounts end, and what each plan limits.",
-    "Marketing": "The software marketing teams use to reach and convert buyers: email marketing, marketing automation, SEO and social media management.",
+    "Marketing": "The software marketing teams use to reach and convert buyers: email marketing for newsletters and automated campaigns, marketing automation for lead nurturing and scoring, SEO tools and social media management. Each shortlist compares what you pay at the same list size and which plan unlocks the automation you need.",
     "HR & people": "The software HR teams use to hire, pay and manage people: HRIS, payroll and applicant tracking.",
     "IT & security": "The software IT teams use to secure people and devices: password managers, mobile device management and incident management.",
 }
