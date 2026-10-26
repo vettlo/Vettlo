@@ -1,8 +1,15 @@
 {
   "name": "vettlo-site",
+  "main": "src/worker.js",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "./public",
-    "not_found_handling": "404-page"
-  }
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  // Sends form submissions through Cloudflare Email Routing. The recipient address lives in
+  // the FORM_TO variable set in the Cloudflare dashboard (kept out of this public repo).
+  "send_email": [{ "name": "SEND" }],
+  "keep_vars": true
 }

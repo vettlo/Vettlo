@@ -14,12 +14,17 @@
 <div class="prose"><h2>The one thing we don't sell</h2><p>Ranking positions, scores and review wording are editorial only. That's what makes a placement next to them worth paying for. Read the full <a href="/how-we-make-money/">disclosure</a>.</p></div>
 <div class="prose"><h2>Audience</h2><p>Vettlo is written for the people who choose software for their company: founders, team leads, and operations, IT and finance managers. We'll publish audited traffic and newsletter numbers after our first full quarter. Until then, <a href="/contact/">ask us</a> for current figures.</p></div>
 <div><h2 style="margin-bottom:1rem">Talk to us</h2>
-<form class="form" id="adv-form"><label for="a-name">Name<input id="a-name" required autocomplete="name"></label>
+<form class="form" id="adv-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div><label for="a-name">Name<input id="a-name" required autocomplete="name"></label>
 <label for="a-email">Work email<input id="a-email" type="email" required autocomplete="email"></label>
 <label for="a-company">Company website<input id="a-company" required placeholder="https://"></label>
 <label for="a-int">Interested in<select id="a-int"><option>Pay-per-click listings</option><option>Featured category slot</option><option>Newsletter sponsorship</option><option>Sponsored guides &amp; events</option></select></label>
+<label for="a-msg">Message (optional)<textarea id="a-msg" rows="4"></textarea></label>
 <button class="btn" type="submit">Send inquiry</button><p class="form-msg" id="adv-msg" aria-live="polite"></p></form>
-<script>document.getElementById('adv-form').addEventListener('submit',function(e){e.preventDefault();document.getElementById('adv-msg').textContent='This form isn\'t connected yet. Please reach us through the contact page.';});</script>
+<script>(function(){var t0=Date.now();var f=document.getElementById('adv-form'),o=document.getElementById('adv-msg');
+f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button[type=submit]');b.disabled=true;o.textContent='Sending…';
+var d={form:'advertise',elapsed:Date.now()-t0,website:f.querySelector('[name=website]').value,name:f.querySelector('#a-name').value,email:f.querySelector('#a-email').value,company:f.querySelector('#a-company').value,interest:f.querySelector('#a-int').value,message:(f.querySelector('#a-msg')||{}).value||''};
+fetch('/api/form',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json().catch(function(){return {ok:false}})}).then(function(r){
+if(r.ok){f.reset();o.textContent='Thanks, we\'ll get back to you by email.';}else{o.textContent=r.error||'Something went wrong. Please try again.';}b.disabled=false;}).catch(function(){o.textContent='Network error. Please try again.';b.disabled=false;});});})();</script>
 </div></div></div></main><footer class="site-foot"><div class="wrap">
 <div class="cols">
 <div><a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--brand)"/><path d="M8.5 10.5l6.2 12.2c.5 1 1.9 1 2.4 0L24.5 8" fill="none" stroke="var(--brand-ink)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg><b>vettlo</b></a>

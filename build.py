@@ -924,12 +924,17 @@ page("/advertise/", "Advertise with Vettlo",
 <div class="prose"><h2>The one thing we don't sell</h2><p>Ranking positions, scores and review wording are editorial only. That's what makes a placement next to them worth paying for. Read the full <a href="/how-we-make-money/">disclosure</a>.</p></div>
 <div class="prose"><h2>Audience</h2><p>Vettlo is written for the people who choose software for their company: founders, team leads, and operations, IT and finance managers. We'll publish audited traffic and newsletter numbers after our first full quarter. Until then, <a href="/contact/">ask us</a> for current figures.</p></div>
 <div><h2 style="margin-bottom:1rem">Talk to us</h2>
-<form class="form" id="adv-form"><label for="a-name">Name<input id="a-name" required autocomplete="name"></label>
+<form class="form" id="adv-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div><label for="a-name">Name<input id="a-name" required autocomplete="name"></label>
 <label for="a-email">Work email<input id="a-email" type="email" required autocomplete="email"></label>
 <label for="a-company">Company website<input id="a-company" required placeholder="https://"></label>
 <label for="a-int">Interested in<select id="a-int"><option>Pay-per-click listings</option><option>Featured category slot</option><option>Newsletter sponsorship</option><option>Sponsored guides &amp; events</option></select></label>
+<label for="a-msg">Message (optional)<textarea id="a-msg" rows="4"></textarea></label>
 <button class="btn" type="submit">Send inquiry</button><p class="form-msg" id="adv-msg" aria-live="polite"></p></form>
-<script>document.getElementById('adv-form').addEventListener('submit',function(e){e.preventDefault();document.getElementById('adv-msg').textContent='This form isn\\'t connected yet. Please reach us through the contact page.';});</script>
+<script>(function(){var t0=Date.now();var f=document.getElementById('adv-form'),o=document.getElementById('adv-msg');
+f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button[type=submit]');b.disabled=true;o.textContent='Sending…';
+var d={form:'advertise',elapsed:Date.now()-t0,website:f.querySelector('[name=website]').value,name:f.querySelector('#a-name').value,email:f.querySelector('#a-email').value,company:f.querySelector('#a-company').value,interest:f.querySelector('#a-int').value,message:(f.querySelector('#a-msg')||{}).value||''};
+fetch('/api/form',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json().catch(function(){return {ok:false}})}).then(function(r){
+if(r.ok){f.reset();o.textContent='Thanks, we\\'ll get back to you by email.';}else{o.textContent=r.error||'Something went wrong. Please try again.';}b.disabled=false;}).catch(function(){o.textContent='Network error. Please try again.';b.disabled=false;});});})();</script>
 </div></div></div>""")
 
 # ---------- TEAM
@@ -966,13 +971,17 @@ page("/contact/", "Contact Vettlo",
      "Contact Vettlo to suggest a tool, report an error, pitch a story or ask about advertising.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Contact</span><h1>Get in touch</h1>
 <p>Suggest a tool for review, report an error, pitch a story or ask about advertising.</p></div>
-<div class="page-body"><form class="form" id="c-form">
+<div class="page-body"><form class="form" id="c-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
 <label for="c-name">Name<input id="c-name" required autocomplete="name"></label>
 <label for="c-email">Email<input id="c-email" type="email" required autocomplete="email"></label>
 <label for="c-topic">Topic<select id="c-topic"><option>Suggest a tool</option><option>Report an error</option><option>Pitch a story</option><option>Advertising</option><option>Something else</option></select></label>
 <label for="c-msg">Message<textarea id="c-msg" rows="5" required></textarea></label>
 <button class="btn" type="submit">Send message</button><p class="form-msg" id="c-out" aria-live="polite"></p></form>
-<script>document.getElementById('c-form').addEventListener('submit',function(e){e.preventDefault();document.getElementById('c-out').textContent='This form isn\\'t connected yet, so your message was not sent.';});</script>
+<script>(function(){var t0=Date.now();var f=document.getElementById('c-form'),o=document.getElementById('c-out');
+f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button[type=submit]');b.disabled=true;o.textContent='Sending…';
+var d={form:'contact',elapsed:Date.now()-t0,website:f.querySelector('[name=website]').value,name:f.querySelector('#c-name').value,email:f.querySelector('#c-email').value,topic:f.querySelector('#c-topic').value,message:f.querySelector('#c-msg').value};
+fetch('/api/form',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json().catch(function(){return {ok:false}})}).then(function(r){
+if(r.ok){f.reset();o.textContent='Thanks, your message was sent. We\\'ll reply by email.';}else{o.textContent=r.error||'Something went wrong. Please try again.';}b.disabled=false;}).catch(function(){o.textContent='Network error. Please try again.';b.disabled=false;});});})();</script>
 </div></div>""")
 
 # ---------- PRIVACY / TERMS
