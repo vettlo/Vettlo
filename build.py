@@ -17,6 +17,30 @@ UPDATED = "2026-10-02"
 PRELAUNCH_NOINDEX = False
 INDEXNOW_KEY = "c3fbbb23bcc5213c7fb866222a0f102b"
 UPDATED_H = "Oct 2, 2026"
+
+# Real page refreshes (prices re-checked, content updated) are recorded in data/updates.json:
+#   {"/tools/best-crm-software/": {"updated": "2026-10-27", "checked": "2026-10-27", "note": "..."}}
+# Pages show "Updated <date>" from here, falling back to their publish date.
+import json as _json, datetime as _dt
+UPDATES = _json.loads((Path(__file__).parent / "data" / "updates.json").read_text())
+
+
+def hdate(iso):
+    d = _dt.date.fromisoformat(iso)
+    return f"{d.strftime('%b')} {d.day}, {d.year}"
+
+
+def page_dates(url, published, checked_iso):
+    u = UPDATES.get(url, {})
+    updated = max(u.get("updated", published), published)
+    checked = max(u.get("checked", checked_iso), checked_iso)
+    return updated, checked
+
+
+def byline(url, published, checked_iso):
+    updated, checked = page_dates(url, published, checked_iso)
+    return (f'<div class="byline"><div class="avatar team-mark">{LOGO}</div><div class="who"><b>By <a href="/team/">Vettlo Editorial Team</a></b>'
+            f'<span>Updated <time datetime="{updated}">{hdate(updated)}</time> · Prices verified {hdate(checked)}</span></div></div>')
 YEAR = 2026
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
@@ -385,7 +409,7 @@ def crm_page():
 <header class="article-head">
 <span class="eyebrow">Shortlist · CRM software</span>
 <h1>{len(TOOLS)} Best CRM Software for Sales Teams in {YEAR}</h1>
-<div class="byline"><div class="avatar team-mark">{LOGO}</div><div class="who"><b>By <a href="/team/">Vettlo Editorial Team</a></b><span>Last verified <time datetime="{UPDATED}">{UPDATED_H}</time></span></div></div>
+{byline("/tools/best-crm-software/", UPDATED, UPDATED)}
 <p class="disclose">We may earn a commission when you click some links on this page. It never changes which tools we include or how we rank them. See <a href="/how-we-make-money/">how we make money</a> and our <a href="/methodology/">review methodology</a>.</p>
 </header>
 <div class="layout">
@@ -400,7 +424,7 @@ def crm_page():
 <aside class="trust" aria-label="Why trust this review">
 <span class="label">Why trust this review</span>
 <div class="facts"><div><b>{len(CONSIDERED)} CRMs</b><span class="small muted">scored</span></div><div><b>6</b><span class="small muted">weighted criteria</span></div><div><b>0</b><span class="small muted">paid positions</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
-<p class="small muted">Prices and plans checked against each vendor's pricing page on {UPDATED_H}. Vendors cannot pay for a position.</p>
+<p class="small muted">Prices and plans checked against each vendor's pricing page on {hdate(page_dates('/tools/best-crm-software/', UPDATED, UPDATED)[1])}. Vendors cannot pay for a position.</p>
 </aside>
 
 <section id="compare"><h2>CRM comparison at a glance</h2>
@@ -448,7 +472,7 @@ def crm_page():
 
     ld = [
         {"@context": "https://schema.org", "@type": "Article", "headline": f"{len(TOOLS)} Best CRM Software for Sales Teams in {YEAR}",
-         "datePublished": "2026-10-02", "dateModified": UPDATED, "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
+         "datePublished": "2026-10-02", "dateModified": page_dates("/tools/best-crm-software/", UPDATED, UPDATED)[0], "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
          "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
          "mainEntityOfPage": DOMAIN + "/tools/best-crm-software/"},
         {"@context": "https://schema.org", "@type": "ItemList", "name": "Best CRM software",
@@ -506,7 +530,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
 <header class="article-head">
 <span class="eyebrow">Alternatives · CRM software</span>
 <h1>{h1}</h1>
-<div class="byline"><div class="avatar team-mark">{LOGO}</div><div class="who"><b>By <a href="/team/">Vettlo Editorial Team</a></b><span>Published <time datetime="{ALT_DATE}">{ALT_DATE_H}</time> · Prices verified {PRICES_CHECKED}</span></div></div>
+{byline(url, ALT_DATE, "2026-10-02")}
 <p class="disclose">We may earn a commission when you click some links on this page. It never changes which tools we include or how we rank them. See <a href="/how-we-make-money/">how we make money</a>.</p>
 </header>
 <div class="layout"><div class="main-col">
@@ -527,7 +551,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
 </div></div>
 {newsletter()}"""
     ld = [
-        {"@context": "https://schema.org", "@type": "Article", "headline": h1, "datePublished": ALT_DATE, "dateModified": ALT_DATE,
+        {"@context": "https://schema.org", "@type": "Article", "headline": h1, "datePublished": ALT_DATE, "dateModified": page_dates(url, ALT_DATE, ALT_DATE)[0],
          "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
          "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}, "mainEntityOfPage": DOMAIN + url},
         {"@context": "https://schema.org", "@type": "ItemList", "name": f"Best {tname} alternatives",
@@ -666,7 +690,7 @@ def sb_page():
 <header class="article-head">
 <span class="eyebrow">Shortlist · CRM for small business</span>
 <h1>{h1}</h1>
-<div class="byline"><div class="avatar team-mark">{LOGO}</div><div class="who"><b>By <a href="/team/">Vettlo Editorial Team</a></b><span>Published <time datetime="{SB_DATE}">{SB_DATE_H}</time> · Prices verified {PRICES_CHECKED}</span></div></div>
+{byline("/tools/best-crm-for-small-business/", SB_DATE, "2026-10-02")}
 <p class="disclose">We may earn a commission when you click some links on this page. It never changes which tools we include or how we rank them. See <a href="/how-we-make-money/">how we make money</a>.</p>
 </header>
 <div class="layout"><div class="main-col">
@@ -697,7 +721,7 @@ def sb_page():
 {newsletter()}"""
     url = "/tools/best-crm-for-small-business/"
     ld = [
-        {"@context": "https://schema.org", "@type": "Article", "headline": h1, "datePublished": SB_DATE, "dateModified": SB_DATE,
+        {"@context": "https://schema.org", "@type": "Article", "headline": h1, "datePublished": SB_DATE, "dateModified": page_dates("/tools/best-crm-for-small-business/", SB_DATE, SB_DATE)[0],
          "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
          "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}, "mainEntityOfPage": DOMAIN + url},
         {"@context": "https://schema.org", "@type": "ItemList", "name": "Best CRM software for small businesses",
@@ -734,7 +758,7 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
 <header class="article-head">
 <span class="eyebrow">Comparison · CRM software</span>
 <h1>HubSpot vs Pipedrive: Which CRM Should Your Sales Team Pick in {YEAR}?</h1>
-<div class="byline"><div class="avatar team-mark">{LOGO}</div><div class="who"><b>By <a href="/team/">Vettlo Editorial Team</a></b><span>Prices verified <time datetime="{CMP_UPDATED}">{CMP_UPDATED_H}</time></span></div></div>
+{byline("/compare/hubspot-vs-pipedrive/", CMP_UPDATED, CMP_UPDATED)}
 <p class="disclose">We may earn a commission when you click some links on this page. It never changes our verdict. See <a href="/how-we-make-money/">how we make money</a>.</p>
 </header>
 <div class="layout"><div class="main-col">
@@ -807,7 +831,7 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
 </div></div>
 {newsletter()}""", cur="/best-tools/", ptype="article", jsonld=[
         {"@context": "https://schema.org", "@type": "Article", "headline": f"HubSpot vs Pipedrive: Which CRM Should Your Sales Team Pick in {YEAR}?",
-         "datePublished": CMP_UPDATED, "dateModified": CMP_UPDATED,
+         "datePublished": CMP_UPDATED, "dateModified": page_dates("/compare/hubspot-vs-pipedrive/", CMP_UPDATED, CMP_UPDATED)[0],
          "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
          "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
          "mainEntityOfPage": DOMAIN + "/compare/hubspot-vs-pipedrive/"},

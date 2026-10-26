@@ -19,9 +19,8 @@ def _breakdown(cat, tid):
                    for (n, w), r in zip(cat["criteria"], cat["tools"][tid]["scores"]))
 
 
-def _byline(date, date_h, checked):
-    return (f'<div class="byline"><div class="avatar team-mark">{LOGO}</div><div class="who"><b>By <a href="/team/">Vettlo Editorial Team</a></b>'
-            f'<span>Published <time datetime="{date}">{date_h}</time> · Prices verified {checked}</span></div></div>'
+def _byline(url, cat):
+    return (byline(url, cat["date"], cat["date"]) +
             '<p class="disclose">We may earn a commission when you click some links on this page. It never changes which tools we include or how we rank them. '
             'See <a href="/how-we-make-money/">how we make money</a>.</p>')
 
@@ -38,7 +37,7 @@ def _faq(faqs):
 
 def _ld(h1, url, date, crumbs, items, faqs):
     return [
-        {"@context": "https://schema.org", "@type": "Article", "headline": h1, "datePublished": date, "dateModified": date,
+        {"@context": "https://schema.org", "@type": "Article", "headline": h1, "datePublished": date, "dateModified": page_dates(url, date, date)[0],
          "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
          "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}, "mainEntityOfPage": DOMAIN + url},
         {"@context": "https://schema.org", "@type": "ItemList", "name": h1,
@@ -94,14 +93,14 @@ def category_page(cat):
     toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("answer", "Short answer"), ("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("faq", "FAQ")])
     body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Tools</a> / {cat['crumb']}</nav>
-<header class="article-head"><span class="eyebrow">Shortlist · {cat['crumb']}</span><h1>{h1}</h1>{_byline(cat['date'], cat['date_h'], cat['checked'])}</header>
+<header class="article-head"><span class="eyebrow">Shortlist · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat)}</header>
 <div class="layout"><div class="main-col">
 {answer_box(f"<b>{tools[ranked[0]]['name']}</b> is our top pick among the {n} {_noun(cat)} we ranked, scoring {cat_score(cat, ranked[0])}/100." + (f" Paid plans start at {tools[ranked[0]]['price'].replace('From ', '')}." if tools[ranked[0]]['price'][:1] in '$€F' else ""), [(tools[k]["name"], cat_score(cat, k), tools[k]["bf"]) for k in ranked[:5]])}
 <section class="prose">{''.join(f'<p>{p}</p>' for p in cat['intro'])}</section>
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
 <aside class="trust" aria-label="Why trust this review"><span class="label">Why trust this review</span>
 <div class="facts"><div><b>{len(tools)} tools</b><span class="small muted">scored</span></div><div><b>{len(cat['criteria'])}</b><span class="small muted">weighted criteria</span></div><div><b>0</b><span class="small muted">paid positions</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
-<p class="small muted">Prices and plans checked against each vendor's pricing page on {cat['checked']}. Vendors cannot pay for a position.</p></aside>
+<p class="small muted">Prices and plans checked against each vendor's pricing page on {hdate(page_dates(url, cat['date'], cat['date'])[1])}. Vendors cannot pay for a position.</p></aside>
 <section id="compare"><h2>{cat['plural']} compared</h2>
 <div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Best for</th><th>Free plan / trial</th><th>Starting price</th><th>G2 rating</th><th>Score</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="small muted">{cat['price_footnote']}</p></section>
@@ -145,7 +144,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
     rel = "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in related)
     body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {tname} alternatives</nav>
-<header class="article-head"><span class="eyebrow">Alternatives · {cat['crumb']}</span><h1>{h1}</h1>{_byline(cat['date'], cat['date_h'], cat['checked'])}</header>
+<header class="article-head"><span class="eyebrow">Alternatives · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat)}</header>
 <div class="layout"><div class="main-col">
 {answer_box(f"The best {tname} alternative for most teams is <b>{tools[picks[0][0]]['name']}</b>: {_bf(picks[0][1])}.", [(tools[k]["name"], cat_score(cat, k), f) for k, f, _, _ in picks[:5]])}
 <section class="prose"><p>{lede}</p></section>
