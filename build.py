@@ -940,25 +940,63 @@ page("/editorial-standards/", "Editorial Standards | Vettlo",
 </div></div>""")
 
 # ---------- ABOUT (facts)
-page("/about/", "About Vettlo",
-     "Vettlo is an independent publication that reviews business software across every team, scored on published criteria.",
-     f"""<div class="wrap"><div class="page-head"><span class="eyebrow">About</span><h1>About Vettlo</h1>
-<p>Vettlo reviews the software businesses run on, for the people who choose it.</p></div>
-<div class="page-body prose">
-<p>Software decisions are often made from vendor demos and "best of" lists that rank whoever pays most. Vettlo gives buyers a shortlist built the way they'd build one themselves: we try the tools, test the workflows that matter, and publish the criteria and weights, every score can be broken down, every price is checked against the vendor's own page on the date shown, and no vendor can pay for a rank.</p>
-<p>We cover every team that buys software, from sales and marketing to projects, support, HR, finance and IT, and add new categories every week.</p>
-<h2>Vettlo at a glance</h2>
-<dl class="dl">
-<dt>What</dt><dd>Independent shortlists, alternatives guides and comparisons of business software</dd>
-<dt>Audience</dt><dd>Founders, team leads and operations, IT and finance managers who choose software for their company</dd>
-<dt>Founded</dt><dd>{YEAR}</dd>
-<dt>Coverage</dt><dd>Sales, marketing, projects and operations, customer support, HR, finance, and IT and security. <a href="/best-tools/">All categories</a></dd>
-<dt>Revenue</dt><dd>Affiliate commissions, labeled sponsored slots and newsletter sponsorships. <a href="/how-we-make-money/">Details</a></dd>
-<dt>Rankings</dt><dd>Editorial only, based on published weighted criteria. Never sold.</dd>
-<dt>Contact</dt><dd><a href="/contact/">Contact form</a></dd>
-</dl>
-<h2>Our team</h2><p>Reviews are researched and written by the <a href="/team/">Vettlo Editorial Team</a>.</p>
-</div></div>""", cur="/about/", jsonld=[ORG])
+_ex = TOOLS[0]
+_ex_rows = "".join(f'<div class="crit"><span class="nm">{n}</span><span class="w">{r:g}/5</span><span class="bar"><i style="width:{r*20:.0f}%"></i></span></div>' for (n, w), r in zip(CRITERIA, SCORES[_ex["id"]]))
+page("/about/", "About Vettlo: Independent Business Software Reviews",
+     "Vettlo is an independent publication that tests and scores business software for every team, with published criteria, checked prices and rankings that are never sold.",
+     f"""<section class="about-hero"><div class="wrap">
+<div><span class="kicker">About Vettlo</span>
+<h1>We help teams choose software they won't regret.</h1>
+<p class="lede">Vettlo is an independent publication that tests and scores the software businesses run on, from CRM and help desks to accounting and email marketing. Every shortlist shows its criteria, its weights and the prices we checked, so you can see exactly why a tool ranks where it does.</p>
+<div class="ctas"><a class="btn" href="/best-tools/">Browse categories</a><a class="btn ghost" href="/methodology/">How we vet</a></div></div>
+<aside class="scorecard" aria-label="Example score breakdown"><div class="sc-head"><span>How a score is built</span><span class="sc-ex">Example from our <a href="/tools/best-crm-software/">CRM ranking</a></span></div>
+<div class="sc-tool"><b>{_ex["name"]}</b><span class="sc-total">{score(_ex["id"])}<small>/100</small></span></div>
+<div class="criteria">{_ex_rows}</div>
+<p class="sc-foot">Each criterion is rated 0 to 5 and weighted for the category. The weights are published on every review.</p></aside>
+</div></section>
+<!--ABOUTSTATS-->
+<div class="wrap about">
+<section class="split"><div><span class="kicker">What we do</span><h2>Shortlists built the way a careful buyer would build them</h2></div>
+<div class="prose"><p>Most software decisions start with a vendor demo or a "best of" list that ranks whoever pays most. We do the slower work instead: we sign up for trials and free plans, test the workflows each team relies on, score every tool on weighted criteria built for its category, and check every price against the vendor's own pricing page on the date shown.</p>
+<p>The result is a shortlist you can check line by line. If a tool hides its prices, puts a key feature on a higher plan or charges per AI resolution, we say so on the page.</p></div></section>
+<section><div class="formats">
+<a href="/tools/best-crm-software/"><span class="label">Shortlists</span><b>The best tools in a category</b><span class="muted small">Ranked on published, weighted criteria, with who each tool is for.</span></a>
+<a href="/tools/best-mailchimp-alternatives/"><span class="label">Alternatives</span><b>When a tool stops fitting</b><span class="muted small">Why teams leave a product and which tools to move to.</span></a>
+<a href="/compare/salesforce-vs-hubspot/"><span class="label">Comparisons</span><b>Two tools, head to head</b><span class="muted small">What each costs for the same team, and who should pick which.</span></a>
+<a href="/sales-software/"><span class="label">Department hubs</span><b>Everything one team buys</b><span class="muted small">Every category for sales, marketing, support, finance and more.</span></a>
+</div></section>
+<section class="mv"><div class="mv-card"><span class="kicker">Our mission</span><h2>Make software buying transparent.</h2><p>Buyers should be able to see why a tool is recommended, what it really costs for a team their size and which plan they'll actually need, without sitting through a sales call to find out.</p></div>
+<div class="mv-card"><span class="kicker">Our vision</span><h2>The first place teams check before they buy.</h2><p>We want every team, from a two-person startup to a growing finance department, to start a software decision with a Vettlo shortlist, and to trust it because they can check it.</p></div></section>
+<section><div class="section-head"><div><span class="kicker">Our promise</span><h2>Four things we will always do</h2></div></div>
+<div class="pledges promise">
+<div class="pledge"><span class="n">01</span><h3>Never sell a ranking</h3><p class="muted small">Inclusion, order and scores are editorial. Sponsored placements are labeled and sit outside the ranked list.</p></div>
+<div class="pledge"><span class="n">02</span><h3>Show our working</h3><p class="muted small">Criteria, weights and every rating are published, so any score can be broken down and checked.</p></div>
+<div class="pledge"><span class="n">03</span><h3>Check prices at the source</h3><p class="muted small">Prices come from each vendor's own pricing page, with the date we checked them on every review.</p></div>
+<div class="pledge"><span class="n">04</span><h3>Keep reviews current</h3><p class="muted small">We re-check plans and prices at least every 90 days and update the page, and its date, when something changes.</p></div>
+</div></section>
+<section><div class="section-head"><div><span class="kicker">Who we write for</span><h2>The people who choose software for their company</h2></div></div>
+<div class="cards3 aud">
+<div class="card"><span class="label">Founders &amp; operators</span><h3 class="card-title">Buying the first stack</h3><p class="muted small">Small teams picking a CRM, help desk or accounting tool without a procurement team, who need a clear pick and an honest price.</p></div>
+<div class="card"><span class="label">Team leads</span><h3 class="card-title">Upgrading what they use</h3><p class="muted small">Sales, marketing, support and project leads who have outgrown a tool and want to know which plan unlocks what they need.</p></div>
+<div class="card"><span class="label">Finance, IT &amp; ops managers</span><h3 class="card-title">Signing off on spend</h3><p class="muted small">The people who approve contracts and want the full cost for the whole team, including add-ons and onboarding fees.</p></div>
+</div>
+<p class="muted small" style="margin-top:1rem">Software vendor? Reach these readers with clearly labeled placements: see <a href="/advertise/">advertising</a> and <a href="/badges/">badges</a>.</p></section>
+<section><div class="section-head"><div><span class="kicker">How a review gets made</span><h2>From a category to a ranked shortlist</h2></div><a class="btn ghost small" href="/methodology/">Full methodology</a></div>
+<ol class="steps">
+<li><b>Define the job</b><span>We set the criteria and weights that matter for the category, such as automation for email tools or AI resolution costs for help desks.</span></li>
+<li><b>Test hands-on</b><span>We use trials and free plans to work through the everyday tasks each team relies on.</span></li>
+<li><b>Score and verify</b><span>Each tool is rated on every criterion, prices are checked on the vendor's pricing page and user ratings are pulled from G2.</span></li>
+<li><b>Publish and re-check</b><span>Tools scoring 70 or more make the shortlist. We revisit each review at least every 90 days.</span></li>
+</ol></section>
+<section><div class="section-head"><div><span class="kicker">The people behind Vettlo</span><h2>Our editorial team</h2></div></div>
+<div class="cards3 people">
+<a class="card" href="/team/"><div class="avatar team-mark">{LOGO}</div><h3 class="card-title">Vettlo Editorial Team</h3><p class="muted small">Researches, tests, scores and writes every review on this site.</p><span class="small">Meet the team →</span></a>
+<a class="card" href="/write-for-us/"><span class="label">Contributors</span><h3 class="card-title">Write for Vettlo</h3><p class="muted small">Have you bought, rolled out or administered business software? We're looking for practitioners to write reviews.</p><span class="small">Write for us →</span></a>
+<a class="card" href="/contact/"><span class="label">Get in touch</span><h3 class="card-title">Suggest a tool or a fix</h3><p class="muted small">Spotted an outdated price or a tool we should review? Tell us and we'll check it.</p><span class="small">Contact us →</span></a>
+</div></section>
+<section class="about-cta"><div><h2>Choosing software this quarter?</h2><p>Start with a shortlist you can check.</p></div><a class="btn" href="/best-tools/">See every category</a></section>
+</div>""", cur="/about/", jsonld=[ORG, {"@context": "https://schema.org", "@type": "AboutPage", "name": "About Vettlo", "url": DOMAIN + "/about/",
+     "description": "Vettlo is an independent publication that tests and scores business software for every team.", "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}}])
 
 # ---------- ADVERTISE
 page("/advertise/", "Advertise with Vettlo",
@@ -1202,6 +1240,11 @@ def scoreboard():
     facts = (f'<div class="facts-line"><div><b>{len(CRM_PAGES) + len(CATEGORY_PAGES)}</b>reviews published</div>'
              f'<div><b>{tools_n}</b>tools scored</div><div><b>0</b>paid rankings</div></div>')
     PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--SCOREBOARD-->", board).replace("<!--HEROFACTS-->", facts)
+    depts = sum(1 for d, _, _ in DEPTS if dept_live(d))
+    stats = (f'<section class="stat-band"><div class="wrap"><div><b>{len(CRM_PAGES) + len(CATEGORY_PAGES)}</b><span>reviews published</span></div>'
+             f'<div><b>{tools_n}</b><span>tools scored</span></div><div><b>{len(rows)}</b><span>categories ranked</span></div>'
+             f'<div><b>{depts} of {len(DEPTS)}</b><span>departments covered</span></div><div><b>0</b><span>paid rankings</span></div></div></section>')
+    PAGES["/about/"]["body"] = PAGES["/about/"]["body"].replace("<!--ABOUTSTATS-->", stats)
 
 
 import hashlib
