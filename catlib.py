@@ -49,6 +49,12 @@ def _ld(h1, url, date, crumbs, items, faqs):
     ]
 
 
+def _lc(t):
+    """Lowercase the first letter unless it starts a proper name (e.g. "Free Forever plan")."""
+    w = t.split()
+    return t if len(w) > 1 and w[1][:1].isupper() else t[:1].lower() + t[1:]
+
+
 def _noun(cat):
     pl = cat["plural"].lower().replace("b2b", "B2B").replace("crm", "CRM")
     return pl.replace(" software", " tools") if pl.endswith(" software") else pl
@@ -146,7 +152,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {tname} alternatives</nav>
 <header class="article-head"><span class="eyebrow">Alternatives · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat)}</header>
 <div class="layout"><div class="main-col">
-{answer_box(f"The best {tname} alternative for most teams is <b>{tools[picks[0][0]]['name']}</b> ({cat_score(cat, picks[0][0])}/100). {picks[0][2][0]}; {picks[0][2][1][0].lower() + picks[0][2][1][1:]}.", [(tools[k]["name"], cat_score(cat, k), f) for k, f, _, _ in picks[:5]])}
+{answer_box(f"The best {tname} alternative for most teams is <b>{tools[picks[0][0]]['name']}</b> ({cat_score(cat, picks[0][0])}/100). {picks[0][2][0]}; {_lc(picks[0][2][1])}.", [(tools[k]["name"], cat_score(cat, k), f) for k, f, _, _ in picks[:5]])}
 <section class="prose"><p>{lede}</p></section>
 <section class="prose" id="why"><h2>Why teams look for {tname} alternatives</h2><ul>{reason_html}</ul></section>
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
