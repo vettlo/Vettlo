@@ -125,14 +125,14 @@ DEPTS = [
         ("best-time-tracking-software", "Time Tracking Software", "Timesheets, billable hours and reports", False),
         ("best-knowledge-base-software", "Knowledge Base Software", "Internal wikis and documentation", False)]),
     ("Customer support", "Tickets, chat and feedback", [
-        ("best-help-desk-software", "Help Desk Software", "Ticketing, SLAs and shared inboxes", False),
+        ("best-help-desk-software", "Help Desk Software", "Ticketing, SLAs and shared inboxes", True),
         ("best-live-chat-software", "Live Chat Software", "Website chat, bots and routing", False)]),
     ("HR & people", "Hiring, payroll and people data", [
         ("best-hris-software", "HRIS Software", "Employee records, time off and onboarding", False),
         ("best-payroll-software", "Payroll Software", "Pay runs, taxes and benefits", False),
         ("best-applicant-tracking-systems", "Applicant Tracking Systems", "Job posts, pipelines and interviews", False)]),
     ("Finance", "Books, spend and payables", [
-        ("best-accounting-software", "Accounting Software", "Bookkeeping, invoicing and reporting", False),
+        ("best-accounting-software", "Accounting Software", "Bookkeeping, invoicing and reporting", True),
         ("best-expense-management-software", "Expense Management", "Cards, receipts and reimbursements", False),
         ("best-accounts-payable-software", "Accounts Payable Automation", "Bill capture, approvals and payments", False)]),
     ("IT & security", "Devices, access and incidents", [
@@ -191,10 +191,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-accounting-software/">Best accounting software</a></h3><p class="muted small">QuickBooks, Xero and Zoho Books compared on regular prices after promotions end.</p></article>
+<article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-help-desk-software/">Best help desk software</a></h3><p class="muted small">Seven help desks compared, including what AI resolutions add to the bill.</p></article>
+<article><div class="meta"><span>Shortlist</span><span>Oct 15, 2026</span></div><h3><a href="/tools/best-project-management-software/">Best project management software</a></h3><p class="muted small">Which plan unlocks Gantt charts, automations and portfolios in each tool.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-sales-dialers/">Best sales dialers</a></h3><p class="muted small">Power dialers vs AI parallel dialers, and which plan the dialer actually sits on.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-conversation-intelligence-software/">Best conversation intelligence tools</a></h3><p class="muted small">Coaching, deal insights and CRM sync, and which features sit behind add-ons.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-b2b-data-providers/">Best B2B contact data providers</a></h3><p class="muted small">Coverage, phone data and how each vendor's credits actually work.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 14, 2026</span></div><h3><a href="/tools/best-sales-engagement-software/">Best sales engagement platforms</a></h3><p class="muted small">Sequencing, deliverability and data, plus which vendors hide their prices.</p></article>
 </div>
 </div></section>
 
