@@ -2,6 +2,8 @@
 # Each category is a dict; see categories/*.py.
 
 def cat_score(cat, tid):
+    if "_score" in cat:
+        return cat["_score"](tid)
     return int(sum(w * r for (_, w), r in zip(cat["criteria"], cat["tools"][tid]["scores"])) / 5 + 0.5)
 
 

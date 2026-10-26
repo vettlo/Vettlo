@@ -265,6 +265,11 @@ page("/best-tools/", "Best Business Software by Category | Vettlo",
 
 
 # ---------- CRM REVIEW (flagship template)
+CRM_CARD_LINKS = {
+    "hubspot": [("/compare/hubspot-vs-pipedrive/", "HubSpot vs Pipedrive"), ("/compare/salesforce-vs-hubspot/", "Salesforce vs HubSpot"), ("/tools/best-hubspot-alternatives/", "HubSpot alternatives")],
+    "pipedrive": [("/compare/hubspot-vs-pipedrive/", "HubSpot vs Pipedrive"), ("/tools/best-pipedrive-alternatives/", "Pipedrive alternatives")],
+    "salesforce": [("/compare/salesforce-vs-hubspot/", "Salesforce vs HubSpot")],
+}
 TOOLS = [
     dict(id="hubspot", name="HubSpot Sales Hub", bf="Best for teams that want marketing and sales on one database",
          what="HubSpot's CRM pairs a free contact and deal database with paid Sales Hub tiers that add sequences, forecasting and custom reporting.",
@@ -414,7 +419,7 @@ def crm_page():
 <div><h4>Who it's best for</h4><p>{t['who']}</p></div>
 <div><h4>Why it made the shortlist</h4><p>{t['why']}</p></div>
 <div class="pc"><div class="pros"><h4>Strengths</h4><ul>{pros}</ul></div><div class="cons"><h4>Watch-outs</h4><ul>{cons}</ul></div></div>
-<p class="small muted"><b>Skip it if:</b> {t['notavoid']}</p>{('<p class="small"><a href="/compare/hubspot-vs-pipedrive/">Compare HubSpot vs Pipedrive →</a> · <a href="/tools/best-' + t['id'] + '-alternatives/">' + ('HubSpot' if t['id']=='hubspot' else 'Pipedrive') + ' alternatives →</a></p>') if t['id'] in ('hubspot','pipedrive') else ''}
+<p class="small muted"><b>Skip it if:</b> {t['notavoid']}</p>{('<p class="small">' + ' · '.join(f'<a href="{h}">{x} →</a>' for h, x in CRM_CARD_LINKS[t['id']]) + '</p>') if t['id'] in CRM_CARD_LINKS else ''}
 <details class="breakdown"><summary>Score breakdown</summary><div class="criteria">{breakdown(t['id'])}</div></details>
 </div>
 </article>""")
@@ -647,7 +652,7 @@ alt_page("hubspot", "best-hubspot-alternatives",
           ("Is there a free alternative to HubSpot?", "HubSpot itself has a free plan for up to 2 users. Zoho CRM's free edition covers up to 3 users and Attio's free plan covers up to 3 seats."),
           ("What is cheaper than HubSpot Sales Hub Professional?", "Pipedrive Growth ($39/seat/mo), Freshsales Pro ($39/user/mo) and Zoho CRM Professional are all listed well below HubSpot Professional's $90 per seat, and none lists an onboarding fee. Check that each plan covers the workflows you need."),
           ("Should I leave HubSpot if my marketing runs on it?", "Usually not. The shared database between marketing and sales is HubSpot's biggest advantage. Leaving means maintaining a sync between two systems.")],
-         [("/compare/hubspot-vs-pipedrive/", "HubSpot vs Pipedrive"), ("/tools/best-pipedrive-alternatives/", "Best Pipedrive alternatives"), ("/tools/best-crm-software/", "Best CRM software for sales teams")])
+         [("/compare/salesforce-vs-hubspot/", "Salesforce vs HubSpot"), ("/compare/hubspot-vs-pipedrive/", "HubSpot vs Pipedrive"), ("/tools/best-pipedrive-alternatives/", "Best Pipedrive alternatives"), ("/tools/best-crm-software/", "Best CRM software for sales teams")])
 
 # ---------- BEST CRM FOR SMALL BUSINESS
 SB_WEIGHTS = [20, 15, 10, 5, 25, 25]  # same order as CRITERIA
@@ -732,7 +737,7 @@ def sb_page():
 <li><b>Test with real deals.</b> Import 20 live deals during the trial and run your normal week in the tool.</li>
 <li><b>Check the exit.</b> Make sure you can export contacts, deals and activity history before you commit.</li></ol></section>
 <section id="faq"><h2>Small business CRM FAQ</h2><div>{faq}</div></section>
-<section class="prose"><h2>Related</h2><ul><li><a href="/tools/best-crm-software/">Best CRM software for sales teams</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li><li><a href="/tools/best-pipedrive-alternatives/">Best Pipedrive alternatives</a></li><li><a href="/tools/best-hubspot-alternatives/">Best HubSpot alternatives</a></li></ul></section>
+<section class="prose"><h2>Related</h2><ul><li><a href="/tools/best-crm-software/">Best CRM software for sales teams</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li><li><a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a></li><li><a href="/tools/best-pipedrive-alternatives/">Best Pipedrive alternatives</a></li><li><a href="/tools/best-hubspot-alternatives/">Best HubSpot alternatives</a></li></ul></section>
 <section class="author-box"><div class="avatar team-mark">{LOGO}</div><div><b>Vettlo Editorial Team</b><p class="small muted">Researched and written by the Vettlo editorial team using our <a href="/methodology/">methodology</a>.</p></div></section>
 </div>
 <nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#shortlist">Shortlist</a><a href="#compare">Comparison table</a><a href="#free">Free CRMs</a><a href="#reviews">Reviews</a><a href="#weights">How we scored</a><a href="#faq">FAQ</a></nav>
@@ -843,7 +848,7 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
 
 <section id="faq"><h2>HubSpot vs Pipedrive FAQ</h2><div>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in CMP_FAQS)}</div></section>
 
-<section class="prose"><h2>Other options</h2><p>If neither fits, see our full <a href="/tools/best-crm-software/">ranking of {len(TOOLS)} CRMs for sales teams</a>, including Salesforce for complex enterprise processes and Zoho CRM for budget-conscious teams that want depth. Or see our guides to the <a href="/tools/best-pipedrive-alternatives/">best Pipedrive alternatives</a> and <a href="/tools/best-hubspot-alternatives/">best HubSpot alternatives</a>.</p></section>
+<section class="prose"><h2>Other options</h2><p>If neither fits, see our full <a href="/tools/best-crm-software/">ranking of {len(TOOLS)} CRMs for sales teams</a>, including Salesforce for complex enterprise processes and Zoho CRM for budget-conscious teams that want depth. Or see our guides to the <a href="/tools/best-pipedrive-alternatives/">best Pipedrive alternatives</a> and <a href="/tools/best-hubspot-alternatives/">best HubSpot alternatives</a>, or compare <a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a>.</p></section>
 
 <section class="author-box"><div class="avatar team-mark">{LOGO}</div><div><b>Vettlo Editorial Team</b><p class="small muted">Researched and written by the Vettlo editorial team using our <a href="/methodology/">methodology</a>. Prices and plan features come from each vendor's public pricing page.</p></div></section>
 </div>
