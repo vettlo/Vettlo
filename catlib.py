@@ -40,8 +40,8 @@ def _ld(h1, url, date, crumbs, items, faqs):
         {"@context": "https://schema.org", "@type": "Article", "headline": h1, "datePublished": date, "dateModified": page_dates(url, date, date)[0],
          "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
          "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}, "mainEntityOfPage": DOMAIN + url},
-        {"@context": "https://schema.org", "@type": "ItemList", "name": h1,
-         "itemListElement": [{"@type": "ListItem", "position": i, "name": n, "url": f"{DOMAIN}{url}#{tid}"} for i, (tid, n) in enumerate(items, 1)]},
+        *([] if not items else [{"@context": "https://schema.org", "@type": "ItemList", "name": h1,
+         "itemListElement": [{"@type": "ListItem", "position": i, "name": n, "url": f"{DOMAIN}{url}#{tid}"} for i, (tid, n) in enumerate(items, 1)]}]),
         {"@context": "https://schema.org", "@type": "FAQPage",
          "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
@@ -80,7 +80,7 @@ def category_page(cat):
 <div><h4>Why it made the shortlist</h4><p>{t['why']}</p></div>
 <div class="pc"><div class="pros"><h4>Strengths</h4><ul>{''.join(f'<li>{p}</li>' for p in t['pros'])}</ul></div><div class="cons"><h4>Watch-outs</h4><ul>{''.join(f'<li>{c}</li>' for c in t['cons'])}</ul></div></div>
 <p class="small muted"><b>Skip it if:</b> {t['skip']}</p>
-{f'<p class="small">{links}</p>' if links else ''}
+<p class="small"><!--CMPLINKS:{cat['slug']}:{k}-->{links}</p>
 <details class="breakdown"><summary>Score breakdown</summary><div class="criteria">{_breakdown(cat, k)}</div></details>
 </div></article>""")
     also = ""
@@ -141,12 +141,12 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 <div class="pc"><div class="pros"><h4>What you gain over {tname}</h4><ul>{''.join(f'<li>{g}</li>' for g in gain)}</ul></div><div class="cons"><h4>What you give up</h4><ul>{''.join(f'<li>{l}</li>' for l in lose)}</ul></div></div>
 <p class="small muted"><b>Skip it if:</b> {t['skip']}</p></div></article>""")
     reason_html = "".join(f"<li><b>{a}</b> {b}</li>" for a, b in reasons)
-    rel = "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in related)
+    rel = f"<!--COMPARES:{cat['slug']}-->" + "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in related)
     body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {tname} alternatives</nav>
 <header class="article-head"><span class="eyebrow">Alternatives · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat)}</header>
 <div class="layout"><div class="main-col">
-{answer_box(f"The best {tname} alternative for most teams is <b>{tools[picks[0][0]]['name']}</b>: {_bf(picks[0][1])}.", [(tools[k]["name"], cat_score(cat, k), f) for k, f, _, _ in picks[:5]])}
+{answer_box(f"The best {tname} alternative for most teams is <b>{tools[picks[0][0]]['name']}</b> ({cat_score(cat, picks[0][0])}/100). {picks[0][2][0]}; {picks[0][2][1][0].lower() + picks[0][2][1][1:]}.", [(tools[k]["name"], cat_score(cat, k), f) for k, f, _, _ in picks[:5]])}
 <section class="prose"><p>{lede}</p></section>
 <section class="prose" id="why"><h2>Why teams look for {tname} alternatives</h2><ul>{reason_html}</ul></section>
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
@@ -175,7 +175,7 @@ COMPARES = {}  # category slug -> [(url, title)] for links from the category pag
 
 
 def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows, cost_note, feature_rows,
-                 a_strengths, b_strengths, decide, faqs):
+                 a_strengths, b_strengths, decide, faqs, desc=None):
     """Head-to-head comparison of two tools from one category's data."""
     tools = cat["tools"]
     A, B = tools[a], tools[b]
@@ -196,7 +196,7 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {an} vs {bn}</nav>
 <header class="article-head"><span class="eyebrow">Comparison · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat if date == cat['date'] else dict(cat, date=date))}</header>
 <div class="layout"><div class="main-col">
-<section class="verdict" id="answer" aria-label="Short answer"><span class="label">Short answer</span>
+<section class="verdict" id="answer" aria-label="Short answer"><h2>Short answer</h2>
 <p>{lead}</p>
 <div class="vs"><div><h3>Pick {an} if…</h3><ul>{li(pick_a)}</ul></div><div><h3>Pick {bn} if…</h3><ul>{li(pick_b)}</ul></div></div></section>
 <section id="cost"><h2>What it costs</h2><p class="prose">{cost_intro}</p>
@@ -209,14 +209,16 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
 <h2>Where {bn} is stronger</h2><ul>{strengths(b_strengths)}</ul>
 <h2>How to decide</h2><ol>{li(decide)}</ol></section>
 <section id="faq"><h2>{an} vs {bn} FAQ</h2><div>{_faq(faqs)}</div></section>
-<section class="prose"><h2>Other options</h2><p>If neither fits, see our full <a href="/tools/{cat['slug']}/">ranking of {len(cat.get('_ranked', tools))} {_noun(cat)}</a>, with who each one is for and what it costs.</p></section>
+<section class="prose"><h2>Other options</h2><p>If neither fits, see our full <a href="/tools/{cat['slug']}/">ranking of {len(cat.get('_ranked', tools))} {_noun(cat)}</a>, with who each one is for and what it costs.{"".join(f' Or see our guide to the <a href="{h}">{x.lower().replace(an.lower(), an).replace(bn.lower(), bn)}</a>.' for h, x in A.get("links", []) + B.get("links", []))}</p></section>
 {_author_box()}
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#cost">Cost</a><a href="#features">Features</a><a href="#faq">FAQ</a></nav></div></div>
 {newsletter()}"""
     crumbs = [("/", "Home"), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{an} vs {bn}")]
-    page(url, f"{an} vs {bn} ({YEAR}): Pricing, Features and Which to Choose | Vettlo",
-         f"{A['name']} vs {B['name']} compared on real prices, plan features and team fit, with a clear pick for each type of team.",
+    page(url, f"{an} vs {bn} ({YEAR}): Pricing Compared | Vettlo",
+         desc or f"{A['name']} vs {B['name']} compared on real prices, plan features and team fit, with a clear pick for each type of team.",
          body, cur="/best-tools/", ptype="article",
-         jsonld=_ld(h1, url, date, crumbs, [(a, A["name"]), (b, B["name"])], faqs))
+         jsonld=_ld(h1, url, date, crumbs, [], faqs))
     COMPARES.setdefault(cat["slug"], []).append((url, f"{an} vs {bn}"))
+    COMPARES.setdefault(f"{cat['slug']}:{a}", []).append((url, f"{an} vs {bn}"))
+    COMPARES.setdefault(f"{cat['slug']}:{b}", []).append((url, f"{an} vs {bn}"))
     CATEGORY_PAGES.append((url, f"{an} vs {bn}", f"{A['name']} and {B['name']} compared on price, features and fit.", "Comparison"))

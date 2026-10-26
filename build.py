@@ -1193,6 +1193,11 @@ def link_compares():
             tag = f"<!--COMPARES:{slug}-->"
             if tag in pg["body"]:
                 pg["body"] = pg["body"].replace(tag, "".join(f'<li><a href="{u}">{t}</a></li>' for u, t in items))
+            ctag = f"<!--CMPLINKS:{slug}-->"
+            if ctag in pg["body"]:
+                pg["body"] = pg["body"].replace(ctag, "".join(f'<a href="{u}">{t} →</a> ' for u, t in items))
+        pg["body"] = re.sub(r"<!--(COMPARES|CMPLINKS):[^>]*-->", "", pg["body"])
+        pg["body"] = pg["body"].replace('<p class="small"></p>', '')
 
 
 def build():
