@@ -405,7 +405,7 @@ def crm_page():
     toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("pricing", "Pricing"), ("faq", "FAQ")])
 
     body = f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Tools</a> / CRM Software</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / CRM Software</nav>
 <header class="article-head">
 <span class="eyebrow">Shortlist · CRM software</span>
 <h1>{len(TOOLS)} Best CRM Software for Sales Teams in {YEAR}</h1>
@@ -481,7 +481,7 @@ def crm_page():
          "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQS]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
-            {"@type": "ListItem", "position": 2, "name": "Tools", "item": DOMAIN + "/best-tools/"},
+            {"@type": "ListItem", "position": 2, "name": "Categories", "item": DOMAIN + "/best-tools/"},
             {"@type": "ListItem", "position": 3, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"}]},
     ]
     page("/tools/best-crm-software/", f"{len(TOOLS)} Best CRM Software for Sales Teams ({YEAR}) | Vettlo",
@@ -1187,7 +1187,16 @@ CF_BEACON = ('<script defer src="https://static.cloudflareinsights.com/beacon.mi
 BADGE_CODES = []  # (tool, category, rank, embed html) for outreach emails
 
 
+def link_compares():
+    for path, pg in PAGES.items():
+        for slug, items in COMPARES.items():
+            tag = f"<!--COMPARES:{slug}-->"
+            if tag in pg["body"]:
+                pg["body"] = pg["body"].replace(tag, "".join(f'<li><a href="{u}">{t}</a></li>' for u, t in items))
+
+
 def build():
+    link_compares()
     reviews_page()
     badges_page()
     scoreboard()

@@ -92,7 +92,7 @@ def category_page(cat):
     rel = "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in cat.get("related", []))
     toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("answer", "Short answer"), ("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("faq", "FAQ")])
     body = f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Tools</a> / {cat['crumb']}</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {cat['crumb']}</nav>
 <header class="article-head"><span class="eyebrow">Shortlist · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat)}</header>
 <div class="layout"><div class="main-col">
 {answer_box(f"<b>{tools[ranked[0]]['name']}</b> is our top pick among the {n} {_noun(cat)} we ranked, scoring {cat_score(cat, ranked[0])}/100." + (f" Paid plans start at {tools[ranked[0]]['price'].replace('From ', '')}." if tools[ranked[0]]['price'][:1] in '$€F' else ""), [(tools[k]["name"], cat_score(cat, k), tools[k]["bf"]) for k in ranked[:5]])}
@@ -111,11 +111,11 @@ def category_page(cat):
 <div class="criteria">{crit}</div></section>
 <section id="choose" class="prose"><h2>How to choose {cat['choose_title']}</h2><ul>{choose}</ul></section>
 <section id="faq"><h2>{cat['crumb']} FAQ</h2><div>{_faq(cat['faqs'])}</div></section>
-{f'<section class="prose"><h2>Related</h2><ul>{rel}</ul></section>' if rel else ''}
+<section class="prose"><h2>Related</h2><ul><!--COMPARES:{cat['slug']}-->{rel}</ul></section>
 {_author_box()}
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span>{toc}</nav></div></div>
 {newsletter()}"""
-    crumbs = [("/", "Home"), ("/best-tools/", "Tools"), (url, cat["crumb"])]
+    crumbs = [("/", "Home"), ("/best-tools/", "Categories"), (url, cat["crumb"])]
     page(url, f"{n} Best {cat['plural']} ({YEAR}) | Vettlo", cat["desc"], body, cur="/best-tools/", ptype="article",
          jsonld=_ld(h1, url, cat["date"], crumbs, [(k, tools[k]["name"]) for k in ranked], cat["faqs"]))
 
@@ -169,3 +169,54 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 CATEGORY_PAGES = []  # (url, title, blurb, kind) collected for hubs and llms.txt
 BADGES = []  # (category, slug, tool id, tool name, rank) for /badges/
 SCOREBOARD = []  # (category, top tool, score, url, tools scored) for the home scoreboard
+
+
+COMPARES = {}  # category slug -> [(url, title)] for links from the category page
+
+
+def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows, cost_note, feature_rows,
+                 a_strengths, b_strengths, decide, faqs):
+    """Head-to-head comparison of two tools from one category's data."""
+    tools = cat["tools"]
+    A, B = tools[a], tools[b]
+    an, bn = A["short"], B["short"]
+    slug = f"{a.replace('_', '-')}-vs-{b.replace('_', '-')}"
+    url = f"/compare/{slug}/"
+    sa, sb = cat_score(cat, a), cat_score(cat, b)
+    h1 = f"{an} vs {bn}: Which Should You Choose in {YEAR}?"
+    lead = (f"In our <a href=\"/tools/{cat['slug']}/\">{cat['crumb'].lower()} ranking</a>, <b>{A['name']}</b> scores <b>{sa}/100</b> "
+            f"and <b>{B['name']}</b> scores <b>{sb}/100</b>. {summary}")
+    li = lambda xs: "".join(f"<li>{x}</li>" for x in xs)
+    cost = "".join(f'<tr><td>{n}</td><td>{ap}</td><td class="num">{ac}</td><td>{bp}</td><td class="num">{bc}</td></tr>' for n, ap, ac, bp, bc in cost_rows)
+    feats = feature_rows + [("G2 user rating", f"{A['g2'][0]}/5 ({A['g2'][1]} reviews)", f"{B['g2'][0]}/5 ({B['g2'][1]} reviews)"),
+                            ("Vettlo score", f"{sa}/100", f"{sb}/100")]
+    frows = "".join(f'<tr><td>{f}</td><td>{x}</td><td>{y}</td></tr>' for f, x, y in feats)
+    strengths = lambda xs: "".join(f"<li><b>{h}</b> {t}</li>" for h, t in xs)
+    body = f"""<div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {an} vs {bn}</nav>
+<header class="article-head"><span class="eyebrow">Comparison · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat if date == cat['date'] else dict(cat, date=date))}</header>
+<div class="layout"><div class="main-col">
+<section class="verdict" id="answer" aria-label="Short answer"><span class="label">Short answer</span>
+<p>{lead}</p>
+<div class="vs"><div><h3>Pick {an} if…</h3><ul>{li(pick_a)}</ul></div><div><h3>Pick {bn} if…</h3><ul>{li(pick_b)}</ul></div></div></section>
+<section id="cost"><h2>What it costs</h2><p class="prose">{cost_intro}</p>
+<div class="table-wrap"><table><thead><tr><th>Need</th><th>{an} plan</th><th>{an} per year</th><th>{bn} plan</th><th>{bn} per year</th></tr></thead><tbody>{cost}</tbody></table></div>
+<p class="small muted">{cost_note} Prices from <a href="{A['url']}" target="_blank" rel="noopener">{an}</a> and <a href="{B['url']}" target="_blank" rel="noopener">{bn}</a> pricing pages, checked {hdate(page_dates(url, date, date)[1])}. Vendors change plans often; confirm before you buy.</p></section>
+<section id="features"><h2>Plans and features side by side</h2>
+<div class="table-wrap"><table><thead><tr><th>Feature</th><th>{an}</th><th>{bn}</th></tr></thead><tbody>{frows}</tbody></table></div>
+<p class="small muted">"Listed from" means the feature first appears on that plan on the vendor's public pricing page.</p></section>
+<section class="prose"><h2>Where {an} is stronger</h2><ul>{strengths(a_strengths)}</ul>
+<h2>Where {bn} is stronger</h2><ul>{strengths(b_strengths)}</ul>
+<h2>How to decide</h2><ol>{li(decide)}</ol></section>
+<section id="faq"><h2>{an} vs {bn} FAQ</h2><div>{_faq(faqs)}</div></section>
+<section class="prose"><h2>Other options</h2><p>If neither fits, see our full <a href="/tools/{cat['slug']}/">ranking of {len(cat.get('_ranked', tools))} {_noun(cat)}</a>, with who each one is for and what it costs.</p></section>
+{_author_box()}
+</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#cost">Cost</a><a href="#features">Features</a><a href="#faq">FAQ</a></nav></div></div>
+{newsletter()}"""
+    crumbs = [("/", "Home"), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{an} vs {bn}")]
+    page(url, f"{an} vs {bn} ({YEAR}): Pricing, Features and Which to Choose | Vettlo",
+         f"{A['name']} vs {B['name']} compared on real prices, plan features and team fit, with a clear pick for each type of team.",
+         body, cur="/best-tools/", ptype="article",
+         jsonld=_ld(h1, url, date, crumbs, [(a, A["name"]), (b, B["name"])], faqs))
+    COMPARES.setdefault(cat["slug"], []).append((url, f"{an} vs {bn}"))
+    CATEGORY_PAGES.append((url, f"{an} vs {bn}", f"{A['name']} and {B['name']} compared on price, features and fit.", "Comparison"))
