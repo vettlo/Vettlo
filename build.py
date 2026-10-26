@@ -1149,6 +1149,8 @@ CSS_V = hashlib.md5((ROOT / "src" / "site.css").read_bytes()).hexdigest()[:8]
 
 
 BADGE_FILES = {}
+CF_BEACON = ('<script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+             'data-cf-beacon=\'{"token": "c7d69cc877594ab2abc01e1906e9628d"}\'></script>')
 BADGE_CODES = []  # (tool, category, rank, embed html) for outreach emails
 
 
@@ -1174,7 +1176,7 @@ def build():
         rel = out_file(path)
         # deploy version
         doc = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
-               f'{head_block(path, p, "/assets/site.css?v=" + CSS_V)}</head><body>{body_block(p, path)}</body></html>')
+               f'{head_block(path, p, "/assets/site.css?v=" + CSS_V)}</head><body>{body_block(p, path)}{CF_BEACON}</body></html>')
         f = site / rel
         f.parent.mkdir(parents=True, exist_ok=True)
         f.write_text(doc)
