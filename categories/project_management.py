@@ -116,7 +116,7 @@ PM = {
         ("Which project management tools include Gantt charts?", "Asana (Starter), ClickUp (first paid plan), Wrike (Team) and Smartsheet (Pro) include Gantt charts on their entry paid plans. monday.com includes them from Standard."),
         ("How much does project management software cost?", "Paid plans on this list start between $5 (Trello) and $10.99 (Asana) per user per month billed annually. Features like portfolios and resource planning usually cost $19 to $25 per user or more."),
     ],
-    "related": [("/tools/best-asana-alternatives/", "Best Asana alternatives"), ("/tools/best-crm-software/", "Best CRM software"), ("/best-tools/", "All categories")],
+    "related": [("/tools/best-asana-alternatives/", "Best Asana alternatives"), ("/project-operations-software/", "All project and operations software")],
 }
 
 category_page(PM)

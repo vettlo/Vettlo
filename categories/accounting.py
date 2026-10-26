@@ -107,7 +107,7 @@ ACC = {
         ("How much does QuickBooks Online cost?", "QuickBooks Online's regular prices are $38 a month for Simple Start, $85 for Essentials, $140 for Plus and $340 for Advanced, with introductory discounts for new customers."),
         ("Is Xero cheaper than QuickBooks?", "At regular prices, Xero Early is $27 a month versus $38 for QuickBooks Simple Start, and Xero has no per-user fees. Xero Early caps you at 20 invoices and 5 bills a month."),
     ],
-    "related": [("/tools/best-quickbooks-alternatives/", "Best QuickBooks alternatives"), ("/tools/best-help-desk-software/", "Best help desk software"), ("/best-tools/", "All categories")],
+    "related": [("/tools/best-quickbooks-alternatives/", "Best QuickBooks alternatives"), ("/finance-software/", "All finance and accounting software")],
 }
 
 category_page(ACC)

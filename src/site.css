@@ -363,3 +363,14 @@ details.breakdown .criteria { margin-top: .9rem; }
 .answer p { font-size: 1.05rem; }
 .answer ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .3rem; color: var(--ink-2); font-size: .97rem; }
 .answer li b { color: var(--ink); }
+.hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: 1rem; }
+.hub-cat { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 1.25rem 1.3rem; display: grid; gap: .45rem; align-content: start; }
+.hub-cat h3 { font-size: 1.15rem; }
+.hub-cat h3 a { color: var(--ink); }
+.hub-cat h3 a:hover { color: var(--brand); }
+.hub-top { font-size: .95rem; }
+.hub-top .sc { font-weight: 600; font-variant-numeric: tabular-nums; margin-left: .25rem; }
+.hub-top .sc small { color: var(--ink-3); font-weight: 500; }
+.hub-sup { list-style: none; margin: .35rem 0 0; padding: .6rem 0 0; border-top: 1px solid var(--line); display: grid; gap: .25rem; font-size: .92rem; }
+.tile.dept .t a { color: var(--ink); }
+.tile.dept .t a:hover { color: var(--brand); }

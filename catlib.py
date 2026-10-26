@@ -98,7 +98,7 @@ def category_page(cat):
     rel = "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in cat.get("related", []))
     toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("answer", "Short answer"), ("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("faq", "FAQ")])
     body = f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {cat['crumb']}</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb(cat['slug'])} / {cat['crumb']}</nav>
 <header class="article-head"><span class="eyebrow">Shortlist · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat)}</header>
 <div class="layout"><div class="main-col">
 {answer_box(f"<b>{tools[ranked[0]]['name']}</b> is our top pick among the {n} {_noun(cat)} we ranked, scoring {cat_score(cat, ranked[0])}/100." + (f" Paid plans start at {tools[ranked[0]]['price'].replace('From ', '')}." if tools[ranked[0]]['price'][:1] in '$€F' else ""), [(tools[k]["name"], cat_score(cat, k), tools[k]["bf"]) for k in ranked[:5]])}
@@ -121,7 +121,7 @@ def category_page(cat):
 {_author_box()}
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span>{toc}</nav></div></div>
 {newsletter()}"""
-    crumbs = [("/", "Home"), ("/best-tools/", "Categories"), (url, cat["crumb"])]
+    crumbs = [("/", "Home"), dept_crumb_ld(cat["slug"]), (url, cat["crumb"])]
     page(url, f"{n} Best {cat['plural']} ({YEAR}) | Vettlo", cat["desc"], body, cur="/best-tools/", ptype="article",
          jsonld=_ld(h1, url, cat["date"], crumbs, [(k, tools[k]["name"]) for k in ranked], cat["faqs"]))
 
@@ -149,7 +149,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
     reason_html = "".join(f"<li><b>{a}</b> {b}</li>" for a, b in reasons)
     rel = f"<!--COMPARES:{cat['slug']}-->" + "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in related)
     body = f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {tname} alternatives</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb(cat['slug'])} / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {tname} alternatives</nav>
 <header class="article-head"><span class="eyebrow">Alternatives · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat)}</header>
 <div class="layout"><div class="main-col">
 {answer_box(f"The best {tname} alternative for most teams is <b>{tools[picks[0][0]]['name']}</b> ({cat_score(cat, picks[0][0])}/100). {picks[0][2][0]}; {_lc(picks[0][2][1])}.", [(tools[k]["name"], cat_score(cat, k), f) for k, f, _, _ in picks[:5]])}
@@ -166,7 +166,8 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 {_author_box()}
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#why">Why switch</a><a href="#shortlist">Shortlist</a><a href="#compare">Comparison table</a><a href="#reviews">The alternatives</a><a href="#faq">FAQ</a></nav></div></div>
 {newsletter()}"""
-    crumbs = [("/", "Home"), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{tname} alternatives")]
+    crumbs = [("/", "Home"), dept_crumb_ld(cat["slug"]), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{tname} alternatives")]
+    CLUSTER.setdefault(cat["slug"], []).append((url, f"Best {tname} alternatives", "Alternatives"))
     page(url, f"{n} Best {tname} Alternatives ({YEAR}) | Vettlo",
          f"The best {tname} alternatives compared on price, free plans, features and fit, with what you gain and give up with each.",
          body, cur="/best-tools/", ptype="article", jsonld=_ld(h1, url, cat["date"], crumbs, [(k, tools[k]["name"]) for k, _, _, _ in picks], faqs))
@@ -174,6 +175,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 
 CATEGORY_PAGES = []  # (url, title, blurb, kind) collected for hubs and llms.txt
 BADGES = []  # (category, slug, tool id, tool name, rank) for /badges/
+CLUSTER = {}  # category slug -> [(url, title, kind)] supporting pages (alternatives, comparisons)
 SCOREBOARD = []  # (category, top tool, score, url, tools scored) for the home scoreboard
 
 
@@ -199,7 +201,7 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
     frows = "".join(f'<tr><td>{f}</td><td>{x}</td><td>{y}</td></tr>' for f, x, y in feats)
     strengths = lambda xs: "".join(f"<li><b>{h}</b> {t}</li>" for h, t in xs)
     body = f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {an} vs {bn}</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb(cat['slug'])} / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {an} vs {bn}</nav>
 <header class="article-head"><span class="eyebrow">Comparison · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat if date == cat['date'] else dict(cat, date=date))}</header>
 <div class="layout"><div class="main-col">
 <section class="verdict" id="answer" aria-label="Short answer"><h2>Short answer</h2>
@@ -219,12 +221,13 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
 {_author_box()}
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#cost">Cost</a><a href="#features">Features</a><a href="#faq">FAQ</a></nav></div></div>
 {newsletter()}"""
-    crumbs = [("/", "Home"), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{an} vs {bn}")]
+    crumbs = [("/", "Home"), dept_crumb_ld(cat["slug"]), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{an} vs {bn}")]
     page(url, f"{an} vs {bn} ({YEAR}): Pricing Compared | Vettlo",
          desc or f"{A['name']} vs {B['name']} compared on real prices, plan features and team fit, with a clear pick for each type of team.",
          body, cur="/best-tools/", ptype="article",
          jsonld=_ld(h1, url, date, crumbs, [], faqs))
     COMPARES.setdefault(cat["slug"], []).append((url, f"{an} vs {bn}"))
+    CLUSTER.setdefault(cat["slug"], []).append((url, f"{an} vs {bn}", "Comparison"))
     COMPARES.setdefault(f"{cat['slug']}:{a}", []).append((url, f"{an} vs {bn}"))
     COMPARES.setdefault(f"{cat['slug']}:{b}", []).append((url, f"{an} vs {bn}"))
     CATEGORY_PAGES.append((url, f"{an} vs {bn}", f"{A['name']} and {B['name']} compared on price, features and fit.", "Comparison"))

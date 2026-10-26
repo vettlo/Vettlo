@@ -165,6 +165,24 @@ DEPTS = [
         ("best-incident-management-software", "Incident Management", "On-call, alerting and postmortems", False)]),
 ]
 CATS = [c for _, _, cs in DEPTS for c in cs]
+DEPT_SLUG = {"Sales": "sales-software", "Marketing": "marketing-software", "Projects & operations": "project-operations-software",
+             "Customer support": "customer-support-software", "HR & people": "hr-software", "Finance": "finance-software",
+             "IT & security": "it-security-software"}
+DEPT_OF = {c[0]: (d, DEPT_SLUG[d]) for d, _, cs in DEPTS for c in cs}
+
+
+def dept_live(name):
+    return any(c[3] for d, _, cs in DEPTS if d == name for c in cs)
+
+
+def dept_crumb(cat_slug):
+    d, hub = DEPT_OF[cat_slug]
+    return f'<a href="/{hub}/">{d}</a>' if dept_live(d) else '<a href="/best-tools/">Categories</a>'
+
+
+def dept_crumb_ld(cat_slug):
+    d, hub = DEPT_OF[cat_slug]
+    return (f"/{hub}/", d) if dept_live(d) else ("/best-tools/", "Categories")
 
 
 def stack_grid(limit=None):
@@ -175,7 +193,7 @@ def stack_grid(limit=None):
             live = sum(1 for c in cs if c[3])
             items = "".join((f'<li><a href="/tools/{sl}/">{n}</a></li>' if lv else f'<li class="soon">{n}</li>') for sl, n, _, lv in cs)
             state = f'<span class="status is-live">{live} reviewed</span>' if live else '<span class="status is-bench">In research</span>'
-            tiles.append(f'<div class="tile dept">{state}<span class="t">{name}</span><span class="s">{sub}</span><ul>{items}</ul></div>')
+            tiles.append(f'<div class="tile dept">{state}<span class="t">' + (f'<a href="/{DEPT_SLUG[name]}/">{name}</a>' if live else name) + f'</span><span class="s">{sub}</span><ul>{items}</ul></div>')
         tiles.append('<a class="tile-cta" href="/contact/"><span class="t">Missing a category?</span><span class="s">Tell us what your team is buying and we\'ll add it to the research queue.</span></a>')
         return '<div class="stack-grid">' + "".join(tiles) + "</div>"
     out = []
@@ -186,7 +204,7 @@ def stack_grid(limit=None):
                 tiles.append(f'<a href="/tools/{slug}/"><span class="status is-live">Reviewed</span><span class="t">{n}</span><span class="s">{sb}</span></a>')
             else:
                 tiles.append(f'<div class="tile"><span class="status is-bench">In research</span><span class="t">{n}</span><span class="s">{sb}</span></div>')
-        out.append(f'<h2 class="dept-h">{name}</h2><div class="stack-grid">{"".join(tiles)}</div>')
+        out.append((f'<h2 class="dept-h"><a href="/{DEPT_SLUG[name]}/">{name}</a></h2>' if any(c[3] for c in cs) else f'<h2 class="dept-h">{name}</h2>') + f'<div class="stack-grid">{"".join(tiles)}</div>')
     return "".join(out)
 
 
@@ -405,7 +423,7 @@ def crm_page():
     toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("pricing", "Pricing"), ("faq", "FAQ")])
 
     body = f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / CRM Software</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb("best-crm-software")} / CRM Software</nav>
 <header class="article-head">
 <span class="eyebrow">Shortlist · CRM software</span>
 <h1>{len(TOOLS)} Best CRM Software for Sales Teams in {YEAR}</h1>
@@ -481,7 +499,7 @@ def crm_page():
          "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQS]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
-            {"@type": "ListItem", "position": 2, "name": "Categories", "item": DOMAIN + "/best-tools/"},
+            {"@type": "ListItem", "position": 2, "name": "Sales", "item": DOMAIN + "/sales-software/"},
             {"@type": "ListItem", "position": 3, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"}]},
     ]
     page("/tools/best-crm-software/", f"{len(TOOLS)} Best CRM Software for Sales Teams ({YEAR}) | Vettlo",
@@ -526,7 +544,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
     title = f"{n} Best {tname} Alternatives for Sales Teams ({YEAR}) | Vettlo"
     h1 = f"{n} Best {tname} Alternatives for Sales Teams in {YEAR}"
     body = f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/best-crm-software/">CRM Software</a> / {tname} alternatives</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb("best-crm-software")} / <a href="/tools/best-crm-software/">CRM Software</a> / {tname} alternatives</nav>
 <header class="article-head">
 <span class="eyebrow">Alternatives · CRM software</span>
 <h1>{h1}</h1>
@@ -560,8 +578,9 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
          "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
-            {"@type": "ListItem", "position": 2, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"},
-            {"@type": "ListItem", "position": 3, "name": f"{tname} alternatives", "item": DOMAIN + url}]},
+            {"@type": "ListItem", "position": 2, "name": "Sales", "item": DOMAIN + "/sales-software/"},
+            {"@type": "ListItem", "position": 3, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"},
+            {"@type": "ListItem", "position": 4, "name": f"{tname} alternatives", "item": DOMAIN + url}]},
     ]
     desc = f"The best {tname} alternatives for sales teams, compared on price, free plans, features and fit. What you gain and give up with each, plus year-one cost for 10 seats."
     page(url, title, desc, body, cur="/best-tools/", jsonld=ld, ptype="article")
@@ -686,7 +705,7 @@ def sb_page():
     n = len(order)
     h1 = f"{n} Best CRM Software for Small Businesses in {YEAR}"
     body = f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/best-crm-software/">CRM Software</a> / Small business</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb("best-crm-software")} / <a href="/tools/best-crm-software/">CRM Software</a> / Small business</nav>
 <header class="article-head">
 <span class="eyebrow">Shortlist · CRM for small business</span>
 <h1>{h1}</h1>
@@ -730,8 +749,9 @@ def sb_page():
          "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in SB_FAQS]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
-            {"@type": "ListItem", "position": 2, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"},
-            {"@type": "ListItem", "position": 3, "name": "Small business", "item": DOMAIN + url}]},
+            {"@type": "ListItem", "position": 2, "name": "Sales", "item": DOMAIN + "/sales-software/"},
+            {"@type": "ListItem", "position": 3, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"},
+            {"@type": "ListItem", "position": 4, "name": "Small business", "item": DOMAIN + url}]},
     ]
     page(url, f"{n} Best CRM Software for Small Businesses ({YEAR}) | Vettlo",
          "The best CRMs for small businesses and small sales teams, scored with extra weight on ease of use and price. Free plans, year-one cost for 5 users and who each CRM suits.",
@@ -754,7 +774,7 @@ CMP_FAQS = [
 page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing, Features and Which to Choose | Vettlo",
      "HubSpot Sales Hub vs Pipedrive compared on real list prices, plan features and team fit. See what a 10-rep team pays on each, and which CRM to pick.",
      f"""<div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/best-crm-software/">CRM Software</a> / HubSpot vs Pipedrive</nav>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb("best-crm-software")} / <a href="/tools/best-crm-software/">CRM Software</a> / HubSpot vs Pipedrive</nav>
 <header class="article-head">
 <span class="eyebrow">Comparison · CRM software</span>
 <h1>HubSpot vs Pipedrive: Which CRM Should Your Sales Team Pick in {YEAR}?</h1>
@@ -839,8 +859,9 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
          "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in CMP_FAQS]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
-            {"@type": "ListItem", "position": 2, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"},
-            {"@type": "ListItem", "position": 3, "name": "HubSpot vs Pipedrive", "item": DOMAIN + "/compare/hubspot-vs-pipedrive/"}]},
+            {"@type": "ListItem", "position": 2, "name": "Sales", "item": DOMAIN + "/sales-software/"},
+            {"@type": "ListItem", "position": 3, "name": "CRM Software", "item": DOMAIN + "/tools/best-crm-software/"},
+            {"@type": "ListItem", "position": 4, "name": "HubSpot vs Pipedrive", "item": DOMAIN + "/compare/hubspot-vs-pipedrive/"}]},
     ])
 
 # ---------- CATEGORY MODULES
@@ -1187,6 +1208,89 @@ CF_BEACON = ('<script defer src="https://static.cloudflareinsights.com/beacon.mi
 BADGE_CODES = []  # (tool, category, rank, embed html) for outreach emails
 
 
+DEPT_INTRO = {
+    "Sales": "The software a sales team runs on: a CRM to track deals, a sales engagement platform for outreach, contact data to find buyers, a dialer to call them and conversation intelligence to learn from every call. Each shortlist below is scored on criteria built for that job, with prices checked against the vendors' own pricing pages.",
+    "Projects & operations": "The tools teams use to plan and deliver work: project management for tasks and timelines, time tracking for billable hours and a knowledge base for the documentation everyone relies on. Each shortlist shows which plan unlocks the features that matter, at real per-seat prices.",
+    "Customer support": "The software support teams use to answer customers: help desks for ticketing, SLAs and self-service, and live chat for real-time conversations. Each shortlist compares channels, AI and what you really pay per agent once AI resolutions are counted.",
+    "Finance": "The software that keeps a company's books and spending in order: accounting for bookkeeping and reporting, expense management for cards and receipts, and accounts payable automation for bills. Each shortlist compares regular prices after introductory discounts end, and what each plan limits.",
+    "Marketing": "The software marketing teams use to reach and convert buyers: email marketing, marketing automation, SEO and social media management.",
+    "HR & people": "The software HR teams use to hire, pay and manage people: HRIS, payroll and applicant tracking.",
+    "IT & security": "The software IT teams use to secure people and devices: password managers, mobile device management and incident management.",
+}
+HUB_URLS = []
+
+
+DEPT_TITLE = {"Sales": "Sales Software", "Projects & operations": "Project & Operations Software", "Customer support": "Customer Support Software",
+              "Finance": "Finance & Accounting Software", "Marketing": "Marketing Software", "HR & people": "HR Software", "IT & security": "IT & Security Software"}
+
+
+def _catname(name):
+    if not name.endswith(("s", "Software")):
+        name += " Tools"
+    return name.lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS").replace("seo", "SEO")
+
+
+def dept_hubs():
+    top = {u: (n, v, cnt) for _, n, v, u, cnt in SCOREBOARD}
+    top["/tools/best-crm-software/"] = (TOOLS[0]["name"], score(TOOLS[0]["id"]), len(CONSIDERED))
+    CLUSTER.setdefault("best-crm-software", [])
+    CLUSTER["best-crm-software"] = [(u, t, k) for u, t, _, k in CRM_PAGES if u != "/tools/best-crm-software/"] + CLUSTER["best-crm-software"]
+    for dname, dsub, cats in DEPTS:
+        live = [c for c in cats if c[3]]
+        if not live:
+            continue
+        hub = f"/{DEPT_SLUG[dname]}/"
+        HUB_URLS.append(hub)
+        title = DEPT_TITLE[dname]
+        label = title[0] + title[1:].lower().replace("hr ", "HR ").replace("it ", "IT ")
+        items, cards, faqs = [], [], []
+        for slug, name, sub, _ in live:
+            url = f"/tools/{slug}/"
+            tn, tv, cnt = top[url]
+            items.append((tn, tv, f"our top pick for {_catname(name)}"))
+            sup = "".join(f'<li><a href="{u}">{t}</a></li>' for u, t, k in CLUSTER.get(slug, []))
+            cards.append(f'<article class="hub-cat"><h3><a href="{url}">Best {_catname(name)}</a></h3><p class="muted small">{sub}</p>'
+                         f'<p class="hub-top">Top pick: <b>{tn}</b> <span class="sc">{tv}<small>/100</small></span> <span class="muted small">of {cnt} scored</span></p>'
+                         + (f'<ul class="hub-sup">{sup}</ul>' if sup else '') + '</article>')
+            faqs.append((f"What is the best {_catname(name)}?" if name.endswith("Software") else f"What are the best {_catname(name)}?",
+                         f"{tn} ranks first of the {cnt} {_catname(name)} we scored, at {tv}/100. See the full shortlist for who each tool is for and what it costs."))
+        soon = [c for c in cats if not c[3]]
+        soon_html = ("<section class=\"prose\"><h2>Coming next</h2><p>We're researching these categories and will publish them as soon as pricing and data are verified: "
+                     + ", ".join(_catname(c[1]) for c in soon) + ".</p></section>") if soon else ""
+        faqs.append((f"How does Vettlo rank {label.lower()}?", "Each category has its own weighted criteria, published on the review. Tools get a 0 to 5 rating per criterion, converted to a score out of 100; vendors cannot pay for a position. See our methodology page for details."))
+        h1 = f"Best {title} in {YEAR}"
+        body = f"""<div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {dname}</nav>
+<div class="page-head"><h1>{h1}</h1><p>{DEPT_INTRO[dname]}</p></div>
+<div class="layout"><div class="main-col">
+{answer_box(f"Our top picks across {len(live)} {dname.lower()} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
+<section><h2>{dname} software categories</h2><div class="hub-grid">{"".join(cards)}</div></section>
+{soon_html}
+<section id="faq"><h2>{label} FAQ</h2><div>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in faqs)}</div></section>
+</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Top picks</a><a href="#faq">FAQ</a></nav></div></div>
+{newsletter()}"""
+        ld = [{"@context": "https://schema.org", "@type": "CollectionPage", "name": h1, "url": DOMAIN + hub,
+               "mainEntity": {"@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": i, "url": f"{DOMAIN}/tools/{c[0]}/", "name": f"Best {_catname(c[1])}"} for i, c in enumerate(live, 1)]}},
+              {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faqs]},
+              {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+                  {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
+                  {"@type": "ListItem", "position": 2, "name": "Categories", "item": DOMAIN + "/best-tools/"},
+                  {"@type": "ListItem", "position": 3, "name": dname, "item": DOMAIN + hub}]}]
+        page(hub, f"Best {title} ({YEAR}) | Vettlo",
+             f"The best {label.lower()} by category, with our top-ranked tool in each, scored on published criteria and checked against vendor pricing pages.",
+             body, cur="/best-tools/", jsonld=ld)
+        # "More in this department" block on each category page in the department
+        for slug, name, _, _ in live:
+            url = f"/tools/{slug}/"
+            others = [c for c in live if c[0] != slug]
+            lis = "".join(f'<li><a href="/tools/{c[0]}/">Best {_catname(c[1])}</a>: top pick {top[f"/tools/{c[0]}/"][0]} ({top[f"/tools/{c[0]}/"][1]}/100)</li>' for c in others)
+            block = (f'<section class="prose"><h2>More {label.lower()}</h2><ul>{lis}<li><a href="{hub}">All {label.lower()}</a></li></ul></section>\n')
+            b = PAGES[url]["body"]
+            i = b.find('<section class="author-box">')
+            if i > 0:
+                PAGES[url]["body"] = b[:i] + block + b[i:]
+
+
 def link_compares():
     for path, pg in PAGES.items():
         for slug, items in COMPARES.items():
@@ -1202,6 +1306,7 @@ def link_compares():
 
 def build():
     link_compares()
+    dept_hubs()
     reviews_page()
     badges_page()
     scoreboard()
@@ -1246,7 +1351,7 @@ def build():
             if isinstance(j, dict) and j.get("dateModified"):
                 lastmod[u] = max(lastmod.get(u, ""), j["dateModified"])
     newest = max(lastmod.values())
-    for u in ("/", "/best-tools/", "/reviews/"):
+    for u in ("/", "/best-tools/", "/reviews/", *HUB_URLS):
         lastmod[u] = newest
     urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p != "/404/")
     (site / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')

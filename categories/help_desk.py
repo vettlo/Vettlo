@@ -120,7 +120,7 @@ HD = {
         ("How much does Zendesk cost?", "Zendesk Support Team is $19 per agent per month billed annually ($25 monthly). Suite Team, which adds AI agents, live chat and a knowledge base, is $55 billed annually ($69 monthly)."),
         ("How do AI agents change help desk pricing?", "Many vendors now charge per AI resolution on top of seats: Intercom from $0.99 per outcome, Help Scout $0.75 per resolution, and Zendesk $1.50 to $2.00 per resolution above the included amount."),
     ],
-    "related": [("/tools/best-zendesk-alternatives/", "Best Zendesk alternatives"), ("/tools/best-crm-software/", "Best CRM software"), ("/best-tools/", "All categories")],
+    "related": [("/tools/best-zendesk-alternatives/", "Best Zendesk alternatives"), ("/customer-support-software/", "All customer support software")],
 }
 
 category_page(HD)
