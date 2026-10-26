@@ -981,7 +981,7 @@ page("/privacy/", "Privacy Policy | Vettlo", "How Vettlo handles information whe
 <div class="page-body prose">
 <p>This policy explains what information Vettlo handles when you visit vettlo.com.</p>
 <h2>What we collect</h2>
-<p>Vettlo does not use advertising trackers or analytics cookies. Our hosting provider, Cloudflare, processes standard technical data such as IP addresses and browser details to deliver and protect the site. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a>.</p>
+<p>Vettlo does not use advertising trackers or analytics cookies. We measure visits with Cloudflare Web Analytics, which counts page views without cookies and without building a profile of you. Our hosting provider, Cloudflare, processes standard technical data such as IP addresses and browser details to deliver and protect the site. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a>.</p>
 <h2>Forms and newsletter</h2>
 <p>Our newsletter and contact forms do not yet send or store any information. When they go live, we'll update this policy to say which provider handles your details and how to unsubscribe or request deletion.</p>
 <h2>Links to other sites</h2>
