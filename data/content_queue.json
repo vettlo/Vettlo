@@ -1,0 +1,29 @@
+{
+  "_about": "Daily publishing queue for vettlo.com. The daily publish task takes the first item with status 'todo', publishes it, and sets status to 'done' with the date and URL. Order fills hubs: deepen live clusters, then open new departments. Add new ideas at the end; skip (status 'skipped' + reason) anything whose prices can't be verified.",
+  "items": [
+    {"type": "compare", "slug": "mailchimp-vs-brevo", "category": "best-email-marketing-software", "status": "todo"},
+    {"type": "category", "slug": "best-payroll-software", "department": "HR & people", "status": "todo"},
+    {"type": "compare", "slug": "mailerlite-vs-mailchimp", "category": "best-email-marketing-software", "status": "todo"},
+    {"type": "category", "slug": "best-password-managers-for-business", "department": "IT & security", "status": "todo"},
+    {"type": "category", "slug": "best-marketing-automation-software", "department": "Marketing", "status": "todo"},
+    {"type": "category", "slug": "best-hris-software", "department": "HR & people", "status": "todo"},
+    {"type": "compare", "slug": "clickup-vs-asana", "category": "best-project-management-software", "status": "todo"},
+    {"type": "category", "slug": "best-time-tracking-software", "department": "Projects & operations", "status": "todo"},
+    {"type": "category", "slug": "best-live-chat-software", "department": "Customer support", "status": "todo"},
+    {"type": "category", "slug": "best-expense-management-software", "department": "Finance", "status": "todo"},
+    {"type": "alternatives", "slug": "best-monday-alternatives", "category": "best-project-management-software", "status": "todo"},
+    {"type": "category", "slug": "best-applicant-tracking-systems", "department": "HR & people", "status": "todo"},
+    {"type": "compare", "slug": "klaviyo-vs-mailchimp", "category": "best-email-marketing-software", "status": "todo"},
+    {"type": "category", "slug": "best-knowledge-base-software", "department": "Projects & operations", "status": "todo"},
+    {"type": "category", "slug": "best-incident-management-software", "department": "IT & security", "status": "todo"},
+    {"type": "alternatives", "slug": "best-freshdesk-alternatives", "category": "best-help-desk-software", "status": "todo"},
+    {"type": "category", "slug": "best-seo-tools", "department": "Marketing", "status": "todo"},
+    {"type": "compare", "slug": "xero-vs-zoho-books", "category": "best-accounting-software", "status": "todo"},
+    {"type": "category", "slug": "best-social-media-management-tools", "department": "Marketing", "status": "todo"},
+    {"type": "category", "slug": "best-mdm-software", "department": "IT & security", "status": "todo"},
+    {"type": "category", "slug": "best-accounts-payable-software", "department": "Finance", "status": "todo"},
+    {"type": "category", "slug": "best-sales-commission-software", "department": "Sales", "status": "todo"},
+    {"type": "alternatives", "slug": "best-activecampaign-alternatives", "category": "best-email-marketing-software", "status": "todo"},
+    {"type": "compare", "slug": "lemlist-vs-instantly", "category": "best-sales-engagement-software", "status": "todo"}
+  ]
+}
