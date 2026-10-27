@@ -334,23 +334,23 @@ PRICING = {
     "hubspot":    dict(price="$7/seat/mo", note="Starter, billed annually ($20 monthly)", trial="Free plan (up to 2 users)", short="Free plan for 2 users"),
     "pipedrive":  dict(price="$14/seat/mo", note="Lite, billed annually", trial="14-day free trial", short="14-day trial"),
     "salesforce": dict(price="$25/user/mo", note="Starter Suite, monthly or annual", trial="Free Suite + free trial", short="Free Suite + trial"),
-    "zoho":       dict(price="$14/user/mo", note="Standard, billed annually ($20 monthly)", trial="Free for 3 users; 15-day trial", short="Free for 3 users"),
+    "zoho":       dict(price="$14/user/mo", note="Standard, billed annually ($20 monthly); USD list price last confirmed Oct 2, 2026", trial="Free for 3 users; 15-day trial", short="Free for 3 users"),
     "close":      dict(price="$35/user/mo", note="Essentials, billed annually ($9 Solo plan for 1 user)", trial="14-day free trial", short="14-day trial"),
     "attio":      dict(price="$35/user/mo", note="Plus, billed annually ($44 monthly)", trial="Free plan (3 seats); 14-day Pro trial", short="Free plan for 3 seats"),
     "freshsales": dict(price="$9/user/mo", note="Growth, billed annually", trial="21-day free trial", short="21-day trial"),
     "folk":       dict(price="$24/user/mo", note="Standard, billed annually ($30 monthly)", trial="14-day free trial", short="14-day trial"),
 }
-PRICES_CHECKED = "Oct 2, 2026"
+PRICES_CHECKED = "Oct 27, 2026"
 
 G2 = {
-    "hubspot":    ("4.4", "14,347", "https://www.g2.com/products/hubspot-sales-hub/reviews"),
-    "pipedrive":  ("4.3", "5,040",  "https://www.g2.com/products/pipedrive/reviews"),
-    "salesforce": ("4.4", "27,564", "https://www.g2.com/products/salesforce-salesforce-sales-cloud/reviews"),
-    "zoho":       ("4.1", "2,951",  "https://www.g2.com/products/zoho-crm/reviews"),
-    "close":      ("4.7", "2,104",  "https://www.g2.com/products/close/reviews"),
-    "attio":      ("4.3", "594",    "https://www.g2.com/products/attio/reviews"),
-    "freshsales": ("4.5", "1,236",  "https://www.g2.com/products/freshsales/reviews"),
-    "folk":       ("4.5", "343",    "https://www.g2.com/products/folk-folk/reviews"),
+    "hubspot":    ("4.4", "14,370", "https://www.g2.com/products/hubspot-sales-hub/reviews"),
+    "pipedrive":  ("4.3", "5,100",  "https://www.g2.com/products/pipedrive/reviews"),
+    "salesforce": ("4.4", "27,576", "https://www.g2.com/products/salesforce-salesforce-sales-cloud/reviews"),
+    "zoho":       ("4.1", "2,953",  "https://www.g2.com/products/zoho-crm/reviews"),
+    "close":      ("4.7", "2,124",  "https://www.g2.com/products/close/reviews"),
+    "attio":      ("4.3", "598",    "https://www.g2.com/products/attio/reviews"),
+    "freshsales": ("4.5", "1,243",  "https://www.g2.com/products/freshsales/reviews"),
+    "folk":       ("4.5", "344",    "https://www.g2.com/products/folk-folk/reviews"),
 }
 
 
@@ -769,6 +769,7 @@ sb_page()
 # ---------- COMPARE: HUBSPOT VS PIPEDRIVE
 CMP_UPDATED = "2026-10-14"
 CMP_UPDATED_H = "Oct 14, 2026"
+CMP_CHECKED_H = hdate(page_dates("/compare/hubspot-vs-pipedrive/", CMP_UPDATED, CMP_UPDATED)[1])
 CMP_FAQS = [
     ("Is HubSpot or Pipedrive cheaper?", "At the entry level HubSpot is cheaper: Sales Hub Starter lists at $7 per seat per month billed annually, against $14 for Pipedrive Lite. Once you need email sequences, workflow automation and forecasting, Pipedrive is cheaper: those features are listed on Pipedrive Growth at $39 per seat per month, while HubSpot lists sequences and forecasting on Sales Hub Professional at $90 per seat per month plus a $1,500 one-time onboarding fee."),
     ("Does HubSpot have a free CRM?", "Yes. HubSpot's free plan covers up to 2 users with no credit card required. Pipedrive has no free plan but offers a 14-day free trial on every paid plan."),
@@ -808,7 +809,7 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
 <tr><td>Plus sequences, automation and forecasting</td><td>Professional ($90 + $1,500 onboarding)</td><td class="num">$12,300</td><td>Growth ($39)</td><td class="num">$4,680</td></tr>
 <tr><td>Plus custom reports</td><td>Professional ($90 + $1,500 onboarding)</td><td class="num">$12,300</td><td>Premium ($59)</td><td class="num">$7,080</td></tr>
 </tbody></table></div>
-<p class="small muted">Prices from <a href="https://www.hubspot.com/pricing/sales" target="_blank" rel="noopener">HubSpot</a> and <a href="https://www.pipedrive.com/en/pricing" target="_blank" rel="noopener">Pipedrive</a> pricing pages, checked {CMP_UPDATED_H}. Vendors change plans often; confirm before you buy.</p></section>
+<p class="small muted">Prices from <a href="https://www.hubspot.com/pricing/sales" target="_blank" rel="noopener">HubSpot</a> and <a href="https://www.pipedrive.com/en/pricing" target="_blank" rel="noopener">Pipedrive</a> pricing pages, checked {CMP_CHECKED_H}. Vendors change plans often; confirm before you buy.</p></section>
 
 <section id="features"><h2>Plan features side by side</h2>
 <div class="table-wrap"><table><thead><tr><th>Feature</th><th>HubSpot Sales Hub</th><th>Pipedrive</th></tr></thead><tbody>
@@ -824,7 +825,7 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
 <tr><td>G2 user rating</td><td class="num">{G2["hubspot"][0]}/5 ({G2["hubspot"][1]} reviews)</td><td class="num">{G2["pipedrive"][0]}/5 ({G2["pipedrive"][1]} reviews)</td></tr>
 <tr><td>Vettlo score</td><td class="num">{score("hubspot")}/100</td><td class="num">{score("pipedrive")}/100</td></tr>
 </tbody></table></div>
-<p class="small muted">"Listed from" means the feature first appears on that plan on the vendor's public pricing page. Feature availability by plan from vendor pricing pages, {CMP_UPDATED_H}.</p></section>
+<p class="small muted">"Listed from" means the feature first appears on that plan on the vendor's public pricing page. Feature availability by plan from vendor pricing pages, {CMP_CHECKED_H}.</p></section>
 
 <section class="prose"><h2>Where HubSpot is stronger</h2>
 <ul>
