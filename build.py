@@ -955,7 +955,6 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
 <div class="criteria">{_ex_rows}</div>
 <p class="sc-foot">Each criterion is rated 0 to 5 and weighted for the category. The weights are published on every review.</p></aside>
 </div></section>
-<!--ABOUTSTATS-->
 <div class="wrap about">
 <section class="split"><div><span class="kicker">What we do</span><h2>Shortlists built the way a careful buyer would build them</h2></div>
 <div class="prose"><p>Most software decisions start with a vendor demo or a "best of" list that ranks whoever pays most. We do the slower work instead: we sign up for trials and free plans, test the workflows each team relies on, score every tool on weighted criteria built for its category, and check every price against the vendor's own pricing page on the date shown.</p>
@@ -1241,11 +1240,6 @@ def scoreboard():
     facts = (f'<div class="facts-line"><div><b>{len(CRM_PAGES) + len(CATEGORY_PAGES)}</b>reviews published</div>'
              f'<div><b>{tools_n}</b>tools scored</div><div><b>0</b>paid rankings</div></div>')
     PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--SCOREBOARD-->", board).replace("<!--HEROFACTS-->", facts)
-    depts = sum(1 for d, _, _ in DEPTS if dept_live(d))
-    stats = (f'<section class="stat-band"><div class="wrap"><div><b>{len(CRM_PAGES) + len(CATEGORY_PAGES)}</b><span>reviews published</span></div>'
-             f'<div><b>{tools_n}</b><span>tools scored</span></div><div><b>{len(rows)}</b><span>categories ranked</span></div>'
-             f'<div><b>{depts} of {len(DEPTS)}</b><span>departments covered</span></div><div><b>0</b><span>paid rankings</span></div></div></section>')
-    PAGES["/about/"]["body"] = PAGES["/about/"]["body"].replace("<!--ABOUTSTATS-->", stats)
 
 
 import hashlib
