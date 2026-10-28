@@ -23,5 +23,25 @@
     "updated": "2026-10-27",
     "checked": "2026-10-27",
     "note": "Re-verified HubSpot Sales Hub and Pipedrive plan prices, onboarding fees and plan features on vendor pricing pages (no changes) and refreshed G2 review counts."
+  },
+  "/tools/best-b2b-data-providers/": {
+    "updated": "2026-10-28",
+    "checked": "2026-10-28",
+    "note": "Re-verified prices, plans and trials for all 6 providers on vendor pages (no changes; Lusha's USD plan prices aren't shown in the page text, so Lusha's price is unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-zoominfo-alternatives/": {
+    "updated": "2026-10-28",
+    "checked": "2026-10-28",
+    "note": "Re-verified prices, plans and trials for all 6 providers on vendor pages (no changes; Lusha's USD plan prices aren't shown in the page text, so Lusha's price is unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-conversation-intelligence-software/": {
+    "updated": "2026-10-28",
+    "checked": "2026-10-28",
+    "note": "Re-verified prices, plans, add-ons and trials for all 5 tools on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-gong-alternatives/": {
+    "updated": "2026-10-28",
+    "checked": "2026-10-28",
+    "note": "Re-verified prices, plans, add-ons and trials for all 5 tools on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
   }
 }
