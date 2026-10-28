@@ -153,7 +153,7 @@ DEPTS = [
         ("best-live-chat-software", "Live Chat Software", "Website chat, bots and routing", False)]),
     ("HR & people", "Hiring, payroll and people data", [
         ("best-hris-software", "HRIS Software", "Employee records, time off and onboarding", False),
-        ("best-payroll-software", "Payroll Software", "Pay runs, taxes and benefits", False),
+        ("best-payroll-software", "Payroll Software", "Pay runs, taxes and benefits", True),
         ("best-applicant-tracking-systems", "Applicant Tracking Systems", "Job posts, pipelines and interviews", False)]),
     ("Finance", "Books, spend and payables", [
         ("best-accounting-software", "Accounting Software", "Bookkeeping, invoicing and reporting", True),
@@ -233,10 +233,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Oct 28, 2026</span></div><h3><a href="/tools/best-payroll-software/">Best payroll software</a></h3><p class="muted small">Seven payroll services priced for a 10-person team, and where multi-state pay starts.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Oct 27, 2026</span></div><h3><a href="/compare/mailchimp-vs-brevo/">Mailchimp vs Brevo</a></h3><p class="muted small">What each costs at 500 and 1,500 contacts, and where automation limits start.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-email-marketing-software/">Best email marketing software</a></h3><p class="muted small">Six tools priced at 1,000 contacts, and where automation limits kick in.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-accounting-software/">Best accounting software</a></h3><p class="muted small">QuickBooks, Xero and Zoho Books compared on regular prices after promotions end.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-help-desk-software/">Best help desk software</a></h3><p class="muted small">Seven help desks compared, including what AI resolutions add to the bill.</p></article>
 
 </div>
 </div></section>
@@ -1258,7 +1258,7 @@ DEPT_INTRO = {
     "Customer support": "The software support teams use to answer customers: help desks for ticketing, SLAs and self-service, and live chat for real-time conversations. Each shortlist compares channels, AI and what you really pay per agent once AI resolutions are counted.",
     "Finance": "The software that keeps a company's books and spending in order: accounting for bookkeeping and reporting, expense management for cards and receipts, and accounts payable automation for bills. Each shortlist compares regular prices after introductory discounts end, and what each plan limits.",
     "Marketing": "The software marketing teams use to reach and convert buyers: email marketing for newsletters and automated campaigns, marketing automation for lead nurturing and scoring, SEO tools and social media management. Each shortlist compares what you pay at the same list size and which plan unlocks the automation you need.",
-    "HR & people": "The software HR teams use to hire, pay and manage people: HRIS, payroll and applicant tracking.",
+    "HR & people": "The software HR teams use to hire, pay and manage people: payroll to run pay and file taxes, an HRIS for employee records and time off, and an applicant tracking system for hiring. Each shortlist compares what you really pay per employee, including base fees and add-ons, and which plan first includes multi-state payroll, time tracking and HR support.",
     "IT & security": "The software IT teams use to secure people and devices: password managers, mobile device management and incident management.",
 }
 HUB_URLS = []
@@ -1307,7 +1307,7 @@ def dept_hubs():
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {dname}</nav>
 <div class="page-head"><h1>{h1}</h1><p>{DEPT_INTRO[dname]}</p></div>
 <div class="layout"><div class="main-col">
-{answer_box(f"Our top picks across {len(live)} {dname.lower()} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
+{answer_box(f"Our top picks across {len(live)} {dname.lower().replace('hr &', 'HR &')} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
 <section><h2>{dname} software categories</h2><div class="hub-grid">{"".join(cards)}</div></section>
 {soon_html}
 <section id="faq"><h2>{label} FAQ</h2><div>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in faqs)}</div></section>
