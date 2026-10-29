@@ -43,5 +43,25 @@
     "updated": "2026-10-28",
     "checked": "2026-10-28",
     "note": "Re-verified prices, plans, add-ons and trials for all 5 tools on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-sales-dialers/": {
+    "updated": "2026-10-29",
+    "checked": "2026-10-29",
+    "note": "Re-verified prices, plans, dialer availability and trials for all 6 dialers on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-aircall-alternatives/": {
+    "updated": "2026-10-29",
+    "checked": "2026-10-29",
+    "note": "Re-verified prices, plans, dialer availability and trials for all 6 dialers on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-sales-engagement-software/": {
+    "updated": "2026-10-29",
+    "checked": "2026-10-29",
+    "note": "Re-verified prices, plans and trials on vendor pricing pages (no changes found; Apollo's plan prices aren't in its pricing page text, and Reply.io's pricing page now shows Free/Starter/Professional/Ultimate tiers without prices, so Reply.io's listed price is unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-apollo-alternatives/": {
+    "updated": "2026-10-29",
+    "checked": "2026-10-29",
+    "note": "Re-verified prices, plans and trials on vendor pricing pages (no changes found; Apollo's plan prices aren't in its pricing page text, and Reply.io's pricing page now shows Free/Starter/Professional/Ultimate tiers without prices, so Reply.io's listed price is unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
   }
 }
