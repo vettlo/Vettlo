@@ -233,10 +233,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Comparison</span><span>Oct 29, 2026</span></div><h3><a href="/compare/mailerlite-vs-mailchimp/">MailerLite vs Mailchimp</a></h3><p class="muted small">What each costs at 500 and 10,000 contacts, and where multi-step automation starts.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 28, 2026</span></div><h3><a href="/tools/best-payroll-software/">Best payroll software</a></h3><p class="muted small">Seven payroll services priced for a 10-person team, and where multi-state pay starts.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Oct 27, 2026</span></div><h3><a href="/compare/mailchimp-vs-brevo/">Mailchimp vs Brevo</a></h3><p class="muted small">What each costs at 500 and 1,500 contacts, and where automation limits start.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-email-marketing-software/">Best email marketing software</a></h3><p class="muted small">Six tools priced at 1,000 contacts, and where automation limits kick in.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-accounting-software/">Best accounting software</a></h3><p class="muted small">QuickBooks, Xero and Zoho Books compared on regular prices after promotions end.</p></article>
 
 </div>
 </div></section>

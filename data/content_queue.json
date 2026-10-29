@@ -3,7 +3,7 @@
   "items": [
     {"type": "compare", "slug": "mailchimp-vs-brevo", "category": "best-email-marketing-software", "status": "done", "date": "2026-10-27", "url": "/compare/mailchimp-vs-brevo/"},
     {"type": "category", "slug": "best-payroll-software", "department": "HR & people", "status": "done", "date": "2026-10-28", "url": "/tools/best-payroll-software/"},
-    {"type": "compare", "slug": "mailerlite-vs-mailchimp", "category": "best-email-marketing-software", "status": "todo"},
+    {"type": "compare", "slug": "mailerlite-vs-mailchimp", "category": "best-email-marketing-software", "status": "done", "date": "2026-10-29", "url": "/compare/mailerlite-vs-mailchimp/"},
     {"type": "category", "slug": "best-password-managers-for-business", "department": "IT & security", "status": "todo"},
     {"type": "category", "slug": "best-marketing-automation-software", "department": "Marketing", "status": "todo"},
     {"type": "category", "slug": "best-hris-software", "department": "HR & people", "status": "todo"},
