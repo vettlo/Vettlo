@@ -57,6 +57,10 @@ def _lc(t):
     return t if len(w) > 1 and w[1][:1].isupper() else t[:1].lower() + t[1:]
 
 
+def _cap(s):
+    return s[:1].upper() + s[1:]
+
+
 def _noun(cat):
     pl = cat["plural"].lower().replace("b2b", "B2B").replace("crm", "CRM")
     return pl.replace(" software", " tools") if pl.endswith(" software") else pl
@@ -73,7 +77,7 @@ def category_page(cat):
     n = len(ranked)
     h1 = f"{n} Best {cat['plural']} in {YEAR}"
     short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{tools[k]["bf"]}</span></span><span class="sc">{cat_score(cat, k)}<small>/100</small></span><a class="btn ghost small" href="#{k}">Review</a></li>' for i, k in enumerate(ranked, 1))
-    rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{tools[k]["bf"].replace("Best for ", "").capitalize()}</td><td>{tools[k]["trial_short"]}</td><td class="num">{tools[k]["price"]}</td><td class="num">{tools[k]["g2"][0]}/5</td><td class="num"><b>{cat_score(cat, k)}</b>/100</td></tr>' for i, k in enumerate(ranked, 1))
+    rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{_cap(tools[k]["bf"].replace("Best for ", ""))}</td><td>{tools[k]["trial_short"]}</td><td class="num">{tools[k]["price"]}</td><td class="num">{tools[k]["g2"][0]}/5</td><td class="num"><b>{cat_score(cat, k)}</b>/100</td></tr>' for i, k in enumerate(ranked, 1))
     cards = []
     for i, k in enumerate(ranked, 1):
         t = tools[k]
@@ -136,7 +140,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
     h1 = f"{n} Best {tname} Alternatives in {YEAR}"
     short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{fit}</span></span><span class="sc">{cat_score(cat, k)}<small>/100</small></span><a class="btn ghost small" href="#{k}">Details</a></li>' for i, (k, fit, _, _) in enumerate(picks, 1))
     ref = tools[target]
-    rows = (f'<tr class="ref"><td><b>{ref["name"]}</b> <span class="small muted">(for reference)</span></td><td>{ref["bf"].replace("Best for ", "").capitalize()}</td><td class="num">{ref["price"]}</td><td>{ref["trial_short"]}</td><td class="num"><b>{cat_score(cat, target)}</b>/100</td></tr>'
+    rows = (f'<tr class="ref"><td><b>{ref["name"]}</b> <span class="small muted">(for reference)</span></td><td>{_cap(ref["bf"].replace("Best for ", ""))}</td><td class="num">{ref["price"]}</td><td>{ref["trial_short"]}</td><td class="num"><b>{cat_score(cat, target)}</b>/100</td></tr>'
             + "".join(f'<tr><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{fit}</td><td class="num">{tools[k]["price"]}</td><td>{tools[k]["trial_short"]}</td><td class="num"><b>{cat_score(cat, k)}</b>/100</td></tr>' for k, fit, _, _ in picks))
     cards = []
     for i, (k, fit, gain, lose) in enumerate(picks, 1):

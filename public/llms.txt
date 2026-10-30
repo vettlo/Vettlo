@@ -22,6 +22,8 @@ Rankings are editorial only and based on published, weighted criteria per catego
 - [Best Mailchimp Alternatives](https://vettlo.com/tools/best-mailchimp-alternatives/): Five email tools with lower prices or deeper automation.
 - [Best Help Desk Software](https://vettlo.com/tools/best-help-desk-software/): Seven help desks compared on channels, AI and real per-agent price.
 - [Best Zendesk Alternatives](https://vettlo.com/tools/best-zendesk-alternatives/): Five help desks with lower prices or simpler setup.
+- [Best Password Managers for Business](https://vettlo.com/tools/best-password-managers-for-business/): Six business password managers compared on SSO, admin policies and real per-user cost.
+- [Best LastPass Alternatives](https://vettlo.com/tools/best-lastpass-alternatives/): Five password managers with cheaper SSO, provisioning or a stronger track record.
 - [Best Payroll Software](https://vettlo.com/tools/best-payroll-software/): Seven payroll services compared on tax filing, multi-state pay and real per-person cost.
 - [Best Gusto Alternatives](https://vettlo.com/tools/best-gusto-alternatives/): Five payroll services with multi-state pay included or lower per-person fees.
 - [Best Project Management Software](https://vettlo.com/tools/best-project-management-software/): Six tools compared on planning views, automation and real per-seat price.
@@ -39,6 +41,7 @@ Rankings are editorial only and based on published, weighted criteria per catego
 - [Mailchimp vs Brevo](https://vettlo.com/compare/mailchimp-vs-brevo/): Mailchimp and Brevo compared on price, features and fit.
 - [Gusto vs QuickBooks Payroll](https://vettlo.com/compare/gusto-vs-quickbooks-payroll/): Gusto and QuickBooks Payroll compared on price, features and fit.
 - [MailerLite vs Mailchimp](https://vettlo.com/compare/mailerlite-vs-mailchimp/): MailerLite and Mailchimp compared on price, features and fit.
+- [1Password vs Bitwarden](https://vettlo.com/compare/1password-vs-bitwarden/): 1Password and Bitwarden compared on price, features and fit.
 - [All categories](https://vettlo.com/best-tools/)
 
 ## Trust

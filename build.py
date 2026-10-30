@@ -160,7 +160,7 @@ DEPTS = [
         ("best-expense-management-software", "Expense Management", "Cards, receipts and reimbursements", False),
         ("best-accounts-payable-software", "Accounts Payable Automation", "Bill capture, approvals and payments", False)]),
     ("IT & security", "Devices, access and incidents", [
-        ("best-password-managers-for-business", "Password Managers", "Shared vaults, SSO and access policies", False),
+        ("best-password-managers-for-business", "Password Managers", "Shared vaults, SSO and access policies", True),
         ("best-mdm-software", "Mobile Device Management", "Device enrollment, policies and remote wipe", False),
         ("best-incident-management-software", "Incident Management", "On-call, alerting and postmortems", False)]),
 ]
@@ -233,10 +233,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Oct 30, 2026</span></div><h3><a href="/tools/best-password-managers-for-business/">Best password managers for business</a></h3><p class="muted small">Six password managers priced for 10 users, and which plan first includes SSO.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Oct 29, 2026</span></div><h3><a href="/compare/mailerlite-vs-mailchimp/">MailerLite vs Mailchimp</a></h3><p class="muted small">What each costs at 500 and 10,000 contacts, and where multi-step automation starts.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 28, 2026</span></div><h3><a href="/tools/best-payroll-software/">Best payroll software</a></h3><p class="muted small">Seven payroll services priced for a 10-person team, and where multi-state pay starts.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Oct 27, 2026</span></div><h3><a href="/compare/mailchimp-vs-brevo/">Mailchimp vs Brevo</a></h3><p class="muted small">What each costs at 500 and 1,500 contacts, and where automation limits start.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 26, 2026</span></div><h3><a href="/tools/best-email-marketing-software/">Best email marketing software</a></h3><p class="muted small">Six tools priced at 1,000 contacts, and where automation limits kick in.</p></article>
 
 </div>
 </div></section>
@@ -1259,7 +1259,7 @@ DEPT_INTRO = {
     "Finance": "The software that keeps a company's books and spending in order: accounting for bookkeeping and reporting, expense management for cards and receipts, and accounts payable automation for bills. Each shortlist compares regular prices after introductory discounts end, and what each plan limits.",
     "Marketing": "The software marketing teams use to reach and convert buyers: email marketing for newsletters and automated campaigns, marketing automation for lead nurturing and scoring, SEO tools and social media management. Each shortlist compares what you pay at the same list size and which plan unlocks the automation you need.",
     "HR & people": "The software HR teams use to hire, pay and manage people: payroll to run pay and file taxes, an HRIS for employee records and time off, and an applicant tracking system for hiring. Each shortlist compares what you really pay per employee, including base fees and add-ons, and which plan first includes multi-state payroll, time tracking and HR support.",
-    "IT & security": "The software IT teams use to secure people and devices: password managers, mobile device management and incident management.",
+    "IT & security": "The software IT teams use to secure people, devices and systems: a password manager for shared logins and access policies, mobile device management to enroll and wipe laptops and phones, and incident management for on-call and alerting. Each shortlist compares which plan first includes SSO, provisioning and the admin controls a security review asks for, at published per-user prices.",
 }
 HUB_URLS = []
 
@@ -1286,7 +1286,7 @@ def dept_hubs():
         hub = f"/{DEPT_SLUG[dname]}/"
         HUB_URLS.append(hub)
         title = DEPT_TITLE[dname]
-        label = title[0] + title[1:].lower().replace("hr ", "HR ").replace("it ", "IT ")
+        label = (title[0] + title[1:].lower().replace("hr ", "HR ").replace("it ", "IT ")).replace("It & ", "IT & ")
         items, cards, faqs = [], [], []
         for slug, name, sub, _ in live:
             url = f"/tools/{slug}/"
@@ -1307,7 +1307,7 @@ def dept_hubs():
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {dname}</nav>
 <div class="page-head"><h1>{h1}</h1><p>{DEPT_INTRO[dname]}</p></div>
 <div class="layout"><div class="main-col">
-{answer_box(f"Our top picks across {len(live)} {dname.lower().replace('hr &', 'HR &')} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
+{answer_box(f"Our top picks across {len(live)} {dname.lower().replace('hr &', 'HR &').replace('it &', 'IT &')} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
 <section><h2>{dname} software categories</h2><div class="hub-grid">{"".join(cards)}</div></section>
 {soon_html}
 <section id="faq"><h2>{label} FAQ</h2><div>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in faqs)}</div></section>
