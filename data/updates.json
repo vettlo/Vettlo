@@ -63,5 +63,15 @@
     "updated": "2026-10-29",
     "checked": "2026-10-29",
     "note": "Re-verified prices, plans and trials on vendor pricing pages (no changes found; Apollo's plan prices aren't in its pricing page text, and Reply.io's pricing page now shows Free/Starter/Professional/Ultimate tiers without prices, so Reply.io's listed price is unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-project-management-software/": {
+    "updated": "2026-10-30",
+    "checked": "2026-10-30",
+    "note": "Re-verified prices, plans and trials for all 7 tools on vendor pricing pages: ClickUp now lists a single plan layout (Core $9, Business $17 billed yearly; old $7 Unlimited plan gone) and Basecamp raised its flat plans (Freelancer $25 to $29; top plan now Pro Unlimited $199/mo annual); others unchanged. Refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-asana-alternatives/": {
+    "updated": "2026-10-30",
+    "checked": "2026-10-30",
+    "note": "Re-verified prices, plans and trials for all 7 tools on vendor pricing pages: ClickUp now lists a single plan layout (Core $9, Business $17 billed yearly; old $7 Unlimited plan gone) and Basecamp raised its flat plans (Freelancer $25 to $29; top plan now Pro Unlimited $199/mo annual); others unchanged. Refreshed G2 review counts (ratings unchanged)."
   }
 }
