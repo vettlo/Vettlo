@@ -5,7 +5,7 @@
     {"type": "category", "slug": "best-payroll-software", "department": "HR & people", "status": "done", "date": "2026-10-28", "url": "/tools/best-payroll-software/"},
     {"type": "compare", "slug": "mailerlite-vs-mailchimp", "category": "best-email-marketing-software", "status": "done", "date": "2026-10-29", "url": "/compare/mailerlite-vs-mailchimp/"},
     {"type": "category", "slug": "best-password-managers-for-business", "department": "IT & security", "status": "done", "date": "2026-10-30", "url": "/tools/best-password-managers-for-business/"},
-    {"type": "category", "slug": "best-marketing-automation-software", "department": "Marketing", "status": "todo"},
+    {"type": "category", "slug": "best-marketing-automation-software", "department": "Marketing", "status": "done", "date": "2026-10-31", "url": "/tools/best-marketing-automation-software/"},
     {"type": "category", "slug": "best-hris-software", "department": "HR & people", "status": "todo"},
     {"type": "compare", "slug": "clickup-vs-asana", "category": "best-project-management-software", "status": "todo"},
     {"type": "category", "slug": "best-time-tracking-software", "department": "Projects & operations", "status": "todo"},

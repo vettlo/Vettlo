@@ -141,7 +141,7 @@ DEPTS = [
         ("best-sales-commission-software", "Sales Commission Software", "Comp plans, payouts and statements", False)]),
     ("Marketing", "Email, automation and search", [
         ("best-email-marketing-software", "Email Marketing Software", "Newsletters, campaigns and automations", True),
-        ("best-marketing-automation-software", "Marketing Automation", "Lead nurturing, scoring and journeys", False),
+        ("best-marketing-automation-software", "Marketing Automation", "Lead nurturing, scoring and journeys", True),
         ("best-seo-tools", "SEO Tools", "Rank tracking, audits and keyword research", False),
         ("best-social-media-management-tools", "Social Media Management", "Scheduling, inbox and analytics", False)]),
     ("Projects & operations", "Planning, tracking and docs", [
@@ -233,10 +233,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Oct 31, 2026</span></div><h3><a href="/tools/best-marketing-automation-software/">Best marketing automation software</a></h3><p class="muted small">Six platforms compared on journeys and lead scoring, from $15 a month to $1,250.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 30, 2026</span></div><h3><a href="/tools/best-password-managers-for-business/">Best password managers for business</a></h3><p class="muted small">Six password managers priced for 10 users, and which plan first includes SSO.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Oct 29, 2026</span></div><h3><a href="/compare/mailerlite-vs-mailchimp/">MailerLite vs Mailchimp</a></h3><p class="muted small">What each costs at 500 and 10,000 contacts, and where multi-step automation starts.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 28, 2026</span></div><h3><a href="/tools/best-payroll-software/">Best payroll software</a></h3><p class="muted small">Seven payroll services priced for a 10-person team, and where multi-state pay starts.</p></article>
-<article><div class="meta"><span>Comparison</span><span>Oct 27, 2026</span></div><h3><a href="/compare/mailchimp-vs-brevo/">Mailchimp vs Brevo</a></h3><p class="muted small">What each costs at 500 and 1,500 contacts, and where automation limits start.</p></article>
 
 </div>
 </div></section>
