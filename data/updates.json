@@ -73,5 +73,25 @@
     "updated": "2026-10-30",
     "checked": "2026-10-30",
     "note": "Re-verified prices, plans and trials for all 7 tools on vendor pricing pages: ClickUp now lists a single plan layout (Core $9, Business $17 billed yearly; old $7 Unlimited plan gone) and Basecamp raised its flat plans (Freelancer $25 to $29; top plan now Pro Unlimited $199/mo annual); others unchanged. Refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-accounting-software/": {
+    "updated": "2026-10-31",
+    "checked": "2026-10-31",
+    "note": "Re-verified regular prices, plans, user limits and trials for all 6 tools on vendor pricing pages (no changes; Sage Intacct still quote-only) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-quickbooks-alternatives/": {
+    "updated": "2026-10-31",
+    "checked": "2026-10-31",
+    "note": "Re-verified regular prices, plans, user limits and trials for all 6 tools on vendor pricing pages (no changes; Sage Intacct still quote-only) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-help-desk-software/": {
+    "updated": "2026-10-31",
+    "checked": "2026-10-31",
+    "note": "Re-verified prices, plans and trials for all 7 help desks on vendor pricing pages (no price changes; Zoho Desk's page now shows rupee prices only, so its euro prices are unchanged and last confirmed Oct 26) and refreshed G2 ratings and review counts (Front 4.6 to 4.7)."
+  },
+  "/tools/best-zendesk-alternatives/": {
+    "updated": "2026-10-31",
+    "checked": "2026-10-31",
+    "note": "Re-verified prices, plans and trials for all 7 help desks on vendor pricing pages (no price changes; Zoho Desk's page now shows rupee prices only, so its euro prices are unchanged and last confirmed Oct 26) and refreshed G2 ratings and review counts (Front 4.6 to 4.7)."
   }
 }

@@ -1,4 +1,4 @@
-# Accounting software. Prices and G2 ratings checked Oct 26, 2026.
+# Accounting software. Published Oct 26, 2026; prices and G2 ratings re-checked Oct 31, 2026.
 ACC = {
     "slug": "best-accounting-software",
     "plural": "Accounting Software",
@@ -12,13 +12,13 @@ ACC = {
     ],
     "criteria": [("Core bookkeeping & reconciliation", 25), ("Invoicing & payments", 15), ("Bills & expenses", 15),
                  ("Reporting & room to grow", 15), ("Ease of use", 15), ("Price & value", 15)],
-    "price_footnote": "Prices are the regular US price of the cheapest paid plan on each vendor's pricing page on Oct 26, 2026, not the introductory discount. QuickBooks, Xero and FreshBooks advertise limited-time promotions for new customers. Sage Intacct is priced by quote.",
+    "price_footnote": "Prices are the regular US price of the cheapest paid plan on each vendor's pricing page on Oct 31, 2026, not the introductory discount. QuickBooks, Xero and FreshBooks advertise limited-time promotions for new customers. Sage Intacct is priced by quote.",
     "tools": {
         "quickbooks": {
             "name": "QuickBooks Online", "short": "QuickBooks", "url": "https://quickbooks.intuit.com/",
             "bf": "Best overall for US small businesses",
             "price": "$38/mo", "price_note": "Simple Start, 1 user, regular price; Essentials $85 (3 users), Plus $140 (5 users)", "trial": "30-day trial; intro discount for new customers", "trial_short": "30-day trial",
-            "g2": ("4.0", "3,894", "https://www.g2.com/products/quickbooks-online/reviews"),
+            "g2": ("4.0", "3,900", "https://www.g2.com/products/quickbooks-online/reviews"),
             "scores": [5, 4.5, 4.5, 4.5, 4, 3],
             "what": "QuickBooks Online is one of the most widely used small business accounting tools in the US. Simple Start covers one user with bookkeeping, invoicing and automated bill pay; Plus adds inventory tracking, project profitability and bill approval workflows for up to 5 users, and Advanced supports 25 users.",
             "who": "US small businesses that want a tool their accountant or bookkeeper is likely to know already.",
@@ -32,7 +32,7 @@ ACC = {
             "name": "Xero", "short": "Xero", "url": "https://www.xero.com/",
             "bf": "Best for teams that want unlimited users",
             "price": "$27/mo", "price_note": "Early (20 invoices, 5 bills a month), regular price; Growing $59 unlimited", "trial": "Intro discount for new customers", "trial_short": "Intro offer",
-            "g2": ("4.4", "1,844", "https://www.g2.com/products/xero/reviews"),
+            "g2": ("4.4", "1,848", "https://www.g2.com/products/xero/reviews"),
             "scores": [4.5, 4.5, 4.5, 4, 4, 4],
             "what": "Xero is cloud accounting with no per-user license fees. Early caps you at 20 invoices and 5 bills a month; Growing ($59) removes those caps and adds auto-reconcile; Established ($97) adds multi-currency, projects and expense claims.",
             "who": "Small businesses with several people in the books, and businesses outside the US, where Xero is widely used.",
