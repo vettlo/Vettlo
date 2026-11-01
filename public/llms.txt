@@ -2,7 +2,7 @@
 
 > Vettlo is an independent publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Tools are tested hands-on with trials and free plans, and prices are checked against each vendor's pricing page.
 
-Scores are editorial only and based on published, weighted criteria per category. Vendors cannot pay for a score or review wording. Vendors can pay for Sponsored placements, which are always labeled. Reviews are re-verified every 90 days.
+Scores are editorial only and based on published, weighted criteria per category. Vendors cannot pay for a score or review wording. Partner compensation may affect which products we include and where they appear. Reviews are re-verified every 90 days.
 
 ## Reviews
 - [Best CRM Software for Sales Teams](https://vettlo.com/tools/best-crm-software/): shortlist of 7 CRMs scored on pipeline management, automation, reporting, integrations, usability and value

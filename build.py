@@ -210,12 +210,12 @@ def stack_grid(limit=None):
 
 # ---------- HOME
 page("/", "Vettlo: Independent Business Software Reviews",
-     "Independent reviews of business software, from CRM and project management to payroll, help desk and security, scored on published criteria. Sponsored placements are always labeled.",
+     "Independent reviews of business software, from CRM and project management to payroll, help desk and security, scored on published criteria.",
      f"""
 <section class="hero"><div class="wrap">
 <div>
 <h1>Business software, scored in the open.</h1>
-<p class="lede">Independent shortlists of the software companies run on, from CRM and project management to payroll, help desk and security. Every score is broken down by published criteria, every price is checked against the vendor's own page, and every paid placement is labeled.</p>
+<p class="lede">Independent shortlists of the software companies run on, from CRM and project management to payroll, help desk and security. Every score is broken down by published criteria, every price is checked against the vendor's own page, and we tell you when partners pay us.</p>
 <div class="ctas"><a class="btn" href="/reviews/">Browse all reviews</a><a class="btn ghost" href="/methodology/">How we score</a></div>
 </div>
 <!--SCOREBOARD-->
@@ -243,7 +243,7 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <section class="section band"><div class="wrap">
 <div class="section-head"><div><span class="eyebrow">Our rules</span><h2 style="margin-top:.4rem">Why buyers trust the shortlist</h2></div><a class="btn ghost small" href="/how-we-make-money/">How we make money</a></div>
 <div class="pledges">
-<div class="pledge"><span class="n">0</span><h4>Paid scores</h4><p class="muted small">Vendors can pay for a Sponsored placement, which is always labeled. They can't pay for a score or for what we write.</p></div>
+<div class="pledge"><span class="n">0</span><h4>Paid scores</h4><p class="muted small">Partner compensation may affect which products we include and where they appear, and we say so on every review. Partners can't pay for a score or for what we write.</p></div>
 <div class="pledge"><span class="n">6</span><h4>Weighted criteria per category</h4><p class="muted small">Published on every review, so you can see why a tool placed where it did.</p></div>
 <div class="pledge"><span class="n">90</span><h4>Days between re-checks</h4><p class="muted small">Pricing and plan limits change fast. Every review shows its last verified date.</p></div>
 </div>
@@ -384,7 +384,7 @@ FAQS = [
     ("How much does CRM software cost?", "Most CRMs price per seat per month, with free or entry tiers for small teams and steep jumps for automation, forecasting and custom objects. Budget for implementation, data migration and integrations too, which can exceed license cost at enterprise scale."),
     ("Should sales and marketing share one CRM?", "Sharing one database removes sync work and makes attribution easier. It matters most for inbound-led motions. Outbound-heavy teams with separate marketing tools can run well with a sales-first CRM and a clean integration."),
     ("How long does a CRM migration take?", "Small teams can move in days. Mid-market migrations with custom fields, historical activity and integrations commonly take several weeks. Plan field mapping and deduplication before the cutover."),
-    ("How does Vettlo choose which CRMs to include?", "We start from a long list of CRMs used by sales teams, score each against the six weighted criteria on this page, and include tools that clear our threshold. Vendors cannot pay for a score, and any paid placement is labeled Sponsored."),
+    ("How does Vettlo choose which CRMs to include?", "We start from a long list of CRMs used by sales teams, score each against the six weighted criteria on this page, and include tools that clear our threshold. Vendors cannot pay for a score. Partner compensation may affect which products we include and where they appear."),
 ]
 
 
@@ -433,7 +433,7 @@ def crm_page():
 <span class="eyebrow">Shortlist · CRM software</span>
 <h1>{len(TOOLS)} Best CRM Software for Sales Teams in {YEAR}</h1>
 {byline("/tools/best-crm-software/", UPDATED, UPDATED)}
-<p class="disclose">We may earn a commission when you click some links on this page. Vendors can pay for Sponsored placements, which are always labeled; scores are editorial. See <a href="/how-we-make-money/">how we make money</a> and our <a href="/methodology/">review methodology</a>.</p>
+<p class="disclose">We may earn money when you click links on this page. Partner compensation may affect which products we include and where they appear. See <a href="/how-we-make-money/">how we make money</a> and our <a href="/methodology/">review methodology</a>.</p>
 </header>
 <div class="layout">
 <div class="main-col">
@@ -554,7 +554,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
 <span class="eyebrow">Alternatives · CRM software</span>
 <h1>{h1}</h1>
 {byline(url, ALT_DATE, "2026-10-02")}
-<p class="disclose">We may earn a commission when you click some links on this page. Vendors can pay for Sponsored placements, which are always labeled; scores are editorial. See <a href="/how-we-make-money/">how we make money</a>.</p>
+<p class="disclose">We may earn money when you click links on this page. Partner compensation may affect which products we include and where they appear. See <a href="/how-we-make-money/">how we make money</a>.</p>
 </header>
 <div class="layout"><div class="main-col">
 {answer_box(f"The best {tname} alternative for most teams is <b>{TOOL_BY_ID[picks[0][0]]['name']}</b>: {_bf(picks[0][1])}.", [(TOOL_BY_ID[t]["name"], score(t), f) for t, f, _, _ in picks[:5]])}
@@ -715,7 +715,7 @@ def sb_page():
 <span class="eyebrow">Shortlist · CRM for small business</span>
 <h1>{h1}</h1>
 {byline("/tools/best-crm-for-small-business/", SB_DATE, "2026-10-02")}
-<p class="disclose">We may earn a commission when you click some links on this page. Vendors can pay for Sponsored placements, which are always labeled; scores are editorial. See <a href="/how-we-make-money/">how we make money</a>.</p>
+<p class="disclose">We may earn money when you click links on this page. Partner compensation may affect which products we include and where they appear. See <a href="/how-we-make-money/">how we make money</a>.</p>
 </header>
 <div class="layout"><div class="main-col">
 {answer_box(f"<b>{TOOL_BY_ID[order[0]]['name']}</b> is the best CRM for most small businesses in our ranking, scoring {sb_score(order[0])}/100 on criteria weighted toward ease of use and price.", [(TOOL_BY_ID[t]["name"], sb_score(t), SB_FIT[t][0]) for t in order[:5]])}
@@ -785,7 +785,7 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
 <span class="eyebrow">Comparison · CRM software</span>
 <h1>HubSpot vs Pipedrive: Which CRM Should Your Sales Team Pick in {YEAR}?</h1>
 {byline("/compare/hubspot-vs-pipedrive/", CMP_UPDATED, CMP_UPDATED)}
-<p class="disclose">We may earn a commission when you click some links on this page. It never changes our verdict. See <a href="/how-we-make-money/">how we make money</a>.</p>
+<p class="disclose">We may earn money when you click links on this page. Partner compensation may affect which products we include and where they appear. See <a href="/how-we-make-money/">how we make money</a>.</p>
 </header>
 <div class="layout"><div class="main-col">
 
@@ -891,12 +891,12 @@ page("/methodology/", "Our Software Review Methodology | Vettlo",
 <h2>4. Check against real users</h2>
 <p>We compare our findings with patterns in verified user reviews and with practitioners in our network, looking for consistent strengths and complaints across company sizes.</p>
 <h2>5. Score and rank</h2>
-<p>Each tool gets a 0 to 5 rating per criterion. Weighted totals become a score out of 100. Tools below 70 are not included in the ranked list; we list them under <b>Also considered</b> with their score. Position follows score, adjusted only by editorial judgment we explain in the review. The one exception is labeled <b>Sponsored</b> placements, which appear first.</p>
+<p>Each tool gets a 0 to 5 rating per criterion. Weighted totals become a score out of 100. Tools below 70 are usually not included in the ranked list; we list them under <b>Also considered</b> with their score. Position follows score, adjusted only by editorial judgment we explain in the review. The exception: partner compensation may affect which products we include and where they appear, as disclosed on every review.</p>
 <h2>6. Re-check every 90 days</h2>
 <p>We re-verify pricing, plans and major features at least every 90 days and show the date on each review. Corrections are logged at the bottom of the page.</p>
 <h2>What vendors can and cannot do</h2>
 <ul><li>Vendors <b>can</b> correct factual errors, provide demo access and suggest their product for review.</li>
-<li>Vendors <b>can</b> pay for a <b>Sponsored</b> placement, which may appear at the top of a list. It is always labeled and never changes the tool's score.</li>
+<li>Vendors <b>can</b> become paying partners. Partner compensation may affect which products we include and where they appear in a list. It never changes a tool's score.</li>
 <li>Vendors <b>cannot</b> pay for a score, for the wording of a review or to remove criticism. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Who reviews</h2>
 <p>Reviews are researched, tested and written by the <a href="/team/">Vettlo Editorial Team</a>.</p>
@@ -906,21 +906,21 @@ page("/methodology/", "Our Software Review Methodology | Vettlo",
 
 # ---------- MONEY
 page("/how-we-make-money/", "How We Make Money (Affiliate Disclosure) | Vettlo",
-     "Vettlo's affiliate and advertising disclosure: where commissions and sponsored placements appear, and how they are labeled.",
+     "Vettlo's affiliate and advertising disclosure: how commissions and partner payments work and what they can affect.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Disclosure</span><h1>How we make money</h1>
-<p>Vettlo is free to read. Here is every way we earn revenue, how paid placements are labeled, and what money can never buy.</p>
+<p>Vettlo is free to read. Here is every way we earn revenue, what partner payments can affect, and what money can never buy.</p>
 <p class="small mono">Last updated {UPDATED_H}</p></div>
 <div class="page-body prose">
 <h2>Affiliate links</h2>
 <p>Some links to software vendors are affiliate links. If you click one and later buy, we may earn a commission. The disclosure line at the top of each review tells you when a page contains them. Links are marked <code>rel="sponsored"</code>.</p>
-<h2>Sponsored placements</h2>
-<p>Vendors can pay for <b>Sponsored</b> placement on category pages and in our newsletter, including a position at the top of a list. Every sponsored product is labeled <b>Sponsored</b> next to its name, and lists that contain sponsored products say so above the list. A sponsored product shows the same score it would have without paying, and the rest of the list stays ordered by score.</p>
+<h2>Partner placements</h2>
+<p>Software vendors can become paying partners, on category pages and in our newsletter. Partner compensation may affect which products we include in a list and where they appear, including positions at the top of a list. We say this in the disclosure line at the top of every review. A partner's score is the same score it would have without paying, and payment never changes what we write about a product.</p>
 <h2>Pay-per-click listings</h2>
 <p>On some pages vendors may pay per click on a "Visit website" button. Paying for clicks does not change a tool's score or what we write. Tools without any commercial relationship appear in our lists.</p>
 <h2>Sponsored content</h2>
 <p>Occasionally we publish content paid for by a vendor, such as a webinar recap or a partner guide. It is labeled <b>Sponsored</b> at the top and is never presented as a review.</p>
 <h2>What money never buys</h2>
-<div class="callout">A score, the wording of a review, the removal of criticism, or a paid placement without a Sponsored label.</div>
+<div class="callout">A score, the wording of a review, or the removal of criticism.</div>
 <h2>How reviewers are paid</h2>
 <p>Writers and reviewers are paid for their time and expertise. Their pay is never tied to clicks, conversions or which tools they recommend.</p>
 <p>Questions about a specific relationship? <a href="/contact/">Contact us</a> and we'll answer.</p>
@@ -943,7 +943,7 @@ page("/editorial-standards/", "Editorial Standards | Vettlo",
 _ex = TOOLS[0]
 _ex_rows = "".join(f'<div class="crit"><span class="nm">{n}</span><span class="w">{r:g}/5</span><span class="bar"><i style="width:{r*20:.0f}%"></i></span></div>' for (n, w), r in zip(CRITERIA, SCORES[_ex["id"]]))
 page("/about/", "About Vettlo: Independent Business Software Reviews",
-     "Vettlo is an independent publication that tests and scores business software for every team, with published criteria, checked prices and clearly labeled sponsored placements.",
+     "Vettlo is an independent publication that tests and scores business software for every team, with published criteria and prices checked at the source.",
      f"""<section class="about-hero"><div class="wrap">
 <div><span class="kicker">About Vettlo</span>
 <h1>We help teams choose software they won't regret.</h1>
@@ -968,7 +968,7 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
 <div class="mv-card"><span class="kicker">Our vision</span><h2>The first place teams check before they buy.</h2><p>We want every team, from a two-person startup to a growing finance department, to start a software decision with a Vettlo shortlist, and to trust it because they can check it.</p></div></section>
 <section><div class="section-head"><div><span class="kicker">Our promise</span><h2>Four things we will always do</h2></div></div>
 <div class="pledges promise">
-<div class="pledge"><span class="n">01</span><h3>Never sell a score</h3><p class="muted small">Scores and review wording are editorial. Vendors can pay for a Sponsored placement, and every paid placement is labeled.</p></div>
+<div class="pledge"><span class="n">01</span><h3>Never sell a score</h3><p class="muted small">Scores and review wording are editorial. Vendors can pay for a Sponsored placement, and we tell you when partners pay us.</p></div>
 <div class="pledge"><span class="n">02</span><h3>Show our working</h3><p class="muted small">Criteria, weights and every rating are published, so any score can be broken down and checked.</p></div>
 <div class="pledge"><span class="n">03</span><h3>Check prices at the source</h3><p class="muted small">Prices come from each vendor's own pricing page, with the date we checked them on every review.</p></div>
 <div class="pledge"><span class="n">04</span><h3>Keep reviews current</h3><p class="muted small">We re-check plans and prices at least every 90 days and update the page, and its date, when something changes.</p></div>
@@ -979,7 +979,7 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
 <div class="card"><span class="label">Team leads</span><h3 class="card-title">Upgrading what they use</h3><p class="muted small">Sales, marketing, support and project leads who have outgrown a tool and want to know which plan unlocks what they need.</p></div>
 <div class="card"><span class="label">Finance, IT &amp; ops managers</span><h3 class="card-title">Signing off on spend</h3><p class="muted small">The people who approve contracts and want the full cost for the whole team, including add-ons and onboarding fees.</p></div>
 </div>
-<p class="muted small" style="margin-top:1rem">Software vendor? Reach these readers with clearly labeled placements: see <a href="/advertise/">advertising</a> and <a href="/badges/">badges</a>.</p></section>
+<p class="muted small" style="margin-top:1rem">Software vendor? Reach these readers with partner placements: see <a href="/advertise/">advertising</a> and <a href="/badges/">badges</a>.</p></section>
 <section><div class="section-head"><div><span class="kicker">How a review gets made</span><h2>From a category to a ranked shortlist</h2></div><a class="btn ghost small" href="/methodology/">Full methodology</a></div>
 <ol class="steps">
 <li><b>Define the job</b><span>We set the criteria and weights that matter for the category, such as automation for email tools or AI resolution costs for help desks.</span></li>
@@ -999,23 +999,23 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
 
 # ---------- ADVERTISE
 page("/advertise/", "Advertise with Vettlo",
-     "Reach software buyers while they evaluate tools. Featured slots, pay-per-click listings and newsletter sponsorships, always clearly labeled.",
+     "Reach software buyers while they evaluate tools. Partner placements in category lists, pay-per-click listings and newsletter sponsorships.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Reach buyers while they're choosing software</h1>
-<p>Our readers arrive with a buying question. Put your product in front of them, with placements that are labeled and that buyers still trust.</p></div>
+<p>Our readers arrive with a buying question. Put your product in front of them, next to reviews buyers trust.</p></div>
 <div class="page-body" style="display:grid;gap:2.5rem">
 <div class="cards3">
 <div class="card"><span class="label">Demand capture</span><h3>Pay-per-click listings</h3><p class="muted small">Pay only when a reader clicks through to your site from a category page. Bids never change scores or review wording.</p><span class="price">CPC · pricing on request</span></div>
-<div class="card"><span class="label">Visibility</span><h3>Featured category slot</h3><p class="muted small">A labeled Sponsored placement at the top of a category shortlist.</p><span class="price">Monthly · pricing on request</span></div>
+<div class="card"><span class="label">Visibility</span><h3>Category placement</h3><p class="muted small">Inclusion in a category shortlist, with higher positions available.</p><span class="price">Monthly · pricing on request</span></div>
 <div class="card"><span class="label">Awareness</span><h3>Newsletter sponsorship</h3><p class="muted small">One sponsor per issue of The Vettlo Briefing, sent weekly to software buyers.</p><span class="price">Per issue · pricing on request</span></div>
 <div class="card"><span class="label">Thought leadership</span><h3>Sponsored guides &amp; events</h3><p class="muted small">Co-produced webinars and guides, labeled Sponsored and kept separate from reviews.</p><span class="price">Custom</span></div>
 </div>
-<div class="prose"><h2>What sponsorship buys, and what it doesn't</h2><p>Sponsored placement can put your product at the top of a category list, labeled Sponsored. Scores and review wording stay editorial only. That's what makes a placement next to them worth paying for. Read the full <a href="/how-we-make-money/">disclosure</a>.</p></div>
+<div class="prose"><h2>What sponsorship buys, and what it doesn't</h2><p>A partner placement can put your product in a category list and higher in it. Scores and review wording stay editorial only. That's what makes a placement next to them worth paying for. Read the full <a href="/how-we-make-money/">disclosure</a>.</p></div>
 <div class="prose"><h2>Audience</h2><p>Vettlo is written for the people who choose software for their company: founders, team leads, and operations, IT and finance managers. We'll publish audited traffic and newsletter numbers after our first full quarter. Until then, <a href="/contact/">ask us</a> for current figures.</p></div>
 <div><h2 style="margin-bottom:1rem">Talk to us</h2>
 <form class="form" id="adv-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div><label for="a-name">Name<input id="a-name" required autocomplete="name"></label>
 <label for="a-email">Work email<input id="a-email" type="email" required autocomplete="email"></label>
 <label for="a-company">Company website<input id="a-company" required placeholder="https://"></label>
-<label for="a-int">Interested in<select id="a-int"><option>Pay-per-click listings</option><option>Featured category slot</option><option>Newsletter sponsorship</option><option>Sponsored guides &amp; events</option></select></label>
+<label for="a-int">Interested in<select id="a-int"><option>Pay-per-click listings</option><option>Category placement</option><option>Newsletter sponsorship</option><option>Sponsored guides &amp; events</option></select></label>
 <label for="a-msg">Message (optional)<textarea id="a-msg" rows="4"></textarea></label>
 <button class="btn" type="submit">Send inquiry</button><p class="form-msg" id="adv-msg" aria-live="polite"></p></form>
 <script>(function(){var t0=Date.now();var f=document.getElementById('adv-form'),o=document.getElementById('adv-msg');
@@ -1036,7 +1036,7 @@ page("/team/", "Vettlo Editorial Team",
 <ul><li>Every review follows our published <a href="/methodology/">methodology</a>, with category-specific criteria and weights shown on the page.</li>
 <li>Prices, plans and ratings are re-checked at least every 90 days, and each review shows its last verified date.</li>
 <li>We test tools hands-on with trials and free plans.</li>
-<li>Advertising and affiliate relationships never affect scores or what we write; paid placements are labeled Sponsored. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
+<li>Advertising and affiliate relationships never affect scores or what we write. Partner compensation may affect which products we include and where they appear. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
 <h2>Published reviews</h2>
 <p>See <a href="/reviews/">all reviews</a>.</p>
 <h2>Join us</h2>
@@ -1098,7 +1098,7 @@ page("/terms/", "Terms of Use | Vettlo", "Terms for using vettlo.com.",
 <h2>Accuracy</h2>
 <p>We work to keep content accurate and show the date each review was last verified. If you spot an error, please <a href="/contact/">tell us</a> and we'll correct it.</p>
 <h2>Affiliate links and sponsorships</h2>
-<p>Some links earn us a commission, and some placements are sponsored and labeled as such. See <a href="/how-we-make-money/">how we make money</a>.</p>
+<p>Some links earn us money, and partner compensation may affect which products we include and where they appear. See <a href="/how-we-make-money/">how we make money</a>.</p>
 <h2>Content</h2>
 <p>Text and design on this site belong to Vettlo. You may quote short passages with a link back to the source page. Product names and trademarks belong to their owners.</p>
 <h2>Liability</h2>
@@ -1297,7 +1297,7 @@ def dept_hubs():
         soon = [c for c in cats if not c[3]]
         soon_html = ("<section class=\"prose\"><h2>Coming next</h2><p>We're researching these categories and will publish them as soon as pricing and data are verified: "
                      + ", ".join(_catname(c[1]) for c in soon) + ".</p></section>") if soon else ""
-        faqs.append((f"How does Vettlo rank {label.lower()}?", "Each category has its own weighted criteria, published on the review. Tools get a 0 to 5 rating per criterion, converted to a score out of 100. Vendors cannot pay for a score, and any paid placement is labeled Sponsored. See our methodology page for details."))
+        faqs.append((f"How does Vettlo rank {label.lower()}?", "Each category has its own weighted criteria, published on the review. Tools get a 0 to 5 rating per criterion, converted to a score out of 100. Vendors cannot pay for a score. Partner compensation may affect which products we include and where they appear. See our methodology page for details."))
         h1 = f"Best {title} in {YEAR}"
         body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {dname}</nav>
@@ -1400,7 +1400,7 @@ def build():
 
 > Vettlo is an independent publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Tools are tested hands-on with trials and free plans, and prices are checked against each vendor's pricing page.
 
-Scores are editorial only and based on published, weighted criteria per category. Vendors cannot pay for a score or review wording. Vendors can pay for Sponsored placements, which are always labeled. Reviews are re-verified every 90 days.
+Scores are editorial only and based on published, weighted criteria per category. Vendors cannot pay for a score or review wording. Partner compensation may affect which products we include and where they appear. Reviews are re-verified every 90 days.
 
 ## Reviews
 - [Best CRM Software for Sales Teams]({DOMAIN}/tools/best-crm-software/): shortlist of {len(TOOLS)} CRMs scored on pipeline management, automation, reporting, integrations, usability and value

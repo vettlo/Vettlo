@@ -23,7 +23,7 @@ def _breakdown(cat, tid):
 
 def _byline(url, cat):
     return (byline(url, cat["date"], cat["date"]) +
-            '<p class="disclose">We may earn a commission when you click some links on this page. Vendors can pay for Sponsored placements, which are always labeled; scores are editorial. '
+            '<p class="disclose">We may earn money when you click links on this page. Partner compensation may affect which products we include and where they appear. '
             'See <a href="/how-we-make-money/">how we make money</a>.</p>')
 
 
