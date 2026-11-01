@@ -120,7 +120,7 @@
     bindGo();
     const pick = $("#pt-pick"); if (pick) pick.addEventListener("change", () => plans(pick.value));
     const act = async (url, body, okMsg) => { const r = await api(url, { method: "POST", body }); toast(r.ok ? okMsg : r.error, !r.ok); plans(cur.id); };
-    document.querySelectorAll("[data-sub]").forEach((b) => b.addEventListener("click", () => act("/api/subscribe", { listing_id: cur.id, plan: b.dataset.sub }, "Reserved. We'll email your invoice; the plan goes live when it's paid.")));
+    document.querySelectorAll("[data-sub]").forEach((b) => b.addEventListener("click", () => act("/api/subscribe", { listing_id: cur.id, plan: b.dataset.sub }, ME.payments === "iyzico" ? "Reserved. Pay the invoice in the Invoices tab to start your plan." : "Reserved. We'll email your invoice; the plan goes live when it's paid.")));
     document.querySelectorAll("[data-renew]").forEach((b) => b.addEventListener("click", () => act(`/api/subs/${b.dataset.renew}/renew`, {}, "Renewal invoice requested.")));
     document.querySelectorAll("[data-cancel]").forEach((b) => b.addEventListener("click", () => act(`/api/subs/${b.dataset.cancel}/cancel`, {}, "Reservation cancelled.")));
     document.querySelectorAll("[data-wait]").forEach((b) => b.addEventListener("click", () => act("/api/waitlist", { listing_id: cur.id, plan: b.dataset.wait }, "You're on the waitlist.")));
@@ -150,11 +150,25 @@
 
   async function invoices() {
     const rows = (await api("/api/invoices")).rows || [];
+    const card = ME.payments === "iyzico";
+    const res = new URLSearchParams(location.search).get("pay");
+    const msg = { ok: "Payment received. Your plan is active; it goes live on the site as soon as your listing is approved.", failed: "The payment didn't go through. You haven't been charged; please try again.",
+      error: "We couldn't confirm that payment. If you were charged, contact us and we'll sort it out.", held: "Payment received, but the plan couldn't start automatically. We'll contact you shortly." }[res];
+    if (res) history.replaceState(null, "", location.pathname + "#invoices");
     view(`<div class="pt-head"><h2>Invoices</h2></div>
-      <p class="muted">${ME.payments === "iyzico" ? "Pay open invoices by card through iyzico." : "We email an invoice for each new plan and renewal. Your plan goes live, or is extended by a year, as soon as payment arrives."}</p>
-      ${rows.length ? `<div class="table-wrap"><table class="pt-table"><thead><tr><th>Date</th><th>For</th><th>Amount</th><th>Status</th></tr></thead><tbody>
-      ${rows.map((x) => `<tr><td>${date(x.created_at)}</td><td>${x.plan ? `${esc(x.product_name)}, ${PLAN[x.plan]} plan in ${esc(catName(x.category))}, 1 year` : "Adjustment"}</td><td>${money(x.amount_cents)}</td><td><span class="pt-pill ${x.status === "paid" ? "ok" : x.status === "requested" ? "pending" : "off"}">${x.status === "requested" ? "Due" : x.status === "paid" ? "Paid" : "Cancelled"}</span></td></tr>`).join("")}</tbody></table></div>`
+      ${msg ? `<div class="pt-note">${msg}</div>` : ""}
+      <p class="muted">${card ? "Pay open invoices by card. Payments are processed securely by iyzico; your plan starts, or is extended by a year, as soon as the payment is confirmed." : "We email an invoice for each new plan and renewal. Your plan goes live, or is extended by a year, as soon as payment arrives."}</p>
+      ${rows.length ? `<div class="table-wrap"><table class="pt-table"><thead><tr><th>Date</th><th>For</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
+      ${rows.map((x) => `<tr><td>${date(x.created_at)}</td><td>${x.plan ? `${esc(x.product_name)}, ${PLAN[x.plan]} plan in ${esc(catName(x.category))}, 1 year` : "Adjustment"}</td><td>${money(x.amount_cents)}</td><td><span class="pt-pill ${x.status === "paid" ? "ok" : x.status === "requested" ? "pending" : "off"}">${x.status === "requested" ? "Due" : x.status === "paid" ? "Paid" : "Cancelled"}</span></td>
+        <td>${x.status === "requested" && card ? `<button class="btn small" data-pay="${x.id}">Pay by card</button>` : ""}</td></tr>`).join("")}</tbody></table></div>`
       : `<p class="muted">No invoices yet.</p>`}`);
+    document.querySelectorAll("[data-pay]").forEach((b) => b.addEventListener("click", async () => {
+      b.disabled = true; b.textContent = "Opening…";
+      const r = await api("/api/pay", { method: "POST", body: { invoice_id: Number(b.dataset.pay) } });
+      if (r.ok && r.url) { location.href = r.url; return; }
+      toast(r.error || "Something went wrong.", true); b.disabled = false; b.textContent = "Pay by card";
+      if (r.needs_billing) showTab("account");
+    }));
   }
 
   async function reports() {
@@ -169,16 +183,29 @@
   }
 
   async function account() {
-    const me = await api("/api/me"); const v = me.vendor;
-    view(`<div class="pt-head"><h2>Account</h2></div><form class="pt-card" id="pt-acct"><div class="pt-grid">
+    const [me, bl] = await Promise.all([api("/api/me"), api("/api/billing")]); const v = me.vendor, b = bl.billing || {};
+    const f = (k, label, extra = "") => `<label>${label}<input name="${k}" value="${esc(b[k] || "")}" ${extra}></label>`;
+    view(`<div class="pt-head"><h2>Account</h2></div><form class="pt-card" id="pt-acct"><h3>Company</h3><div class="pt-grid">
       <label>Company<input name="company" value="${esc(v.company || "")}"></label>
       <label>Website<input name="website" type="url" value="${esc(v.website || "")}"></label>
       <label>Sign-in email<input value="${esc(v.email)}" disabled></label></div>
-      <div class="pt-actions"><button class="btn small" type="submit">Save</button><a class="small" href="/advertiser-terms/" target="_blank">Advertiser terms</a></div></form>`);
+      <div class="pt-actions"><button class="btn small" type="submit">Save</button><a class="small" href="/advertiser-terms/" target="_blank">Advertiser terms</a></div></form>
+      <form class="pt-card" id="pt-bill"><h3>Billing details</h3><p class="muted small">Used on your invoices and required by our payment provider for card payments.</p><div class="pt-grid">
+      ${f("name", "First name", "required")}${f("surname", "Last name", "required")}
+      ${f("phone", "Phone", 'required type="tel" placeholder="+1 555 000 0000"')}${f("tax_id", "Tax ID or identity number", 'required placeholder="VAT, EIN, company number or national ID"')}
+      <label class="wide">Billing address<input name="address" value="${esc(b.address || "")}" required></label>
+      ${f("city", "City", "required")}${f("country", "Country", "required")}${f("zip", "Postal code")}</div>
+      <div class="pt-actions"><button class="btn small" type="submit">Save billing details</button></div></form>`);
     $("#pt-acct").addEventListener("submit", async (e) => {
-      e.preventDefault(); const f = e.target;
-      const r = await api("/api/me", { method: "PUT", body: { company: f.company.value, website: f.website.value } });
+      e.preventDefault(); const t = e.target;
+      const r = await api("/api/me", { method: "PUT", body: { company: t.company.value, website: t.website.value } });
       toast(r.ok ? "Saved." : r.error, !r.ok);
+    });
+    $("#pt-bill").addEventListener("submit", async (e) => {
+      e.preventDefault(); const t = e.target; const body = {};
+      for (const k of ["name", "surname", "phone", "tax_id", "address", "city", "country", "zip"]) body[k] = t[k].value;
+      const r = await api("/api/billing", { method: "PUT", body });
+      toast(r.ok ? "Billing details saved." : r.error, !r.ok);
     });
   }
 

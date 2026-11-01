@@ -48,6 +48,8 @@ const SCHEMA = [
   `CREATE INDEX IF NOT EXISTS subs_cat_plan ON subs(category, plan, status)`,
   `CREATE TABLE IF NOT EXISTS plan_waitlist (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, listing_id INTEGER NOT NULL, category TEXT NOT NULL,
      plan TEXT NOT NULL, created_at TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS billing (vendor_id INTEGER PRIMARY KEY, name TEXT, surname TEXT, phone TEXT, tax_id TEXT, address TEXT, city TEXT, country TEXT, zip TEXT, updated_at TEXT)`,
+  `CREATE TABLE IF NOT EXISTS pay_sessions (token TEXT PRIMARY KEY, invoice_id INTEGER NOT NULL, vendor_id INTEGER NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS impressions (listing_id INTEGER NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (listing_id, day))`,
   `CREATE TABLE IF NOT EXISTS ledger (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, amount_cents INTEGER NOT NULL, kind TEXT NOT NULL,
      status TEXT NOT NULL, note TEXT, provider_ref TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
@@ -86,6 +88,20 @@ async function sendLoginEmail(env, email, link) {
   throw new Error("no-mailer");
 }
 
+// Short notices to the site owner (the FORM_TO address) about vendor activity. Never blocks the request.
+async function notifyAdmin(env, subject, lines) {
+  try {
+    if (!env.SEND || !env.FORM_TO) return;
+    const { EmailMessage } = await import("cloudflare:email");
+    const text = lines.filter(Boolean).join("\n") + "\n\nAdmin: https://vettlo.com/vendors/admin/";
+    const b64 = (x) => { let b = ""; for (const c of new TextEncoder().encode(x)) b += String.fromCharCode(c); return btoa(b); };
+    const raw = [`From: Vettlo <forms@vettlo.com>`, `To: <${env.FORM_TO}>`, `Subject: =?UTF-8?B?${b64("[Vettlo portal] " + subject)}?=`, `Message-ID: <${crypto.randomUUID()}@vettlo.com>`,
+      `Date: ${new Date().toUTCString()}`, "MIME-Version: 1.0", "Content-Type: text/plain; charset=UTF-8", "Content-Transfer-Encoding: base64", "",
+      b64(text).replace(/.{1,76}/g, "$&\r\n")].join("\r\n");
+    await env.SEND.send(new EmailMessage("forms@vettlo.com", env.FORM_TO, raw));
+  } catch (e) { /* notices are best effort */ }
+}
+
 // ---------- auth
 function getCookie(request, name) {
   const m = (request.headers.get("cookie") || "").match(new RegExp("(?:^|; )" + name + "=([^;]+)"));
@@ -113,6 +129,7 @@ async function requestLogin(request, env, data) {
     if (!data.accept_terms) return json({ ok: false, error: "Please accept the advertiser terms." }, 400);
     await env.DB.prepare("INSERT INTO vendors (email, company, website, terms_accepted_at, created_at) VALUES (?, ?, ?, ?, ?)")
       .bind(email, company, website, now(), now()).run();
+    await notifyAdmin(env, `New vendor account: ${company}`, [`Company: ${company}`, `Website: ${website}`, `Email: ${email}`]);
   }
   const recent = await env.DB.prepare("SELECT COUNT(*) AS n FROM login_tokens WHERE email = ? AND created_at > ?")
     .bind(email, new Date(Date.now() - 3600e3).toISOString()).first();
@@ -203,7 +220,7 @@ async function vendorApi(request, env, vendor, path) {
 
   if (path === "/api/me" && method === "GET") {
     return json({ ok: true, vendor: { id: vendor.id, email: vendor.email, company: vendor.company, website: vendor.website, is_admin: vendor.is_admin },
-      payments: env.IYZICO_API_KEY ? "iyzico" : "invoice" });
+      payments: payMode(env) });
   }
   if (path === "/api/me" && method === "PUT") {
     const company = oneLine(body.company, 120) || vendor.company;
@@ -236,6 +253,7 @@ async function vendorApi(request, env, vendor, path) {
     const tool = (cat.tools || []).find((t) => t.name.toLowerCase() === f.product_name.toLowerCase());
     const r = await env.DB.prepare(`INSERT INTO listings (vendor_id, product_name, website, landing_url, category, tool_id, best_for, description, starting_price, created_at, updated_at)
       VALUES (?,?,?,?,?,?,?,?,?,?,?)`).bind(vendor.id, f.product_name, f.website, f.landing_url, cat.slug, tool ? tool.id : null, f.best_for, f.description, f.starting_price, now(), now()).run();
+    await notifyAdmin(env, `Listing to review: ${f.product_name}`, [`${vendor.company} submitted ${f.product_name} for ${cat.name}.`, `Website: ${f.website}`, `Best for: ${f.best_for}`, `Description: ${f.description}`]);
     return json({ ok: true, id: r.meta.last_row_id });
   }
   let m = path.match(/^\/api\/listings\/(\d+)$/);
@@ -251,6 +269,7 @@ async function vendorApi(request, env, vendor, path) {
       starting_price = COALESCE(?, starting_price), status = ?, updated_at = ? WHERE id = ?`)
       .bind(active, landing, body.best_for !== undefined ? oneLine(body.best_for, 90) : null, body.description !== undefined ? clean(body.description, 600) : null,
         body.starting_price !== undefined ? oneLine(body.starting_price, 80) : null, status, now(), l.id).run();
+    if (status !== l.status) await notifyAdmin(env, `Listing edited, review again: ${l.product_name}`, [`${vendor.company} changed the copy of ${l.product_name}. It's hidden until you approve it again.`]);
     return json({ ok: true, resubmitted: status !== l.status });
   }
   if (path === "/api/plans" && method === "GET") {
@@ -277,7 +296,9 @@ async function vendorApi(request, env, vendor, path) {
       env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, subId, st.price_cents, now(), now()),
       env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, l.category, plan),
     ]);
-    return json({ ok: true, sub_id: subId, method: env.IYZICO_API_KEY ? "iyzico" : "invoice" });
+    await notifyAdmin(env, `Plan reserved: ${PLAN_NAME[plan]} for ${l.product_name}`, [`${vendor.company} reserved ${PLAN_NAME[plan]} on ${l.category} for ${l.product_name}.`,
+      `Invoice: ${money(st.price_cents)}, open for ${RESERVE_DAYS} days.`, payMode(env) === "iyzico" ? "They can pay by card in the portal." : "Send them an invoice, then mark it paid in the admin page.", l.status !== "approved" ? "The listing still needs your approval." : ""]);
+    return json({ ok: true, sub_id: subId, method: payMode(env) });
   }
   m = path.match(/^\/api\/subs\/(\d+)\/(renew|cancel)$/);
   if (m && method === "POST") {
@@ -296,7 +317,7 @@ async function vendorApi(request, env, vendor, path) {
     if (open) return json({ ok: false, error: "A renewal invoice is already open for this plan." }, 400);
     const price = prices(env)[s.plan];
     await env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, s.id, price, now(), now()).run();
-    return json({ ok: true, method: env.IYZICO_API_KEY ? "iyzico" : "invoice" });
+    return json({ ok: true, method: payMode(env) });
   }
   if (path === "/api/waitlist" && method === "POST") {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(body.listing_id), vendor.id).first();
@@ -309,6 +330,17 @@ async function vendorApi(request, env, vendor, path) {
     await env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, oneLine(body.category, 120), oneLine(body.plan, 20)).run();
     return json({ ok: true });
   }
+  if (path === "/api/billing" && method === "GET") {
+    return json({ ok: true, billing: (await env.DB.prepare("SELECT * FROM billing WHERE vendor_id = ?").bind(vendor.id).first()) || {} });
+  }
+  if (path === "/api/billing" && method === "PUT") {
+    const f = {}; for (const k of ["name", "surname", "phone", "tax_id", "address", "city", "country", "zip"]) f[k] = oneLine(body[k], k === "address" ? 300 : 80);
+    await env.DB.prepare(`INSERT INTO billing (vendor_id, name, surname, phone, tax_id, address, city, country, zip, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)
+      ON CONFLICT(vendor_id) DO UPDATE SET name=excluded.name, surname=excluded.surname, phone=excluded.phone, tax_id=excluded.tax_id, address=excluded.address,
+      city=excluded.city, country=excluded.country, zip=excluded.zip, updated_at=excluded.updated_at`).bind(vendor.id, f.name, f.surname, f.phone, f.tax_id, f.address, f.city, f.country, f.zip, now()).run();
+    return json({ ok: true });
+  }
+  if (path === "/api/pay" && method === "POST") return startCardPayment(request, env, vendor, body);
   if (path === "/api/invoices" && method === "GET") {
     const rows = (await env.DB.prepare(`SELECT i.*, s.category, s.plan, l.product_name FROM invoices i LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id
       WHERE i.vendor_id = ? ORDER BY i.created_at DESC LIMIT 100`).bind(vendor.id).all()).results;
@@ -364,21 +396,8 @@ async function adminApi(request, env, vendor, path) {
       return json({ ok: true });
     }
     if (body.status !== "paid") return json({ ok: false, error: "Bad status." }, 400);
-    const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(inv.slot_id).first();
-    if (!s) return json({ ok: false, error: "The plan for this invoice no longer exists." }, 400);
-    if (s.status === "cancelled") return json({ ok: false, error: "This reservation was cancelled." }, 400);
-    const live = s.status === "active" ? s.paid_through > now() : s.reserved_until > now();
-    if (!live) {
-      const others = (await occupants(env, s.category, s.plan)).filter((o) => o.id !== s.id);
-      if (others.length >= CAPACITY[s.plan]) return json({ ok: false, error: "This plan lapsed and its seat has been taken. Refund or offer another plan." }, 409);
-    }
-    const paidThrough = addYear(s.status === "active" ? later(s.paid_through, now()) : now());
-    await env.DB.batch([
-      env.DB.prepare("UPDATE invoices SET status = 'paid', provider_ref = ?, updated_at = ? WHERE id = ?").bind(oneLine(body.ref, 120) || null, now(), inv.id),
-      env.DB.prepare("UPDATE subs SET status = 'active', paid_through = ?, started_at = COALESCE(started_at, ?), updated_at = ? WHERE id = ?").bind(paidThrough, now(), now(), s.id),
-    ]);
-    placementCache.clear();
-    return json({ ok: true, paid_through: paidThrough });
+    const r = await activateInvoice(env, inv, oneLine(body.ref, 120) || "manual");
+    return json(r, r.ok ? 200 : 409);
   }
   m = path.match(/^\/api\/admin\/subs\/(\d+)\/end$/);
   if (m && method === "POST") {
@@ -387,6 +406,98 @@ async function adminApi(request, env, vendor, path) {
     return json({ ok: true });
   }
   return json({ ok: false, error: "Not found." }, 404);
+}
+
+// Marks an invoice paid and starts or extends its plan by a year. Shared by the admin page and card payments.
+async function activateInvoice(env, inv, ref) {
+  const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(inv.slot_id).first();
+  if (!s) return { ok: false, error: "The plan for this invoice no longer exists." };
+  if (s.status === "cancelled") return { ok: false, error: "This reservation was cancelled." };
+  const live = s.status === "active" ? s.paid_through > now() : s.reserved_until > now();
+  if (!live) {
+    const others = (await occupants(env, s.category, s.plan)).filter((o) => o.id !== s.id);
+    if (others.length >= CAPACITY[s.plan]) return { ok: false, error: "This plan lapsed and its seat has been taken. Refund or offer another plan." };
+  }
+  const paidThrough = addYear(s.status === "active" ? later(s.paid_through, now()) : now());
+  const r = await env.DB.prepare("UPDATE invoices SET status = 'paid', provider_ref = ?, updated_at = ? WHERE id = ? AND status = 'requested'").bind(ref, now(), inv.id).run();
+  if (!r.meta.changes) return { ok: false, error: "This invoice was already closed." };
+  await env.DB.prepare("UPDATE subs SET status = 'active', paid_through = ?, started_at = COALESCE(started_at, ?), updated_at = ? WHERE id = ?").bind(paidThrough, now(), now(), s.id).run();
+  placementCache.clear();
+  return { ok: true, paid_through: paidThrough, sub: s };
+}
+
+// ---------- card payments through iyzico (Checkout Form)
+const money = (c) => "$" + (c / 100).toFixed(2);
+function payMode(env) { return env.IYZICO_API_KEY && env.IYZICO_SECRET_KEY ? "iyzico" : "invoice"; }
+const iyzicoBase = (env) => env.IYZICO_BASE_URL || (env.IYZICO_LIVE === "1" ? "https://api.iyzipay.com" : "https://sandbox-api.iyzipay.com");
+async function hmacHex(key, msg) {
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(key), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", k, new TextEncoder().encode(msg));
+  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+async function iyzico(env, path, payload) {
+  const body = JSON.stringify(payload);
+  const rnd = Date.now() + "" + Math.floor(Math.random() * 1e9);
+  const sig = await hmacHex(env.IYZICO_SECRET_KEY, rnd + path + body);
+  const auth = btoa(`apiKey:${env.IYZICO_API_KEY}&randomKey:${rnd}&signature:${sig}`);
+  const r = await fetch(iyzicoBase(env) + path, { method: "POST", body,
+    headers: { "content-type": "application/json", accept: "application/json", authorization: "IYZWSv2 " + auth, "x-iyzi-rnd": rnd } });
+  return r.json();
+}
+const num = (v) => String(Number(v)); // iyzico signs prices without trailing zeros ("50.00" -> "50")
+
+async function startCardPayment(request, env, vendor, body) {
+  if (payMode(env) !== "iyzico") return json({ ok: false, error: "Card payments aren't available yet. We'll email you an invoice." }, 400);
+  const inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ? AND vendor_id = ? AND status = 'requested'").bind(Number(body.invoice_id), vendor.id).first();
+  if (!inv) return json({ ok: false, error: "This invoice isn't open." }, 400);
+  const s = await env.DB.prepare("SELECT s.*, l.product_name FROM subs s JOIN listings l ON l.id = s.listing_id WHERE s.id = ?").bind(inv.slot_id).first();
+  if (!s || s.status === "cancelled" || (s.status === "reserved" && s.reserved_until <= now())) return json({ ok: false, error: "This reservation has lapsed. Reserve the plan again." }, 400);
+  const b = await env.DB.prepare("SELECT * FROM billing WHERE vendor_id = ?").bind(vendor.id).first();
+  if (!b || !b.name || !b.surname || !b.phone || !b.tax_id || !b.address || !b.city || !b.country) return json({ ok: false, error: "Add your billing details first (Account tab).", needs_billing: true }, 400);
+  const price = (inv.amount_cents / 100).toFixed(2);
+  const origin = new URL(request.url).origin;
+  const contact = `${b.name} ${b.surname}`;
+  const addr = { contactName: contact, city: b.city, country: b.country, address: b.address, zipCode: b.zip || undefined };
+  const res = await iyzico(env, "/payment/iyzipos/checkoutform/initialize/auth/ecom", {
+    locale: "en", conversationId: String(inv.id), price, paidPrice: price, currency: env.IYZICO_CURRENCY || "USD", basketId: "inv-" + inv.id,
+    paymentGroup: "LISTING", callbackUrl: origin + "/api/pay/callback", enabledInstallments: [1],
+    buyer: { id: "v" + vendor.id, name: b.name, surname: b.surname, gsmNumber: b.phone, email: vendor.email, identityNumber: b.tax_id,
+      registrationAddress: b.address, city: b.city, country: b.country, zipCode: b.zip || undefined, ip: request.headers.get("cf-connecting-ip") || "" },
+    billingAddress: addr,
+    basketItems: [{ id: "sub-" + s.id, name: `Vettlo ${PLAN_NAME[s.plan]} plan, 1 year: ${s.product_name}`.slice(0, 120), category1: "Advertising", itemType: "VIRTUAL", price }],
+  });
+  if (res.status !== "success" || !res.token || !res.paymentPageUrl) return json({ ok: false, error: "The payment page couldn't be opened" + (res.errorMessage ? ": " + res.errorMessage : ".") }, 502);
+  await env.DB.prepare("INSERT INTO pay_sessions (token, invoice_id, vendor_id, created_at) VALUES (?,?,?,?)").bind(res.token, inv.id, vendor.id, now()).run();
+  return json({ ok: true, url: res.paymentPageUrl });
+}
+
+// iyzico posts the token here after the card form; we confirm the result with iyzico before activating anything.
+async function cardCallback(request, env) {
+  const back = (q) => Response.redirect(new URL("/vendors/app/?" + q + "#invoices", request.url).toString(), 303);
+  const form = await request.formData().catch(() => null);
+  const token = form ? String(form.get("token") || "") : "";
+  const ps = token && (await env.DB.prepare("SELECT * FROM pay_sessions WHERE token = ?").bind(token).first());
+  if (!ps) return back("pay=error");
+  const res = await iyzico(env, "/payment/iyzipos/checkoutform/auth/ecom/detail", { locale: "en", conversationId: String(ps.invoice_id), token });
+  const expected = await hmacHex(env.IYZICO_SECRET_KEY, [res.paymentStatus, res.paymentId, res.currency, res.basketId, res.conversationId, num(res.paidPrice), num(res.price), res.token].join(":"));
+  const inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ?").bind(ps.invoice_id).first();
+  const ok = res.status === "success" && res.paymentStatus === "SUCCESS" && Number(res.fraudStatus) === 1 && res.signature === expected
+    && res.basketId === "inv-" + ps.invoice_id && inv && Math.round(Number(res.paidPrice) * 100) === inv.amount_cents;
+  if (!ok) {
+    if (res.paymentStatus === "SUCCESS") await notifyAdmin(env, "Card payment needs a manual check", [`Invoice ${ps.invoice_id}: iyzico reported a payment that didn't pass our checks (fraud status ${res.fraudStatus}, payment ${res.paymentId}). Check it in the iyzico panel before marking the invoice paid.`]);
+    return back("pay=failed");
+  }
+  if (inv.status === "paid") return back("pay=ok");
+  const r = await activateInvoice(env, inv, "iyzico:" + res.paymentId);
+  const v = await env.DB.prepare("SELECT company FROM vendors WHERE id = ?").bind(inv.vendor_id).first();
+  if (!r.ok) {
+    await notifyAdmin(env, "Paid, but the plan couldn't start", [`${v && v.company} paid invoice ${inv.id} by card (iyzico ${res.paymentId}), but: ${r.error}`, "Refund it in the iyzico panel or contact the vendor."]);
+    return back("pay=held");
+  }
+  const l = await env.DB.prepare("SELECT product_name, status FROM listings WHERE id = ?").bind(r.sub.listing_id).first();
+  await notifyAdmin(env, `Payment received: ${money(inv.amount_cents)} from ${v && v.company}`, [`${PLAN_NAME[r.sub.plan]} plan for ${l.product_name} on ${r.sub.category}, paid by card (iyzico ${res.paymentId}).`, `Active until ${r.paid_through.slice(0, 10)}.`,
+    l.status === "approved" ? "The listing is approved, so it's live now." : "The listing is waiting for your approval. Approve it in the admin page to put it live."]);
+  return back("pay=ok");
 }
 
 // ---------- click tracking (reporting only; positions are billed monthly, not per click)
@@ -421,6 +532,7 @@ export async function handleGo(request, env, ctx) {
 export async function handlePortalApi(request, env, path) {
   if (!env.DB) return json({ ok: false, error: "The vendor portal isn't connected to its database yet." }, 503);
   await migrate(env);
+  if (path === "/api/pay/callback" && request.method === "POST") return cardCallback(request, env); // posted by the iyzico form
   if (request.method !== "GET" && request.headers.get("x-requested-with") !== "vettlo") return json({ ok: false, error: "Bad request." }, 400);
   if (path === "/api/auth/request" && request.method === "POST") return requestLogin(request, env, await request.json().catch(() => ({})));
   if (path === "/api/auth/verify" && request.method === "GET") return verifyLogin(request, env);
