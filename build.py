@@ -1231,10 +1231,19 @@ def badges_page():
 
 
 def scoreboard():
-    rows = [("CRM", TOOLS[0]["name"], score(TOOLS[0]["id"]), "/tools/best-crm-software/", len(CONSIDERED))] + SCOREBOARD
-    lis = "".join(f'<li><a href="{u}"><span class="cat">{c}</span><span class="tool-n">{n}</span><span class="sc">{v}<small>/100</small></span><span class="meter"><i style="width:{v}%"></i></span></a></li>' for c, n, v, u, _ in rows[:6])
-    board = (f'<aside class="board" aria-label="Top-ranked tool in each category"><div class="board-head"><h2>Top of each shortlist</h2><span>Updated {hdate(max([UPDATED] + [v.get("checked", UPDATED) for v in UPDATES.values()]))}</span></div>'
-             f'<ol>{lis}</ol><div class="board-foot">Scores out of 100 from weighted criteria. <a href="/best-tools/">All {len(rows)} categories</a> · <a href="/methodology/">How scoring works</a></div></aside>')
+    crit = [("Core features", 25, 92), ("Automation", 20, 84), ("Reporting", 15, 88), ("Integrations", 15, 80), ("Ease of use", 10, 90), ("Price &amp; value", 15, 76)]
+    rows = "".join(f'<li><span class="nm">{n}</span><span class="wt">{w}%</span><span class="tr"><i style="--v:{v}%"></i></span></li>' for n, w, v in crit)
+    ticks = "".join(f'<line x1="70" y1="6" x2="70" y2="12" transform="rotate({a} 70 70)"/>' for a in range(0, 360, 15))
+    checks = "".join(f'<li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>{t}</li>' for t in
+                     ("Prices verified at the source", "Criteria published on every review", "Re-checked every 90 days"))
+    board = f"""<aside class="panel" aria-label="How the Vettlo Score works"><div class="panel-glow" aria-hidden="true"></div>
+<div class="panel-head"><span class="panel-title"><b>The Vettlo Score</b><span>How every tool is rated</span></span><span class="panel-chip"><i></i>Live methodology</span></div>
+<div class="panel-body"><div class="gauge" aria-hidden="true"><svg viewBox="0 0 140 140"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c98c"/><stop offset="1" stop-color="#9ff0cf"/></linearGradient></defs>
+<g class="ticks">{ticks}</g><circle class="g-track" cx="70" cy="70" r="52"/><circle class="g-arc" cx="70" cy="70" r="52" pathLength="100"/></svg>
+<div class="g-val"><b>/100</b><span>Weighted</span></div></div>
+<ul class="wts">{rows}</ul></div>
+<ul class="panel-foot">{checks}</ul>
+<a class="panel-link" href="/methodology/">How scoring works <span aria-hidden="true">→</span></a></aside>"""
     PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--SCOREBOARD-->", board)
 
 
