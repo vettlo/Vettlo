@@ -1436,6 +1436,9 @@ def build():
     guides_index()
     link_guides()
     fill_explainers()
+    for _t in TOOLS + [t for t in CONSIDERED if t not in TOOLS]:
+        LOGOS[_t["name"]] = URLS[_t["id"]]; LOGOS[SHORT[_t["id"]]] = URLS[_t["id"]]
+    add_logos()
     reviews_page()
     badges_page()
     scoreboard()

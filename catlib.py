@@ -75,6 +75,8 @@ def category_page(cat):
     ranked = sorted([k for k in tools if cat_score(cat, k) >= THRESHOLD], key=lambda k: (-cat_score(cat, k), -float(tools[k]["g2"][0])))
     excluded = [k for k in tools if cat_score(cat, k) < THRESHOLD]
     cat["_ranked"] = ranked
+    for _t in tools.values():
+        LOGOS[_t["name"]] = _t["url"]; LOGOS[_t["short"]] = _t["url"]
     PRICEROWS[cat["slug"]] = dict(noun=_noun(cat), plural=cat["plural"], others=cat.get("others", []), rows=[(tools[k]["name"], tools[k]["price"], tools[k]["price_note"], tools[k]["trial"], f"#{k}") for k in ranked])
     BADGES.extend((cat["crumb"], cat["slug"], k, tools[k]["name"], i) for i, k in enumerate(ranked, 1))
     SCOREBOARD.append((cat["crumb"], tools[ranked[0]]["name"], cat_score(cat, ranked[0]), f"/tools/{cat['slug']}/", len(tools)))
@@ -243,6 +245,34 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
     COMPARES.setdefault(f"{cat['slug']}:{a}", []).append((url, f"{an} vs {bn}"))
     COMPARES.setdefault(f"{cat['slug']}:{b}", []).append((url, f"{an} vs {bn}"))
     CATEGORY_PAGES.append((url, f"{an} vs {bn}", f"{A['name']} and {B['name']} compared on price, features and fit.", "Comparison"))
+
+
+# ---------- LOGOS: vendor icons next to tool names (decorative; the name is always shown as text)
+LOGOS = {}
+
+
+def _logo_img(url, size):
+    host = re.sub(r"^https?://(www\.)?", "", url).split("/")[0]
+    return (f'<img class="tlogo tlogo-{size}" src="https://www.google.com/s2/favicons?domain={host}&amp;sz={128 if size > 24 else 64}" '
+            f'alt="" width="{size}" height="{size}" loading="lazy" decoding="async">')
+
+
+def add_logos():
+    names = sorted(LOGOS, key=len, reverse=True)
+    if not names:
+        return
+    alt = "|".join(re.escape(n) for n in names)
+    pats = [
+        (re.compile(r'(<div class="tool-head"><span class="num">\d+</span><div><h3>)(' + alt + r')(</h3>)'), 40),
+        (re.compile(r'(<a class="nm" href="#[^"]+">)(' + alt + r')(</a>)'), 24),
+        (re.compile(r'(<td><a href="#[^"]+"><b>)(' + alt + r')(</b></a></td>)'), 20),
+        (re.compile(r'(<h3>Pick )(' + alt + r')( if…</h3>)'), 24),
+    ]
+    for path, pg in PAGES.items():
+        b = pg["body"]
+        for rx, size in pats:
+            b = rx.sub(lambda m: m.group(1) + _logo_img(LOGOS[m.group(2)], size) + m.group(2) + m.group(3), b)
+        pg["body"] = b
 
 
 # ---------- EXPLAINERS on shortlists: what it is, key features, pricing overview, other tools

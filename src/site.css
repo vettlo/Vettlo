@@ -497,3 +497,8 @@ details.breakdown .criteria { margin-top: .9rem; }
 .chips a:hover { text-decoration: none; border-color: var(--brand); color: var(--brand); }
 @media (max-width: 900px) { .guide-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .guide-grid { grid-template-columns: 1fr; } }
+.tlogo { display: inline-block; vertical-align: -0.2em; border-radius: 6px; background: #fff; margin-right: .5rem; object-fit: contain; }
+.tlogo-40 { width: 40px; height: 40px; border-radius: 10px; vertical-align: middle; margin-right: .75rem; border: 1px solid var(--line); padding: 4px; box-sizing: border-box; }
+.tlogo-24 { width: 24px; height: 24px; vertical-align: -0.35em; }
+.tlogo-20 { width: 20px; height: 20px; vertical-align: -0.3em; }
+.tool-head h3 { display: flex; align-items: center; }
