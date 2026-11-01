@@ -48,6 +48,97 @@ Scores are editorial only and based on published, weighted criteria per category
 - [1Password vs Bitwarden](https://vettlo.com/compare/1password-vs-bitwarden/): 1Password and Bitwarden compared on price, features and fit.
 - [HubSpot Marketing Hub vs ActiveCampaign](https://vettlo.com/compare/hubspot-vs-activecampaign/): HubSpot Marketing Hub and ActiveCampaign compared on price, features and fit.
 - [BambooHR vs Rippling](https://vettlo.com/compare/bamboohr-vs-rippling/): BambooHR and Rippling compared on price, features and fit.
+- [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
+- [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
+- [Best free B2B contact data providers](https://vettlo.com/tools/best-free-b2b-data-providers/): Best free B2B contact data providers, from our scored shortlist.
+- [Best B2B contact data providers for small business](https://vettlo.com/tools/best-b2b-data-providers-for-small-business/): Best B2B contact data providers for small business, from our scored shortlist.
+- [Best conversation intelligence tools for small business](https://vettlo.com/tools/best-conversation-intelligence-software-for-small-business/): Best conversation intelligence tools for small business, from our scored shortlist.
+- [Best sales dialers for small business](https://vettlo.com/tools/best-sales-dialers-for-small-business/): Best sales dialers for small business, from our scored shortlist.
+- [Best free email marketing tools](https://vettlo.com/tools/best-free-email-marketing-software/): Best free email marketing tools, from our scored shortlist.
+- [Best email marketing tools for small business](https://vettlo.com/tools/best-email-marketing-software-for-small-business/): Best email marketing tools for small business, from our scored shortlist.
+- [Best free help desk tools](https://vettlo.com/tools/best-free-help-desk-software/): Best free help desk tools, from our scored shortlist.
+- [Best help desk tools for small business](https://vettlo.com/tools/best-help-desk-software-for-small-business/): Best help desk tools for small business, from our scored shortlist.
+- [Best HRIS tools for small business](https://vettlo.com/tools/best-hris-software-for-small-business/): Best HRIS tools for small business, from our scored shortlist.
+- [Best marketing automation tools for small business](https://vettlo.com/tools/best-marketing-automation-software-for-small-business/): Best marketing automation tools for small business, from our scored shortlist.
+- [Best password managers for small business](https://vettlo.com/tools/best-password-managers-for-small-business/): Best password managers for small business, from our scored shortlist.
+- [Best payroll tools for small business](https://vettlo.com/tools/best-payroll-software-for-small-business/): Best payroll tools for small business, from our scored shortlist.
+- [Best free project management tools](https://vettlo.com/tools/best-free-project-management-software/): Best free project management tools, from our scored shortlist.
+- [Best project management tools for small business](https://vettlo.com/tools/best-project-management-software-for-small-business/): Best project management tools for small business, from our scored shortlist.
+- [Best sales engagement platforms for small business](https://vettlo.com/tools/best-sales-engagement-software-for-small-business/): Best sales engagement platforms for small business, from our scored shortlist.
+- [Salesforce Sales Cloud Review](https://vettlo.com/tools/salesforce-sales-cloud-review/): Salesforce Sales Cloud's pricing, pros, cons and score, from our CRM tools ranking.
+- [HubSpot Sales Hub Review](https://vettlo.com/tools/hubspot-sales-hub-review/): HubSpot Sales Hub's pricing, pros, cons and score, from our CRM tools ranking.
+- [Pipedrive Review](https://vettlo.com/tools/pipedrive-review/): Pipedrive's pricing, pros, cons and score, from our CRM tools ranking.
+- [Zoho CRM Review](https://vettlo.com/tools/zoho-crm-review/): Zoho CRM's pricing, pros, cons and score, from our CRM tools ranking.
+- [Freshsales Review](https://vettlo.com/tools/freshsales-review/): Freshsales's pricing, pros, cons and score, from our CRM tools ranking.
+- [Close Review](https://vettlo.com/tools/close-review/): Close's pricing, pros, cons and score, from our CRM tools ranking.
+- [Attio Review](https://vettlo.com/tools/attio-review/): Attio's pricing, pros, cons and score, from our CRM tools ranking.
+- [QuickBooks Online Review](https://vettlo.com/tools/quickbooks-online-review/): QuickBooks Online's pricing, pros, cons and score, from our accounting tools ranking.
+- [Xero Review](https://vettlo.com/tools/xero-review/): Xero's pricing, pros, cons and score, from our accounting tools ranking.
+- [Zoho Books Review](https://vettlo.com/tools/zoho-books-review/): Zoho Books's pricing, pros, cons and score, from our accounting tools ranking.
+- [Sage Intacct Review](https://vettlo.com/tools/sage-intacct-review/): Sage Intacct's pricing, pros, cons and score, from our accounting tools ranking.
+- [FreshBooks Review](https://vettlo.com/tools/freshbooks-review/): FreshBooks's pricing, pros, cons and score, from our accounting tools ranking.
+- [Wave Review](https://vettlo.com/tools/wave-review/): Wave's pricing, pros, cons and score, from our accounting tools ranking.
+- [Apollo.io Review](https://vettlo.com/tools/apollo-review/): Apollo.io's pricing, pros, cons and score, from our B2B contact data providers ranking.
+- [ZoomInfo Review](https://vettlo.com/tools/zoominfo-review/): ZoomInfo's pricing, pros, cons and score, from our B2B contact data providers ranking.
+- [Lusha Review](https://vettlo.com/tools/lusha-review/): Lusha's pricing, pros, cons and score, from our B2B contact data providers ranking.
+- [Cognism Review](https://vettlo.com/tools/cognism-review/): Cognism's pricing, pros, cons and score, from our B2B contact data providers ranking.
+- [Kaspr Review](https://vettlo.com/tools/kaspr-review/): Kaspr's pricing, pros, cons and score, from our B2B contact data providers ranking.
+- [UpLead Review](https://vettlo.com/tools/uplead-review/): UpLead's pricing, pros, cons and score, from our B2B contact data providers ranking.
+- [Gong Review](https://vettlo.com/tools/gong-review/): Gong's pricing, pros, cons and score, from our conversation intelligence tools ranking.
+- [Avoma Review](https://vettlo.com/tools/avoma-review/): Avoma's pricing, pros, cons and score, from our conversation intelligence tools ranking.
+- [Sybill Review](https://vettlo.com/tools/sybill-review/): Sybill's pricing, pros, cons and score, from our conversation intelligence tools ranking.
+- [Fireflies.ai Review](https://vettlo.com/tools/fireflies-review/): Fireflies.ai's pricing, pros, cons and score, from our conversation intelligence tools ranking.
+- [Nooks Review](https://vettlo.com/tools/nooks-review/): Nooks's pricing, pros, cons and score, from our sales dialers ranking.
+- [Orum Review](https://vettlo.com/tools/orum-review/): Orum's pricing, pros, cons and score, from our sales dialers ranking.
+- [JustCall Review](https://vettlo.com/tools/justcall-review/): JustCall's pricing, pros, cons and score, from our sales dialers ranking.
+- [Kixie Review](https://vettlo.com/tools/kixie-review/): Kixie's pricing, pros, cons and score, from our sales dialers ranking.
+- [Aircall Review](https://vettlo.com/tools/aircall-review/): Aircall's pricing, pros, cons and score, from our sales dialers ranking.
+- [CloudTalk Review](https://vettlo.com/tools/cloudtalk-review/): CloudTalk's pricing, pros, cons and score, from our sales dialers ranking.
+- [MailerLite Review](https://vettlo.com/tools/mailerlite-review/): MailerLite's pricing, pros, cons and score, from our email marketing tools ranking.
+- [Klaviyo Review](https://vettlo.com/tools/klaviyo-review/): Klaviyo's pricing, pros, cons and score, from our email marketing tools ranking.
+- [ActiveCampaign Review](https://vettlo.com/tools/activecampaign-review/): ActiveCampaign's pricing, pros, cons and score, from our marketing automation tools ranking.
+- [Brevo Review](https://vettlo.com/tools/brevo-review/): Brevo's pricing, pros, cons and score, from our email marketing tools ranking.
+- [Mailchimp Review](https://vettlo.com/tools/mailchimp-review/): Mailchimp's pricing, pros, cons and score, from our email marketing tools ranking.
+- [Kit Review](https://vettlo.com/tools/kit-review/): Kit's pricing, pros, cons and score, from our email marketing tools ranking.
+- [Zendesk Review](https://vettlo.com/tools/zendesk-review/): Zendesk's pricing, pros, cons and score, from our help desk tools ranking.
+- [Zoho Desk Review](https://vettlo.com/tools/zoho-desk-review/): Zoho Desk's pricing, pros, cons and score, from our help desk tools ranking.
+- [Freshdesk Review](https://vettlo.com/tools/freshdesk-review/): Freshdesk's pricing, pros, cons and score, from our help desk tools ranking.
+- [Intercom Review](https://vettlo.com/tools/intercom-review/): Intercom's pricing, pros, cons and score, from our help desk tools ranking.
+- [HubSpot Service Hub Review](https://vettlo.com/tools/hubspot-service-hub-review/): HubSpot Service Hub's pricing, pros, cons and score, from our help desk tools ranking.
+- [Front Review](https://vettlo.com/tools/front-review/): Front's pricing, pros, cons and score, from our help desk tools ranking.
+- [Help Scout Review](https://vettlo.com/tools/help-scout-review/): Help Scout's pricing, pros, cons and score, from our help desk tools ranking.
+- [BambooHR Review](https://vettlo.com/tools/bamboohr-review/): BambooHR's pricing, pros, cons and score, from our HRIS tools ranking.
+- [Factorial Review](https://vettlo.com/tools/factorial-review/): Factorial's pricing, pros, cons and score, from our HRIS tools ranking.
+- [Zoho People Review](https://vettlo.com/tools/zoho-people-review/): Zoho People's pricing, pros, cons and score, from our HRIS tools ranking.
+- [Rippling Review](https://vettlo.com/tools/rippling-review/): Rippling's pricing, pros, cons and score, from our payroll tools ranking.
+- [HiBob Review](https://vettlo.com/tools/hibob-review/): HiBob's pricing, pros, cons and score, from our HRIS tools ranking.
+- [Connecteam Review](https://vettlo.com/tools/connecteam-review/): Connecteam's pricing, pros, cons and score, from our HRIS tools ranking.
+- [HubSpot Marketing Hub Review](https://vettlo.com/tools/hubspot-marketing-hub-review/): HubSpot Marketing Hub's pricing, pros, cons and score, from our marketing automation tools ranking.
+- [Salesforce Marketing Cloud Account Engagement Review](https://vettlo.com/tools/salesforce-marketing-cloud-account-engagement-review/): Salesforce Marketing Cloud Account Engagement's pricing, pros, cons and score, from our marketing automation tools ranking.
+- [Customer.io Review](https://vettlo.com/tools/customer-io-review/): Customer.io's pricing, pros, cons and score, from our marketing automation tools ranking.
+- [Bitwarden Review](https://vettlo.com/tools/bitwarden-review/): Bitwarden's pricing, pros, cons and score, from our password managers for business ranking.
+- [1Password Review](https://vettlo.com/tools/1password-review/): 1Password's pricing, pros, cons and score, from our password managers for business ranking.
+- [Keeper Review](https://vettlo.com/tools/keeper-review/): Keeper's pricing, pros, cons and score, from our password managers for business ranking.
+- [Dashlane Review](https://vettlo.com/tools/dashlane-review/): Dashlane's pricing, pros, cons and score, from our password managers for business ranking.
+- [Proton Pass Review](https://vettlo.com/tools/proton-pass-review/): Proton Pass's pricing, pros, cons and score, from our password managers for business ranking.
+- [LastPass Review](https://vettlo.com/tools/lastpass-review/): LastPass's pricing, pros, cons and score, from our password managers for business ranking.
+- [Gusto Review](https://vettlo.com/tools/gusto-review/): Gusto's pricing, pros, cons and score, from our payroll tools ranking.
+- [OnPay Review](https://vettlo.com/tools/onpay-review/): OnPay's pricing, pros, cons and score, from our payroll tools ranking.
+- [RUN Powered by ADP Review](https://vettlo.com/tools/run-powered-by-adp-review/): RUN Powered by ADP's pricing, pros, cons and score, from our payroll tools ranking.
+- [Square Payroll Review](https://vettlo.com/tools/square-payroll-review/): Square Payroll's pricing, pros, cons and score, from our payroll tools ranking.
+- [Patriot Payroll Review](https://vettlo.com/tools/patriot-payroll-review/): Patriot Payroll's pricing, pros, cons and score, from our payroll tools ranking.
+- [QuickBooks Payroll Review](https://vettlo.com/tools/quickbooks-payroll-review/): QuickBooks Payroll's pricing, pros, cons and score, from our payroll tools ranking.
+- [Asana Review](https://vettlo.com/tools/asana-review/): Asana's pricing, pros, cons and score, from our project management tools ranking.
+- [ClickUp Review](https://vettlo.com/tools/clickup-review/): ClickUp's pricing, pros, cons and score, from our project management tools ranking.
+- [monday.com Review](https://vettlo.com/tools/monday-review/): monday.com's pricing, pros, cons and score, from our project management tools ranking.
+- [Smartsheet Review](https://vettlo.com/tools/smartsheet-review/): Smartsheet's pricing, pros, cons and score, from our project management tools ranking.
+- [Wrike Review](https://vettlo.com/tools/wrike-review/): Wrike's pricing, pros, cons and score, from our project management tools ranking.
+- [Trello Review](https://vettlo.com/tools/trello-review/): Trello's pricing, pros, cons and score, from our project management tools ranking.
+- [Salesloft Review](https://vettlo.com/tools/salesloft-review/): Salesloft's pricing, pros, cons and score, from our sales engagement platforms ranking.
+- [Outreach Review](https://vettlo.com/tools/outreach-review/): Outreach's pricing, pros, cons and score, from our sales engagement platforms ranking.
+- [Reply.io Review](https://vettlo.com/tools/reply-review/): Reply.io's pricing, pros, cons and score, from our sales engagement platforms ranking.
+- [lemlist Review](https://vettlo.com/tools/lemlist-review/): lemlist's pricing, pros, cons and score, from our sales engagement platforms ranking.
+- [Instantly Review](https://vettlo.com/tools/instantly-review/): Instantly's pricing, pros, cons and score, from our sales engagement platforms ranking.
 - [All categories](https://vettlo.com/best-tools/)
 
 ## Guides

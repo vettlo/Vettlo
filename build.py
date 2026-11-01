@@ -807,7 +807,7 @@ def sb_page():
 <li><b>Test with real deals.</b> Import 20 live deals during the trial and run your normal week in the tool.</li>
 <li><b>Check the exit.</b> Make sure you can export contacts, deals and activity history before you commit.</li></ol></section>
 <section id="faq"><h2>Small business CRM FAQ</h2><div>{faq}</div></section>
-<section class="prose"><h2>Related</h2><ul><li><a href="/tools/best-crm-software/">Best CRM software for sales teams</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li><li><a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a></li><li><a href="/tools/best-pipedrive-alternatives/">Best Pipedrive alternatives</a></li><li><a href="/tools/best-hubspot-alternatives/">Best HubSpot alternatives</a></li></ul></section>
+<section class="prose"><h2>Related</h2><ul><li><a href="/tools/best-crm-software/">Best CRM software for sales teams</a></li><li><a href="/tools/best-free-crm-software/">Best free CRM software</a></li><li><a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a></li><li><a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a></li><li><a href="/tools/best-pipedrive-alternatives/">Best Pipedrive alternatives</a></li><li><a href="/tools/best-hubspot-alternatives/">Best HubSpot alternatives</a></li></ul></section>
 <section class="author-box"><div class="avatar team-mark">{LOGO}</div><div><b>Vettlo Editorial Team</b><p class="small muted">Researched and written by the Vettlo editorial team using our <a href="/methodology/">methodology</a>.</p></div></section>
 </div>
 <nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#shortlist">Shortlist</a><a href="#compare">Comparison table</a><a href="#free">Free CRMs</a><a href="#reviews">Reviews</a><a href="#weights">How we scored</a><a href="#faq">FAQ</a></nav>
@@ -1239,7 +1239,8 @@ def reviews_page():
     allp = CRM_PAGES + CATEGORY_PAGES
     groups = [("Shortlists", "Shortlist", "Ranked lists for one software category, scored on weighted criteria."),
               ("Alternatives", "Alternatives", "Where to go when a popular tool stops fitting, and what you give up."),
-              ("Comparisons", "Comparison", "Two tools side by side, with real year-one costs.")]
+              ("Comparisons", "Comparison", "Two tools side by side, with real year-one costs."),
+              ("Tool reviews", "Review", "One tool in depth: pricing, pros and cons, score and alternatives.")]
     body = f'''<div class="wrap"><div class="page-head"><span class="eyebrow">Reviews</span><h1>All reviews</h1>
 <p>Every shortlist, alternatives guide and comparison we've published ({len(allp)} so far). Prices on each page were checked on the date it shows.</p></div>
 <div class="page-body">'''
@@ -1431,6 +1432,12 @@ def link_compares():
 
 def build():
     link_compares()
+    insert_review_links()
+    _crm = PAGES["/tools/best-crm-software/"]
+    _rel = "".join(f'<li><a href="{u}">{t}</a></li>' for u, t, k in CLUSTER.get("best-crm-software", []))
+    _i = _crm["body"].find('<section class="author-box">')
+    if _rel and _i > 0 and "<h2>Related</h2>" not in _crm["body"]:
+        _crm["body"] = _crm["body"][:_i] + f'<section class="prose"><h2>Related</h2><ul>{_rel}</ul></section>\n' + _crm["body"][_i:]
     PRICEROWS["best-crm-software"] = dict(noun="CRMs", plural="CRM Software", others=[("Copper", "CRM that works inside Google Workspace, built for service businesses such as agencies and consultancies."), ("Insightly", "CRM for growing businesses with lead scoring, marketing campaigns and support tickets."), ("Nutshell", "Sales CRM with built-in email marketing for small businesses."), ("Capsule", "Simple CRM for managing contacts, pipelines, projects and tasks."), ("Salesflare", "Sales CRM for small B2B teams that fills in contact records and logs conversations automatically."), ("Microsoft Dynamics 365 Sales", "AI-driven CRM from Microsoft for managing pipelines and deals.")], rows=[(SHORT[t["id"]], PRICING[t["id"]]["price"], PRICING[t["id"]]["note"], PRICING[t["id"]]["trial"], "#" + t["id"]) for t in TOOLS])
     dept_hubs()
     guides_index()

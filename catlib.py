@@ -75,6 +75,8 @@ def category_page(cat):
     ranked = sorted([k for k in tools if cat_score(cat, k) >= THRESHOLD], key=lambda k: (-cat_score(cat, k), -float(tools[k]["g2"][0])))
     excluded = [k for k in tools if cat_score(cat, k) < THRESHOLD]
     cat["_ranked"] = ranked
+    if cat not in ALLCATS:
+        ALLCATS.append(cat)
     for _t in tools.values():
         LOGOS[_t["name"]] = _t["url"]; LOGOS[_t["short"]] = _t["url"]
     PRICEROWS[cat["slug"]] = dict(noun=_noun(cat), plural=cat["plural"], others=cat.get("others", []), rows=[(tools[k]["name"], tools[k]["price"], tools[k]["price_note"], tools[k]["trial"], f"#{k}") for k in ranked])
@@ -194,6 +196,8 @@ SCOREBOARD = []  # (category, top tool, score, url, tools scored) for the home s
 
 
 COMPARES = {}  # category slug -> [(url, title)] for links from the category page
+ALLCATS = []  # every category dict passed to category_page, in build order
+REVIEW_URL = {}  # tool name -> review page URL
 
 
 def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows, cost_note, feature_rows,
@@ -424,3 +428,222 @@ def link_guides():
             if i > 0:
                 pg["body"] = b[:i] + block + b[i:]
                 break
+
+
+
+# ---------- TOOL REVIEWS and CATEGORY VARIANTS (generated from the same verified category data)
+def _tslug(name):
+    n = name.strip().lower()
+    n = n if n in ("customer.io",) else re.sub(r"\.(io|com|ai)$", "", n)
+    return re.sub(r"[^a-z0-9]+", "-", n).strip("-")
+
+
+def _price_sentence(t):
+    p = t["price"]
+    if p[:1] in "$€£" or p.startswith("From"):
+        return f"Paid plans start at {p.replace('From ', '')} ({t['price_note']})."
+    return f"{p}: {t['price_note']}."
+
+
+def _cat_link(cat):
+    return f'<a href="/tools/{cat["slug"]}/">{_noun(cat)} ranking</a>'
+
+
+def review_pages(cats):
+    by = {}
+    for cat in cats:
+        for i, k in enumerate(cat.get("_ranked", []), 1):
+            t = cat["tools"][k]
+            by.setdefault(t["name"], []).append((cat, k, i))
+    for name, entries in by.items():
+        REVIEW_URL[name] = f"/tools/{_tslug(name)}-review/"
+    for name, entries in by.items():
+        entries.sort(key=lambda e: -cat_score(e[0], e[1]))
+        cat, k, rank = entries[0]
+        t = cat["tools"][k]
+        url = REVIEW_URL[name]
+        date = max(page_dates(f"/tools/{c['slug']}/", c["date"], c["date"])[1] for c, _, _ in entries)
+        s0 = cat_score(cat, k)
+        ranks = " and ".join(f"#{r} of {len(c['_ranked'])} in our {_cat_link(c)} ({cat_score(c, kk)}/100)" for c, kk, r in entries)
+        answer = f"{name} ranks {ranks}. {_cap(_bf(t['bf']))}. {_price_sentence(t)}"
+        bd = "".join(f'<h3>{c["crumb"]} score: {cat_score(c, kk)}/100</h3><div class="criteria">{_breakdown(c, kk)}</div>' for c, kk, r in entries)
+        comp_rows = ""
+        for c, kk, r in entries[:1]:
+            for j, o in enumerate(c["_ranked"][:6], 1):
+                ot = c["tools"][o]
+                nm = f'<a href="{REVIEW_URL[ot["name"]]}">{ot["name"]}</a>' if ot["name"] != name else f'<b>{ot["name"]}</b>'
+                comp_rows += f'<tr><td class="num">{j}</td><td>{nm}</td><td>{_cap(ot["bf"].replace("Best for ", ""))}</td><td class="num">{ot["price"]}</td><td class="num"><b>{cat_score(c, o)}</b>/100</td></tr>'
+        links = []
+        for c, kk, r in entries:
+            links += COMPARES.get(f"{c['slug']}:{kk}", [])
+            links += [(h, x) for h, x in c["tools"][kk].get("links", [])]
+            links.append((f"/tools/{c['slug']}/", f"Best {_noun(c)}"))
+        seen, lis = set(), ""
+        for h, x in links:
+            if h not in seen:
+                seen.add(h); lis += f'<li><a href="{h}">{x}</a></li>'
+        others = [c["tools"][o]["name"] for o in cat["_ranked"] if c["tools"][o]["name"] != name][:3] if (c := cat) else []
+        faqs = [
+            (f"How much does {name} cost?", _price_sentence(t) + f" {('Free plan or trial: ' + t['trial'] + '.') if t.get('trial') else ''}".rstrip()),
+            (f"Is {name} worth it?", f"{name} scores {s0}/100 in our {_noun(cat)} ranking, where it is {_bf(t['bf'])}. It's a weaker fit if: {t['skip'][:1].lower() + t['skip'][1:]}"),
+            (f"Does {name} have a free plan or trial?", f"{t['trial']}."),
+            (f"What are the best {name} alternatives?", f"In our {_noun(cat)} ranking, the closest alternatives are {', '.join(others[:-1]) + ' and ' + others[-1] if len(others) > 1 else ''.join(others)}." if others else f"See our {_noun(cat)} ranking."),
+        ]
+        crumbs = [("/", "Home"), dept_crumb_ld(cat["slug"]), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{name} review")]
+        h1 = f"{name} Review ({YEAR}): Pricing, Pros and Cons"
+        body = f"""<div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb(cat['slug'])} / <a href="/tools/{cat['slug']}/">{cat['crumb']}</a> / {name} review</nav>
+<header class="article-head"><span class="eyebrow">Review · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, dict(cat, date=date))}</header>
+<div class="layout"><div class="main-col">
+<section class="answer" id="answer" aria-label="Short answer"><h2>Short answer</h2><p>{answer}</p></section>
+<article class="tool" id="{k}"><div class="tool-head"><span class="num">{rank}</span><div><h3>{name}</h3><div class="bestfor">{t['bf']}</div></div>
+<a class="btn small" href="{t['url']}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div>{_spec(cat, k)}</article>
+<section id="overview" class="prose"><h2>What is {name}?</h2><p>{t['what']}</p>
+<h3>Who it's best for</h3><p>{t['who']}</p><h3>Why we rank it</h3><p>{t['why']}</p></section>
+<section id="pros-cons"><h2>Pros and cons</h2><div class="pc"><div class="pros"><h4>Strengths</h4><ul>{''.join(f'<li>{x}</li>' for x in t['pros'])}</ul></div><div class="cons"><h4>Watch-outs</h4><ul>{''.join(f'<li>{x}</li>' for x in t['cons'])}</ul></div></div>
+<p class="small muted"><b>Skip it if:</b> {t['skip']}</p></section>
+<section id="pricing" class="prose"><h2>{name} pricing</h2><p>{_price_sentence(t)} Free plan or trial: {t['trial']}.</p><p class="small muted">From {name}'s pricing page, checked on the date at the top of this review. See how it compares on price in our <a href="/tools/{cat['slug']}/#pricing">{_noun(cat)} pricing overview</a>.</p></section>
+<section id="score"><h2>How we scored {name}</h2>{bd}<p class="small muted">Each criterion is rated 0 to 5 and weighted for the category. See our <a href="/methodology/">methodology</a>.</p></section>
+<section id="compare"><h2>How {name} compares</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Best for</th><th>Starting price</th><th>Score</th></tr></thead><tbody>{comp_rows}</tbody></table></div></section>
+<section class="prose"><h2>Alternatives and comparisons</h2><ul>{lis}</ul></section>
+<section id="faq"><h2>{name} FAQ</h2><div>{_faq(faqs)}</div></section>
+{_author_box()}
+</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#overview">Overview</a><a href="#pros-cons">Pros and cons</a><a href="#pricing">Pricing</a><a href="#score">Score</a><a href="#compare">Compared</a><a href="#faq">FAQ</a></nav></div></div>
+{newsletter()}"""
+        ld = _ld(h1, url, date, crumbs, [], faqs)
+        ld.append({"@context": "https://schema.org", "@type": "Review", "name": h1, "url": DOMAIN + url,
+                   "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
+                   "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
+                   "reviewRating": {"@type": "Rating", "ratingValue": s0, "bestRating": 100, "worstRating": 0},
+                   "itemReviewed": {"@type": "SoftwareApplication", "name": name, "applicationCategory": "BusinessApplication", "url": t["url"]}})
+        page(url, f"{name} Review ({YEAR}): Pricing, Pros & Cons | Vettlo",
+             f"{name} review: {s0}/100 in our {_noun(cat)} ranking. {_price_sentence(t)} Pros, cons, who it's for and the best alternatives."[:300],
+             body, cur="/reviews/", ptype="article", jsonld=ld)
+        CATEGORY_PAGES.append((url, f"{name} Review", f"{name}'s pricing, pros, cons and score, from our {_noun(cat)} ranking.", "Review"))
+
+
+def insert_review_links():
+    """Add 'Read our full X review' under each tool card on shortlist, alternatives and variant pages."""
+    rx = re.compile(r'(<article class="tool" id="[^"]+">.*?<h3>(?:<img[^>]*>)?([^<]+)</h3>.*?)(<details class="breakdown">|</article>)', re.S)
+    for path, pg in PAGES.items():
+        if path.endswith("-review/"):
+            continue
+        def sub(m):
+            u = REVIEW_URL.get(m.group(2).strip())
+            if not u or u in m.group(1):
+                return m.group(0)
+            return m.group(1) + f'<p class="small"><a href="{u}">Read our full {m.group(2).strip()} review →</a></p>' + m.group(3)
+        pg["body"] = rx.sub(sub, pg["body"])
+
+
+def _smb_weights(cat):
+    ws = [w for _, w in cat["criteria"]]
+    boost = [i for i, (n, _) in enumerate(cat["criteria"]) if re.search(r"price|ease|usability|setup", n, re.I)]
+    if not boost:
+        return ws
+    new = {i: max(20, round(ws[i] * 1.7)) for i in boost}
+    rest = [i for i in range(len(ws)) if i not in new]
+    left = 100 - sum(new.values())
+    tot = sum(ws[i] for i in rest)
+    out = [new.get(i, round(ws[i] * left / tot)) for i in range(len(ws))]
+    out[rest[0]] += 100 - sum(out)
+    return out
+
+
+def _wscore(cat, k, weights):
+    return int(sum(w * r for w, r in zip(weights, cat["tools"][k]["scores"])) / 5 + 0.5)
+
+
+def variant_pages(cat):
+    tools, slug = cat["tools"], cat["slug"]
+    base = slug[len("best-"):]
+    noun = _noun(cat)
+    out = []
+    cat = dict(cat, date=page_dates(f"/tools/{slug}/", cat["date"], cat["date"])[1])
+    # --- free plans
+    free = [k for k in cat.get("_ranked", []) if _FREE.search(tools[k]["trial"])]
+    if len(free) >= 3:
+        url = f"/tools/best-free-{base}/"
+        n = len(free)
+        h1 = f"{n} Best Free {cat['plural']} in {YEAR}"
+        short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{tools[k]["trial"]}</span></span><span class="sc">{cat_score(cat, k)}<small>/100</small></span><a class="btn ghost small" href="#{k}">Details</a></li>' for i, k in enumerate(free, 1))
+        rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{tools[k]["trial"]}</td><td>{tools[k]["price"]}<br><span class="small muted">{tools[k]["price_note"]}</span></td><td class="num"><b>{cat_score(cat, k)}</b>/100</td></tr>' for i, k in enumerate(free, 1))
+        cards = "".join(f"""<article class="tool" id="{k}"><div class="tool-head"><span class="num">{i}</span><div><h3>{tools[k]['name']}</h3><div class="bestfor">{tools[k]['bf']}</div></div>
+<a class="btn small" href="{tools[k]['url']}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div><div class="tool-body">
+<p><b>Free plan:</b> {tools[k]['trial']}.</p><p><b>When you outgrow it:</b> paid plans start at {tools[k]['price'].replace('From ', '')} ({tools[k]['price_note']}).</p>
+<p>{tools[k]['what']}</p><div class="pc"><div class="pros"><h4>Strengths</h4><ul>{''.join(f'<li>{x}</li>' for x in tools[k]['pros'])}</ul></div><div class="cons"><h4>Watch-outs</h4><ul>{''.join(f'<li>{x}</li>' for x in tools[k]['cons'])}</ul></div></div></div></article>""" for i, k in enumerate(free, 1))
+        top = tools[free[0]]
+        others = [tools[k]["name"] for k in free[1:4]]
+        faqs = [(f"What is the best free {noun[:-1] if noun.endswith('s') and not noun.endswith('ss') else noun}?" if False else f"What are the best free {noun}?",
+                 f"{top['name']} ({top['trial']}) ranks highest among the {noun} we rank that offer a free plan. {', '.join(others)} also have free plans."),
+                (f"Is there a completely free option?", "Yes, each tool on this page lists a free plan on its pricing page. Free plans have limits, shown in the table above, and paid plans add more users, usage and features."),
+                ("What do free plans usually leave out?", "Free plans typically cap users, records or monthly usage and leave out advanced automation, reporting and admin controls. Check each tool's limits against your team size before you commit."),
+                ("When should I move to a paid plan?", f"When you hit a limit in the free plan or need a feature it leaves out. The table shows where each tool's paid plans start; our full {noun} ranking compares the paid tiers.")]
+        body = f"""<div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb(slug)} / <a href="/tools/{slug}/">{cat['crumb']}</a> / Free</nav>
+<header class="article-head"><span class="eyebrow">Shortlist · Free plans</span><h1>{h1}</h1>{_byline(url, cat)}</header>
+<div class="layout"><div class="main-col">
+<section class="answer" id="answer" aria-label="Short answer"><h2>Short answer</h2><p><b>{top['name']}</b> has the highest-ranked free plan among the {noun} we rank ({cat_score(cat, free[0])}/100): {top['trial']}. {n} of the {len(cat['_ranked'])} tools in our {_cat_link(cat)} list a free plan.</p></section>
+<section class="prose"><p>Every tool here comes from our main {_cat_link(cat)}, which scores {noun} on {len(cat['criteria'])} weighted criteria. This page keeps only the tools whose pricing page lists a free plan (not just a time-limited trial), in the same order, and shows what each free plan includes and where paid plans start.</p></section>
+<section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
+<section id="compare"><h2>Free plans compared</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Free plan</th><th>Paid plans from</th><th>Score</th></tr></thead><tbody>{rows}</tbody></table></div>
+<p class="small muted">{cat['price_footnote']}</p></section>
+<section id="reviews"><h2>The free plans</h2>{cards}</section>
+<section id="faq"><h2>FAQ</h2><div>{_faq(faqs)}</div></section>
+<section class="prose"><h2>Related</h2><ul><li><a href="/tools/{slug}/">Best {noun} (all plans)</a></li>{''.join(f'<li><a href="{h}">{x}</a></li>' for h, x in cat.get('related', []))}</ul></section>
+{_author_box()}
+</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#shortlist">Shortlist</a><a href="#compare">Free plans compared</a><a href="#reviews">Details</a><a href="#faq">FAQ</a></nav></div></div>
+{newsletter()}"""
+        crumbs = [("/", "Home"), dept_crumb_ld(slug), (f"/tools/{slug}/", cat["crumb"]), (url, "Free")]
+        page(url, f"{n} Best Free {cat['plural']} ({YEAR}) | Vettlo",
+             f"The best free {noun}, from our ranked shortlist: what each free plan includes, its limits and where paid plans start. {top['name']} ranks first.",
+             body, cur="/best-tools/", ptype="article", jsonld=_ld(h1, url, cat["date"], crumbs, [(k, tools[k]["name"]) for k in free], faqs))
+        out.append((url, f"Best free {noun}"))
+    # --- small business (skip CRM, which has its own hand-built page)
+    if slug != "best-crm-software":
+        ws = _smb_weights(cat)
+        ranked = sorted([k for k in tools if _wscore(cat, k, ws) >= THRESHOLD], key=lambda k: (-_wscore(cat, k, ws), -float(tools[k]["g2"][0])))
+        if len(ranked) >= 3:
+            url = f"/tools/{slug.replace('-for-business', '')}-for-small-business/"
+            n = len(ranked)
+            plural_sb = cat["plural"].replace(" for Business", "")
+            h1 = f"{n} Best {plural_sb} for Small Business in {YEAR}"
+            short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{tools[k]["bf"]}</span></span><span class="sc">{_wscore(cat, k, ws)}<small>/100</small></span><a class="btn ghost small" href="#{k}">Details</a></li>' for i, k in enumerate(ranked, 1))
+            rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{tools[k]["trial_short"]}</td><td class="num">{tools[k]["price"]}</td><td class="num"><b>{_wscore(cat, k, ws)}</b>/100</td><td class="num">{cat_score(cat, k)}/100</td></tr>' for i, k in enumerate(ranked, 1))
+            wrows = "".join(f'<tr><td>{nm}</td><td class="num">{w}%</td><td class="num">{sw}%</td></tr>' for (nm, w), sw in zip(cat["criteria"], ws))
+            cards = "".join(f"""<article class="tool" id="{k}"><div class="tool-head"><span class="num">{i}</span><div><h3>{tools[k]['name']}</h3><div class="bestfor">{tools[k]['bf']}</div></div>
+<a class="btn small" href="{tools[k]['url']}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div>{_spec(cat, k, "Main score")}<div class="tool-body">
+<p>{tools[k]['what']}</p><div><h4>Who it's best for</h4><p>{tools[k]['who']}</p></div>
+<div class="pc"><div class="pros"><h4>Strengths</h4><ul>{''.join(f'<li>{x}</li>' for x in tools[k]['pros'])}</ul></div><div class="cons"><h4>Watch-outs</h4><ul>{''.join(f'<li>{x}</li>' for x in tools[k]['cons'])}</ul></div></div>
+<p class="small muted"><b>Skip it if:</b> {tools[k]['skip']}</p></div></article>""" for i, k in enumerate(ranked, 1))
+            top = tools[ranked[0]]
+            moved = [tools[k]["name"] for k in ranked[:3] if k not in cat["_ranked"][:3]]
+            faqs = [(f"What are the best {noun} for small businesses?", f"{top['name']} scores highest ({_wscore(cat, ranked[0], ws)}/100) once price and ease of use carry more weight, followed by {', '.join(tools[k]['name'] for k in ranked[1:3])}."),
+                    ("How is this different from your main ranking?", f"Same tools and the same 0 to 5 ratings, but price and ease of use count for more, because small teams rarely have an admin or a big budget. The weights are in the table on this page." + (f" {', '.join(moved)} move into the top three as a result." if moved else "")),
+                    (f"Which {noun} are cheapest for a small team?", "See the starting prices in the comparison table; free plans and trials are listed next to them. Price the plan that covers your team size, not only the entry plan."),
+                    ("What should a small business look for?", "A free plan or low entry price, quick setup without an admin, and the two or three features you need on day one. Avoid paying for enterprise controls you won't use yet.")]
+            body = f"""<div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb(slug)} / <a href="/tools/{slug}/">{cat['crumb']}</a> / Small business</nav>
+<header class="article-head"><span class="eyebrow">Shortlist · Small business</span><h1>{h1}</h1>{_byline(url, cat)}</header>
+<div class="layout"><div class="main-col">
+<section class="answer" id="answer" aria-label="Short answer"><h2>Short answer</h2><p><b>{top['name']}</b> is our top pick for small businesses, scoring {_wscore(cat, ranked[0], ws)}/100 when price and ease of use carry more weight. {_price_sentence(top)}</p></section>
+<section class="prose"><p>This list uses the same tools and ratings as our main {_cat_link(cat)}, reweighted for teams of roughly 1 to 50 people: price and ease of use count for more, and enterprise depth counts for less. Tools that score {THRESHOLD} or higher on the small-business weights are included.</p></section>
+<section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
+<section id="compare"><h2>Compared for small teams</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Free plan / trial</th><th>Starting price</th><th>Small-business score</th><th>Main score</th></tr></thead><tbody>{rows}</tbody></table></div>
+<p class="small muted">{cat['price_footnote']}</p></section>
+<section id="reviews"><h2>The reviews</h2>{cards}</section>
+<section id="weights"><h2>How we weighted this list</h2><div class="table-wrap"><table><thead><tr><th>Criterion</th><th>Main ranking</th><th>Small business</th></tr></thead><tbody>{wrows}</tbody></table></div></section>
+<section id="faq"><h2>FAQ</h2><div>{_faq(faqs)}</div></section>
+<section class="prose"><h2>Related</h2><ul><li><a href="/tools/{slug}/">Best {noun} (main ranking)</a></li>{''.join(f'<li><a href="{h}">{x}</a></li>' for h, x in cat.get('related', []))}</ul></section>
+{_author_box()}
+</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#shortlist">Shortlist</a><a href="#compare">Comparison</a><a href="#reviews">Reviews</a><a href="#weights">Weights</a><a href="#faq">FAQ</a></nav></div></div>
+{newsletter()}"""
+            crumbs = [("/", "Home"), dept_crumb_ld(slug), (f"/tools/{slug}/", cat["crumb"]), (url, "Small business")]
+            page(url, f"{n} Best {plural_sb} for Small Business ({YEAR}) | Vettlo",
+                 f"The best {noun} for small businesses, reweighted for price and ease of use. {top['name']} ranks first; compare free plans, prices and scores.",
+                 body, cur="/best-tools/", ptype="article", jsonld=_ld(h1, url, cat["date"], crumbs, [(k, tools[k]["name"]) for k in ranked], faqs))
+            out.append((url, f"Best {noun.replace(' for business', '')} for small business"))
+    for u, title in out:
+        COMPARES.setdefault(slug, []).append((u, title))
+        CLUSTER.setdefault(slug, []).append((u, title, "Shortlist"))
+        CATEGORY_PAGES.append((u, title[:1].upper() + title[1:], f"{title[:1].upper() + title[1:]}, from our scored shortlist.", "Shortlist"))
