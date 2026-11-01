@@ -110,6 +110,8 @@ ACC = {
     "related": [("/tools/best-quickbooks-alternatives/", "Best QuickBooks alternatives"), ("/finance-software/", "All finance and accounting software")],
 }
 
+ACC["others"] = [('Odoo Accounting', 'Double-entry accounting with bank connections and multi-company management inside the Odoo suite.'), ('FreeAgent', 'Online accounting for UK small businesses.')]
+
 category_page(ACC)
 
 alternatives_page(ACC, "quickbooks", "best-quickbooks-alternatives",

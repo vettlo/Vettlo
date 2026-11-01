@@ -111,6 +111,8 @@ HRIS = {
     "related": [("/tools/best-bamboohr-alternatives/", "Best BambooHR alternatives"), ("/tools/best-payroll-software/", "Best payroll software"), ("/hr-software/", "All HR software")],
 }
 
+HRIS["others"] = [('Personio', 'HR platform connecting core HR, talent and payroll for growing companies.'), ('Paycor', 'HR, payroll, talent and benefits software for mid-market and larger companies.'), ('Workday HCM', 'Human capital management for midsize to Fortune 500 organizations.'), ('Deel', 'Hire, pay and manage workers across 150+ countries.')]
+
 category_page(HRIS)
 
 alternatives_page(HRIS, "bamboohr", "best-bamboohr-alternatives",

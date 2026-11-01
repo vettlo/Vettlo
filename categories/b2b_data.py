@@ -112,6 +112,8 @@ DATA = {
     "related": [("/tools/best-zoominfo-alternatives/", "Best ZoomInfo alternatives"), ("/tools/best-sales-engagement-software/", "Best sales engagement platforms"), ("/tools/best-apollo-alternatives/", "Best Apollo.io alternatives")],
 }
 
+DATA["others"] = [('Seamless.AI', 'AI lead generation platform for verified emails and direct dials.'), ('RocketReach', 'Finds email, phone and social profiles for B2B outreach.'), ('Hunter', 'Finds and verifies business email addresses, with built-in outreach.'), ('LeadIQ', 'Contact data, job-change tracking and CRM enrichment for SDR teams.'), ('Clay', 'Data enrichment and AI agent workflows for go-to-market teams.')]
+
 category_page(DATA)
 
 alternatives_page(DATA, "zoominfo", "best-zoominfo-alternatives",

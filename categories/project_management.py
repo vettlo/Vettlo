@@ -119,6 +119,8 @@ PM = {
     "related": [("/tools/best-asana-alternatives/", "Best Asana alternatives"), ("/project-operations-software/", "All project and operations software")],
 }
 
+PM["others"] = [('Jira', 'Project and issue tracking from Atlassian, widely used by engineering teams.'), ('Zoho Projects', 'Plan, track and coordinate work, from freelancers to project teams.'), ('Teamwork.com', 'Project, resource and profitability management for agencies and consultancies.'), ('Airtable', 'No-code platform for building workflows and apps on shared data.')]
+
 category_page(PM)
 
 alternatives_page(PM, "asana", "best-asana-alternatives",

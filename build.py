@@ -1431,7 +1431,7 @@ def link_compares():
 
 def build():
     link_compares()
-    PRICEROWS["best-crm-software"] = dict(noun="CRMs", plural="CRM Software", others=[], rows=[(SHORT[t["id"]], PRICING[t["id"]]["price"], PRICING[t["id"]]["note"], PRICING[t["id"]]["trial"], "#" + t["id"]) for t in TOOLS])
+    PRICEROWS["best-crm-software"] = dict(noun="CRMs", plural="CRM Software", others=[("Copper", "CRM that works inside Google Workspace, built for service businesses such as agencies and consultancies."), ("Insightly", "CRM for growing businesses with lead scoring, marketing campaigns and support tickets."), ("Nutshell", "Sales CRM with built-in email marketing for small businesses."), ("Capsule", "Simple CRM for managing contacts, pipelines, projects and tasks."), ("Salesflare", "Sales CRM for small B2B teams that fills in contact records and logs conversations automatically."), ("Microsoft Dynamics 365 Sales", "AI-driven CRM from Microsoft for managing pipelines and deals.")], rows=[(SHORT[t["id"]], PRICING[t["id"]]["price"], PRICING[t["id"]]["note"], PRICING[t["id"]]["trial"], "#" + t["id"]) for t in TOOLS])
     dept_hubs()
     guides_index()
     link_guides()

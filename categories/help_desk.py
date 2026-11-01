@@ -123,6 +123,8 @@ HD = {
     "related": [("/tools/best-zendesk-alternatives/", "Best Zendesk alternatives"), ("/customer-support-software/", "All customer support software")],
 }
 
+HD["others"] = [('Gorgias', 'AI help desk for ecommerce brands, especially on Shopify.'), ('HappyFox', 'Help desk with ticketing automation and SLAs for support, IT and HR teams.'), ('LiveAgent', 'Help desk that brings email, chat, calls and social into one inbox.'), ('Jira Service Management', 'Service desk for IT, engineering, HR and other service teams.'), ('Kayako', 'AI help desk for reducing ticket backlogs.'), ('Gladly', 'AI service and shopping assistance for retail brands.')]
+
 category_page(HD)
 
 alternatives_page(HD, "zendesk", "best-zendesk-alternatives",

@@ -110,6 +110,8 @@ DIAL = {
     "related": [("/tools/best-aircall-alternatives/", "Best Aircall alternatives"), ("/tools/best-sales-engagement-software/", "Best sales engagement platforms"), ("/tools/best-conversation-intelligence-software/", "Best conversation intelligence tools")],
 }
 
+DIAL["others"] = [('PhoneBurner', 'Power dialer built to turn more dials into live conversations.'), ('Koncert', 'AI dialing with local caller IDs and a virtual sales floor.'), ('ConnectAndSell', 'Combines human agents and AI to connect reps with hard-to-reach decision-makers.'), ('Dialpad', 'AI-powered business phone, contact center and sales calling.'), ('RingCentral', 'Business phone and AI voice platform for companies of all sizes.')]
+
 category_page(DIAL)
 
 alternatives_page(DIAL, "aircall", "best-aircall-alternatives",

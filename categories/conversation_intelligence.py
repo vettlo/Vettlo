@@ -93,6 +93,8 @@ CI = {
     "related": [("/tools/best-gong-alternatives/", "Best Gong alternatives"), ("/tools/best-sales-engagement-software/", "Best sales engagement platforms"), ("/tools/best-crm-software/", "Best CRM software")],
 }
 
+CI["others"] = [('Chorus by ZoomInfo', 'Records and analyzes calls, meetings and emails for sales coaching.'), ('Jiminny', 'Records and analyzes calls, emails and meetings and syncs insights to the CRM.'), ('Modjo', 'Transcribes sales conversations, updates CRM records and flags deal signals.'), ('tl;dv', 'AI notetaker for Zoom, Google Meet and Teams, aimed at sales and customer success teams.'), ('Fathom', 'AI notetaker that records, transcribes and summarizes Zoom, Meet and Teams calls.'), ('Grain', 'AI notetaker for sales, customer success and product teams.')]
+
 category_page(CI)
 
 alternatives_page(CI, "gong", "best-gong-alternatives",

@@ -122,6 +122,8 @@ SE = {
     "related": [("/tools/best-apollo-alternatives/", "Best Apollo.io alternatives"), ("/tools/best-crm-software/", "Best CRM software for sales teams"), ("/compare/hubspot-vs-pipedrive/", "HubSpot vs Pipedrive")],
 }
 
+SE["others"] = [('Smartlead', 'Cold email platform with mailbox deliverability tools, a shared inbox and AI agents.'), ('Woodpecker', 'Cold email and LinkedIn outreach for outbound sales.'), ('Klenty', 'Sales engagement for phone-first SDR teams, with AI dialing and multichannel outreach.'), ('Mailshake', 'Automates cold email, phone and social outreach for sales teams and agencies.'), ('Saleshandy', 'Outbound platform that combines lead finding, email and call sequences and deliverability tools.'), ('Amplemarket', 'AI sales platform combining B2B data, buying signals and multichannel outreach.')]
+
 category_page(SE)
 
 alternatives_page(SE, "apollo", "best-apollo-alternatives",

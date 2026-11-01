@@ -123,6 +123,8 @@ PAY = {
     "related": [("/tools/best-gusto-alternatives/", "Best Gusto alternatives"), ("/tools/best-accounting-software/", "Best accounting software"), ("/hr-software/", "All HR software")],
 }
 
+PAY["others"] = [('Paychex Flex', 'Payroll, HR and benefits for companies of all sizes.'), ('Paycor', 'Payroll and HR software for mid-market and larger companies.'), ('Deel', 'Global payroll and contractor payments across 150+ countries.'), ('Remote', 'Worldwide hiring and payroll for employees and contractors.')]
+
 category_page(PAY)
 
 alternatives_page(PAY, "gusto", "best-gusto-alternatives",

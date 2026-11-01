@@ -110,6 +110,8 @@ EM = {
     "related": [("/tools/best-mailchimp-alternatives/", "Best Mailchimp alternatives"), ("/marketing-software/", "All marketing software")],
 }
 
+EM["others"] = [('Constant Contact', 'Email, social and text marketing for small businesses.'), ('GetResponse', 'Email marketing and automation with landing pages.'), ('Omnisend', 'Email and SMS for online stores on Shopify, WooCommerce and similar platforms.'), ('Campaign Monitor', 'Email campaigns and automated journeys for small marketing teams and agencies.'), ('AWeber', 'Email marketing for small businesses, with automation and landing pages.'), ('beehiiv', 'Newsletter platform to write, grow and monetize an audience.')]
+
 category_page(EM)
 
 alternatives_page(EM, "mailchimp", "best-mailchimp-alternatives",

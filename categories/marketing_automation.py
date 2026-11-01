@@ -112,6 +112,8 @@ MA = {
     "related": [("/tools/best-hubspot-marketing-hub-alternatives/", "Best HubSpot Marketing Hub alternatives"), ("/tools/best-email-marketing-software/", "Best email marketing software"), ("/tools/best-crm-software/", "Best CRM software"), ("/marketing-software/", "All marketing software")],
 }
 
+MA["others"] = [('Adobe Marketo Engage', 'Marketing automation for enterprise B2B sales and marketing teams.'), ('Zoho Marketing Automation', 'Multichannel lead nurturing and scoring with handoff to sales.'), ('Act-On', 'Lifecycle marketing across email, web, SMS and social for midsize and enterprise teams.'), ('Ortto', 'Marketing automation combined with a customer data platform and analytics.'), ('Braze', 'Customer engagement platform that unifies data and messaging channels.'), ('Iterable', 'Personalized, real-time cross-channel messaging for consumer brands.')]
+
 category_page(MA)
 
 alternatives_page(MA, "hubspot", "best-hubspot-marketing-hub-alternatives",

@@ -111,6 +111,8 @@ PWM = {
     "related": [("/tools/best-lastpass-alternatives/", "Best LastPass alternatives"), ("/it-security-software/", "All IT & security software")],
 }
 
+PWM["others"] = [('NordPass Business', 'Stores, generates and shares team credentials.'), ('RoboForm for Business', 'Centralized credential management, autofill and security controls.'), ('Zoho Vault', 'Password and passkey manager for teams and enterprises.'), ('Passbolt', 'Open-source password manager for teams, popular with public and regulated organizations.')]
+
 category_page(PWM)
 
 alternatives_page(PWM, "lastpass", "best-lastpass-alternatives",
