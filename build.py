@@ -494,7 +494,7 @@ def crm_page():
 </article>""")
     crit = "".join(f'<div class="crit"><span class="nm">{n}</span><span class="w">{w}%</span><span class="bar"><i style="width:{w*4}%"></i></span></div>' for n, w in CRITERIA)
     faq = "".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in FAQS)
-    toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("pricing", "Pricing"), ("faq", "FAQ")])
+    toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("what-is", "What it is"), ("criteria", "How we scored"), ("choose", "How to choose"), ("pricing", "Pricing"), ("faq", "FAQ")])
 
     body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb("best-crm-software")} / CRM Software</nav>
@@ -532,6 +532,7 @@ def crm_page():
 
 {also_considered()}
 
+<!--EXPLAIN:best-crm-software:what-->
 <section id="criteria"><h2>How we scored CRM software</h2>
 <p class="prose">Each tool gets a 0 to 5 rating on every criterion. We weight the ratings below, convert the total to a percentage, and only include tools that score 70 or higher out of 100. Open any tool's <b>Score breakdown</b> to see its six ratings. Full process on our <a href="/methodology/">methodology page</a>.</p>
 <div class="criteria">{crit}</div></section>
@@ -1430,9 +1431,11 @@ def link_compares():
 
 def build():
     link_compares()
+    PRICEROWS["best-crm-software"] = dict(noun="CRMs", plural="CRM Software", others=[], rows=[(SHORT[t["id"]], PRICING[t["id"]]["price"], PRICING[t["id"]]["note"], PRICING[t["id"]]["trial"], "#" + t["id"]) for t in TOOLS])
     dept_hubs()
     guides_index()
     link_guides()
+    fill_explainers()
     reviews_page()
     badges_page()
     scoreboard()

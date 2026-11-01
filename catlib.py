@@ -75,6 +75,7 @@ def category_page(cat):
     ranked = sorted([k for k in tools if cat_score(cat, k) >= THRESHOLD], key=lambda k: (-cat_score(cat, k), -float(tools[k]["g2"][0])))
     excluded = [k for k in tools if cat_score(cat, k) < THRESHOLD]
     cat["_ranked"] = ranked
+    PRICEROWS[cat["slug"]] = dict(noun=_noun(cat), plural=cat["plural"], others=cat.get("others", []), rows=[(tools[k]["name"], tools[k]["price"], tools[k]["price_note"], tools[k]["trial"], f"#{k}") for k in ranked])
     BADGES.extend((cat["crumb"], cat["slug"], k, tools[k]["name"], i) for i, k in enumerate(ranked, 1))
     SCOREBOARD.append((cat["crumb"], tools[ranked[0]]["name"], cat_score(cat, ranked[0]), f"/tools/{cat['slug']}/", len(tools)))
     url = f"/tools/{cat['slug']}/"
@@ -106,7 +107,7 @@ def category_page(cat):
     crit = "".join(f'<div class="crit"><span class="nm">{nm}</span><span class="w">{w}%</span><span class="bar"><i style="width:{w*4}%"></i></span></div>' for nm, w in cat["criteria"])
     choose = "".join(f"<li><b>{a}</b> {b}</li>" for a, b in cat["choose"])
     rel = "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in cat.get("related", []))
-    toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("answer", "Short answer"), ("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("criteria", "How we scored"), ("choose", "How to choose"), ("faq", "FAQ")])
+    toc = "".join(f'<a href="#{a}">{b}</a>' for a, b in [("answer", "Short answer"), ("shortlist", "Shortlist"), ("compare", "Comparison table"), ("reviews", "Reviews"), ("what-is", "What it is"), ("pricing", "Pricing"), ("criteria", "How we scored"), ("choose", "How to choose"), ("faq", "FAQ")])
     body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb(cat['slug'])} / {cat['crumb']}</nav>
 <header class="article-head"><span class="eyebrow">Shortlist · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, cat)}</header>
@@ -122,6 +123,7 @@ def category_page(cat):
 <p class="small muted">{cat['price_footnote']}</p></section>
 <section id="reviews"><h2>The reviews</h2>{''.join(cards)}</section>
 {also}
+<!--EXPLAIN:{cat['slug']}-->
 <section id="criteria"><h2>How we scored {cat.get('plural_lc', cat['plural'].lower())}</h2>
 <p class="prose">Each tool gets a 0 to 5 rating on every criterion. We weight the ratings below, convert the total to a score out of 100, and only rank tools that score {THRESHOLD} or higher. Open any tool's <b>Score breakdown</b> to see its ratings. Full process on our <a href="/methodology/">methodology page</a>.</p>
 <div class="criteria">{crit}</div></section>
@@ -241,6 +243,51 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
     COMPARES.setdefault(f"{cat['slug']}:{a}", []).append((url, f"{an} vs {bn}"))
     COMPARES.setdefault(f"{cat['slug']}:{b}", []).append((url, f"{an} vs {bn}"))
     CATEGORY_PAGES.append((url, f"{an} vs {bn}", f"{A['name']} and {B['name']} compared on price, features and fit.", "Comparison"))
+
+
+# ---------- EXPLAINERS on shortlists: what it is, key features, pricing overview, other tools
+PRICEROWS = {}
+_FREE = re.compile(r"free (plan|forever|tools|starter plan|for up to|for \d|2-person)|free plan", re.I)
+
+
+def explainer_sections(slug, only_what=False):
+    ex = EXPLAIN.get(slug) if "EXPLAIN" in globals() else None
+    pr = PRICEROWS.get(slug)
+    out = ""
+    if ex:
+        name = next((c[1] for c in CATS if c[0] == slug), "this software")
+        nm = _catname(name)
+        feats = "".join(f"<li><b>{a}.</b> {b}</li>" for a, b in ex.get("features", []))
+        more = f' Read our full guide: <a href="{ex["guide"]}">{next((t for u, t, *_r in GUIDES if u == ex["guide"]), "guide")}</a>.' if ex.get("guide") else ""
+        out += (f'<section id="what-is" class="prose"><h2>What is {nm[:-1] if nm.endswith("tools") and False else nm}?</h2><p>{ex["what"]}{more}</p>'
+                + (f'<h3>Key features to look for</h3><ul>{feats}</ul>' if feats else "") + "</section>")
+    if pr and pr["rows"] and not only_what:
+        rows = pr["rows"]
+        priced = sorted([(_money(p), n, p, a) for n, p, nt, t, a in rows if _money(p)], key=lambda x: x[0])
+        onreq = [n for n, p, nt, t, a in rows if not _money(p) and not p[:1] in "€£"]
+        other_cur = [(n, p) for n, p, nt, t, a in rows if p[:1] in "€£"]
+        free = [n for n, p, nt, t, a in rows if _FREE.search(t)]
+        lis = "".join(f'<li><a href="{a}">{n}</a>: {p}</li>' for v, n, p, a in priced) + "".join(f"<li>{n}: {p}</li>" for n, p in other_cur)
+        summary = []
+        if priced:
+            summary.append(f"Among the {len(rows)} {pr['noun']} we ranked, published entry prices start at {priced[0][2].replace("From ", "")} ({priced[0][1]})" + (f" and go up to {priced[-1][2].replace("From ", "")} ({priced[-1][1]})" if len(priced) > 1 else "") + ". Units differ by vendor (per user, per agent, per contact tier or flat), so compare at your own team size.")
+        if free:
+            summary.append(f"Free plans: {', '.join(free)}.")
+        if onreq:
+            summary.append(f"No published price: {', '.join(onreq)}.")
+        out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'
+                f'<ul>{lis}</ul><p class="small muted">Entry prices from each vendor\'s pricing page, as shown in the comparison table above. Higher tiers usually add automation, reporting and admin controls.</p></section>')
+        if pr.get("others"):
+            ol = "".join(f'<li><b>{n}</b>: {d}</li>' for n, d in pr["others"])
+            out += f'<section id="others" class="prose"><h2>Other {pr["noun"]} to consider</h2><ol start="{len(rows) + 1}">{ol}</ol></section>'
+    return out
+
+
+def fill_explainers():
+    for path, pg in PAGES.items():
+        for m in re.findall(r"<!--EXPLAIN:([^>]*)-->", pg["body"]):
+            sl, _, mode = m.partition(":")
+            pg["body"] = pg["body"].replace(f"<!--EXPLAIN:{m}-->", explainer_sections(sl, mode == "what"))
 
 
 # ---------- GUIDES (topics): explainers, pricing breakdowns and buying advice
