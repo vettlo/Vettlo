@@ -61,8 +61,12 @@ def _cap(s):
     return s[:1].upper() + s[1:]
 
 
+def _pl(cat):
+    return cat.get("plural_lc") or cat["plural"].lower().replace("b2b", "B2B").replace("crm", "CRM")
+
+
 def _noun(cat):
-    pl = cat["plural"].lower().replace("b2b", "B2B").replace("crm", "CRM")
+    pl = _pl(cat)
     return pl.replace(" software", " tools") if pl.endswith(" software") else pl
 
 
@@ -118,7 +122,7 @@ def category_page(cat):
 <p class="small muted">{cat['price_footnote']}</p></section>
 <section id="reviews"><h2>The reviews</h2>{''.join(cards)}</section>
 {also}
-<section id="criteria"><h2>How we scored {cat['plural'].lower()}</h2>
+<section id="criteria"><h2>How we scored {cat.get('plural_lc', cat['plural'].lower())}</h2>
 <p class="prose">Each tool gets a 0 to 5 rating on every criterion. We weight the ratings below, convert the total to a score out of 100, and only rank tools that score {THRESHOLD} or higher. Open any tool's <b>Score breakdown</b> to see its ratings. Full process on our <a href="/methodology/">methodology page</a>.</p>
 <div class="criteria">{crit}</div></section>
 <section id="choose" class="prose"><h2>How to choose {cat['choose_title']}</h2><ul>{choose}</ul></section>
@@ -164,9 +168,9 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
 <section id="compare"><h2>{tname} alternatives compared</h2>
 <div class="table-wrap"><table><thead><tr><th>Tool</th><th>Why pick it</th><th>Starting price</th><th>Free plan / trial</th><th>Vettlo score</th></tr></thead><tbody>{rows}</tbody></table></div>
-<p class="small muted">{cat['price_footnote']} Scores use the same weighted criteria as our <a href="/tools/{cat['slug']}/">{cat['plural'].lower()} ranking</a>.</p></section>
+<p class="small muted">{cat['price_footnote']} Scores use the same weighted criteria as our <a href="/tools/{cat['slug']}/">{cat.get('plural_lc', cat['plural'].lower())} ranking</a>.</p></section>
 <section id="reviews"><h2>The alternatives</h2>{''.join(cards)}</section>
-<section class="prose"><h2>How we picked these alternatives</h2><p>Every tool here comes from our <a href="/tools/{cat['slug']}/">{cat['plural'].lower()} shortlist</a>. We ordered them by how well each one solves the most common reasons teams leave {tname}, not only by overall score. See our <a href="/methodology/">methodology</a>.</p></section>
+<section class="prose"><h2>How we picked these alternatives</h2><p>Every tool here comes from our <a href="/tools/{cat['slug']}/">{cat.get('plural_lc', cat['plural'].lower())} shortlist</a>. We ordered them by how well each one solves the most common reasons teams leave {tname}, not only by overall score. See our <a href="/methodology/">methodology</a>.</p></section>
 <section id="faq"><h2>{tname} alternatives FAQ</h2><div>{_faq(faqs)}</div></section>
 <section class="prose"><h2>Related</h2><ul>{rel}</ul></section>
 {_author_box()}
