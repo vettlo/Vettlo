@@ -11,5 +11,7 @@
   // Sends form submissions through Cloudflare Email Routing. The recipient address lives in
   // the FORM_TO variable set in the Cloudflare dashboard (kept out of this public repo).
   "send_email": [{ "name": "SEND" }],
+  // Vendor portal data (vendors, listings, clicks, ledger). Tables are created by src/portal.js on first use.
+  "d1_databases": [{ "binding": "DB", "database_name": "vettlo", "database_id": "42829df1-e54c-426d-b625-3fd9e2851fc8" }],
   "keep_vars": true
 }
