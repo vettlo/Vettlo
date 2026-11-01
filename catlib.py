@@ -23,7 +23,7 @@ def _breakdown(cat, tid):
 
 def _byline(url, cat):
     return (byline(url, cat["date"], cat["date"]) +
-            '<p class="disclose">We may earn a commission when you click some links on this page. It never changes which tools we include or how we rank them. '
+            '<p class="disclose">We may earn a commission when you click some links on this page. Vendors can pay for Sponsored placements, which are always labeled; scores are editorial. '
             'See <a href="/how-we-make-money/">how we make money</a>.</p>')
 
 
@@ -112,7 +112,7 @@ def category_page(cat):
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
 <aside class="trust" aria-label="Why trust this review"><span class="label">Why trust this review</span>
 <div class="facts"><div><b>{len(tools)} tools</b><span class="small muted">scored</span></div><div><b>{len(cat['criteria'])}</b><span class="small muted">weighted criteria</span></div><div><b>0</b><span class="small muted">paid positions</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
-<p class="small muted">Prices and plans checked against each vendor's pricing page on {hdate(page_dates(url, cat['date'], cat['date'])[1])}. Vendors cannot pay for a position.</p></aside>
+<p class="small muted">Prices and plans checked against each vendor's pricing page on {hdate(page_dates(url, cat['date'], cat['date'])[1])}. Vendors cannot pay for a score.</p></aside>
 <section id="compare"><h2>{cat['plural']} compared</h2>
 <div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Best for</th><th>Free plan / trial</th><th>Starting price</th><th>G2 rating</th><th>Score</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="small muted">{cat['price_footnote']}</p></section>
