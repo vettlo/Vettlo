@@ -1,29 +1,373 @@
 {
-  "_about": "Daily publishing queue for vettlo.com. The daily publish task takes the first item with status 'todo', publishes it, and sets status to 'done' with the date and URL. Order fills hubs: deepen live clusters, then open new departments. Add new ideas at the end; skip (status 'skipped' + reason) anything whose prices can't be verified.",
+  "_about": "Daily publishing queue for vettlo.com. The daily publish task takes the first item with status 'todo', publishes it, and sets status to 'done' with the date and URL. Order fills hubs: deepen live clusters, then open new departments. Add new ideas at the end; skip (status 'skipped' + reason) anything whose prices can't be verified. Guides live in the separate 'guides' list and are published by the daily guide task.",
   "items": [
-    {"type": "compare", "slug": "mailchimp-vs-brevo", "category": "best-email-marketing-software", "status": "done", "date": "2026-10-27", "url": "/compare/mailchimp-vs-brevo/"},
-    {"type": "category", "slug": "best-payroll-software", "department": "HR & people", "status": "done", "date": "2026-10-28", "url": "/tools/best-payroll-software/"},
-    {"type": "compare", "slug": "mailerlite-vs-mailchimp", "category": "best-email-marketing-software", "status": "done", "date": "2026-10-29", "url": "/compare/mailerlite-vs-mailchimp/"},
-    {"type": "category", "slug": "best-password-managers-for-business", "department": "IT & security", "status": "done", "date": "2026-10-30", "url": "/tools/best-password-managers-for-business/"},
-    {"type": "category", "slug": "best-marketing-automation-software", "department": "Marketing", "status": "done", "date": "2026-10-31", "url": "/tools/best-marketing-automation-software/"},
-    {"type": "category", "slug": "best-hris-software", "department": "HR & people", "status": "done", "date": "2026-11-01", "url": "/tools/best-hris-software/"},
-    {"type": "compare", "slug": "clickup-vs-asana", "category": "best-project-management-software", "status": "todo"},
-    {"type": "category", "slug": "best-time-tracking-software", "department": "Projects & operations", "status": "todo"},
-    {"type": "category", "slug": "best-live-chat-software", "department": "Customer support", "status": "todo"},
-    {"type": "category", "slug": "best-expense-management-software", "department": "Finance", "status": "todo"},
-    {"type": "alternatives", "slug": "best-monday-alternatives", "category": "best-project-management-software", "status": "todo"},
-    {"type": "category", "slug": "best-applicant-tracking-systems", "department": "HR & people", "status": "todo"},
-    {"type": "compare", "slug": "klaviyo-vs-mailchimp", "category": "best-email-marketing-software", "status": "todo"},
-    {"type": "category", "slug": "best-knowledge-base-software", "department": "Projects & operations", "status": "todo"},
-    {"type": "category", "slug": "best-incident-management-software", "department": "IT & security", "status": "todo"},
-    {"type": "alternatives", "slug": "best-freshdesk-alternatives", "category": "best-help-desk-software", "status": "todo"},
-    {"type": "category", "slug": "best-seo-tools", "department": "Marketing", "status": "todo"},
-    {"type": "compare", "slug": "xero-vs-zohobooks", "category": "best-accounting-software", "status": "todo"},
-    {"type": "category", "slug": "best-social-media-management-tools", "department": "Marketing", "status": "todo"},
-    {"type": "category", "slug": "best-mdm-software", "department": "IT & security", "status": "todo"},
-    {"type": "category", "slug": "best-accounts-payable-software", "department": "Finance", "status": "todo"},
-    {"type": "category", "slug": "best-sales-commission-software", "department": "Sales", "status": "todo"},
-    {"type": "alternatives", "slug": "best-activecampaign-alternatives", "category": "best-email-marketing-software", "status": "todo"},
-    {"type": "compare", "slug": "lemlist-vs-instantly", "category": "best-sales-engagement-software", "status": "todo"}
+    {
+      "type": "compare",
+      "slug": "mailchimp-vs-brevo",
+      "category": "best-email-marketing-software",
+      "status": "done",
+      "date": "2026-10-27",
+      "url": "/compare/mailchimp-vs-brevo/"
+    },
+    {
+      "type": "category",
+      "slug": "best-payroll-software",
+      "department": "HR & people",
+      "status": "done",
+      "date": "2026-10-28",
+      "url": "/tools/best-payroll-software/"
+    },
+    {
+      "type": "compare",
+      "slug": "mailerlite-vs-mailchimp",
+      "category": "best-email-marketing-software",
+      "status": "done",
+      "date": "2026-10-29",
+      "url": "/compare/mailerlite-vs-mailchimp/"
+    },
+    {
+      "type": "category",
+      "slug": "best-password-managers-for-business",
+      "department": "IT & security",
+      "status": "done",
+      "date": "2026-10-30",
+      "url": "/tools/best-password-managers-for-business/"
+    },
+    {
+      "type": "category",
+      "slug": "best-marketing-automation-software",
+      "department": "Marketing",
+      "status": "done",
+      "date": "2026-10-31",
+      "url": "/tools/best-marketing-automation-software/"
+    },
+    {
+      "type": "category",
+      "slug": "best-hris-software",
+      "department": "HR & people",
+      "status": "done",
+      "date": "2026-11-01",
+      "url": "/tools/best-hris-software/"
+    },
+    {
+      "type": "category",
+      "slug": "best-video-conferencing-software",
+      "department": "Collaboration",
+      "status": "todo"
+    },
+    {
+      "type": "compare",
+      "slug": "clickup-vs-asana",
+      "category": "best-project-management-software",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-issue-tracking-software",
+      "department": "Engineering & DevOps",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-time-tracking-software",
+      "department": "Projects & operations",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-business-intelligence-tools",
+      "department": "Data & analytics",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-live-chat-software",
+      "department": "Customer support",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-e-signature-software",
+      "department": "Collaboration",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-expense-management-software",
+      "department": "Finance",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-contract-management-software",
+      "department": "Legal & compliance",
+      "status": "todo"
+    },
+    {
+      "type": "alternatives",
+      "slug": "best-monday-alternatives",
+      "category": "best-project-management-software",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-itsm-software",
+      "department": "IT & security",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-applicant-tracking-systems",
+      "department": "HR & people",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-team-chat-apps",
+      "department": "Collaboration",
+      "status": "todo"
+    },
+    {
+      "type": "compare",
+      "slug": "klaviyo-vs-mailchimp",
+      "category": "best-email-marketing-software",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-ci-cd-tools",
+      "department": "Engineering & DevOps",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-knowledge-base-software",
+      "department": "Projects & operations",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-product-analytics-tools",
+      "department": "Data & analytics",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-incident-management-software",
+      "department": "IT & security",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-compliance-management-software",
+      "department": "Legal & compliance",
+      "status": "todo"
+    },
+    {
+      "type": "alternatives",
+      "slug": "best-freshdesk-alternatives",
+      "category": "best-help-desk-software",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-webinar-software",
+      "department": "Marketing",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-seo-tools",
+      "department": "Marketing",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-learning-management-systems",
+      "department": "HR & people",
+      "status": "todo"
+    },
+    {
+      "type": "compare",
+      "slug": "xero-vs-zohobooks",
+      "category": "best-accounting-software",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-subscription-billing-software",
+      "department": "Finance",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-social-media-management-tools",
+      "department": "Marketing",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-ai-customer-service-agents",
+      "department": "Customer support",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-mdm-software",
+      "department": "IT & security",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-workflow-automation-software",
+      "department": "Projects & operations",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-accounts-payable-software",
+      "department": "Finance",
+      "status": "todo"
+    },
+    {
+      "type": "category",
+      "slug": "best-sales-commission-software",
+      "department": "Sales",
+      "status": "todo"
+    },
+    {
+      "type": "alternatives",
+      "slug": "best-activecampaign-alternatives",
+      "category": "best-email-marketing-software",
+      "status": "todo"
+    },
+    {
+      "type": "compare",
+      "slug": "lemlist-vs-instantly",
+      "category": "best-sales-engagement-software",
+      "status": "todo"
+    }
+  ],
+  "guides": [
+    {
+      "type": "guide",
+      "slug": "crm-software-cost",
+      "department": "Sales",
+      "category": "best-crm-software",
+      "note": "Pricing guide: what CRM costs per user and for a 10-person team, from PRICING data",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "project-management-software-cost",
+      "department": "Projects & operations",
+      "category": "best-project-management-software",
+      "note": "Pricing guide",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "what-is-sales-engagement-software",
+      "department": "Sales",
+      "category": "best-sales-engagement-software",
+      "note": "Explainer",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "payroll-software-cost",
+      "department": "HR & people",
+      "category": "best-payroll-software",
+      "note": "Pricing guide",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "what-is-conversation-intelligence",
+      "department": "Sales",
+      "category": "best-conversation-intelligence-software",
+      "note": "Explainer",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "password-manager-cost-for-business",
+      "department": "IT & security",
+      "category": "best-password-managers-for-business",
+      "note": "Pricing guide",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "accounting-software-cost",
+      "department": "Finance",
+      "category": "best-accounting-software",
+      "note": "Pricing guide",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "what-is-an-hris",
+      "department": "HR & people",
+      "category": "best-hris-software",
+      "note": "Explainer",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "marketing-automation-vs-email-marketing",
+      "department": "Marketing",
+      "category": "best-marketing-automation-software",
+      "note": "Explainer comparing the two categories",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "how-b2b-data-credits-work",
+      "department": "Sales",
+      "category": "best-b2b-data-providers",
+      "note": "Explainer on credit pricing",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "power-vs-parallel-dialers",
+      "department": "Sales",
+      "category": "best-sales-dialers",
+      "note": "Explainer",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "hris-vs-payroll-software",
+      "department": "HR & people",
+      "category": "best-hris-software",
+      "note": "Explainer",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "ai-customer-service-pricing",
+      "department": "Customer support",
+      "category": "best-help-desk-software",
+      "note": "Explainer on per-resolution AI pricing",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "how-to-choose-a-crm",
+      "department": "Sales",
+      "category": "best-crm-software",
+      "note": "Buying guide",
+      "status": "todo"
+    },
+    {
+      "type": "guide",
+      "slug": "email-deliverability-basics",
+      "department": "Marketing",
+      "category": "best-email-marketing-software",
+      "note": "Explainer",
+      "status": "todo"
+    }
   ]
 }
