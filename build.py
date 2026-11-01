@@ -1192,7 +1192,7 @@ def head_block(path, p, css_href):
             f'<link rel="canonical" href="{canon}"><meta property="og:type" content="{p["ptype"]}"><meta property="og:site_name" content="Vettlo">'
             f'<meta property="og:title" content="{p["title"]}"><meta property="og:description" content="{p["desc"]}"><meta property="og:url" content="{canon}">'
             f'<meta property="og:image" content="{DOMAIN}/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
-            f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{DOMAIN}/assets/og.png"><link rel="icon" href="/assets/logo.svg" type="image/svg+xml">'
+            f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{DOMAIN}/assets/og.png"><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/assets/logo.svg?v=2" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png">'
             f'{FONTS}<link rel="stylesheet" href="{css_href}">{ld}')
 
 
@@ -1452,7 +1452,9 @@ def build():
         for fn, svg in BADGE_FILES.items():
             (d / "badges" / fn).write_text(svg)
         shutil.copy(ROOT / "src" / "og.png", d / "assets" / "og.png")
-        (d / "assets" / "logo.svg").write_text(LOGO.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replace("var(--brand-ink)", "#ffffff").replace("var(--brand)", "#2347d6"))
+        for fn in ("favicon.ico", "apple-touch-icon.png", "icon-192.png"):
+            shutil.copy(ROOT / "src" / fn, d / fn)
+        (d / "assets" / "logo.svg").write_text(LOGO.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replace("var(--brand-ink)", "#ffffff").replace("var(--brand)", "#00865e"))
     for path, p in PAGES.items():
         rel = out_file(path)
         # deploy version
