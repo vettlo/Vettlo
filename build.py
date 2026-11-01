@@ -243,7 +243,7 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <section class="section band"><div class="wrap">
 <div class="section-head"><div><span class="eyebrow">Our rules</span><h2 style="margin-top:.4rem">Why buyers trust the shortlist</h2></div><a class="btn ghost small" href="/how-we-make-money/">How we make money</a></div>
 <div class="pledges">
-<div class="pledge"><span class="n">0</span><h4>Paid scores</h4><p class="muted small">Partner compensation may affect which products we include and where they appear, and we say so on every review. Partners can't pay for a score or for what we write.</p></div>
+<div class="pledge"><span class="n">100%</span><h4>Prices checked at the source</h4><p class="muted small">Every price comes from the vendor's own pricing page, with the date we checked it shown on each review.</p></div>
 <div class="pledge"><span class="n">6</span><h4>Weighted criteria per category</h4><p class="muted small">Published on every review, so you can see why a tool placed where it did.</p></div>
 <div class="pledge"><span class="n">90</span><h4>Days between re-checks</h4><p class="muted small">Pricing and plan limits change fast. Every review shows its last verified date.</p></div>
 </div>
