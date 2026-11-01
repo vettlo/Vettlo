@@ -43,7 +43,7 @@ guide_page({
 <li><b>Flexible-data CRMs</b> let you model your own objects, such as investors or partners, without an admin. Attio is one; they're popular with startups.</li></ul>"""),
         ("cost", "How much a CRM costs", f"""<p>Most CRMs charge per user per month, and the entry plan is rarely the one a sales team ends up on: automation, forecasting and custom reports usually sit one or two tiers up. Entry prices for the CRMs we rank, from each vendor's pricing page:</p>
 {_ptable(_crm_rows)}
-<p>Free plans: {", ".join(_crm_free) if _crm_free else "none of the ranked CRMs list one"}. Watch for one-time onboarding fees on higher tiers and for add-ons such as AI, calling or extra storage. For a full cost breakdown by team, see our <a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a> and <a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a> comparisons.</p>"""),
+<p>Free plans: {", ".join(_crm_free) if _crm_free else "none of the ranked CRMs list one"}. Watch for one-time onboarding fees on higher tiers and for add-ons such as AI, calling or extra storage. For a full breakdown, including what a 10-person team pays a year, see <a href="/guides/crm-software-cost/">how much CRM software costs</a> and our <a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a> and <a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a> comparisons.</p>"""),
         ("choose", "How to choose a CRM", """<ol><li><b>Map your sales process first:</b> stages, who owns which step and what has to be logged.</li>
 <li><b>Price the plan you'll need in a year,</b> not the entry plan, including onboarding fees and add-ons.</li>
 <li><b>Check integrations</b> with your email, calendar, phone and marketing tools.</li>
@@ -138,5 +138,63 @@ guide_page({
         ("What is the cheapest email marketing software?", f"Among the tools we rank, the lowest entry price is {_fmt(_em_lo[0])} a month ({_em_lo[1]}). Compare at your own list size, since prices step up as the list grows."),
         ("Is there free email marketing software?", _em_free or "Yes, most tools offer a free plan for small lists."),
         ("Why do prices go up when my list grows?", "Most vendors price by the number of contacts, subscribers or active profiles, so each step in list size moves you to a higher price band. Vendors that price by emails sent are the exception."),
+    ],
+})
+
+
+# ---------- How much does CRM software cost?
+_cc_ranked = [t["id"] for t in TOOLS]
+_cc_usd = sorted((_money(PRICING[k]["price"]), SHORT[k]) for k in _cc_ranked if _money(PRICING[k]["price"]))
+_cc_lo, _cc_hi = _cc_usd[0][0], _cc_usd[-1][0]
+_cc_lo_n = " and ".join(n for v, n in _cc_usd if v == _cc_lo)
+_cc_hi_n = " and ".join(n for v, n in _cc_usd if v == _cc_hi)
+_cc_rows = [(f'<a href="/tools/best-crm-software/#{k}">{SHORT[k]}</a>', PRICING[k]["price"], PRICING[k]["note"], PRICING[k]["trial"]) for k in _cc_ranked]
+_cc_ex = "".join(f"<tr><td>{n}</td><td>{_fmt(v)}</td><td>{_fmt(v * 10 * 12)}</td></tr>" for v, n in _cc_usd)
+_cc_mo = []  # (tool, annual-billing price, month-to-month price) where the vendor lists both
+for k in _cc_ranked:
+    _m = re.search(r"\(\$([\d.]+) monthly\)", PRICING[k]["note"])
+    if _m and _money(PRICING[k]["price"]):
+        _cc_mo.append((SHORT[k], _money(PRICING[k]["price"]), float(_m.group(1))))
+_cc_mo_li = "".join(f"<li><b>{n}:</b> {_fmt(a)} billed annually vs {_fmt(m)} month to month, {_fmt((m - a) * 10 * 12)} more a year for 10 users</li>" for n, a, m in _cc_mo)
+_cc_free = [f"{SHORT[k]}: {PRICING[k]['trial'][0].lower() + PRICING[k]['trial'][1:]}" for k in _cc_ranked if PRICING[k]["trial"].lower().startswith("free")]
+_cc_faq = dict(FAQS)
+
+guide_page({
+    "slug": "crm-software-cost", "crumb": "CRM software cost", "dept": "Sales", "cats": ["best-crm-software"],
+    "date": "2026-11-01", "kicker": "Pricing guide",
+    "title": f"How Much Does CRM Software Cost in {YEAR}?",
+    "seo_title": f"How Much Does CRM Software Cost? ({YEAR} Prices) | Vettlo",
+    "desc": "CRM prices per user from the CRMs we rank, what a 10-person sales team pays a year, the cost of monthly billing and the fees beyond the license.",
+    "card": "Per-user prices, a 10-person yearly example and the costs beyond the license.",
+    "answer": (f"Entry plans for the CRMs we rank cost {_fmt(_cc_lo)} ({_cc_lo_n}) to {_fmt(_cc_hi)} ({_cc_hi_n}) per user per month on annual billing, "
+               f"so a 10-person sales team pays {_fmt(_cc_lo * 120)} to {_fmt(_cc_hi * 120)} a year on entry plans. "
+               "Most sales teams end up a tier or two higher, because sequences, automation and forecasting rarely sit on the entry plan, "
+               "and implementation and data migration can add more than the license at larger companies."),
+    "sections": [
+        ("prices", "Entry prices by CRM", f"""<p>The cheapest paid plan for each CRM in our ranking, from each vendor's pricing page:</p>
+{_ptable(_cc_rows)}
+<p class="small muted">Starting prices from each vendor's pricing page, checked {PRICES_CHECKED}. Vendors change plans often; confirm before you buy.</p>"""),
+        ("example", "What a 10-person sales team pays per year", f"""<p>Ten users on each vendor's entry plan, at the annual-billing prices above (taxes, add-ons and onboarding fees excluded):</p>
+<div class="table-wrap"><table><thead><tr><th>CRM</th><th>Per user per month</th><th>10 users per year</th></tr></thead><tbody>{_cc_ex}</tbody></table></div>
+<p>These totals compare entry plans only, and entry plans differ a lot in what they include. Check the plan that covers the workflows your team needs: our <a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a> comparison prices a 10-rep team on the plans that include sequences, automation and forecasting, and <a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a> does the same with Salesforce's suites.</p>"""),
+        ("billing", "Annual vs monthly billing", (f"""<p>The prices above assume annual billing. Where a vendor also lists a month-to-month price for the same plan, paying monthly costs noticeably more:</p>
+<ul>{_cc_mo_li}</ul>
+<p>Monthly billing is worth the premium while you're still trialing a CRM with real deals. Once the team has settled on it, annual billing is the cheaper way to pay.</p>""" if _cc_mo else "<p>Most CRMs list their lowest per-user prices for annual billing; month-to-month billing usually costs more.</p>")),
+        ("drivers", "What drives the cost beyond the entry price", f"""<ul><li><b>Users.</b> Nearly every CRM charges per user (or seat) per month, so cost scales with headcount. Count everyone who needs to log in, not just quota-carrying reps.</li>
+<li><b>Plan tier.</b> Email sequences, workflow automation, forecasting and custom reports usually start one or two tiers above the entry plan, and per-user prices often rise steeply from one tier to the next.</li>
+<li><b>One-time fees.</b> Some vendors charge onboarding fees on higher tiers; HubSpot does on Sales Hub Professional and Enterprise, as our <a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a> comparison shows.</li>
+<li><b>Add-ons.</b> AI features, calling minutes, extra storage, data enrichment and sandboxes are often sold separately.</li>
+<li><b>Implementation.</b> {_cc_faq.get("How much does CRM software cost?", "Budget for implementation, data migration and integrations as well as licenses.").split(". ", 1)[-1]}</li></ul>"""),
+        ("budget", "How to budget for a CRM", f"""<ol><li><b>List the three workflows you can't live without,</b> such as a follow-up sequence after a demo or a weekly forecast call, and find the cheapest plan on each CRM that includes all three. That's your real price.</li>
+<li><b>Multiply by every user for 12 months,</b> then add any onboarding fee and the add-ons you'll switch on.</li>
+<li><b>Price year two as well.</b> First-year discounts and seat growth both change the renewal.</li>
+<li><b>Start free if you're small.</b> {("Free options among the CRMs we rank: " + "; ".join(_cc_free) + ". ") if _cc_free else ""}See our <a href="/tools/best-free-crm-software/">best free CRM software</a> list for the limits of each.</li></ol>
+<p>Our <a href="/tools/best-crm-software/">CRM shortlist</a> scores each option on six weighted criteria, including price and value, and our <a href="/tools/best-crm-for-small-business/">small business guide</a> reweights them for teams of 1 to 20. New to CRMs? Start with <a href="/guides/what-is-crm-software/">what CRM software is and what it does</a>.</p>"""),
+    ],
+    "faqs": [
+        ("How much does a CRM cost per user?", f"Entry plans for the CRMs we rank cost {_fmt(_cc_lo)} to {_fmt(_cc_hi)} per user per month on annual billing. Plans with sequences, automation and forecasting cost more per user."),
+        ("How much does a CRM cost for a team of 10?", f"On entry plans with annual billing, 10 users cost {_fmt(_cc_lo * 120)} ({_cc_lo_n}) to {_fmt(_cc_hi * 120)} ({_cc_hi_n}) a year, before taxes, add-ons and onboarding fees."),
+        ("What is the cheapest CRM?", f"Among the CRMs we rank, {_cc_lo_n} has the lowest entry price at {_fmt(_cc_lo)} per user per month on annual billing. " + (("Free plans are also available from " + "; ".join(_cc_free) + ".") if _cc_free else "")),
+        ("Why does CRM cost so much more than the entry price?", _cc_faq.get("How much does CRM software cost?", "Automation, forecasting and custom reporting usually sit on higher tiers, and implementation adds to the license cost.")),
     ],
 })

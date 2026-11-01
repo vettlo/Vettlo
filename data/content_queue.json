@@ -255,7 +255,9 @@
       "department": "Sales",
       "category": "best-crm-software",
       "note": "Pricing guide: what CRM costs per user and for a 10-person team, from PRICING data",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-01",
+      "url": "/guides/crm-software-cost/"
     },
     {
       "type": "guide",
