@@ -81,7 +81,7 @@ export default {
     if (url.pathname.startsWith("/go/")) return handleGo(request, env, ctx);
     const res = await env.ASSETS.fetch(request);
     if (url.pathname.startsWith("/tools/")) {
-      try { return await placeOnShortlist(request, env, res); } catch (e) { return res; }
+      try { return await placeOnShortlist(request, env, res, ctx); } catch (e) { return res; }
     }
     return res;
   },
