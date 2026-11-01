@@ -34,6 +34,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Asana Alternatives](https://vettlo.com/tools/best-asana-alternatives/): Five tools for teams outgrowing Asana's free plan or pricing.
 - [Best Sales Engagement Platforms](https://vettlo.com/tools/best-sales-engagement-software/): Outreach tools scored on sequencing, deliverability, data and price.
 - [Best Apollo.io Alternatives](https://vettlo.com/tools/best-apollo-alternatives/): Five tools for teams outgrowing Apollo's credits or sending limits.
+- [Best Video Conferencing Software](https://vettlo.com/tools/best-video-conferencing-software/): Six meeting tools compared on free-plan limits, recording and per-user price.
+- [Best Zoom Alternatives](https://vettlo.com/tools/best-zoom-alternatives/): Five meeting tools with longer free meetings or lower prices.
 - [Asana vs monday.com](https://vettlo.com/compare/asana-vs-monday/): Asana and monday.com compared on price, features and fit.
 - [Zendesk vs Freshdesk](https://vettlo.com/compare/zendesk-vs-freshdesk/): Zendesk and Freshdesk compared on price, features and fit.
 - [QuickBooks vs Xero](https://vettlo.com/compare/quickbooks-vs-xero/): QuickBooks Online and Xero compared on price, features and fit.
@@ -48,6 +50,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [1Password vs Bitwarden](https://vettlo.com/compare/1password-vs-bitwarden/): 1Password and Bitwarden compared on price, features and fit.
 - [HubSpot Marketing Hub vs ActiveCampaign](https://vettlo.com/compare/hubspot-vs-activecampaign/): HubSpot Marketing Hub and ActiveCampaign compared on price, features and fit.
 - [BambooHR vs Rippling](https://vettlo.com/compare/bamboohr-vs-rippling/): BambooHR and Rippling compared on price, features and fit.
+- [Zoom vs Microsoft Teams](https://vettlo.com/compare/zoom-vs-teams/): Zoom Workplace and Microsoft Teams compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best free B2B contact data providers](https://vettlo.com/tools/best-free-b2b-data-providers/): Best free B2B contact data providers, from our scored shortlist.
@@ -65,6 +68,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best free project management tools](https://vettlo.com/tools/best-free-project-management-software/): Best free project management tools, from our scored shortlist.
 - [Best project management tools for small business](https://vettlo.com/tools/best-project-management-software-for-small-business/): Best project management tools for small business, from our scored shortlist.
 - [Best sales engagement platforms for small business](https://vettlo.com/tools/best-sales-engagement-software-for-small-business/): Best sales engagement platforms for small business, from our scored shortlist.
+- [Best free video conferencing tools](https://vettlo.com/tools/best-free-video-conferencing-software/): Best free video conferencing tools, from our scored shortlist.
+- [Best video conferencing tools for small business](https://vettlo.com/tools/best-video-conferencing-software-for-small-business/): Best video conferencing tools for small business, from our scored shortlist.
 - [Salesforce Sales Cloud Review](https://vettlo.com/tools/salesforce-sales-cloud-review/): Salesforce Sales Cloud's pricing, pros, cons and score, from our CRM tools ranking.
 - [HubSpot Sales Hub Review](https://vettlo.com/tools/hubspot-sales-hub-review/): HubSpot Sales Hub's pricing, pros, cons and score, from our CRM tools ranking.
 - [Pipedrive Review](https://vettlo.com/tools/pipedrive-review/): Pipedrive's pricing, pros, cons and score, from our CRM tools ranking.
@@ -139,6 +144,12 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Reply.io Review](https://vettlo.com/tools/reply-review/): Reply.io's pricing, pros, cons and score, from our sales engagement platforms ranking.
 - [lemlist Review](https://vettlo.com/tools/lemlist-review/): lemlist's pricing, pros, cons and score, from our sales engagement platforms ranking.
 - [Instantly Review](https://vettlo.com/tools/instantly-review/): Instantly's pricing, pros, cons and score, from our sales engagement platforms ranking.
+- [Zoom Workplace Review](https://vettlo.com/tools/zoom-workplace-review/): Zoom Workplace's pricing, pros, cons and score, from our video conferencing tools ranking.
+- [Microsoft Teams Review](https://vettlo.com/tools/microsoft-teams-review/): Microsoft Teams's pricing, pros, cons and score, from our video conferencing tools ranking.
+- [Google Meet Review](https://vettlo.com/tools/google-meet-review/): Google Meet's pricing, pros, cons and score, from our video conferencing tools ranking.
+- [Webex Review](https://vettlo.com/tools/webex-review/): Webex's pricing, pros, cons and score, from our video conferencing tools ranking.
+- [Zoho Meeting Review](https://vettlo.com/tools/zoho-meeting-review/): Zoho Meeting's pricing, pros, cons and score, from our video conferencing tools ranking.
+- [Whereby Review](https://vettlo.com/tools/whereby-review/): Whereby's pricing, pros, cons and score, from our video conferencing tools ranking.
 - [All categories](https://vettlo.com/best-tools/)
 
 ## Guides

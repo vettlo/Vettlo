@@ -108,4 +108,12 @@ EXPLAIN = {
                      ("Financial reports", "Profit and loss, balance sheet and cash flow."),
                      ("Tax and accountant access", "Sales tax tracking and access for your accountant.")],
     },
+    "best-video-conferencing-software": {
+        "what": "Video conferencing software lets people meet over video and audio from a browser, desktop app or phone, with screen sharing, chat and recording. Business plans add longer and larger meetings, cloud recordings, AI summaries and the admin and security controls IT teams need.",
+        "features": [("Video meetings and screen sharing", "HD video calls with screen, window or tab sharing."),
+                     ("Meeting limits", "Caps on meeting length and participants, which set which plan you need."),
+                     ("Recording and transcripts", "Local or cloud recordings, often with searchable transcripts."),
+                     ("AI notes and summaries", "Automatic meeting summaries, action items and in-meeting questions."),
+                     ("Calendar and app integrations", "Join links added from Google Calendar or Outlook, plus admin controls such as SSO.")],
+    },
 }

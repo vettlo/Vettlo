@@ -217,7 +217,7 @@ DEPTS = [
         ("best-data-warehouse-software", "Data Warehouses", "Storage and SQL at scale", False),
         ("best-customer-data-platforms", "Customer Data Platforms", "Unified customer profiles", False)]),
     ("Collaboration", "Meetings, chat and documents", [
-        ("best-video-conferencing-software", "Video Conferencing Software", "Meetings, recordings and webinars", False),
+        ("best-video-conferencing-software", "Video Conferencing Software", "Meetings, recordings and webinars", True),
         ("best-team-chat-apps", "Team Chat Apps", "Channels, DMs and huddles", False),
         ("best-online-whiteboards", "Online Whiteboards", "Brainstorms, diagrams and workshops", False),
         ("best-document-management-software", "Document Management Software", "Storage, versions and permissions", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 1, 2026</span></div><h3><a href="/tools/best-video-conferencing-software/">Best video conferencing software</a></h3><p class="muted small">Six meeting tools compared on free-plan time limits, recording and AI notes, from $4 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 1, 2026</span></div><h3><a href="/tools/best-hris-software/">Best HRIS software</a></h3><p class="muted small">Six HRIS platforms priced for 20 employees, and which plan first includes reviews.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 31, 2026</span></div><h3><a href="/tools/best-marketing-automation-software/">Best marketing automation software</a></h3><p class="muted small">Six platforms compared on journeys and lead scoring, from $15 a month to $1,250.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Oct 30, 2026</span></div><h3><a href="/tools/best-password-managers-for-business/">Best password managers for business</a></h3><p class="muted small">Six password managers priced for 10 users, and which plan first includes SSO.</p></article>
-<article><div class="meta"><span>Comparison</span><span>Oct 29, 2026</span></div><h3><a href="/compare/mailerlite-vs-mailchimp/">MailerLite vs Mailchimp</a></h3><p class="muted small">What each costs at 500 and 10,000 contacts, and where multi-step automation starts.</p></article>
 
 </div>
 </div></section>
