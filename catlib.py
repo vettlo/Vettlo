@@ -449,7 +449,31 @@ def _cat_link(cat):
     return f'<a href="/tools/{cat["slug"]}/">{_noun(cat)} ranking</a>'
 
 
+def _depth_html(name, d):
+    out = ""
+    if d.get("plans"):
+        rows = "".join(f"<tr><td><b>{a}</b></td><td>{b}</td><td>{c}</td></tr>" for a, b, c in d["plans"])
+        out += f'<section id="plans"><h2>{name} plans</h2><div class="table-wrap"><table><thead><tr><th>Plan</th><th>Price</th><th>What you get</th></tr></thead><tbody>{rows}</tbody></table></div></section>'
+    if d.get("first_plan"):
+        rows = "".join(f"<tr><td>{a}</td><td><b>{b}</b></td></tr>" for a, b in d["first_plan"])
+        out += f'<section id="which-plan"><h2>Which {name} plan includes what</h2><p class="prose">The first plan where each feature appears on {name}\'s pricing page.</p><div class="table-wrap"><table><thead><tr><th>Feature</th><th>First included on</th></tr></thead><tbody>{rows}</tbody></table></div></section>'
+    lim = d.get("limits")
+    if lim and lim.get("rows"):
+        head = "".join(f"<th>{c}</th>" for c in lim["cols"])
+        rows = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in lim["rows"])
+        out += f'<section id="limits"><h2>{name} plan limits</h2><div class="table-wrap"><table><thead><tr><th>Limit</th>{head}</tr></thead><tbody>{rows}</tbody></table></div></section>'
+    notes = "".join(f"<li>{n}</li>" for n in d.get("notes", []))
+    src = d.get("source")
+    if notes or src:
+        out += (f'<section class="prose"><ul>{notes}</ul>' if notes else '<section class="prose">') + (f'<p class="small muted">Source: <a href="{src[1]}" target="_blank" rel="noopener">{src[0]}</a>, checked {hdate(d["checked"])}.</p>' if src else "") + "</section>"
+    return out
+
+
 def review_pages(cats):
+    try:
+        depth = json.load(open(ROOT / "data" / "review_depth.json"))
+    except Exception:
+        depth = {}
     by = {}
     for cat in cats:
         for i, k in enumerate(cat.get("_ranked", []), 1):
@@ -463,6 +487,9 @@ def review_pages(cats):
         t = cat["tools"][k]
         url = REVIEW_URL[name]
         date = max(page_dates(f"/tools/{c['slug']}/", c["date"], c["date"])[1] for c, _, _ in entries)
+        dd = depth.get(name) or {}
+        if dd.get("checked"):
+            date = max(date, dd["checked"])
         s0 = cat_score(cat, k)
         ranks = " and ".join(f"#{r} of {len(c['_ranked'])} in our {_cat_link(c)} ({cat_score(c, kk)}/100)" for c, kk, r in entries)
         answer = f"{name} ranks {ranks}. {_cap(_bf(t['bf']))}. {_price_sentence(t)}"
@@ -503,12 +530,13 @@ def review_pages(cats):
 <section id="pros-cons"><h2>Pros and cons</h2><div class="pc"><div class="pros"><h4>Strengths</h4><ul>{''.join(f'<li>{x}</li>' for x in t['pros'])}</ul></div><div class="cons"><h4>Watch-outs</h4><ul>{''.join(f'<li>{x}</li>' for x in t['cons'])}</ul></div></div>
 <p class="small muted"><b>Skip it if:</b> {t['skip']}</p></section>
 <section id="pricing" class="prose"><h2>{name} pricing</h2><p>{_price_sentence(t)} Free plan or trial: {t['trial']}.</p><p class="small muted">From {name}'s pricing page, checked on the date at the top of this review. See how it compares on price in our <a href="/tools/{cat['slug']}/#pricing">{_noun(cat)} pricing overview</a>.</p></section>
+{_depth_html(name, dd) if dd else ""}
 <section id="score"><h2>How we scored {name}</h2>{bd}<p class="small muted">Each criterion is rated 0 to 5 and weighted for the category. See our <a href="/methodology/">methodology</a>.</p></section>
 <section id="compare"><h2>How {name} compares</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Best for</th><th>Starting price</th><th>Score</th></tr></thead><tbody>{comp_rows}</tbody></table></div></section>
 <section class="prose"><h2>Alternatives and comparisons</h2><ul>{lis}</ul></section>
 <section id="faq"><h2>{name} FAQ</h2><div>{_faq(faqs)}</div></section>
 {_author_box()}
-</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#overview">Overview</a><a href="#pros-cons">Pros and cons</a><a href="#pricing">Pricing</a><a href="#score">Score</a><a href="#compare">Compared</a><a href="#faq">FAQ</a></nav></div></div>
+</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#overview">Overview</a><a href="#pros-cons">Pros and cons</a><a href="#pricing">Pricing</a>{'<a href="#plans">Plans</a><a href="#which-plan">Which plan</a>' if dd.get("plans") else ""}<a href="#score">Score</a><a href="#compare">Compared</a><a href="#faq">FAQ</a></nav></div></div>
 {newsletter()}"""
         ld = _ld(h1, url, date, crumbs, [], faqs)
         ld.append({"@context": "https://schema.org", "@type": "Review", "name": h1, "url": DOMAIN + url,

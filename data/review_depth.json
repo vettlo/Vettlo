@@ -1,0 +1,36 @@
+{
+  "_about": "Deeper plan detail for tool review pages, keyed by the tool's exact name. Filled by the daily refresh task from each vendor's own pricing page; only record what the page says on the 'checked' date.",
+  "MailerLite": {
+    "checked": "2026-11-01",
+    "source": ["MailerLite pricing", "https://www.mailerlite.com/pricing"],
+    "plans": [
+      ["Free", "$0", "Up to 250 subscribers, 2,500 emails a month, 2 seats, 3 automations, 1 website and 1 landing page"],
+      ["Comfort", "$10.80/mo billed yearly ($129.60 a year) or $12 monthly, at 500 subscribers", "5,000 emails a month, 3 seats, 50 automations, 10 sites, 10 forms, email support"],
+      ["Power", "$22.50/mo billed yearly ($270 a year) or $25 monthly, at 500 subscribers", "Unlimited emails, seats, automations, forms and sites, multiple automation triggers, 24/7 live chat"],
+      ["Enterprise", "Custom", "200K+ subscribers, custom sending volume, dedicated IP, deliverability support, onboarding"]
+    ],
+    "first_plan": [
+      ["Remove the MailerLite logo", "Comfort"],
+      ["Full API and MCP access", "Comfort"],
+      ["HeyLite intelligence (AI features)", "Comfort"],
+      ["Unlimited newsletter templates", "Comfort"],
+      ["Multiple automation triggers", "Power"],
+      ["Unlimited user seats", "Power"],
+      ["24/7 live chat support", "Power"],
+      ["Dedicated IP", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Comfort", "Power"],
+      "rows": [
+        ["Monthly emails", "2,500", "5,000 (at 500 subscribers)", "Unlimited"],
+        ["User seats", "2", "3", "Unlimited"],
+        ["Active automations", "3", "50", "Unlimited"],
+        ["Steps per automation", "5", "100", "100"],
+        ["Websites and landing pages", "1 website and 1 landing page", "10", "Unlimited"],
+        ["Active forms", "3", "10", "Unlimited"],
+        ["Digital products and bookings", "1", "5", "Unlimited"]
+      ]
+    },
+    "notes": ["Every plan can be tried with 14 days of premium features, no credit card required.", "Paid prices rise with subscriber count; the prices above are for up to 500 subscribers."]
+  }
+}
