@@ -1,5 +1,5 @@
-// Vettlo vendor portal: magic-link login, listings, fixed monthly positions on category shortlists
-// (with invoices, renewals and waitlists), click and impression reporting. Data lives in the D1 database bound as DB.
+// Vettlo vendor portal: magic-link login, listings, annual plans (Basic / Pro / Premium) that place a product
+// on its category shortlist, with invoices, renewals and waitlists, plus click and impression reporting. Data lives in the D1 database bound as DB.
 
 const SESSION_DAYS = 30;
 const TOKEN_MINUTES = 20;
@@ -43,6 +43,11 @@ const SCHEMA = [
      status TEXT NOT NULL, provider_ref TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS waitlist (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, listing_id INTEGER NOT NULL, category TEXT NOT NULL,
      position INTEGER NOT NULL, created_at TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS subs (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, listing_id INTEGER NOT NULL, category TEXT NOT NULL,
+     plan TEXT NOT NULL, status TEXT NOT NULL, price_cents INTEGER NOT NULL, started_at TEXT, paid_through TEXT, reserved_until TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
+  `CREATE INDEX IF NOT EXISTS subs_cat_plan ON subs(category, plan, status)`,
+  `CREATE TABLE IF NOT EXISTS plan_waitlist (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, listing_id INTEGER NOT NULL, category TEXT NOT NULL,
+     plan TEXT NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS impressions (listing_id INTEGER NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (listing_id, day))`,
   `CREATE TABLE IF NOT EXISTS ledger (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, amount_cents INTEGER NOT NULL, kind TEXT NOT NULL,
      status TEXT NOT NULL, note TEXT, provider_ref TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
@@ -140,49 +145,45 @@ async function verifyLogin(request, env) {
   } });
 }
 
-// ---------- placements: fixed monthly positions per category
-const POSITIONS = 3;
-const RESERVE_DAYS = 7;       // an unpaid reservation holds the position this long
-const WAITLIST_HOURS = 72;    // when a position frees up, the first vendor on its waitlist gets it first for this long
-const DEFAULT_PRICES = [29900, 19900, 14900];
-function prices(env, category) {
-  try { const o = env.SLOT_PRICES_JSON ? JSON.parse(env.SLOT_PRICES_JSON) : null; if (o && Array.isArray(o[category])) return o[category].map(Number); } catch {}
-  const p = (env.SLOT_PRICES || "").split(",").map((x) => Number(x.trim())).filter((x) => x > 0);
-  return p.length === POSITIONS ? p : DEFAULT_PRICES;
+// ---------- plans: annual packages per category
+// basic: listed first under "Other tools to consider", unlimited seats
+// pro: 2nd or 3rd place on the shortlist, 2 seats per category (earlier subscribers rank higher)
+// premium: 1st place on the shortlist, 1 seat per category
+const PLANS = ["basic", "pro", "premium"];
+const CAPACITY = { basic: Infinity, pro: 2, premium: 1 };
+const PLAN_NAME = { basic: "Basic", pro: "Pro", premium: "Premium" };
+const RESERVE_DAYS = 7;       // an unpaid reservation holds a seat this long
+const WAITLIST_HOURS = 72;    // when a seat frees up, the first vendor on its waitlist gets it first for this long
+const DEFAULT_PRICES = { basic: 5000, pro: 9900, premium: 14900 }; // cents per year
+function prices(env) {
+  const p = (env.PLAN_PRICES || "").split(",").map((x) => Number(x.trim()));
+  return p.length === 3 && p.every((x) => x > 0) ? { basic: p[0], pro: p[1], premium: p[2] } : DEFAULT_PRICES;
 }
-const addMonth = (iso) => { const d = new Date(iso); const day = d.getUTCDate(); d.setUTCMonth(d.getUTCMonth() + 1); if (d.getUTCDate() < day) d.setUTCDate(0); return d.toISOString(); };
+const addYear = (iso) => { const d = new Date(iso); const day = d.getUTCDate(); d.setUTCFullYear(d.getUTCFullYear() + 1); if (d.getUTCDate() < day) d.setUTCDate(0); return d.toISOString(); };
 const later = (a, b) => (!a ? b : !b ? a : a > b ? a : b);
+const LIVE = "((status = 'active' AND paid_through > ?1) OR (status = 'reserved' AND reserved_until > ?1))";
 
-// The row currently holding (category, position): an active slot paid through the future, or an unexpired reservation.
-async function holder(env, category, position) {
-  return env.DB.prepare(`SELECT s.*, l.product_name FROM slots s JOIN listings l ON l.id = s.listing_id WHERE s.category = ? AND s.position = ?
-    AND ((s.status = 'active' AND s.paid_through > ?) OR (s.status = 'reserved' AND s.reserved_until > ?)) ORDER BY s.id DESC LIMIT 1`)
-    .bind(category, position, now(), now()).first();
+async function occupants(env, category, plan) {
+  return (await env.DB.prepare(`SELECT * FROM subs WHERE category = ?2 AND plan = ?3 AND ${LIVE} ORDER BY id ASC`).bind(now(), category, plan).all()).results;
 }
-// When the position last became free (end of the latest paid period or reservation).
-async function freedAt(env, category, position) {
+async function freedAt(env, category, plan) {
   const r = await env.DB.prepare(`SELECT MAX(t) AS t FROM (SELECT CASE WHEN status = 'cancelled' THEN updated_at WHEN paid_through IS NOT NULL THEN paid_through ELSE reserved_until END AS t
-    FROM slots WHERE category = ? AND position = ?) WHERE t <= ?`).bind(category, position, now()).first();
+    FROM subs WHERE category = ? AND plan = ?) WHERE t <= ?`).bind(category, plan, now()).first();
   return r && r.t;
 }
-async function waitHead(env, category, position) {
-  return env.DB.prepare("SELECT * FROM waitlist WHERE category = ? AND position = ? ORDER BY created_at ASC, id ASC LIMIT 1").bind(category, position).first();
-}
-async function positionState(env, category, vendorId) {
-  const P = prices(env, category), out = [];
-  for (let pos = 1; pos <= POSITIONS; pos++) {
-    const h = await holder(env, category, pos);
-    const wl = (await env.DB.prepare("SELECT vendor_id FROM waitlist WHERE category = ? AND position = ? ORDER BY created_at ASC, id ASC").bind(category, pos).all()).results;
-    const st = { position: pos, price_cents: P[pos - 1], waitlist: wl.length, on_waitlist: wl.some((w) => w.vendor_id === vendorId) };
-    if (h) {
-      st.state = h.vendor_id === vendorId ? (h.status === "active" ? "yours" : "reserved_by_you") : "taken";
-      st.until = h.status === "active" ? h.paid_through : h.reserved_until;
-      st.slot_id = h.vendor_id === vendorId ? h.id : undefined;
-    } else {
-      const f = await freedAt(env, category, pos);
-      const priorityEnds = f && wl.length ? new Date(Date.parse(f) + WAITLIST_HOURS * 3600e3).toISOString() : null;
-      if (priorityEnds && priorityEnds > now() && wl[0].vendor_id !== vendorId) { st.state = "priority_other"; st.until = priorityEnds; }
-      else st.state = "available";
+async function planState(env, category, vendorId) {
+  const P = prices(env), out = [];
+  for (const plan of PLANS) {
+    const occ = await occupants(env, category, plan);
+    const wl = plan === "basic" ? [] : (await env.DB.prepare("SELECT vendor_id FROM plan_waitlist WHERE category = ? AND plan = ? ORDER BY created_at ASC, id ASC").bind(category, plan).all()).results;
+    const st = { plan, name: PLAN_NAME[plan], price_cents: P[plan], capacity: CAPACITY[plan] === Infinity ? null : CAPACITY[plan], used: occ.length, waitlist: wl.length, on_waitlist: wl.some((w) => w.vendor_id === vendorId) };
+    const mine = occ.find((o) => o.vendor_id === vendorId);
+    if (mine) { st.state = mine.status === "active" ? "yours" : "reserved_by_you"; st.until = mine.status === "active" ? mine.paid_through : mine.reserved_until; st.sub_id = mine.id; }
+    else if (occ.length >= CAPACITY[plan]) { st.state = "full"; st.until = occ.map((o) => (o.status === "active" ? o.paid_through : o.reserved_until)).sort()[0]; }
+    else {
+      const f = wl.length ? await freedAt(env, category, plan) : null;
+      const ends = f ? new Date(Date.parse(f) + WAITLIST_HOURS * 3600e3).toISOString() : null;
+      if (ends && ends > now() && wl[0].vendor_id !== vendorId) { st.state = "priority_other"; st.until = ends; } else st.state = "available";
     }
     out.push(st);
   }
@@ -202,7 +203,7 @@ async function vendorApi(request, env, vendor, path) {
 
   if (path === "/api/me" && method === "GET") {
     return json({ ok: true, vendor: { id: vendor.id, email: vendor.email, company: vendor.company, website: vendor.website, is_admin: vendor.is_admin },
-      prices_cents: prices(env, ""), positions: POSITIONS, payments: env.IYZICO_API_KEY ? "iyzico" : "invoice" });
+      payments: env.IYZICO_API_KEY ? "iyzico" : "invoice" });
   }
   if (path === "/api/me" && method === "PUT") {
     const company = oneLine(body.company, 120) || vendor.company;
@@ -220,8 +221,8 @@ async function vendorApi(request, env, vendor, path) {
     for (const l of rows) {
       const c = await env.DB.prepare("SELECT COUNT(*) AS n FROM clicks WHERE listing_id = ? AND ts >= ? AND billable = 1").bind(l.id, since30).first();
       const im = await env.DB.prepare("SELECT COALESCE(SUM(n),0) AS n FROM impressions WHERE listing_id = ? AND day >= ?").bind(l.id, since30.slice(0, 10)).first();
-      const s = await env.DB.prepare(`SELECT * FROM slots WHERE listing_id = ? AND ((status = 'active' AND paid_through > ?) OR (status = 'reserved' AND reserved_until > ?)) ORDER BY id DESC LIMIT 1`).bind(l.id, now(), now()).first();
-      Object.assign(l, { clicks_30d: c.n, impressions_30d: im.n, slot: s || null });
+      const s = await env.DB.prepare(`SELECT * FROM subs WHERE listing_id = ?2 AND ${LIVE} ORDER BY id DESC LIMIT 1`).bind(now(), l.id).first();
+      Object.assign(l, { clicks_30d: c.n, impressions_30d: im.n, sub: s || null });
     }
     return json({ ok: true, listings: rows });
   }
@@ -252,66 +253,64 @@ async function vendorApi(request, env, vendor, path) {
         body.starting_price !== undefined ? oneLine(body.starting_price, 80) : null, status, now(), l.id).run();
     return json({ ok: true, resubmitted: status !== l.status });
   }
-  if (path === "/api/positions" && method === "GET") {
+  if (path === "/api/plans" && method === "GET") {
     const cat = new URL(request.url).searchParams.get("category") || "";
-    return json({ ok: true, category: cat, positions: await positionState(env, cat, vendor.id) });
+    return json({ ok: true, category: cat, plans: await planState(env, cat, vendor.id) });
   }
-  if (path === "/api/slots" && method === "POST") {
+  if (path === "/api/subscribe" && method === "POST") {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(body.listing_id), vendor.id).first();
-    const pos = Number(body.position);
+    const plan = PLANS.includes(body.plan) ? body.plan : null;
     if (!l) return json({ ok: false, error: "Choose one of your listings." }, 400);
-    if (!(pos >= 1 && pos <= POSITIONS)) return json({ ok: false, error: "Choose a position." }, 400);
+    if (!plan) return json({ ok: false, error: "Choose a plan." }, 400);
     if (l.status === "rejected") return json({ ok: false, error: "This listing wasn't approved. Edit it and resubmit first." }, 400);
-    const own = await env.DB.prepare(`SELECT 1 FROM slots WHERE listing_id = ? AND ((status = 'active' AND paid_through > ?) OR (status = 'reserved' AND reserved_until > ?))`).bind(l.id, now(), now()).first();
-    if (own) return json({ ok: false, error: "This listing already holds a position. Renew it or let it expire first." }, 400);
-    const st = (await positionState(env, l.category, vendor.id))[pos - 1];
-    if (st.state !== "available") return json({ ok: false, error: st.state === "priority_other" ? "Another vendor on the waitlist has first claim on this position until " + st.until.slice(0, 10) + "." : "This position is taken. Join the waitlist to get it next." }, 409);
-    const price = st.price_cents;
-    const r = await env.DB.prepare("INSERT INTO slots (vendor_id, listing_id, category, position, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?, 'reserved', ?,?,?,?)")
-      .bind(vendor.id, l.id, l.category, pos, price, new Date(Date.now() + RESERVE_DAYS * 864e5).toISOString(), now(), now()).run();
-    const slotId = r.meta.last_row_id;
-    // Re-check for a race: if someone else reserved the same position at the same moment, the earlier row wins.
-    const first = await env.DB.prepare("SELECT id FROM slots WHERE category = ? AND position = ? AND status = 'reserved' AND reserved_until > ? ORDER BY id ASC LIMIT 1").bind(l.category, pos, now()).first();
-    if (first && first.id !== slotId) { await env.DB.prepare("UPDATE slots SET status = 'cancelled' WHERE id = ?").bind(slotId).run(); return json({ ok: false, error: "Someone reserved this position a moment ago." }, 409); }
+    const own = await env.DB.prepare(`SELECT 1 FROM subs WHERE listing_id = ?2 AND ${LIVE}`).bind(now(), l.id).first();
+    if (own) return json({ ok: false, error: "This listing already has a plan. To change plans, contact us." }, 400);
+    const st = (await planState(env, l.category, vendor.id)).find((x) => x.plan === plan);
+    if (st.state !== "available") return json({ ok: false, error: st.state === "priority_other" ? "A vendor on the waitlist has first claim on this plan until " + st.until.slice(0, 10) + "." : "This plan is full in this category. Join the waitlist to get the next seat." }, 409);
+    const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, plan, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?, 'reserved', ?,?,?,?)")
+      .bind(vendor.id, l.id, l.category, plan, st.price_cents, new Date(Date.now() + RESERVE_DAYS * 864e5).toISOString(), now(), now()).run();
+    const subId = r.meta.last_row_id;
+    // Race check: the earliest rows win the seats.
+    const occ = await occupants(env, l.category, plan);
+    if (occ.findIndex((o) => o.id === subId) >= CAPACITY[plan]) { await env.DB.prepare("UPDATE subs SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), subId).run(); return json({ ok: false, error: "Someone took the last seat a moment ago." }, 409); }
     await env.DB.batch([
-      env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, slotId, price, now(), now()),
-      env.DB.prepare("DELETE FROM waitlist WHERE vendor_id = ? AND category = ? AND position = ?").bind(vendor.id, l.category, pos),
+      env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, subId, st.price_cents, now(), now()),
+      env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, l.category, plan),
     ]);
-    return json({ ok: true, slot_id: slotId, method: env.IYZICO_API_KEY ? "iyzico" : "invoice" });
+    return json({ ok: true, sub_id: subId, method: env.IYZICO_API_KEY ? "iyzico" : "invoice" });
   }
-  m = path.match(/^\/api\/slots\/(\d+)\/(renew|cancel)$/);
+  m = path.match(/^\/api\/subs\/(\d+)\/(renew|cancel)$/);
   if (m && method === "POST") {
-    const s = await env.DB.prepare("SELECT * FROM slots WHERE id = ? AND vendor_id = ?").bind(Number(m[1]), vendor.id).first();
+    const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ? AND vendor_id = ?").bind(Number(m[1]), vendor.id).first();
     if (!s) return json({ ok: false, error: "Not found." }, 404);
     if (m[2] === "cancel") {
-      if (s.status !== "reserved") return json({ ok: false, error: "Only unpaid reservations can be cancelled. A paid position simply ends if you don't renew it." }, 400);
+      if (s.status !== "reserved") return json({ ok: false, error: "Only unpaid reservations can be cancelled. A paid plan simply ends if you don't renew it." }, 400);
       await env.DB.batch([
-        env.DB.prepare("UPDATE slots SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), s.id),
+        env.DB.prepare("UPDATE subs SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), s.id),
         env.DB.prepare("UPDATE invoices SET status = 'cancelled', updated_at = ? WHERE slot_id = ? AND status = 'requested'").bind(now(), s.id),
       ]);
       return json({ ok: true });
     }
-    if (s.status !== "active" || s.paid_through <= now()) return json({ ok: false, error: "This position has ended. Reserve it again if it's available." }, 400);
+    if (s.status !== "active" || s.paid_through <= now()) return json({ ok: false, error: "This plan has ended. Subscribe again if a seat is available." }, 400);
     const open = await env.DB.prepare("SELECT 1 FROM invoices WHERE slot_id = ? AND status = 'requested'").bind(s.id).first();
-    if (open) return json({ ok: false, error: "A renewal invoice is already open for this position." }, 400);
-    const price = prices(env, s.category)[s.position - 1];
+    if (open) return json({ ok: false, error: "A renewal invoice is already open for this plan." }, 400);
+    const price = prices(env)[s.plan];
     await env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, s.id, price, now(), now()).run();
     return json({ ok: true, method: env.IYZICO_API_KEY ? "iyzico" : "invoice" });
   }
   if (path === "/api/waitlist" && method === "POST") {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(body.listing_id), vendor.id).first();
-    const pos = Number(body.position);
-    if (!l || !(pos >= 1 && pos <= POSITIONS)) return json({ ok: false, error: "Choose a listing and position." }, 400);
-    const dup = await env.DB.prepare("SELECT 1 FROM waitlist WHERE vendor_id = ? AND category = ? AND position = ?").bind(vendor.id, l.category, pos).first();
-    if (!dup) await env.DB.prepare("INSERT INTO waitlist (vendor_id, listing_id, category, position, created_at) VALUES (?,?,?,?,?)").bind(vendor.id, l.id, l.category, pos, now()).run();
+    if (!l || !["pro", "premium"].includes(body.plan)) return json({ ok: false, error: "Choose a listing and plan." }, 400);
+    const dup = await env.DB.prepare("SELECT 1 FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, l.category, body.plan).first();
+    if (!dup) await env.DB.prepare("INSERT INTO plan_waitlist (vendor_id, listing_id, category, plan, created_at) VALUES (?,?,?,?,?)").bind(vendor.id, l.id, l.category, body.plan, now()).run();
     return json({ ok: true });
   }
   if (path === "/api/waitlist/leave" && method === "POST") {
-    await env.DB.prepare("DELETE FROM waitlist WHERE vendor_id = ? AND category = ? AND position = ?").bind(vendor.id, oneLine(body.category, 120), Number(body.position)).run();
+    await env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, oneLine(body.category, 120), oneLine(body.plan, 20)).run();
     return json({ ok: true });
   }
   if (path === "/api/invoices" && method === "GET") {
-    const rows = (await env.DB.prepare(`SELECT i.*, s.category, s.position, l.product_name FROM invoices i LEFT JOIN slots s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id
+    const rows = (await env.DB.prepare(`SELECT i.*, s.category, s.plan, l.product_name FROM invoices i LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id
       WHERE i.vendor_id = ? ORDER BY i.created_at DESC LIMIT 100`).bind(vendor.id).all()).results;
     return json({ ok: true, rows });
   }
@@ -339,11 +338,11 @@ async function adminApi(request, env, vendor, path) {
     return json({ ok: true, now: now(),
       vendors: await q("SELECT id, email, company, website, status, created_at FROM vendors ORDER BY created_at DESC"),
       listings: await q("SELECT l.*, v.company, v.email FROM listings l JOIN vendors v ON v.id = l.vendor_id ORDER BY CASE l.status WHEN 'pending' THEN 0 ELSE 1 END, l.updated_at DESC"),
-      slots: await q(`SELECT s.*, l.product_name, l.status AS listing_status, v.company, v.email FROM slots s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
-        WHERE (s.status = 'active' AND s.paid_through > ?) OR (s.status = 'reserved' AND s.reserved_until > ?) ORDER BY s.category, s.position`, now(), now()),
-      invoices: await q(`SELECT i.*, s.category, s.position, s.status AS slot_status, l.product_name, v.company, v.email FROM invoices i JOIN vendors v ON v.id = i.vendor_id
-        LEFT JOIN slots s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id ORDER BY CASE i.status WHEN 'requested' THEN 0 ELSE 1 END, i.created_at DESC LIMIT 200`),
-      waitlist: await q("SELECT w.*, l.product_name, v.company FROM waitlist w JOIN listings l ON l.id = w.listing_id JOIN vendors v ON v.id = w.vendor_id ORDER BY w.category, w.position, w.created_at"),
+      subs: await q(`SELECT s.*, l.product_name, l.status AS listing_status, v.company, v.email FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
+        WHERE (s.status = 'active' AND s.paid_through > ?) OR (s.status = 'reserved' AND s.reserved_until > ?) ORDER BY s.category, CASE s.plan WHEN 'premium' THEN 0 WHEN 'pro' THEN 1 ELSE 2 END, s.started_at`, now(), now()),
+      invoices: await q(`SELECT i.*, s.category, s.plan, s.status AS sub_status, l.product_name, v.company, v.email FROM invoices i JOIN vendors v ON v.id = i.vendor_id
+        LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id ORDER BY CASE i.status WHEN 'requested' THEN 0 ELSE 1 END, i.created_at DESC LIMIT 200`),
+      waitlist: await q("SELECT w.*, l.product_name, v.company FROM plan_waitlist w JOIN listings l ON l.id = w.listing_id JOIN vendors v ON v.id = w.vendor_id ORDER BY w.category, w.plan, w.created_at"),
       stats: await q(`SELECT d.day, COALESCE((SELECT SUM(n) FROM impressions i WHERE i.day = d.day),0) AS impressions, COALESCE((SELECT SUM(billable) FROM clicks c WHERE substr(c.ts,1,10) = d.day),0) AS clicks
         FROM (SELECT DISTINCT day FROM impressions WHERE day >= ? UNION SELECT DISTINCT substr(ts,1,10) FROM clicks WHERE ts >= ?) d ORDER BY d.day DESC`, new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10), new Date(Date.now() - 30 * 864e5).toISOString()) });
   }
@@ -365,28 +364,25 @@ async function adminApi(request, env, vendor, path) {
       return json({ ok: true });
     }
     if (body.status !== "paid") return json({ ok: false, error: "Bad status." }, 400);
-    const s = await env.DB.prepare("SELECT * FROM slots WHERE id = ?").bind(inv.slot_id).first();
-    if (!s) return json({ ok: false, error: "The position for this invoice no longer exists." }, 400);
-    let paidThrough;
-    if (s.status === "reserved") {
-      const h = await holder(env, s.category, s.position);
-      if (h && h.id !== s.id) return json({ ok: false, error: "This reservation lapsed and another vendor now holds the position. Refund or offer another position." }, 409);
-      paidThrough = addMonth(now());
-    } else if (s.status === "active" || s.status === "expired") {
-      const h = await holder(env, s.category, s.position);
-      if (h && h.id !== s.id) return json({ ok: false, error: "This position ended and another vendor now holds it. Refund or offer another position." }, 409);
-      paidThrough = addMonth(later(s.paid_through, now()));
-    } else return json({ ok: false, error: "This reservation was cancelled." }, 400);
+    const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(inv.slot_id).first();
+    if (!s) return json({ ok: false, error: "The plan for this invoice no longer exists." }, 400);
+    if (s.status === "cancelled") return json({ ok: false, error: "This reservation was cancelled." }, 400);
+    const live = s.status === "active" ? s.paid_through > now() : s.reserved_until > now();
+    if (!live) {
+      const others = (await occupants(env, s.category, s.plan)).filter((o) => o.id !== s.id);
+      if (others.length >= CAPACITY[s.plan]) return json({ ok: false, error: "This plan lapsed and its seat has been taken. Refund or offer another plan." }, 409);
+    }
+    const paidThrough = addYear(s.status === "active" ? later(s.paid_through, now()) : now());
     await env.DB.batch([
       env.DB.prepare("UPDATE invoices SET status = 'paid', provider_ref = ?, updated_at = ? WHERE id = ?").bind(oneLine(body.ref, 120) || null, now(), inv.id),
-      env.DB.prepare("UPDATE slots SET status = 'active', paid_through = ?, updated_at = ? WHERE id = ?").bind(paidThrough, now(), s.id),
+      env.DB.prepare("UPDATE subs SET status = 'active', paid_through = ?, started_at = COALESCE(started_at, ?), updated_at = ? WHERE id = ?").bind(paidThrough, now(), now(), s.id),
     ]);
     placementCache.clear();
     return json({ ok: true, paid_through: paidThrough });
   }
-  m = path.match(/^\/api\/admin\/slots\/(\d+)\/end$/);
+  m = path.match(/^\/api\/admin\/subs\/(\d+)\/end$/);
   if (m && method === "POST") {
-    await env.DB.prepare("UPDATE slots SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), Number(m[1])).run();
+    await env.DB.prepare("UPDATE subs SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), Number(m[1])).run();
     placementCache.clear();
     return json({ ok: true });
   }
@@ -440,9 +436,13 @@ const placementCache = new Map();
 async function sponsors(env, category) {
   const hit = placementCache.get(category);
   if (hit && hit.t > Date.now() - 60e3) return hit.v;
-  const v = (await env.DB.prepare(`SELECT l.*, s.position FROM slots s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
+  const rows = (await env.DB.prepare(`SELECT l.*, s.plan FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
     WHERE s.category = ? AND s.status = 'active' AND s.paid_through > ? AND l.status = 'approved' AND l.active = 1 AND v.status = 'active'
-    ORDER BY s.position ASC`).bind(category, now()).all()).results;
+    ORDER BY s.started_at ASC, s.id ASC`).bind(category, now()).all()).results;
+  // premium takes 1st place, pro takes 2nd and 3rd in order of subscription, basic goes to the top of "Other tools to consider"
+  const v = [...rows.filter((r) => r.plan === "premium").slice(0, 1).map((r) => ({ ...r, position: 1 })),
+    ...rows.filter((r) => r.plan === "pro").slice(0, 2).map((r, i) => ({ ...r, position: 2 + i })),
+    ...rows.filter((r) => r.plan === "basic").map((r) => ({ ...r, position: 0 }))];
   placementCache.set(category, { t: Date.now(), v });
   return v;
 }
@@ -479,6 +479,16 @@ export async function placeOnShortlist(request, env, response, ctx) {
   if (!partners.length) return response;
   let html = await response.text();
   const path = url.pathname;
+  const basic = partners.filter((p) => p.position === 0);
+  partners = partners.filter((p) => p.position > 0);
+  if (basic.length) {
+    const lis = basic.map((p) => `<li><b><a href="/go/${p.id}?c=${esc(slug)}&amp;p=${encodeURIComponent(path)}" rel="sponsored nofollow noopener" target="_blank">${esc(p.product_name)}</a></b>: ${esc(p.best_for || p.description || "")}</li>`).join("");
+    if (/<section id="others"[^>]*>[\s\S]*?<ol[^>]*>/.test(html)) {
+      html = html.replace(/(<section id="others"[^>]*>[\s\S]*?<ol)( start="\d+")?([^>]*>)/, (all, a, st, z) => a + (st || "") + z + lis);
+    } else {
+      html = html.replace(/<section id="criteria"/, `<section id="others" class="prose"><h2>Other tools to consider</h2><p>These tools aren't on our ranked shortlist and we haven't scored them.</p><ol>${lis}</ol></section>\n<section id="criteria"`);
+    }
+  }
 
   html = html.replace(/(<ol class="shortlist">)([\s\S]*?)(<\/ol>)/, (all, a, inner, z) => {
     const items = inner.match(/<li>[\s\S]*?<\/li>/g) || [];

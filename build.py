@@ -987,8 +987,8 @@ page("/how-we-make-money/", "How We Make Money (Affiliate Disclosure) | Vettlo",
 <p>Some links to software vendors are affiliate links. If you click one and later buy, we may earn a commission. The disclosure line at the top of each review tells you when a page contains them. Links are marked <code>rel="sponsored"</code>.</p>
 <h2>Partner placements</h2>
 <p>Software vendors can become paying partners, on category pages and in our newsletter. Partner compensation may affect which products we include in a list and where they appear, including positions at the top of a list. We say this in the disclosure line at the top of every review. A partner's score is the same score it would have without paying, and payment never changes what we write about a product.</p>
-<h2>Paid positions</h2>
-<p>Vendors can pay a flat monthly fee for one of the top positions on a category shortlist through our <a href="/vendors/">vendor portal</a>. A paid position changes where a product appears, not its score or what we write. Tools without any commercial relationship appear in our lists too.</p>
+<h2>Paid plans</h2>
+<p>Vendors can buy an annual plan through our <a href="/vendors/">vendor portal</a> that lists their product on a category page or places it in one of the top three places on the shortlist. A plan changes where a product appears, not its score or what we write. Tools without any commercial relationship appear in our lists too.</p>
 <h2>Sponsored content</h2>
 <p>Occasionally we publish content paid for by a vendor, such as a webinar recap or a partner guide. It is labeled <b>Sponsored</b> at the top and is never presented as a review.</p>
 <h2>What money never buys</h2>
@@ -1071,12 +1071,12 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
 
 # ---------- ADVERTISE
 page("/advertise/", "Advertise with Vettlo",
-     "Reach software buyers while they evaluate tools. Monthly top positions on category shortlists, newsletter sponsorships and sponsored guides.",
+     "Reach software buyers while they evaluate tools. Annual plans on category pages, newsletter sponsorships and sponsored guides.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Reach buyers while they're choosing software</h1>
 <p>Our readers arrive with a buying question. Put your product in front of them, next to reviews buyers trust.</p></div>
 <div class="page-body" style="display:grid;gap:2.5rem">
 <div class="cards3">
-<div class="card"><span class="label">Self-serve</span><h3>Top positions on shortlists</h3><p class="muted small">Reserve 1st, 2nd or 3rd place on your category's shortlist for a flat monthly price. Positions never change scores or review wording. <a href="/vendors/">Open the vendor portal</a></p><span class="price">From $149 / month</span></div>
+<div class="card"><span class="label">Self-serve</span><h3>Category plans</h3><p class="muted small">Basic, Pro and Premium annual plans: a listing on your category page or a top-three place on its shortlist. Plans never change scores or review wording. <a href="/vendors/">How plans work</a></p><span class="price">Yearly · pricing on request</span></div>
 <div class="card"><span class="label">Awareness</span><h3>Newsletter sponsorship</h3><p class="muted small">One sponsor per issue of The Vettlo Briefing, sent weekly to software buyers.</p><span class="price">Per issue · pricing on request</span></div>
 <div class="card"><span class="label">Thought leadership</span><h3>Sponsored guides &amp; events</h3><p class="muted small">Co-produced webinars and guides, labeled Sponsored and kept separate from reviews.</p><span class="price">Custom</span></div>
 </div>
@@ -1086,7 +1086,7 @@ page("/advertise/", "Advertise with Vettlo",
 <form class="form" id="adv-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div><label for="a-name">Name<input id="a-name" required autocomplete="name"></label>
 <label for="a-email">Work email<input id="a-email" type="email" required autocomplete="email"></label>
 <label for="a-company">Company website<input id="a-company" required placeholder="https://"></label>
-<label for="a-int">Interested in<select id="a-int"><option>Top positions on shortlists</option><option>Newsletter sponsorship</option><option>Sponsored guides &amp; events</option></select></label>
+<label for="a-int">Interested in<select id="a-int"><option>Category plans (Basic, Pro, Premium)</option><option>Newsletter sponsorship</option><option>Sponsored guides &amp; events</option></select></label>
 <label for="a-msg">Message (optional)<textarea id="a-msg" rows="4"></textarea></label>
 <button class="btn" type="submit">Send inquiry</button><p class="form-msg" id="adv-msg" aria-live="polite"></p></form>
 <script>(function(){var t0=Date.now();var f=document.getElementById('adv-form'),o=document.getElementById('adv-msg');

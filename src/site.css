@@ -562,3 +562,14 @@ details.breakdown .criteria { margin-top: .9rem; }
 .pt-slot.taken .pt-slot-n, .pt-slot.priority_other .pt-slot-n { background: #f1f2f1; color: #7a807c; }
 #pt-pick { max-width: 22rem; }
 @media (max-width: 640px) { .pt-slot { grid-template-columns: 2.6rem 1fr; } .pt-slot > :last-child { grid-column: 1 / -1; justify-self: start; } }
+.pt-plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+.pt-plan { display: flex; flex-direction: column; gap: .5rem; padding: 1.25rem; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+.pt-plan p { margin: 0; }
+.pt-plan > div:last-child { margin-top: auto; padding-top: .5rem; }
+.pt-plan-top { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+.pt-plan-top b { font-size: 1.1rem; }
+.pt-plan-price { font-weight: 700; font-size: 1.25rem; }
+.pt-plan-price small { font-weight: 400; font-size: .8rem; color: var(--muted, #5b635e); }
+.pt-plan.yours, .pt-plan.reserved_by_you { border-color: var(--brand); background: #f3faf6; }
+.pt-plan.full, .pt-plan.priority_other { background: #fafbfa; }
+@media (max-width: 860px) { .pt-plans { grid-template-columns: 1fr; } }
