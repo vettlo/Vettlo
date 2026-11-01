@@ -10,6 +10,8 @@ import html, os, re, shutil
 from pathlib import Path
 
 ROOT = Path(__file__).parent
+import hashlib as _hl
+PORTAL_V = _hl.md5((ROOT / "src" / "portal-client.js").read_bytes()).hexdigest()[:8]
 DIST = ROOT / "dist"
 DOMAIN = "https://vettlo.com"
 UPDATED = "2026-10-02"
@@ -81,7 +83,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <p>Independent reviews of the software businesses run on.</p></div>
 <div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/guides/">Guides</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
 <div><h4>Trust</h4><ul><li><a href="/methodology/">Review methodology</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
-<div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/advertise/">Advertise</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/advertise/">Advertise</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
 </div>
 <div class="legal"><span>© {YEAR} Vettlo. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span></div>
 </div></footer>"""
@@ -90,7 +92,7 @@ NL_SCRIPT = """<script>
 document.querySelectorAll('form[data-nl]').forEach(function(f){
   f.addEventListener('submit', function(e){ e.preventDefault();
     var m = f.parentElement.querySelector('.nl-note');
-    if (m) m.textContent = 'Thanks. The briefing hasn't launched yet, so we didn't save your email. Check back soon.';
+    if (m) m.textContent = "Thanks. The briefing hasn't launched yet, so we didn't save your email. Check back soon.";
   });
 });
 </script>"""
@@ -1187,7 +1189,7 @@ page("/404/", "Page Not Found | Vettlo", "This page doesn't exist.",
 def head_block(path, p, css_href):
     canon = DOMAIN + path
     ld = "".join(f'<script type="application/ld+json">{json.dumps(j, ensure_ascii=False)}</script>' for j in p["jsonld"])
-    robots = '<meta name="robots" content="noindex, nofollow">' if (path == "/404/" or PRELAUNCH_NOINDEX) else '<meta name="robots" content="index, follow, max-image-preview:large">'
+    robots = '<meta name="robots" content="noindex, nofollow">' if (path in ("/404/", "/vendors/login/", "/vendors/app/", "/vendors/admin/") or PRELAUNCH_NOINDEX) else '<meta name="robots" content="index, follow, max-image-preview:large">'
     return (f'<title>{p["title"]}</title><meta name="description" content="{p["desc"]}">{robots}'
             f'<link rel="canonical" href="{canon}"><meta property="og:type" content="{p["ptype"]}"><meta property="og:site_name" content="Vettlo">'
             f'<meta property="og:title" content="{p["title"]}"><meta property="og:description" content="{p["desc"]}"><meta property="og:url" content="{canon}">'
@@ -1464,6 +1466,11 @@ def build():
         shutil.copy(ROOT / "src" / "og.png", d / "assets" / "og.png")
         for fn in ("favicon.ico", "apple-touch-icon.png", "icon-192.png"):
             shutil.copy(ROOT / "src" / fn, d / fn)
+        shutil.copy(ROOT / "src" / "portal-client.js", d / "assets" / "portal.js")
+        (d / "data").mkdir(exist_ok=True)
+        _cats = [{"slug": "best-crm-software", "name": "CRM Software", "dept": "Sales", "tools": [{"id": t["id"], "name": t["name"]} for t in CONSIDERED]}]
+        _cats += [{"slug": c["slug"], "name": c["plural"], "dept": DEPT_OF[c["slug"]][0], "tools": [{"id": k, "name": t["name"]} for k, t in c["tools"].items()]} for c in ALLCATS]
+        (d / "data" / "categories.json").write_text(json.dumps(_cats))
         (d / "assets" / "logo.svg").write_text(LOGO.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replace("var(--brand-ink)", "#ffffff").replace("var(--brand)", "#00865e"))
     for path, p in PAGES.items():
         rel = out_file(path)
@@ -1494,7 +1501,7 @@ def build():
     newest = max(lastmod.values())
     for u in ("/", "/best-tools/", "/reviews/", *HUB_URLS):
         lastmod[u] = newest
-    urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p != "/404/")
+    urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p not in ("/404/", "/vendors/login/", "/vendors/app/", "/vendors/admin/"))
     (site / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"""# Vettlo

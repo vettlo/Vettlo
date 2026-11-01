@@ -2,6 +2,7 @@
 // Mail goes through Cloudflare Email Routing's send_email binding to the verified
 // address stored in the FORM_TO variable (set in the Cloudflare dashboard, not in this repo).
 import { EmailMessage } from "cloudflare:email";
+import { handlePortalApi, handleGo, placeOnShortlist } from "./portal.js";
 
 const FROM = "forms@vettlo.com";
 const FIELDS = {
@@ -70,12 +71,18 @@ async function handleForm(request, env) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/form") {
       if (request.method !== "POST") return json({ ok: false, error: "Method not allowed." }, 405);
       return handleForm(request, env);
     }
-    return env.ASSETS.fetch(request);
+    if (url.pathname.startsWith("/api/")) return handlePortalApi(request, env, url.pathname);
+    if (url.pathname.startsWith("/go/")) return handleGo(request, env, ctx);
+    const res = await env.ASSETS.fetch(request);
+    if (url.pathname.startsWith("/tools/")) {
+      try { return await placeOnShortlist(request, env, res); } catch (e) { return res; }
+    }
+    return res;
   },
 };
