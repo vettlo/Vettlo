@@ -494,8 +494,9 @@ async function cardCallback(request, env) {
     await notifyAdmin(env, "Paid, but the plan couldn't start", [`${v && v.company} paid invoice ${inv.id} by card (iyzico ${res.paymentId}), but: ${r.error}`, "Refund it in the iyzico panel or contact the vendor."]);
     return back("pay=held");
   }
-  const l = await env.DB.prepare("SELECT product_name, status FROM listings WHERE id = ?").bind(r.sub.listing_id).first();
+  const l = await env.DB.prepare("SELECT product_name, status, tool_id FROM listings WHERE id = ?").bind(r.sub.listing_id).first();
   await notifyAdmin(env, `Payment received: ${money(inv.amount_cents)} from ${v && v.company}`, [`${PLAN_NAME[r.sub.plan]} plan for ${l.product_name} on ${r.sub.category}, paid by card (iyzico ${res.paymentId}).`, `Active until ${r.paid_through.slice(0, 10)}.`,
+    r.sub.plan !== "basic" && !l.tool_id ? "We haven't scored this product yet, so it won't show in the top places until it's reviewed and matched to a tool on our list. Ask Claude to review and score it." :
     l.status === "approved" ? "The listing is approved, so it's live now." : "The listing is waiting for your approval. Approve it in the admin page to put it live."]);
   return back("pay=ok");
 }
@@ -552,8 +553,9 @@ async function sponsors(env, category) {
     WHERE s.category = ? AND s.status = 'active' AND s.paid_through > ? AND l.status = 'approved' AND l.active = 1 AND v.status = 'active'
     ORDER BY s.started_at ASC, s.id ASC`).bind(category, now()).all()).results;
   // premium takes 1st place, pro takes 2nd and 3rd in order of subscription, basic goes to the top of "Other tools to consider"
-  const v = [...rows.filter((r) => r.plan === "premium").slice(0, 1).map((r) => ({ ...r, position: 1 })),
-    ...rows.filter((r) => r.plan === "pro").slice(0, 2).map((r, i) => ({ ...r, position: 2 + i })),
+  // Pro and Premium show only once we've scored the product (it maps to a tool on our list), so every ranked card looks and reads the same.
+  const v = [...rows.filter((r) => r.plan === "premium" && r.tool_id).slice(0, 1).map((r) => ({ ...r, position: 1 })),
+    ...rows.filter((r) => r.plan === "pro" && r.tool_id).slice(0, 2).map((r, i) => ({ ...r, position: 2 + i })),
     ...rows.filter((r) => r.plan === "basic").map((r) => ({ ...r, position: 0 }))];
   placementCache.set(category, { t: Date.now(), v });
   return v;

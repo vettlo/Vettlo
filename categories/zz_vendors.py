@@ -34,7 +34,7 @@ page("/vendors/", "Advertise Your Software on Vettlo: Vendor Portal | Vettlo",
         ("What if the plan I want is full?", "Join its waitlist. When a seat frees up, the first vendor on the waitlist gets 72 hours to claim it before it opens to everyone."),
         ("How much does it cost, and how do I pay?", "Ask us for pricing and we'll send prices and your portal link. Plans are billed once a year: each new plan or renewal creates an invoice, and your plan goes live, or is extended by a year, when it's paid. Plans don't renew automatically."),
         ("Can I see results?", "Yes. Your dashboard shows impressions and visits to your site per day and per listing, with a CSV export. Add UTM parameters to your landing page to see conversions in your own analytics."),
-        ("Do I need to be on Vettlo's shortlist already?", "No. If we've scored your product, your existing review card moves up. If we haven't, your listing appears with the details you provide, marked as not yet scored."),
+        ("Do I need to be on Vettlo's shortlist already?", "No. For Pro and Premium, our editors review and score your product with the same criteria as every other tool before it appears, usually within 2 to 3 business days of payment. The score is ours, and your plan doesn't change it. Basic listings appear under Other tools to consider, which we don't score."),
     ]) + """</div></section>
 <section class="about-cta"><div><h2>Ready to reach software buyers?</h2><p>Tell us your product and category, and we'll send pricing.</p></div><a class="btn" href="/advertise/#adv-form">Request pricing</a></section>
 </div>""", cur="/advertise/")
