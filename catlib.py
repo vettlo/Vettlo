@@ -115,7 +115,7 @@ def category_page(cat):
 <section class="prose">{''.join(f'<p>{p}</p>' for p in cat['intro'])}</section>
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
 <aside class="trust" aria-label="Why trust this review"><span class="label">Why trust this review</span>
-<div class="facts"><div><b>{len(tools)} tools</b><span class="small muted">scored</span></div><div><b>{len(cat['criteria'])}</b><span class="small muted">weighted criteria</span></div><div><b>0</b><span class="small muted">paid positions</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
+<div class="facts"><div><b>{len(tools)} tools</b><span class="small muted">scored</span></div><div><b>{len(cat['criteria'])}</b><span class="small muted">weighted criteria</span></div><div><b>{n}</b><span class="small muted">ranked</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
 <p class="small muted">Prices and plans checked against each vendor's pricing page on {hdate(page_dates(url, cat['date'], cat['date'])[1])}. Vendors cannot pay for a score.</p></aside>
 <section id="compare"><h2>{cat['plural']} compared</h2>
 <div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Best for</th><th>Free plan / trial</th><th>Starting price</th><th>G2 rating</th><th>Score</th></tr></thead><tbody>{rows}</tbody></table></div>
@@ -241,3 +241,108 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
     COMPARES.setdefault(f"{cat['slug']}:{a}", []).append((url, f"{an} vs {bn}"))
     COMPARES.setdefault(f"{cat['slug']}:{b}", []).append((url, f"{an} vs {bn}"))
     CATEGORY_PAGES.append((url, f"{an} vs {bn}", f"{A['name']} and {B['name']} compared on price, features and fit.", "Comparison"))
+
+
+# ---------- GUIDES (topics): explainers, pricing breakdowns and buying advice
+GUIDES = []
+
+
+def _money(price):
+    """Numeric monthly price from strings like "$19/agent/mo"; None for non-dollar or unpriced."""
+    m = re.match(r"\$([\d,]+(?:\.\d+)?)", price.replace("From ", ""))
+    return float(m.group(1).replace(",", "")) if m else None
+
+
+def _fmt(x):
+    return f"${x:,.0f}" if x == int(x) else f"${x:,.2f}"
+
+
+def guide_page(g):
+    """g: slug, title, seo_title, desc, dept, cats, date, kicker, answer, sections [(id, h2, html)], faqs, sources [(title, url)]."""
+    url = f"/guides/{g['slug']}/"
+    dname = g["dept"]
+    dslug = DEPT_SLUG[dname]
+    secs = "".join(f'<section id="{sid}" class="prose"><h2>{h}</h2>{html_}</section>' for sid, h, html_ in g["sections"])
+    rel_html = f"<!--GUIDEREL:{','.join(g.get('cats', []))}-->" if g.get("cats") else ""
+    src = "".join(f'<li><a href="{u}" target="_blank" rel="noopener">{t}</a></li>' for t, u in g.get("sources", []))
+    toc = '<a href="#answer">Short answer</a>' + "".join(f'<a href="#{sid}">{h}</a>' for sid, h, _ in g["sections"]) + '<a href="#faq">FAQ</a>'
+    body = f"""<div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/guides/">Guides</a> / <a href="/guides/#{dslug}">{dname}</a> / {g['crumb']}</nav>
+<header class="article-head"><span class="eyebrow">{g.get('kicker', 'Guide')} · {dname}</span><h1>{g['title']}</h1>{byline(url, g['date'], g['date'])}</header>
+<div class="layout"><div class="main-col">
+<section class="answer" id="answer" aria-label="Short answer"><h2>Short answer</h2><p>{g['answer']}</p></section>
+{secs}
+<section id="faq"><h2>FAQ</h2><div>{_faq(g['faqs'])}</div></section>
+{f'<section class="prose"><h2>Related reviews</h2><ul>{rel_html}</ul></section>' if rel_html else ''}
+{f'<section class="prose"><h2>Sources</h2><ul class="small">{src}</ul></section>' if src else ''}
+{_author_box()}
+</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span>{toc}</nav></div></div>
+{newsletter()}"""
+    crumbs = [("/", "Home"), ("/guides/", "Guides"), (url, g["crumb"])]
+    page(url, g["seo_title"], g["desc"], body, cur="/guides/", ptype="article", jsonld=_ld(g["title"], url, g["date"], crumbs, [], g["faqs"]))
+    GUIDES.append((url, g["title"], g["card"], dname, g.get("cats", []), g.get("kicker", "Guide")))
+
+
+def guides_index():
+    if GUIDES:
+        cards = "".join(f'<a href="{u}"><span class="label">{k} · {d}</span><b>{t}</b><span class="muted small">{c}</span></a>' for u, t, c, d, _c, k in GUIDES[-3:][::-1])
+        PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--HOMEGUIDES-->", f'''<section class="section"><div class="wrap">
+<div class="section-head"><div><span class="eyebrow">Guides</span><h2 style="margin-top:.4rem">Guides and pricing breakdowns</h2>
+<p>What each category does, what it really costs and how to choose, from the same research behind our shortlists.</p></div>
+<a class="btn ghost small" href="/guides/">All guides</a></div>
+<div class="guide-grid">{cards}</div></div></section>''')
+    PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--HOMEGUIDES-->", "")
+    for url, *_r in GUIDES:
+        b = PAGES[url]["body"]
+        m = re.search(r"<!--GUIDEREL:([^>]*)-->", b)
+        if not m:
+            continue
+        rel = []
+        for cs in m.group(1).split(","):
+            name = next((c[1] for c in CATS if c[0] == cs), cs)
+            rel.append((f"/tools/{cs}/", f"Best {_catname(name)}"))
+            rel += [(u, t) for u, t, _ in CLUSTER.get(cs, [])][:3]
+        PAGES[url]["body"] = b.replace(m.group(0), "".join(f'<li><a href="{u}">{t}</a></li>' for u, t in rel))
+    by = {}
+    for url, t, card, d, cats, k in GUIDES:
+        by.setdefault(d, []).append((url, t, card, k))
+    body = f'''<div class="wrap"><div class="page-head"><span class="eyebrow">Guides</span><h1>Software guides for every team</h1>
+<p>Explainers, pricing breakdowns and buying advice, written from the same research behind our shortlists. Every price comes from the vendor's own pricing page.</p></div>
+<div class="page-body">'''
+    chips = "".join(f'<a href="#{DEPT_SLUG[d]}">{d}</a>' for d, _, _ in DEPTS if d in by)
+    body += f'<nav class="chips" aria-label="Guides by team">{chips}</nav>'
+    for d, _, _ in DEPTS:
+        if d not in by:
+            continue
+        cards = "".join(f'<a href="{u}"><span class="label">{k}</span><b>{t}</b><span class="muted small">{c}</span></a>' for u, t, c, k in by[d])
+        body += f'<h2 class="dept-h" id="{DEPT_SLUG[d]}">{d}</h2><div class="guide-grid">{cards}</div>'
+    body += '<p class="muted small" style="margin-top:2rem">Looking for a ranked list instead? See <a href="/best-tools/">all categories</a>.</p></div></div>' + newsletter()
+    items = [{"@type": "ListItem", "position": i, "url": DOMAIN + u, "name": t} for i, (u, t, *_r) in enumerate(GUIDES, 1)]
+    page("/guides/", "Business Software Guides: Explainers and Pricing | Vettlo",
+         "Plain-English guides to business software: what each category does, what it really costs and how to choose, for sales, marketing, support, HR, finance and IT.",
+         body, cur="/guides/", jsonld=[{"@context": "https://schema.org", "@type": "CollectionPage", "name": "Software guides", "url": DOMAIN + "/guides/",
+                                       "mainEntity": {"@type": "ItemList", "itemListElement": items}}])
+
+
+def link_guides():
+    """Add a Guides block to each related category page and department hub."""
+    for url, t, card, d, cats, k in GUIDES:
+        for cs in cats:
+            cu = f"/tools/{cs}/"
+            if cu in PAGES:
+                PAGES[cu].setdefault("_guides", []).append((url, t))
+        hub = f"/{DEPT_SLUG[d]}/"
+        if hub in PAGES:
+            PAGES[hub].setdefault("_guides", []).append((url, t))
+    for path, pg in PAGES.items():
+        gs = pg.pop("_guides", None)
+        if not gs:
+            continue
+        lis = "".join('<li><a href="%s">%s</a></li>' % (u, t) for u, t in gs)
+        block = '<section class="prose"><h2>Guides</h2><ul>' + lis + '</ul></section>\n'
+        b = pg["body"]
+        for marker in ('<section class="author-box">', '<section id="faq">'):
+            i = b.find(marker)
+            if i > 0:
+                pg["body"] = b[:i] + block + b[i:]
+                break

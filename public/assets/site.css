@@ -480,3 +480,20 @@ details.breakdown .criteria { margin-top: .9rem; }
   .wts { width: 100%; }
   .panel-foot { grid-template-columns: 1fr; }
 }
+@media (max-width: 560px) {
+  .nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { white-space: nowrap; padding: .35rem .5rem; }
+}
+.cards3 a.card { color: var(--ink); }
+.cards3 a.card:hover { text-decoration: none; background: var(--bg); }
+.guide-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.guide-grid a { display: grid; gap: .5rem; align-content: start; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 1.35rem; color: var(--ink); transition: border-color .15s, transform .15s; }
+.guide-grid a:hover { text-decoration: none; border-color: var(--brand); transform: translateY(-2px); }
+.guide-grid .label { color: var(--brand); }
+.guide-grid b { font-size: 1.08rem; letter-spacing: -0.015em; line-height: 1.3; }
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .5rem; }
+.chips a { border: 1px solid var(--line-2); background: var(--card); color: var(--ink); border-radius: 999px; padding: .35rem .8rem; font-size: .88rem; }
+.chips a:hover { text-decoration: none; border-color: var(--brand); color: var(--brand); }
+@media (max-width: 900px) { .guide-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .guide-grid { grid-template-columns: 1fr; } }

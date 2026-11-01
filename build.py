@@ -62,7 +62,7 @@ STAMP = ('<svg class="stamp stamp-anim" viewBox="0 0 120 120" aria-hidden="true"
 DRAFT = ('<div class="draftbar"><div class="wrap"><strong>Draft preview.</strong> Dashed fields '
          '<span class="fill">like this</span> must be filled with verified information before launch.</div></div>')
 
-NAV = [("/reviews/", "All reviews"), ("/best-tools/", "Categories"), ("/methodology/", "How we vet"), ("/about/", "About")]
+NAV = [("/reviews/", "All reviews"), ("/best-tools/", "Categories"), ("/guides/", "Guides"), ("/methodology/", "How we vet"), ("/about/", "About")]
 
 
 def header(cur):
@@ -79,7 +79,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <div class="cols">
 <div><a class="brand" href="/">{LOGO}<b>vettlo</b></a>
 <p>Independent reviews of the software businesses run on.</p></div>
-<div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
+<div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/guides/">Guides</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
 <div><h4>Trust</h4><ul><li><a href="/methodology/">Review methodology</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
 <div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/advertise/">Advertise</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
 </div>
@@ -138,36 +138,101 @@ DEPTS = [
         ("best-conversation-intelligence-software", "Conversation Intelligence", "Call recording, coaching and deal insights", True),
         ("best-b2b-data-providers", "B2B Contact Data Providers", "Emails, mobile numbers and enrichment", True),
         ("best-sales-dialers", "Sales Dialers", "Power, parallel and predictive dialing", True),
-        ("best-sales-commission-software", "Sales Commission Software", "Comp plans, payouts and statements", False)]),
+        ("best-sales-commission-software", "Sales Commission Software", "Comp plans, payouts and statements", False),
+        ("best-cpq-software", "CPQ Software", "Configure, price and quote", False),
+        ("best-sales-enablement-software", "Sales Enablement Software", "Content, playbooks and rep training", False),
+        ("best-proposal-software", "Proposal Software", "Proposals, quotes and e-signature", False),
+        ("best-sales-forecasting-software", "Sales Forecasting Software", "Pipeline rollups and forecast calls", False)]),
     ("Marketing", "Email, automation and search", [
         ("best-email-marketing-software", "Email Marketing Software", "Newsletters, campaigns and automations", True),
         ("best-marketing-automation-software", "Marketing Automation", "Lead nurturing, scoring and journeys", True),
         ("best-seo-tools", "SEO Tools", "Rank tracking, audits and keyword research", False),
-        ("best-social-media-management-tools", "Social Media Management", "Scheduling, inbox and analytics", False)]),
+        ("best-social-media-management-tools", "Social Media Management", "Scheduling, inbox and analytics", False),
+        ("best-landing-page-builders", "Landing Page Builders", "Pages, forms and A/B tests", False),
+        ("best-webinar-software", "Webinar Software", "Live and on-demand events", False),
+        ("best-sms-marketing-software", "SMS Marketing Software", "Text campaigns and automations", False),
+        ("best-ab-testing-tools", "A/B Testing Tools", "Experiments on sites and apps", False),
+        ("best-affiliate-marketing-software", "Affiliate Marketing Software", "Partner tracking and payouts", False)]),
     ("Projects & operations", "Planning, tracking and docs", [
         ("best-project-management-software", "Project Management Software", "Tasks, timelines and team workload", True),
         ("best-time-tracking-software", "Time Tracking Software", "Timesheets, billable hours and reports", False),
-        ("best-knowledge-base-software", "Knowledge Base Software", "Internal wikis and documentation", False)]),
+        ("best-knowledge-base-software", "Knowledge Base Software", "Internal wikis and documentation", False),
+        ("best-resource-management-software", "Resource Management Software", "Capacity, scheduling and utilization", False),
+        ("best-workflow-automation-software", "Workflow Automation Software", "No-code automations between apps", False),
+        ("best-okr-software", "OKR Software", "Goals, check-ins and alignment", False),
+        ("best-online-form-builders", "Online Form Builders", "Forms, surveys and data capture", False),
+        ("best-appointment-scheduling-software", "Appointment Scheduling Software", "Booking pages and calendars", False)]),
     ("Customer support", "Tickets, chat and feedback", [
         ("best-help-desk-software", "Help Desk Software", "Ticketing, SLAs and shared inboxes", True),
-        ("best-live-chat-software", "Live Chat Software", "Website chat, bots and routing", False)]),
+        ("best-live-chat-software", "Live Chat Software", "Website chat, bots and routing", False),
+        ("best-ai-customer-service-agents", "AI Customer Service Agents", "AI that resolves tickets on its own", False),
+        ("best-call-center-software", "Call Center Software", "Inbound queues, IVR and routing", False),
+        ("best-customer-success-software", "Customer Success Software", "Health scores, renewals and playbooks", False),
+        ("best-customer-feedback-software", "Customer Feedback Software", "NPS, CSAT and surveys", False)]),
     ("HR & people", "Hiring, payroll and people data", [
         ("best-hris-software", "HRIS Software", "Employee records, time off and onboarding", True),
         ("best-payroll-software", "Payroll Software", "Pay runs, taxes and benefits", True),
-        ("best-applicant-tracking-systems", "Applicant Tracking Systems", "Job posts, pipelines and interviews", False)]),
+        ("best-applicant-tracking-systems", "Applicant Tracking Systems", "Job posts, pipelines and interviews", False),
+        ("best-performance-management-software", "Performance Management Software", "Reviews, goals and feedback", False),
+        ("best-employee-engagement-software", "Employee Engagement Software", "Pulse surveys and recognition", False),
+        ("best-time-and-attendance-software", "Time and Attendance Software", "Clock-ins, shifts and overtime", False),
+        ("best-learning-management-systems", "Learning Management Systems", "Courses, training and compliance", False),
+        ("best-employer-of-record-services", "Employer of Record Services", "Hiring and paying staff abroad", False)]),
     ("Finance", "Books, spend and payables", [
         ("best-accounting-software", "Accounting Software", "Bookkeeping, invoicing and reporting", True),
         ("best-expense-management-software", "Expense Management", "Cards, receipts and reimbursements", False),
-        ("best-accounts-payable-software", "Accounts Payable Automation", "Bill capture, approvals and payments", False)]),
+        ("best-accounts-payable-software", "Accounts Payable Automation", "Bill capture, approvals and payments", False),
+        ("best-accounts-receivable-software", "Accounts Receivable Software", "Invoicing, collections and cash application", False),
+        ("best-subscription-billing-software", "Subscription Billing Software", "Recurring billing and revenue", False),
+        ("best-fpa-software", "FP&A Software", "Budgeting, planning and forecasting", False),
+        ("best-procurement-software", "Procurement Software", "Purchase requests, approvals and vendors", False),
+        ("best-sales-tax-software", "Sales Tax Software", "Tax calculation, filing and compliance", False)]),
     ("IT & security", "Devices, access and incidents", [
         ("best-password-managers-for-business", "Password Managers", "Shared vaults, SSO and access policies", True),
         ("best-mdm-software", "Mobile Device Management", "Device enrollment, policies and remote wipe", False),
-        ("best-incident-management-software", "Incident Management", "On-call, alerting and postmortems", False)]),
+        ("best-incident-management-software", "Incident Management", "On-call, alerting and postmortems", False),
+        ("best-itsm-software", "ITSM Software", "Service desk, assets and change", False),
+        ("best-identity-and-access-management-software", "Identity and Access Management", "SSO, MFA and provisioning", False),
+        ("best-endpoint-protection-software", "Endpoint Protection", "Antivirus, EDR and device security", False),
+        ("best-business-vpn", "Business VPNs", "Secure remote network access", False),
+        ("best-backup-software", "Backup Software", "Cloud, SaaS and device backups", False),
+        ("best-remote-access-software", "Remote Access Software", "Remote support and desktop access", False),
+        ("best-siem-tools", "SIEM Tools", "Log analysis and threat detection", False)]),
+    ("Engineering & DevOps", "Build, ship and monitor software", [
+        ("best-issue-tracking-software", "Issue Tracking Software", "Bugs, sprints and backlogs", False),
+        ("best-ci-cd-tools", "CI/CD Tools", "Build, test and deploy pipelines", False),
+        ("best-application-performance-monitoring-tools", "APM Tools", "Traces, metrics and alerts", False),
+        ("best-log-management-tools", "Log Management Tools", "Search, retention and alerting", False),
+        ("best-api-management-tools", "API Management Tools", "Gateways, keys and analytics", False),
+        ("best-software-testing-tools", "Software Testing Tools", "Automated and manual testing", False),
+        ("best-code-review-tools", "Code Review Tools", "Pull requests and code quality", False),
+        ("best-feature-flag-tools", "Feature Flag Tools", "Rollouts, toggles and experiments", False)]),
+    ("Data & analytics", "Reporting, pipelines and insight", [
+        ("best-business-intelligence-tools", "Business Intelligence Tools", "Dashboards and self-serve reporting", False),
+        ("best-product-analytics-tools", "Product Analytics Tools", "Funnels, retention and events", False),
+        ("best-web-analytics-tools", "Web Analytics Tools", "Traffic, conversions and attribution", False),
+        ("best-etl-tools", "ETL Tools", "Data pipelines and syncs", False),
+        ("best-data-warehouse-software", "Data Warehouses", "Storage and SQL at scale", False),
+        ("best-customer-data-platforms", "Customer Data Platforms", "Unified customer profiles", False)]),
+    ("Collaboration", "Meetings, chat and documents", [
+        ("best-video-conferencing-software", "Video Conferencing Software", "Meetings, recordings and webinars", False),
+        ("best-team-chat-apps", "Team Chat Apps", "Channels, DMs and huddles", False),
+        ("best-online-whiteboards", "Online Whiteboards", "Brainstorms, diagrams and workshops", False),
+        ("best-document-management-software", "Document Management Software", "Storage, versions and permissions", False),
+        ("best-e-signature-software", "E-Signature Software", "Send, sign and track agreements", False),
+        ("best-file-sharing-software", "File Sharing Software", "Secure sharing and sync", False)]),
+    ("Legal & compliance", "Contracts, risk and privacy", [
+        ("best-contract-management-software", "Contract Management Software", "Drafting, approvals and renewals", False),
+        ("best-compliance-management-software", "Compliance Management Software", "SOC 2, ISO 27001 and audits", False),
+        ("best-privacy-management-software", "Privacy Management Software", "Consent, DSARs and data mapping", False),
+        ("best-policy-management-software", "Policy Management Software", "Policies, attestations and versions", False)]),
 ]
 CATS = [c for _, _, cs in DEPTS for c in cs]
 DEPT_SLUG = {"Sales": "sales-software", "Marketing": "marketing-software", "Projects & operations": "project-operations-software",
              "Customer support": "customer-support-software", "HR & people": "hr-software", "Finance": "finance-software",
-             "IT & security": "it-security-software"}
+             "IT & security": "it-security-software", "Engineering & DevOps": "engineering-software",
+             "Data & analytics": "data-analytics-software", "Collaboration": "collaboration-software",
+             "Legal & compliance": "legal-compliance-software"}
 DEPT_OF = {c[0]: (d, DEPT_SLUG[d]) for d, _, cs in DEPTS for c in cs}
 
 
@@ -191,7 +256,10 @@ def stack_grid(limit=None):
         tiles = []
         for name, sub, cs in DEPTS:
             live = sum(1 for c in cs if c[3])
-            items = "".join((f'<li><a href="/tools/{sl}/">{n}</a></li>' if lv else f'<li class="soon">{n}</li>') for sl, n, _, lv in cs)
+            ordered = [c for c in cs if c[3]] + [c for c in cs if not c[3]]
+            items = "".join((f'<li><a href="/tools/{sl}/">{n}</a></li>' if lv else f'<li class="soon">{n}</li>') for sl, n, _, lv in ordered[:6])
+            if len(ordered) > 6:
+                items += f'<li class="more"><a href="/best-tools/">+{len(ordered) - 6} more</a></li>'
             state = f'<span class="status is-live">{live} reviewed</span>' if live else '<span class="status is-bench">In research</span>'
             tiles.append(f'<div class="tile dept">{state}<span class="t">' + (f'<a href="/{DEPT_SLUG[name]}/">{name}</a>' if live else name) + f'</span><span class="s">{sub}</span><ul>{items}</ul></div>')
         tiles.append('<a class="tile-cta" href="/contact/"><span class="t">Missing a category?</span><span class="s">Tell us what your team is buying and we\'ll add it to the research queue.</span></a>')
@@ -240,6 +308,7 @@ page("/", "Vettlo: Independent Business Software Reviews",
 </div>
 </div></section>
 
+<!--HOMEGUIDES-->
 <section class="section band"><div class="wrap">
 <div class="section-head"><div><span class="eyebrow">Our rules</span><h2 style="margin-top:.4rem">Why buyers trust the shortlist</h2></div><a class="btn ghost small" href="/how-we-make-money/">How we make money</a></div>
 <div class="pledges">
@@ -446,7 +515,7 @@ def crm_page():
 
 <aside class="trust" aria-label="Why trust this review">
 <span class="label">Why trust this review</span>
-<div class="facts"><div><b>{len(CONSIDERED)} CRMs</b><span class="small muted">scored</span></div><div><b>6</b><span class="small muted">weighted criteria</span></div><div><b>0</b><span class="small muted">paid positions</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
+<div class="facts"><div><b>{len(CONSIDERED)} CRMs</b><span class="small muted">scored</span></div><div><b>6</b><span class="small muted">weighted criteria</span></div><div><b>{len(TOOLS)}</b><span class="small muted">ranked</span></div><div><b>90 days</b><span class="small muted">re-check cycle</span></div></div>
 <p class="small muted">Prices and plans checked against each vendor's pricing page on {hdate(page_dates('/tools/best-crm-software/', UPDATED, UPDATED)[1])}. Vendors cannot pay for a score.</p>
 </aside>
 
@@ -1264,19 +1333,25 @@ DEPT_INTRO = {
     "Finance": "The software that keeps a company's books and spending in order: accounting for bookkeeping and reporting, expense management for cards and receipts, and accounts payable automation for bills. Each shortlist compares regular prices after introductory discounts end, and what each plan limits.",
     "Marketing": "The software marketing teams use to reach and convert buyers: email marketing for newsletters and automated campaigns, marketing automation for lead nurturing and scoring, SEO tools and social media management. Each shortlist compares what you pay at the same list size and which plan unlocks the automation you need.",
     "HR & people": "The software HR teams use to hire, pay and manage people: payroll to run pay and file taxes, an HRIS for employee records and time off, and an applicant tracking system for hiring. Each shortlist compares what you really pay per employee, including base fees and add-ons, and which plan first includes multi-state payroll, time tracking and HR support.",
+    "Engineering & DevOps": "The tools engineering teams use to build, ship and run software: issue tracking for sprints and bugs, CI/CD for builds and deploys, monitoring and logs for production, and testing, code review and feature flags in between. Each shortlist compares what the free tier covers, how pricing scales with users or usage, and which plan unlocks SSO and audit logs.",
+    "Data & analytics": "The software teams use to collect, move and understand their data: business intelligence for dashboards, product and web analytics for user behavior, ETL tools and data warehouses for pipelines, and customer data platforms for unified profiles. Each shortlist explains how pricing scales with usage, seats or data volume.",
+    "Collaboration": "The tools teams use to work together every day: video conferencing, team chat, online whiteboards, document management, e-signature and file sharing. Each shortlist compares free plan limits, per-user prices and the admin and security controls bigger companies need.",
+    "Legal & compliance": "The software legal, security and operations teams use to manage contracts, risk and privacy: contract management, compliance automation for SOC 2 and ISO 27001, privacy management and policy management. Each shortlist explains what's included and how vendors price.",
     "IT & security": "The software IT teams use to secure people, devices and systems: a password manager for shared logins and access policies, mobile device management to enroll and wipe laptops and phones, and incident management for on-call and alerting. Each shortlist compares which plan first includes SSO, provisioning and the admin controls a security review asks for, at published per-user prices.",
 }
 HUB_URLS = []
 
 
 DEPT_TITLE = {"Sales": "Sales Software", "Projects & operations": "Project & Operations Software", "Customer support": "Customer Support Software",
-              "Finance": "Finance & Accounting Software", "Marketing": "Marketing Software", "HR & people": "HR Software", "IT & security": "IT & Security Software"}
+              "Finance": "Finance & Accounting Software", "Marketing": "Marketing Software", "HR & people": "HR Software", "IT & security": "IT & Security Software",
+              "Engineering & DevOps": "Engineering & DevOps Software", "Data & analytics": "Data & Analytics Software",
+              "Collaboration": "Collaboration Software", "Legal & compliance": "Legal & Compliance Software"}
 
 
 def _catname(name):
     if not name.endswith(("s", "Software")):
         name += " Tools"
-    return name.lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS").replace("seo", "SEO")
+    return " ".join(w if (w.isupper() and len(w) > 1) or w in ("DevOps",) else w.lower() for w in name.split())
 
 
 def dept_hubs():
@@ -1291,7 +1366,7 @@ def dept_hubs():
         hub = f"/{DEPT_SLUG[dname]}/"
         HUB_URLS.append(hub)
         title = DEPT_TITLE[dname]
-        label = (title[0] + title[1:].lower().replace("hr ", "HR ").replace("it ", "IT ")).replace("It & ", "IT & ")
+        label = (title[0] + title[1:].lower().replace("hr ", "HR ").replace("it ", "IT ").replace("devops", "DevOps")).replace("It & ", "IT & ")
         items, cards, faqs = [], [], []
         for slug, name, sub, _ in live:
             url = f"/tools/{slug}/"
@@ -1356,6 +1431,8 @@ def link_compares():
 def build():
     link_compares()
     dept_hubs()
+    guides_index()
+    link_guides()
     reviews_page()
     badges_page()
     scoreboard()
@@ -1418,6 +1495,9 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best HubSpot alternatives]({DOMAIN}/tools/best-hubspot-alternatives/): 6 CRMs for teams leaving HubSpot Sales Hub
 - [Best CRM for small businesses]({DOMAIN}/tools/best-crm-for-small-business/): CRMs for teams of 1 to 20, weighted toward ease of use and price, with free-plan details
 {"".join(f"- [{t}]({DOMAIN}{u}): {b}" + chr(10) for u, t, b, k in CATEGORY_PAGES)}- [All categories]({DOMAIN}/best-tools/)
+
+## Guides
+{"".join(f"- [{t}]({DOMAIN}{u}): {c}" + chr(10) for u, t, c, *_r in GUIDES)}- [All guides]({DOMAIN}/guides/)
 
 ## Trust
 - [Review methodology]({DOMAIN}/methodology/)
