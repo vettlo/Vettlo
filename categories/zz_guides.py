@@ -198,3 +198,74 @@ guide_page({
         ("Why does CRM cost so much more than the entry price?", _cc_faq.get("How much does CRM software cost?", "Automation, forecasting and custom reporting usually sit on higher tiers, and implementation adds to the license cost.")),
     ],
 })
+
+
+# ---------- How much does project management software cost?
+_pm = PM["tools"]
+_pm_ranked = PM["_ranked"]
+_pm_cat = "/tools/best-project-management-software/"
+_pm_rows = [(f'<a href="{_pm_cat}#{k}">{_pm[k]["name"]}</a>', _pm[k]["price"], _pm[k]["price_note"], _pm[k]["trial"]) for k in _pm_ranked]
+_pm_usd = sorted((_money(_pm[k]["price"]), _pm[k]["name"], k) for k in _pm_ranked if _money(_pm[k]["price"]))
+_pm_lo, _pm_hi = _pm_usd[0][0], _pm_usd[-1][0]
+_pm_lo_n = " and ".join(n for v, n, _k in _pm_usd if v == _pm_lo)
+_pm_hi_n = " and ".join(n for v, n, _k in _pm_usd if v == _pm_hi)
+_pm_ex = "".join(f'<tr><td>{n}</td><td>{_fmt(v)}</td><td>{_fmt(v * 10 * 12)}</td><td class="small">{_pm[k]["price_note"]}</td></tr>' for v, n, k in _pm_usd)
+_pm_mo = []  # (tool, annual-billing price, month-to-month price) where the vendor lists both
+for k in _pm_ranked:
+    _m = re.search(r"\(\$([\d.]+) monthly\)", _pm[k]["price_note"])
+    if _m and _money(_pm[k]["price"]):
+        _pm_mo.append((_pm[k]["name"], _money(_pm[k]["price"]), float(_m.group(1))))
+_pm_mo_li = "".join(f"<li><b>{n}:</b> {_fmt(a)} billed annually vs {_fmt(m)} month to month, {_fmt((m - a) * 10 * 12)} more a year for 10 users</li>" for n, a, m in _pm_mo)
+_pm_free = [f"{_pm[k]['name']}: {_pm[k]['trial']}" for k in _pm_ranked if re.match(r"free (plan|forever)", _pm[k]["trial"], re.I)]
+_pm_faq = dict(PM["faqs"])
+_pm_choose = dict(PM["choose"])
+# Flat-fee comparison: Basecamp (scored below our threshold, but the main flat-priced alternative)
+_bc = _pm.get("basecamp", {})
+_bc_top = re.search(r"Pro Unlimited \$([\d,]+)/mo", _bc.get("price_note", ""))
+_bc_top = float(_bc_top.group(1).replace(",", "")) if _bc_top else None
+_bc_lo = _money(_bc.get("price", "")) if _bc else None
+_pm_top_seat = max(_pm_usd)  # highest entry seat price among ranked tools
+_bc_break = int(_bc_top // _pm_top_seat[0]) + 1 if _bc_top else None
+_pm_flat = (f"""<p>Basecamp is the main exception to per-seat pricing. {_bc['what']} At {_fmt(_bc_top)} a month, its unlimited plan costs less than putting every user on {_pm_top_seat[1]}'s {_fmt(_pm_top_seat[0])} entry plan once a team reaches {_bc_break} people. It scored below our threshold for the ranking because it lacks Gantt and timeline planning, but for large, simple teams the flat fee is worth pricing.</p>"""
+            if _bc_top and _bc_lo else "")
+
+guide_page({
+    "slug": "project-management-software-cost", "crumb": "Project management software cost", "dept": "Projects & operations", "cats": ["best-project-management-software"],
+    "date": "2026-11-02", "kicker": "Pricing guide",
+    "title": f"How Much Does Project Management Software Cost in {YEAR}?",
+    "seo_title": f"Project Management Software Cost ({YEAR} Prices) | Vettlo",
+    "desc": "Project management software prices per user, what a 10-person team pays a year, the plan that unlocks Gantt charts, and per-seat vs flat pricing.",
+    "card": "Per-user prices, a 10-person yearly example and which plan unlocks Gantt charts.",
+    "answer": (f"Entry plans for the project management tools we rank cost {_fmt(_pm_lo)} ({_pm_lo_n}) to {_fmt(_pm_hi)} ({_pm_hi_n}) per user per month on annual billing, "
+               f"so a 10-person team pays {_fmt(_pm_lo * 120)} to {_fmt(_pm_hi * 120)} a year on entry plans. "
+               "Timeline views, higher automation limits, time tracking and portfolios often sit one or two tiers higher, so price the plan that has the features you need, not the entry plan."),
+    "sections": [
+        ("prices", "Entry prices by tool", f"""<p>The cheapest paid plan for each tool in our ranking, from each vendor's pricing page:</p>
+{_ptable(_pm_rows)}
+<p class="small muted">{PM['price_footnote']}</p>"""),
+        ("example", "What a 10-person team pays per year", f"""<p>Ten users on each vendor's entry plan, at the annual-billing prices above (taxes, add-ons and extra AI usage excluded):</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Per user per month</th><th>10 users per year</th><th>Plan terms</th></tr></thead><tbody>{_pm_ex}</tbody></table></div>
+<p>Read the plan terms before comparing totals: some entry plans cap the number of members or sell seats in minimum bundles, and entry plans differ in what they include. Our <a href="/compare/clickup-vs-asana/">ClickUp vs Asana</a> and <a href="/compare/asana-vs-monday/">Asana vs monday.com</a> comparisons price a 10-person team on the plan each tool needs for timelines, automations, time tracking and portfolios.</p>"""),
+        ("tiers", "Which plan you'll actually need", f"""<p>The entry plan is often not the one a team keeps. These features decide which tier you land on:</p>
+<ul><li><b>Timeline and Gantt views.</b> {_pm_choose.get("Find the plan with the views you need.", "Check which plan first includes timeline or Gantt views.")}</li>
+<li><b>Automation limits.</b> {_pm_choose.get("Check automation limits.", "Some tools cap automation actions per month by plan.")}</li>
+<li><b>Time tracking, portfolios and resource planning.</b> {_pm_faq.get("How much does project management software cost?", "").split(". ", 1)[-1]} Some vendors put resource planning on plans priced by quote.</li></ul>
+<p>Our <a href="{_pm_cat}">project management shortlist</a> notes the plan each feature sits on for every tool.</p>"""),
+        ("drivers", "Per-seat vs flat pricing and other cost drivers", f"""<ul><li><b>Paid seats.</b> Most tools charge per user per month. {_pm_choose.get("Count who needs a paid seat.", "Free viewer or guest seats change the cost for wide teams.")}</li>
+<li><b>Billing period.</b> The prices above assume annual billing. Where a vendor also lists a month-to-month price for the same plan, paying monthly costs more:{f"<ul>{_pm_mo_li}</ul>" if _pm_mo else " check each vendor's pricing page."}</li>
+<li><b>AI add-ons.</b> Some vendors include a monthly allowance of AI credits or requests and charge for more.</li>
+<li><b>Discounted list prices.</b> Some vendors show plans as discounts from a higher regular price; confirm the renewal price at checkout.</li></ul>
+{_pm_flat}"""),
+        ("budget", "How to budget for project management software", f"""<ol><li><b>List the views and limits you need on day one,</b> such as a Gantt chart, 500 automations a month or time tracking, and find the cheapest plan on each tool that includes all of them.</li>
+<li><b>Count paid seats separately from viewers and guests,</b> then multiply by 12 months.</li>
+<li><b>Check seat minimums and caps</b> so a plan still fits when the team grows.</li>
+<li><b>Start free if you're small.</b> {(_pm_faq.get("What is the best free project management software?", "") + " ") if _pm_free else ""}See our <a href="/tools/best-free-project-management-software/">best free project management software</a> list for the limits of each.</li></ol>
+<p>Our <a href="{_pm_cat}">shortlist</a> scores each tool on six weighted criteria, including price and value, and our <a href="/tools/best-project-management-software-for-small-business/">small business list</a> reweights them for smaller teams. Moving off Asana? See <a href="/tools/best-asana-alternatives/">Asana alternatives</a>.</p>"""),
+    ],
+    "faqs": [
+        ("How much does project management software cost per user?", f"Entry plans for the tools we rank cost {_fmt(_pm_lo)} to {_fmt(_pm_hi)} per user per month on annual billing. Plans with portfolios, resource planning and higher automation limits cost more per user."),
+        ("How much does project management software cost for a team of 10?", f"On entry plans with annual billing, 10 users cost {_fmt(_pm_lo * 120)} ({_pm_lo_n}) to {_fmt(_pm_hi * 120)} ({_pm_hi_n}) a year, before taxes and add-ons."),
+        ("What is the cheapest project management software?", f"Among the tools we rank, {_pm_lo_n} has the lowest entry price at {_fmt(_pm_lo)} per user per month on annual billing. " + (f"{len(_pm_free)} of the {len(_pm_ranked)} also have free plans for small teams." if _pm_free else "")),
+        ("Which project management tools include Gantt charts on the cheapest plan?", _pm_faq.get("Which project management tools include Gantt charts?", "See our shortlist for which plan first includes Gantt charts.")),
+    ],
+})

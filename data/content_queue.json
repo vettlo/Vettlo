@@ -269,7 +269,9 @@
       "department": "Projects & operations",
       "category": "best-project-management-software",
       "note": "Pricing guide",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-02",
+      "url": "/guides/project-management-software-cost/"
     },
     {
       "type": "guide",
