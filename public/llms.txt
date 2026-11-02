@@ -24,6 +24,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Zendesk Alternatives](https://vettlo.com/tools/best-zendesk-alternatives/): Five help desks with lower prices or simpler setup.
 - [Best HRIS Software](https://vettlo.com/tools/best-hris-software/): Six HRIS platforms compared on records, time off, reviews and real per-employee cost.
 - [Best BambooHR Alternatives](https://vettlo.com/tools/best-bamboohr-alternatives/): Five HRIS options with lower prices, time tracking included or payroll on the same record.
+- [Best Issue Tracking Software](https://vettlo.com/tools/best-issue-tracking-software/): Seven issue trackers compared on free plans, sprints and per-user price.
+- [Best Jira Alternatives](https://vettlo.com/tools/best-jira-alternatives/): Five issue trackers that are simpler, cheaper or already in your stack.
 - [Best Marketing Automation Software](https://vettlo.com/tools/best-marketing-automation-software/): Six platforms compared on journeys, lead scoring and real cost.
 - [Best HubSpot Marketing Hub Alternatives](https://vettlo.com/tools/best-hubspot-marketing-hub-alternatives/): Four platforms with cheaper automation, Salesforce scoring or event-driven journeys.
 - [Best Password Managers for Business](https://vettlo.com/tools/best-password-managers-for-business/): Six business password managers compared on SSO, admin policies and real per-user cost.
@@ -52,6 +54,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [HubSpot Marketing Hub vs ActiveCampaign](https://vettlo.com/compare/hubspot-vs-activecampaign/): HubSpot Marketing Hub and ActiveCampaign compared on price, features and fit.
 - [BambooHR vs Rippling](https://vettlo.com/compare/bamboohr-vs-rippling/): BambooHR and Rippling compared on price, features and fit.
 - [Zoom vs Microsoft Teams](https://vettlo.com/compare/zoom-vs-teams/): Zoom Workplace and Microsoft Teams compared on price, features and fit.
+- [Jira vs Linear](https://vettlo.com/compare/jira-vs-linear/): Jira and Linear compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best free B2B contact data providers](https://vettlo.com/tools/best-free-b2b-data-providers/): Best free B2B contact data providers, from our scored shortlist.
@@ -63,6 +66,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best free help desk tools](https://vettlo.com/tools/best-free-help-desk-software/): Best free help desk tools, from our scored shortlist.
 - [Best help desk tools for small business](https://vettlo.com/tools/best-help-desk-software-for-small-business/): Best help desk tools for small business, from our scored shortlist.
 - [Best HRIS tools for small business](https://vettlo.com/tools/best-hris-software-for-small-business/): Best HRIS tools for small business, from our scored shortlist.
+- [Best free issue tracking tools](https://vettlo.com/tools/best-free-issue-tracking-software/): Best free issue tracking tools, from our scored shortlist.
+- [Best issue tracking tools for small business](https://vettlo.com/tools/best-issue-tracking-software-for-small-business/): Best issue tracking tools for small business, from our scored shortlist.
 - [Best marketing automation tools for small business](https://vettlo.com/tools/best-marketing-automation-software-for-small-business/): Best marketing automation tools for small business, from our scored shortlist.
 - [Best password managers for small business](https://vettlo.com/tools/best-password-managers-for-small-business/): Best password managers for small business, from our scored shortlist.
 - [Best payroll tools for small business](https://vettlo.com/tools/best-payroll-software-for-small-business/): Best payroll tools for small business, from our scored shortlist.
@@ -119,6 +124,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Rippling Review](https://vettlo.com/tools/rippling-review/): Rippling's pricing, pros, cons and score, from our payroll tools ranking.
 - [HiBob Review](https://vettlo.com/tools/hibob-review/): HiBob's pricing, pros, cons and score, from our HRIS tools ranking.
 - [Connecteam Review](https://vettlo.com/tools/connecteam-review/): Connecteam's pricing, pros, cons and score, from our HRIS tools ranking.
+- [Jira Review](https://vettlo.com/tools/jira-review/): Jira's pricing, pros, cons and score, from our issue tracking tools ranking.
+- [Linear Review](https://vettlo.com/tools/linear-review/): Linear's pricing, pros, cons and score, from our issue tracking tools ranking.
+- [YouTrack Review](https://vettlo.com/tools/youtrack-review/): YouTrack's pricing, pros, cons and score, from our issue tracking tools ranking.
+- [GitHub Issues Review](https://vettlo.com/tools/github-issues-review/): GitHub Issues's pricing, pros, cons and score, from our issue tracking tools ranking.
+- [Azure Boards Review](https://vettlo.com/tools/azure-boards-review/): Azure Boards's pricing, pros, cons and score, from our issue tracking tools ranking.
+- [Shortcut Review](https://vettlo.com/tools/shortcut-review/): Shortcut's pricing, pros, cons and score, from our issue tracking tools ranking.
+- [GitLab Review](https://vettlo.com/tools/gitlab-review/): GitLab's pricing, pros, cons and score, from our issue tracking tools ranking.
 - [HubSpot Marketing Hub Review](https://vettlo.com/tools/hubspot-marketing-hub-review/): HubSpot Marketing Hub's pricing, pros, cons and score, from our marketing automation tools ranking.
 - [Salesforce Marketing Cloud Account Engagement Review](https://vettlo.com/tools/salesforce-marketing-cloud-account-engagement-review/): Salesforce Marketing Cloud Account Engagement's pricing, pros, cons and score, from our marketing automation tools ranking.
 - [Customer.io Review](https://vettlo.com/tools/customer-io-review/): Customer.io's pricing, pros, cons and score, from our marketing automation tools ranking.

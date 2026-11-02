@@ -116,4 +116,12 @@ EXPLAIN = {
                      ("AI notes and summaries", "Automatic meeting summaries, action items and in-meeting questions."),
                      ("Calendar and app integrations", "Join links added from Google Calendar or Outlook, plus admin controls such as SSO.")],
     },
+    "best-issue-tracking-software": {
+        "what": "Issue tracking software is where software teams log bugs, feature requests and tasks as issues, then assign, prioritize and move them through a workflow until they ship. Most trackers add sprint or cycle planning, links to commits and pull requests, and reports on how much work gets done each sprint.",
+        "features": [("Issues and custom workflows", "Bugs, stories and tasks with statuses, priorities, assignees and custom fields."),
+                     ("Backlogs and sprints", "A ranked backlog and time-boxed sprints or cycles to plan the next batch of work."),
+                     ("Boards and roadmaps", "Kanban boards for daily work and timeline views for epics and releases."),
+                     ("Git integration", "Commits, branches and pull requests linked to issues, often closing them automatically."),
+                     ("Reports and automation", "Velocity and burndown charts, plus rules that update issues when something changes.")],
+    },
 }

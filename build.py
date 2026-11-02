@@ -201,7 +201,7 @@ DEPTS = [
         ("best-remote-access-software", "Remote Access Software", "Remote support and desktop access", False),
         ("best-siem-tools", "SIEM Tools", "Log analysis and threat detection", False)]),
     ("Engineering & DevOps", "Build, ship and monitor software", [
-        ("best-issue-tracking-software", "Issue Tracking Software", "Bugs, sprints and backlogs", False),
+        ("best-issue-tracking-software", "Issue Tracking Software", "Bugs, sprints and backlogs", True),
         ("best-ci-cd-tools", "CI/CD Tools", "Build, test and deploy pipelines", False),
         ("best-application-performance-monitoring-tools", "APM Tools", "Traces, metrics and alerts", False),
         ("best-log-management-tools", "Log Management Tools", "Search, retention and alerting", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 2, 2026</span></div><h3><a href="/tools/best-issue-tracking-software/">Best issue tracking software</a></h3><p class="muted small">Seven issue trackers compared on free plans for 5 to 10 users, sprints and price, from $4 a user.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Nov 2, 2026</span></div><h3><a href="/compare/clickup-vs-asana/">ClickUp vs Asana</a></h3><p class="muted small">ClickUp Core at $9 a seat vs Asana Starter at $10.99, priced for 10 users, and which plan first includes dashboards.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 1, 2026</span></div><h3><a href="/tools/best-video-conferencing-software/">Best video conferencing software</a></h3><p class="muted small">Six meeting tools compared on free-plan time limits, recording and AI notes, from $4 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 1, 2026</span></div><h3><a href="/tools/best-hris-software/">Best HRIS software</a></h3><p class="muted small">Six HRIS platforms priced for 20 employees, and which plan first includes reviews.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Oct 31, 2026</span></div><h3><a href="/tools/best-marketing-automation-software/">Best marketing automation software</a></h3><p class="muted small">Six platforms compared on journeys and lead scoring, from $15 a month to $1,250.</p></article>
 
 </div>
 </div></section>
@@ -1390,7 +1390,7 @@ def dept_hubs():
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {dname}</nav>
 <div class="page-head"><h1>{h1}</h1><p>{DEPT_INTRO[dname]}</p></div>
 <div class="layout"><div class="main-col">
-{answer_box(f"Our top picks across {len(live)} {dname.lower().replace('hr &', 'HR &').replace('it &', 'IT &')} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
+{answer_box(f"Our top picks across {len(live)} {dname.lower().replace('hr &', 'HR &').replace('it &', 'IT &').replace('devops', 'DevOps')} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
 <section><h2>{dname} software categories</h2><div class="hub-grid">{"".join(cards)}</div></section>
 {soon_html}
 <section id="faq"><h2>{label} FAQ</h2><div>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in faqs)}</div></section>
