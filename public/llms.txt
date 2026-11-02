@@ -37,6 +37,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Video Conferencing Software](https://vettlo.com/tools/best-video-conferencing-software/): Six meeting tools compared on free-plan limits, recording and per-user price.
 - [Best Zoom Alternatives](https://vettlo.com/tools/best-zoom-alternatives/): Five meeting tools with longer free meetings or lower prices.
 - [Asana vs monday.com](https://vettlo.com/compare/asana-vs-monday/): Asana and monday.com compared on price, features and fit.
+- [ClickUp vs Asana](https://vettlo.com/compare/clickup-vs-asana/): ClickUp and Asana compared on price, features and fit.
 - [Zendesk vs Freshdesk](https://vettlo.com/compare/zendesk-vs-freshdesk/): Zendesk and Freshdesk compared on price, features and fit.
 - [QuickBooks vs Xero](https://vettlo.com/compare/quickbooks-vs-xero/): QuickBooks Online and Xero compared on price, features and fit.
 - [Apollo.io vs ZoomInfo](https://vettlo.com/compare/apollo-vs-zoominfo/): Apollo.io and ZoomInfo compared on price, features and fit.
