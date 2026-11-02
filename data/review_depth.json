@@ -31,6 +31,127 @@
         ["Digital products and bookings", "1", "5", "Unlimited"]
       ]
     },
-    "notes": ["Every plan can be tried with 14 days of premium features, no credit card required.", "Paid prices rise with subscriber count; the prices above are for up to 500 subscribers."]
+    "notes": [
+      "Every plan can be tried with 14 days of premium features, no credit card required.",
+      "Paid prices rise with subscriber count; the prices above are for up to 500 subscribers."
+    ]
+  },
+  "Salesforce Sales Cloud": {
+    "checked": "2026-11-02",
+    "source": ["Salesforce Sales Cloud pricing", "https://www.salesforce.com/products/sales-cloud-pricing/"],
+    "plans": [
+      ["Free Suite", "$0", "Listed in the plan comparison table"],
+      ["Starter Suite", "$25/user/mo, billed monthly or annually", "Assistive AI with Employee Agent, email nurture campaigns and lead scoring, built-in sales flows and lead routing, free Slack workspace connected to the CRM"],
+      ["Pro Suite", "$100/user/mo, billed annually", "Everything in Starter plus real-time chat, sales quoting and forecasting, greater customization and automation, AppExchange access"],
+      ["Core", "$195/user/mo, billed annually", "Slack Business+, Tableau Next, APIs and Agentforce with the free Salesforce Foundations add-on, 500K Flex Credits per org"],
+      ["Advanced", "$395/user/mo, billed annually", "Everything in Core with 1M Flex Credits per org"],
+      ["Max", "$550/user/mo, billed annually", "Everything in Advanced with 2.75M Flex Credits per org per year"]
+    ],
+    "first_plan": [
+      ["Sales flows and lead routing", "Starter Suite"],
+      ["Email nurture campaigns and lead scoring", "Starter Suite"],
+      ["Sales quoting", "Pro Suite"],
+      ["Forecasting", "Pro Suite"],
+      ["AppExchange access", "Pro Suite"],
+      ["Slack Business+", "Core"],
+      ["Tableau Next", "Core"],
+      ["APIs and Agentforce (with Salesforce Foundations)", "Core"]
+    ],
+    "limits": {
+      "cols": ["Core", "Advanced", "Max"],
+      "rows": [
+        ["Flex Credits per org", "500K", "1M", "2.75M per year"]
+      ]
+    },
+    "notes": [
+      "Sales Cloud has a 30-day free trial with no credit card; the Starter Suite trial covers up to 10 users.",
+      "Pro Suite and above are billed annually; the small-business page says Pro Suite requires a contract and transaction fees apply.",
+      "Add-ons listed: Agentforce for Sales from $125/user/mo, Sales Programs from $100, Revenue Intelligence from $220, Revenue Cloud from $200, Partner Relationship Management from $10 per login.",
+      "Salesforce says AI can be added to Core and above."
+    ]
+  },
+  "HubSpot Sales Hub": {
+    "checked": "2026-11-02",
+    "source": ["HubSpot Sales Hub pricing", "https://www.hubspot.com/pricing/sales"],
+    "plans": [
+      ["Free", "$0", "Free for up to 2 users, no credit card required; 3 email templates, 10 dashboards"],
+      ["Starter", "$7/seat/mo billed annually or $20 monthly", "Core Seats, 500 HubSpot Credits, 15 pipelines, 50 workflows with restricted triggers and actions, 500 calling minutes"],
+      ["Professional", "$90/seat/mo billed annually or $100 monthly, plus a required $1,500 onboarding fee", "Sales Seats, 3,000 HubSpot Credits, sequences, forecasting, 300 workflows, 100 custom reports, lead scoring, playbooks"],
+      ["Enterprise", "$150/seat/mo, plus a required $3,500 onboarding fee", "Sales Seats, 5,000 HubSpot Credits, 1,000 workflows, 500 custom reports, conversation intelligence, quote-based workflows"]
+    ],
+    "first_plan": [
+      ["Multiple deal pipelines", "Starter"],
+      ["Workflows", "Starter"],
+      ["Sequences", "Professional"],
+      ["Forecasting", "Professional"],
+      ["Custom reports", "Professional"],
+      ["Lead scoring", "Professional"],
+      ["Playbooks", "Professional"],
+      ["Call transcription and coaching", "Professional"],
+      ["Conversation intelligence", "Enterprise"],
+      ["Quote-based workflows", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Starter", "Professional", "Enterprise"],
+      "rows": [
+        ["Users", "Up to 2", "Core Seats", "Sales Seats", "Sales Seats"],
+        ["Pipelines", "-", "15", "100", "350"],
+        ["Workflows", "-", "50", "300", "1,000"],
+        ["Sequences", "-", "-", "5,000 per account (500 sends/user/day)", "5,000 per account (1,000 sends/user/day)"],
+        ["Dashboards", "10", "30", "75", "100"],
+        ["Custom reports", "-", "-", "100", "500"],
+        ["Lead scores", "-", "-", "5", "10"],
+        ["Playbooks", "-", "-", "5", "5,000"],
+        ["HubSpot Credits included", "-", "500", "3,000", "5,000"],
+        ["Calling minutes", "-", "500", "3,000", "12,000"]
+      ]
+    },
+    "notes": [
+      "View-only seats are free on Sales Hub.",
+      "Professional and Enterprise require one-time onboarding ($1,500 and $3,500); the prices shown exclude it.",
+      "Extra HubSpot Credits cost $0.010 each; credits reset monthly and don't roll over.",
+      "The page lists no Sales Hub free trial; the Free plan is the no-cost way in.",
+      "Prices in USD, subject to tax; HubSpot says discounts are for new customers only."
+    ]
+  },
+  "Pipedrive": {
+    "checked": "2026-11-02",
+    "source": ["Pipedrive pricing", "https://www.pipedrive.com/en/pricing"],
+    "plans": [
+      ["Lite", "$14/seat/mo, billed annually", "Lead, calendar and pipeline management, AI-powered report creation, real-time sales feed, 500+ integrations"],
+      ["Growth", "$39/seat/mo, billed annually", "Full email sync with tracking, automations and nurturing sequences, subscription and forecast reports, meeting scheduler, live chat support"],
+      ["Premium", "$59/seat/mo, billed annually", "Lead generation and routing, custom scoring and company data enrichment, AI-powered multi-email tools, contracts and e-signatures, enhanced customization"],
+      ["Ultimate", "$79/seat/mo, billed annually", "Account security rules and alerts, phone and email data enrichment, sandbox testing account, extended phone support"]
+    ],
+    "first_plan": [
+      ["Email sync with tracking", "Growth"],
+      ["Automations", "Growth"],
+      ["Email sequences", "Growth"],
+      ["Forecast reports", "Growth"],
+      ["Lead generation and routing", "Premium"],
+      ["Contracts and e-signatures", "Premium"],
+      ["Custom permission sets and visibility groups", "Premium"],
+      ["Shared team inbox", "Premium"],
+      ["Sandbox testing account", "Ultimate"]
+    ],
+    "limits": {
+      "cols": ["Lite", "Growth", "Premium", "Ultimate"],
+      "rows": [
+        ["Custom fields (per company)", "30", "100", "300", "500"],
+        ["Insights reports (per user)", "15", "50", "250", "500"],
+        ["Automations (per company)", "-", "50", "150", "250"],
+        ["Sequences (per company)", "-", "5", "25", "50"],
+        ["Synced email accounts (per user)", "-", "1", "3", "5"],
+        ["Shared team inboxes", "-", "-", "1", "5"],
+        ["Leads and deals", "2,500 x seats", "5,000 x seats", "15,000 x seats", "20,000 x seats"],
+        ["Data enrichment credits", "-", "-", "100", "500"]
+      ]
+    },
+    "notes": [
+      "14-day free trial, no credit card required.",
+      "Annual billing saves up to 42%; you're charged per seat whether it's assigned or not.",
+      "LeadBooster, Projects and Smart Docs are add-ons on Lite and Growth and included on Premium and Ultimate; Campaigns and Web Visitors are add-ons on every plan.",
+      "Limits are from Pipedrive's usage-limits help article (updated Oct 12, 2026); leads and deals cap at 300,000 per company."
+    ]
   }
 }

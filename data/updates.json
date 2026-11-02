@@ -103,5 +103,15 @@
     "updated": "2026-11-01",
     "checked": "2026-11-01",
     "note": "Re-verified plans, limits and trials for all 6 tools on vendor pricing pages (no changes; Brevo and Mailchimp starting prices confirmed, Brevo seat note corrected; MailerLite, Klaviyo and ActiveCampaign tier prices aren't shown in page text, so those prices are unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/compare/salesforce-vs-hubspot/": {
+    "updated": "2026-11-02",
+    "checked": "2026-11-02",
+    "note": "Re-verified Salesforce and HubSpot Sales Hub plan prices, onboarding fees, trial and add-on prices on vendor pages; refreshed G2 review counts."
+  },
+  "/compare/apollo-vs-zoominfo/": {
+    "updated": "2026-11-02",
+    "checked": "2026-11-02",
+    "note": "Re-verified ZoomInfo editions and quote-based pricing and refreshed G2 review counts; Apollo.io's live pricing page did not show prices, so its figures stay as last verified."
   }
 }

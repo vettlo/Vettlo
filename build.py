@@ -413,9 +413,9 @@ PRICING = {
 PRICES_CHECKED = "Oct 27, 2026"
 
 G2 = {
-    "hubspot":    ("4.4", "14,370", "https://www.g2.com/products/hubspot-sales-hub/reviews"),
+    "hubspot":    ("4.4", "14,383", "https://www.g2.com/products/hubspot-sales-hub/reviews"),
     "pipedrive":  ("4.3", "5,100",  "https://www.g2.com/products/pipedrive/reviews"),
-    "salesforce": ("4.4", "27,576", "https://www.g2.com/products/salesforce-salesforce-sales-cloud/reviews"),
+    "salesforce": ("4.4", "27,585", "https://www.g2.com/products/salesforce-salesforce-sales-cloud/reviews"),
     "zoho":       ("4.1", "2,953",  "https://www.g2.com/products/zoho-crm/reviews"),
     "close":      ("4.7", "2,124",  "https://www.g2.com/products/close/reviews"),
     "attio":      ("4.3", "598",    "https://www.g2.com/products/attio/reviews"),
