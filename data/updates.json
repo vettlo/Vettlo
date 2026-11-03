@@ -113,5 +113,15 @@
     "updated": "2026-11-02",
     "checked": "2026-11-02",
     "note": "Re-verified ZoomInfo editions and quote-based pricing and refreshed G2 review counts; Apollo.io's live pricing page did not show prices, so its figures stay as last verified."
+  },
+  "/compare/asana-vs-monday/": {
+    "updated": "2026-11-03",
+    "checked": "2026-11-03",
+    "note": "Re-verified Asana and monday.com plan prices, seat minimums, automation limits, guest/viewer terms and trials on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/compare/zendesk-vs-freshdesk/": {
+    "updated": "2026-11-03",
+    "checked": "2026-11-03",
+    "note": "Re-verified Zendesk and Freshdesk plan prices, AI allowances, add-on prices and trials on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
   }
 }

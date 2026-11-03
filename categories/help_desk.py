@@ -45,7 +45,7 @@ HD = {
             "name": "Freshdesk", "short": "Freshdesk", "url": "https://www.freshworks.com/freshdesk/",
             "bf": "Best for teams that want AI and SLAs at a mid-range price",
             "price": "$19/agent/mo", "price_note": "Growth, billed annually; Pro $55", "trial": "14-day trial of Enterprise", "trial_short": "14-day trial",
-            "g2": ("4.4", "3,898", "https://www.g2.com/products/freshdesk/reviews"),
+            "g2": ("4.4", "3,921", "https://www.g2.com/products/freshdesk/reviews"),
             "scores": [4.5, 4, 4, 4, 4, 4],
             "what": "Freshdesk is the help desk from Freshworks. Growth includes ticketing, a shared inbox, a customer portal and knowledge base, plus 500 Freddy AI Agent sessions; Pro adds multiple SLA policies, custom reporting and intelligent routing.",
             "who": "Growing support teams that want SLAs, routing and an AI agent without Zendesk Suite pricing.",
