@@ -14,6 +14,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best QuickBooks Alternatives](https://vettlo.com/tools/best-quickbooks-alternatives/): Five options for lower prices, unlimited users or bigger finance teams.
 - [Best B2B Contact Data Providers](https://vettlo.com/tools/best-b2b-data-providers/): Six providers compared on coverage, phone data and how credits work.
 - [Best ZoomInfo Alternatives](https://vettlo.com/tools/best-zoominfo-alternatives/): Five providers with published pricing or better mobile data.
+- [Best Business Intelligence Tools](https://vettlo.com/tools/best-business-intelligence-tools/): Seven BI tools compared on per-user and capacity pricing, free versions and governance.
+- [Best Tableau Alternatives](https://vettlo.com/tools/best-tableau-alternatives/): Five BI tools that cost less than Tableau, price by data or are free to start.
 - [Best Conversation Intelligence Tools](https://vettlo.com/tools/best-conversation-intelligence-software/): Four tools compared on coaching, deal insights, CRM sync and real price.
 - [Best Gong Alternatives](https://vettlo.com/tools/best-gong-alternatives/): Three alternatives with published pricing and free trials or plans.
 - [Best Sales Dialers](https://vettlo.com/tools/best-sales-dialers/): Six dialers compared, from power dialers to AI parallel dialers.
@@ -58,10 +60,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Zoom vs Microsoft Teams](https://vettlo.com/compare/zoom-vs-teams/): Zoom Workplace and Microsoft Teams compared on price, features and fit.
 - [Jira vs Linear](https://vettlo.com/compare/jira-vs-linear/): Jira and Linear compared on price, features and fit.
 - [Clockify vs Toggl](https://vettlo.com/compare/clockify-vs-toggl/): Clockify and Toggl Track compared on price, features and fit.
+- [Power BI vs Tableau](https://vettlo.com/compare/power-bi-vs-tableau/): Microsoft Power BI and Tableau compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best free B2B contact data providers](https://vettlo.com/tools/best-free-b2b-data-providers/): Best free B2B contact data providers, from our scored shortlist.
 - [Best B2B contact data providers for small business](https://vettlo.com/tools/best-b2b-data-providers-for-small-business/): Best B2B contact data providers for small business, from our scored shortlist.
+- [Best free business intelligence tools](https://vettlo.com/tools/best-free-business-intelligence-tools/): Best free business intelligence tools, from our scored shortlist.
+- [Best business intelligence tools for small business](https://vettlo.com/tools/best-business-intelligence-tools-for-small-business/): Best business intelligence tools for small business, from our scored shortlist.
 - [Best conversation intelligence tools for small business](https://vettlo.com/tools/best-conversation-intelligence-software-for-small-business/): Best conversation intelligence tools for small business, from our scored shortlist.
 - [Best sales dialers for small business](https://vettlo.com/tools/best-sales-dialers-for-small-business/): Best sales dialers for small business, from our scored shortlist.
 - [Best free email marketing tools](https://vettlo.com/tools/best-free-email-marketing-software/): Best free email marketing tools, from our scored shortlist.
@@ -100,6 +105,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Cognism Review](https://vettlo.com/tools/cognism-review/): Cognism's pricing, pros, cons and score, from our B2B contact data providers ranking.
 - [Kaspr Review](https://vettlo.com/tools/kaspr-review/): Kaspr's pricing, pros, cons and score, from our B2B contact data providers ranking.
 - [UpLead Review](https://vettlo.com/tools/uplead-review/): UpLead's pricing, pros, cons and score, from our B2B contact data providers ranking.
+- [Microsoft Power BI Review](https://vettlo.com/tools/microsoft-power-bi-review/): Microsoft Power BI's pricing, pros, cons and score, from our business intelligence tools ranking.
+- [Tableau Review](https://vettlo.com/tools/tableau-review/): Tableau's pricing, pros, cons and score, from our business intelligence tools ranking.
+- [Qlik Cloud Analytics Review](https://vettlo.com/tools/qlik-cloud-analytics-review/): Qlik Cloud Analytics's pricing, pros, cons and score, from our business intelligence tools ranking.
+- [Metabase Review](https://vettlo.com/tools/metabase-review/): Metabase's pricing, pros, cons and score, from our business intelligence tools ranking.
+- [Zoho Analytics Review](https://vettlo.com/tools/zoho-analytics-review/): Zoho Analytics's pricing, pros, cons and score, from our business intelligence tools ranking.
+- [Data Studio Review](https://vettlo.com/tools/data-studio-review/): Data Studio's pricing, pros, cons and score, from our business intelligence tools ranking.
+- [Domo Review](https://vettlo.com/tools/domo-review/): Domo's pricing, pros, cons and score, from our business intelligence tools ranking.
 - [Gong Review](https://vettlo.com/tools/gong-review/): Gong's pricing, pros, cons and score, from our conversation intelligence tools ranking.
 - [Avoma Review](https://vettlo.com/tools/avoma-review/): Avoma's pricing, pros, cons and score, from our conversation intelligence tools ranking.
 - [Sybill Review](https://vettlo.com/tools/sybill-review/): Sybill's pricing, pros, cons and score, from our conversation intelligence tools ranking.

@@ -293,7 +293,7 @@ def explainer_sections(slug, only_what=False):
         nm = _catname(name)
         feats = "".join(f"<li><b>{a}.</b> {b}</li>" for a, b in ex.get("features", []))
         more = f' Read our full guide: <a href="{ex["guide"]}">{next((t for u, t, *_r in GUIDES if u == ex["guide"]), "guide")}</a>.' if ex.get("guide") else ""
-        out += (f'<section id="what-is" class="prose"><h2>What is {nm[:-1] if nm.endswith("tools") and False else nm}?</h2><p>{ex["what"]}{more}</p>'
+        out += (f'<section id="what-is" class="prose"><h2>What {"is" if nm.endswith("software") else "are"} {nm}?</h2><p>{ex["what"]}{more}</p>'
                 + (f'<h3>Key features to look for</h3><ul>{feats}</ul>' if feats else "") + "</section>")
     if pr and pr["rows"] and not only_what:
         rows = pr["rows"]

@@ -133,4 +133,12 @@ EXPLAIN = {
                      ("Budgets and invoicing", "Project budgets with alerts, and invoices built from tracked time and expenses."),
                      ("Reports and integrations", "Hours by client or project, plus links to project management, accounting and payroll tools.")],
     },
+    "best-business-intelligence-tools": {
+        "what": "Business intelligence (BI) tools connect to databases, spreadsheets and business apps, model the data into consistent metrics, and present it as interactive dashboards and reports. Analysts build the models and dashboards; everyone else filters, drills down and gets scheduled reports or alerts, with permissions controlling who sees which rows.",
+        "features": [("Data connectors", "Built-in connections to databases, warehouses, files and SaaS apps, with scheduled refreshes."),
+                     ("Data modeling", "Relationships, calculated measures and a shared semantic layer so every report uses the same numbers."),
+                     ("Dashboards and visualizations", "Interactive charts, filters and drill-downs that people can explore without writing queries."),
+                     ("Sharing and governance", "Workspaces, row-level security, SSO and audit logs that control who sees what."),
+                     ("AI and natural language queries", "Ask questions in plain English, get suggested insights and automated summaries.")],
+    },
 }

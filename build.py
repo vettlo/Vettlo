@@ -210,7 +210,7 @@ DEPTS = [
         ("best-code-review-tools", "Code Review Tools", "Pull requests and code quality", False),
         ("best-feature-flag-tools", "Feature Flag Tools", "Rollouts, toggles and experiments", False)]),
     ("Data & analytics", "Reporting, pipelines and insight", [
-        ("best-business-intelligence-tools", "Business Intelligence Tools", "Dashboards and self-serve reporting", False),
+        ("best-business-intelligence-tools", "Business Intelligence Tools", "Dashboards and self-serve reporting", True),
         ("best-product-analytics-tools", "Product Analytics Tools", "Funnels, retention and events", False),
         ("best-web-analytics-tools", "Web Analytics Tools", "Traffic, conversions and attribution", False),
         ("best-etl-tools", "ETL Tools", "Data pipelines and syncs", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 3, 2026</span></div><h3><a href="/tools/best-business-intelligence-tools/">Best business intelligence tools</a></h3><p class="muted small">Seven BI tools compared on free versions, data limits and per-user price, from Power BI Pro at $14 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 3, 2026</span></div><h3><a href="/tools/best-time-tracking-software/">Best time tracking software</a></h3><p class="muted small">Seven time trackers compared on free plans, approvals and billable rates, from $3.99 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 2, 2026</span></div><h3><a href="/tools/best-issue-tracking-software/">Best issue tracking software</a></h3><p class="muted small">Seven issue trackers compared on free plans for 5 to 10 users, sprints and price, from $4 a user.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Nov 2, 2026</span></div><h3><a href="/compare/clickup-vs-asana/">ClickUp vs Asana</a></h3><p class="muted small">ClickUp Core at $9 a seat vs Asana Starter at $10.99, priced for 10 users, and which plan first includes dashboards.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 1, 2026</span></div><h3><a href="/tools/best-video-conferencing-software/">Best video conferencing software</a></h3><p class="muted small">Six meeting tools compared on free-plan time limits, recording and AI notes, from $4 a user.</p></article>
 
 </div>
 </div></section>
