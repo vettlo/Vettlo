@@ -124,4 +124,12 @@ EXPLAIN = {
                      ("Git integration", "Commits, branches and pull requests linked to issues, often closing them automatically."),
                      ("Reports and automation", "Velocity and burndown charts, plus rules that update issues when something changes.")],
     },
+    "best-time-tracking-software": {
+        "what": "Time tracking software records the hours people spend on clients, projects and tasks, with timers, manual timesheets or automatic activity capture. It turns those hours into approved timesheets, billable amounts, invoices and reports on budgets and profitability.",
+        "features": [("Timers and timesheets", "Start and stop timers on desktop, mobile or browser, or enter hours in a weekly grid."),
+                     ("Billable and cost rates", "Rates per client, project, task or person, so hours turn into revenue and labor cost."),
+                     ("Timesheet approvals", "Managers review and lock submitted hours before billing or payroll."),
+                     ("Budgets and invoicing", "Project budgets with alerts, and invoices built from tracked time and expenses."),
+                     ("Reports and integrations", "Hours by client or project, plus links to project management, accounting and payroll tools.")],
+    },
 }

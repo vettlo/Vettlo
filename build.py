@@ -157,7 +157,7 @@ DEPTS = [
         ("best-affiliate-marketing-software", "Affiliate Marketing Software", "Partner tracking and payouts", False)]),
     ("Projects & operations", "Planning, tracking and docs", [
         ("best-project-management-software", "Project Management Software", "Tasks, timelines and team workload", True),
-        ("best-time-tracking-software", "Time Tracking Software", "Timesheets, billable hours and reports", False),
+        ("best-time-tracking-software", "Time Tracking Software", "Timesheets, billable hours and reports", True),
         ("best-knowledge-base-software", "Knowledge Base Software", "Internal wikis and documentation", False),
         ("best-resource-management-software", "Resource Management Software", "Capacity, scheduling and utilization", False),
         ("best-workflow-automation-software", "Workflow Automation Software", "No-code automations between apps", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 3, 2026</span></div><h3><a href="/tools/best-time-tracking-software/">Best time tracking software</a></h3><p class="muted small">Seven time trackers compared on free plans, approvals and billable rates, from $3.99 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 2, 2026</span></div><h3><a href="/tools/best-issue-tracking-software/">Best issue tracking software</a></h3><p class="muted small">Seven issue trackers compared on free plans for 5 to 10 users, sprints and price, from $4 a user.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Nov 2, 2026</span></div><h3><a href="/compare/clickup-vs-asana/">ClickUp vs Asana</a></h3><p class="muted small">ClickUp Core at $9 a seat vs Asana Starter at $10.99, priced for 10 users, and which plan first includes dashboards.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 1, 2026</span></div><h3><a href="/tools/best-video-conferencing-software/">Best video conferencing software</a></h3><p class="muted small">Six meeting tools compared on free-plan time limits, recording and AI notes, from $4 a user.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 1, 2026</span></div><h3><a href="/tools/best-hris-software/">Best HRIS software</a></h3><p class="muted small">Six HRIS platforms priced for 20 employees, and which plan first includes reviews.</p></article>
 
 </div>
 </div></section>
