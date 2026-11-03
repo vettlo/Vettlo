@@ -283,7 +283,9 @@
       "department": "Sales",
       "category": "best-sales-engagement-software",
       "note": "Explainer",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-03",
+      "url": "/guides/what-is-sales-engagement-software/"
     },
     {
       "type": "guide",

@@ -17,6 +17,7 @@ EXPLAIN = {
                      ("Dialer and call tasks", "Calling from the browser, often with recording."),
                      ("CRM sync", "Two-way sync of contacts, activities and outcomes."),
                      ("Analytics and A/B testing", "Reply and meeting rates by sequence, step and template.")],
+        "guide": "/guides/what-is-sales-engagement-software/",
     },
     "best-conversation-intelligence-software": {
         "what": "Conversation intelligence software records and transcribes sales calls and video meetings, then turns them into summaries, coaching insights and deal signals. Managers use it to coach reps at scale, and reps use it to skip note-taking and update the CRM.",

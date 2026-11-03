@@ -269,3 +269,70 @@ guide_page({
         ("Which project management tools include Gantt charts on the cheapest plan?", _pm_faq.get("Which project management tools include Gantt charts?", "See our shortlist for which plan first includes Gantt charts.")),
     ],
 })
+
+
+# ---------- What is sales engagement software?
+_se = SE["tools"]
+_se_ranked = SE["_ranked"]
+_se_cat = "/tools/best-sales-engagement-software/"
+_se_faq = dict(SE["faqs"])
+_se_choose = SE["choose"]
+_se_rv = lambda k: (f'<a href="{REVIEW_URL[_se[k]["name"]]}">{_se[k]["name"]}</a>' if _se[k]["name"] in REVIEW_URL else _se[k]["name"])
+_se_rows = [(f'<a href="{_se_cat}#{k}">{_se[k]["name"]}</a>', _se[k]["price"], _se[k]["price_note"], _se[k]["trial"]) for k in _se_ranked]
+_se_seat = sorted((_money(_se[k]["price"]), _se[k]["name"], k) for k in _se_ranked
+                  if _money(_se[k]["price"]) and re.search(r"/(user|seat)/", _se[k]["price"]))
+_se_other = [k for k in _se_ranked if _money(_se[k]["price"]) and not re.search(r"/(user|seat)/", _se[k]["price"])]
+_se_quote = [_se[k]["name"] for k in _se_ranked if not _money(_se[k]["price"])]
+_se_free = [_se[k]["name"] for k in _se_ranked if re.match(r"free plan", _se[k]["trial"], re.I)]
+_se_lo, _se_hi = _se_seat[0][0], _se_seat[-1][0]
+_se_lo_n = " and ".join(n for v, n, _k in _se_seat if v == _se_lo)
+_se_hi_n = " and ".join(n for v, n, _k in _se_seat if v == _se_hi)
+_se_and = lambda xs: xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+_se_other_li = "".join(f'<li><b>{_se[k]["name"]}:</b> {_se[k]["price"]}. {_se[k]["price_note"]}.</li>' for k in _se_other)
+_se_seat_range = (f"{_fmt(_se_lo)} ({_se_lo_n}) to {_fmt(_se_hi)} ({_se_hi_n}) per user per month" if _se_lo != _se_hi else f"{_fmt(_se_lo)} per user per month ({_se_lo_n})")
+_se_seat_verb = "run from" if _se_lo != _se_hi else "start at"
+_se_q_txt = (f"{_se_and(_se_quote)} don't publish prices. " + _se_faq.get("How much do Outreach and Salesloft cost?", "").split(". ")[-1].rstrip(".") + ".") if _se_quote else ""
+_se_seat_year = (f"{_fmt(_se_lo * 120)} to {_fmt(_se_hi * 120)}" if _se_lo != _se_hi else _fmt(_se_lo * 120))
+_se_feats = "".join(f"<li><b>{a}.</b> {b}</li>" for a, b in EXPLAIN["best-sales-engagement-software"]["features"])
+_se_by = lambda *ks: _se_and([_se_rv(k) for k in ks if k in _se_ranked]) if any(k in _se_ranked for k in ks) else ""
+
+guide_page({
+    "slug": "what-is-sales-engagement-software", "crumb": "What is sales engagement software?", "dept": "Sales", "cats": ["best-sales-engagement-software"],
+    "date": "2026-11-03", "kicker": "Explainer",
+    "title": "What Is Sales Engagement Software? Features, Types and Cost",
+    "seo_title": "What Is Sales Engagement Software? Features and Cost | Vettlo",
+    "desc": "Sales engagement software explained: what it does, how it differs from a CRM and cold email tools, the main types and what the platforms we rank cost.",
+    "card": "What sequences do, how it differs from a CRM, the main types and what it costs.",
+    "answer": ("Sales engagement software runs multi-step outreach sequences across email, phone and LinkedIn, so reps contact prospects on schedule and stop when someone replies. "
+               "It sits next to the CRM: the CRM is the record of contacts and deals, while the engagement platform does the outreach and logs the activity back. "
+               f"Published entry prices among the platforms we rank start at {_se_seat_range}"
+               + (f", while {_se_and(_se_quote)} sell by quote." if _se_quote else ".")),
+    "sections": [
+        ("does", "What sales engagement software does", f"""<p>A sequence is the core of every sales engagement platform: a timed series of steps, such as an email on day one, a call task on day three and a LinkedIn message on day five, that a prospect moves through until they reply, book a meeting or reach the end. Around that, platforms add:</p>
+<ul>{_se_feats}</ul>
+<p>The result is that follow-up no longer depends on each rep's memory or inbox. Managers can see which sequences, steps and templates get replies and copy what works across the team.</p>"""),
+        ("vs", "Sales engagement vs CRM vs cold email tools", f"""<p>The three overlap, so it helps to separate what each is for:</p>
+<ul><li><b>A CRM</b> is the system of record: contacts, companies, deals and pipeline stages. {_se_faq.get("Do I need a sales engagement platform if my CRM has sequences?", "").split(". ", 1)[-1]}</li>
+<li><b>A sales engagement platform</b> runs the outreach itself: multichannel sequences across email, calls and LinkedIn, sending controls, and reply and meeting analytics for managers, with the activity synced back to the CRM.</li>
+<li><b>Cold email tools</b> are narrower. {_se_faq.get("What is the difference between sales engagement and cold email software?", "").split(". ", 1)[-1]}</li></ul>
+<p>Most outbound teams run a CRM plus one outreach tool. If your CRM's built-in sequences cover email-only follow-up for a handful of reps, you may not need a second tool yet; see our <a href="/tools/best-crm-software/">CRM shortlist</a> for which plans include them.</p>"""),
+        ("types", "The main types of sales engagement platform", f"""<ul><li><b>Enterprise sales execution platforms</b> add governed sequences, call recording, deal management and forecasting for large teams with a RevOps owner. {_se_by("outreach", "salesloft")} sit here; our <a href="/compare/outreach-vs-salesloft/">Outreach vs Salesloft</a> comparison covers which package to ask each for.</li>
+<li><b>Data plus engagement in one tool</b> bundles a B2B contact database with sequencing, so you don't buy prospect data separately. {_se_by("apollo")} is the best-known example; credits limit how many contacts you can reveal.</li>
+<li><b>Multichannel outreach tools</b> run email, LinkedIn and call steps at a published, self-serve price for SMB and mid-market teams, such as {_se_by("reply", "lemlist")}.</li>
+<li><b>Cold email platforms</b> focus on sending volume and deliverability across many connected inboxes, such as {_se_by("instantly")}. They're email-first rather than full multichannel suites.</li></ul>
+<p>Inbox add-ons that put sequences inside Gmail, such as Mixmax, are a lighter fifth option. Our <a href="{_se_cat}">shortlist</a> scores each platform on sequencing, deliverability, data, CRM sync, analytics and price.</p>"""),
+        ("cost", "How much sales engagement software costs", f"""<p>Pricing units vary more in this category than in most. Some platforms charge per user or seat, some charge a flat price per workspace plan, and enterprise vendors quote. Entry plans for the platforms we rank, from each vendor's pricing page:</p>
+{_ptable(_se_rows)}
+<p class="small muted">{SE['price_footnote']}</p>
+<p>Per-user entry plans {_se_seat_verb} {_se_seat_range}, which is {_se_seat_year} a year for a 10-rep team before add-ons.{(" Priced differently:</p><ul>" + _se_other_li + "</ul><p>") if _se_other else " "}{(_se_q_txt + " ") if _se_quote else ""}{"Free plan" if len(_se_free) == 1 else "Free plans"}: {_se_and(_se_free) if _se_free else "none of the ranked platforms list one"}.</p>
+<p>Beyond the license, budget for contact data (credits or a separate provider), extra sending inboxes and domains for cold email, and dialer minutes. Comparing Apollo.io with a data-only provider? See <a href="/compare/apollo-vs-zoominfo/">Apollo.io vs ZoomInfo</a>.</p>"""),
+        ("choose", "How to choose a sales engagement platform", "<ol>" + "".join(f"<li><b>{a}</b> {b}</li>" for a, b in _se_choose) + f"""</ol>
+<p>Our <a href="{_se_cat}">sales engagement shortlist</a> ranks {len(_se_ranked)} platforms, our <a href="/tools/best-sales-engagement-software-for-small-business/">small business list</a> reweights them for smaller teams, and <a href="/tools/best-apollo-alternatives/">Apollo.io alternatives</a> covers what to switch to when credits or sending limits run short.</p>"""),
+    ],
+    "faqs": [
+        ("What is a sales sequence?", "A sequence is a timed series of outreach steps, such as emails, call tasks and LinkedIn messages, that a prospect moves through automatically. It stops when the prospect replies or books a meeting, so reps don't follow up with someone who already answered."),
+        ("Is sales engagement software the same as a CRM?", "No. A CRM stores contacts, companies and deals and tracks the pipeline; a sales engagement platform runs the outreach and syncs the resulting activity back to the CRM. Some CRMs include basic sequences, and some engagement platforms include light deal tracking."),
+        ("How much does sales engagement software cost?", f"Per-user entry plans for the platforms we rank {"cost" if _se_lo != _se_hi else "start at"} {_se_seat_range}." + (f" {_se_and(_se_quote)} don't publish prices." if _se_quote else "") + (f" {_se_and([_se[k]['name'] for k in _se_other])} {'lists' if len(_se_other) == 1 else 'list'} plan prices without a per-user unit; see our shortlist for each plan's terms." if _se_other else "")),
+        ("Is there free sales engagement software?", _se_faq.get("Is there a free sales engagement platform?", "Some platforms have free plans; most offer 14-day trials.")),
+    ],
+})
