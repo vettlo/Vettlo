@@ -253,5 +253,117 @@
       "Automated resolutions beyond the included amount cost $1.50 each committed or $2.00 pay-as-you-go.",
       "Subscriptions can be month to month, annual or multi-year."
     ]
+  },
+  "QuickBooks Online": {
+    "checked": "2026-11-04",
+    "source": ["QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"],
+    "plans": [
+      ["Simple Start", "$38/mo regular price ($19/mo for 3 months, new customers)", "1 user plus 2 accountants; automated bookkeeping, invoicing and payments, bill pay with free ACH, general business reports"],
+      ["Essentials", "$85/mo regular price ($42.50/mo for 3 months)", "3 users plus 2 accountants; time tracking added to invoices, custom KPIs, enhanced reports"],
+      ["Plus", "$140/mo regular price ($70/mo for 3 months)", "5 users plus 2 accountants; budgets, project profitability, inventory tracking, classes and locations, comprehensive reports"],
+      ["Advanced", "$340/mo regular price ($170/mo for 3 months)", "25 users plus 3 accountants; custom user roles, workflow automation, bill approval workflows, 1099 e-filing, priority support and training"]
+    ],
+    "first_plan": [
+      ["Bill pay with free ACH", "Simple Start"],
+      ["Employee time added to invoices", "Essentials"],
+      ["Custom KPIs and dashboards", "Essentials"],
+      ["Budgets", "Plus"],
+      ["Project profitability", "Plus"],
+      ["Inventory tracking", "Plus"],
+      ["Class and location tracking", "Plus"],
+      ["Custom user roles and permissions", "Advanced"],
+      ["Workflow automation", "Advanced"],
+      ["1099 e-filing and bill approval workflows", "Advanced"]
+    ],
+    "limits": {
+      "cols": ["Simple Start", "Essentials", "Plus", "Advanced"],
+      "rows": [
+        ["Users", "1", "3", "5", "25"],
+        ["Accountant users", "2", "2", "2", "3"],
+        ["Classes and locations", "Not included", "Not included", "40", "Unlimited"],
+        ["Custom KPIs", "Not included", "Included", "Included", "Unlimited"]
+      ]
+    },
+    "notes": [
+      "30-day free trial; the 50% discount for the first 3 months is an alternative offer for new customers.",
+      "Standard ACH bill payments are free up to a monthly allotment, then $0.50 per transaction.",
+      "Payroll is an optional add-on at checkout; the pricing page does not list its price."
+    ]
+  },
+  "Xero": {
+    "checked": "2026-11-04",
+    "source": ["Xero US pricing plans", "https://www.xero.com/us/pricing-plans/"],
+    "plans": [
+      ["Early", "$27/mo regular price ($5.40/mo for the first 3 months)", "20 invoices and 5 bills, bank reconciliation, sales tax, 1099 management, 30-day cash flow forecast"],
+      ["Growing", "$59/mo regular price ($11.80/mo for the first 3 months)", "Unlimited invoices and bills, auto-reconcile, custom dashboards, 3 budgets, 60-day cash flow forecast"],
+      ["Established", "$97/mo regular price ($19.40/mo for the first 3 months)", "Multi-currency, projects, expense and mileage claims, KPIs and benchmarking, 180-day cash flow forecast"]
+    ],
+    "first_plan": [
+      ["Online invoice payments", "Early"],
+      ["Free ACH bill payments", "Early"],
+      ["W-9 and 1099 management", "Early"],
+      ["Auto-reconcile", "Growing (optional on Early for $5/mo)"],
+      ["Custom dashboards and scorecards", "Growing"],
+      ["Budgets", "Growing (3 budgets)"],
+      ["Inventory Plus", "Growing (optional)"],
+      ["Multi-currency", "Established"],
+      ["Projects (time and costs)", "Established"],
+      ["Expense and mileage claims", "Established"]
+    ],
+    "limits": {
+      "cols": ["Early", "Growing", "Established"],
+      "rows": [
+        ["Invoices (approve and send)", "20", "Unlimited", "Unlimited"],
+        ["Bills", "5", "Unlimited", "Unlimited"],
+        ["Users", "No per-user fees", "No per-user fees", "No per-user fees"],
+        ["Cash flow forecast", "30 days", "60 days", "180 days"],
+        ["Budgets", "Not included", "3", "Included"]
+      ]
+    },
+    "notes": [
+      "New US customers get 80% off for the first 3 months; the regular price then applies and renews monthly.",
+      "No free trial is listed; Xero offers free onboarding with a product specialist for the first 90 days.",
+      "Xero Payroll, powered by Gusto: $36 a month + $6 per employee or contractor, on any plan.",
+      "You can switch to a cheaper plan 1 month after upgrading."
+    ]
+  },
+  "Zoho Books": {
+    "checked": "2026-11-04",
+    "source": ["Zoho Books pricing (US)", "https://www.zoho.com/us/books/pricing/"],
+    "plans": [
+      ["Free", "$0", "1 user plus 1 accountant, for businesses with revenue under $50K in the financial year"],
+      ["Standard", "$15/org/mo billed annually or $20 monthly", "3 users; bank feeds, sales and use tax, custom fields"],
+      ["Professional", "$40/org/mo billed annually or $50 monthly", "5 users; inventory, multi-currency, timesheet billing, sales and purchase approvals, custom workflows"],
+      ["Premium", "$60/org/mo billed annually or $70 monthly", "10 users; budgets, custom domain, vendor portal, custom modules and validation rules"],
+      ["Elite", "$120/org/mo billed annually or $150 monthly", "10 users; higher invoice and bill limits"],
+      ["Ultimate", "$240/org/mo billed annually or $275 monthly", "15 users; highest limits, including 3 million records"]
+    ],
+    "first_plan": [
+      ["Bank feeds", "Standard"],
+      ["Sales and use tax tracking", "Standard"],
+      ["Custom fields", "Standard"],
+      ["Inventory tracking", "Professional"],
+      ["Multi-currency", "Professional"],
+      ["Timesheet billing", "Professional"],
+      ["Sales and purchase approvals", "Professional"],
+      ["Budgets", "Premium"],
+      ["Custom domain", "Premium"],
+      ["Vendor portal", "Premium"]
+    ],
+    "limits": {
+      "cols": ["Free", "Standard", "Professional", "Premium", "Elite", "Ultimate"],
+      "rows": [
+        ["Users", "1 + 1 accountant", "3", "5", "10", "10", "15"],
+        ["Invoices per year", "1,000", "5,000", "10,000", "25,000", "100,000", "100,000"],
+        ["Bills and expenses per year", "1,000", "5,000", "10,000", "25,000", "100,000", "100,000"],
+        ["Receipt autoscans per month", "50", "200", "200", "1,000", "1,000", "1,000"],
+        ["Scheduled reports", "5", "50", "200", "200", "200", "200"]
+      ]
+    },
+    "notes": [
+      "14-day free trial.",
+      "Extra users cost $2.50 a month billed annually ($3 monthly).",
+      "Prices are per organization and exclude local taxes."
+    ]
   }
 }

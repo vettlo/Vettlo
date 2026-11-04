@@ -404,23 +404,23 @@ PRICING = {
     "hubspot":    dict(price="$7/seat/mo", note="Starter, billed annually ($20 monthly)", trial="Free plan (up to 2 users)", short="Free plan for 2 users"),
     "pipedrive":  dict(price="$14/seat/mo", note="Lite, billed annually", trial="14-day free trial", short="14-day trial"),
     "salesforce": dict(price="$25/user/mo", note="Starter Suite, monthly or annual", trial="Free Suite + free trial", short="Free Suite + trial"),
-    "zoho":       dict(price="$14/user/mo", note="Standard, billed annually ($20 monthly); USD list price last confirmed Oct 2, 2026", trial="Free for 3 users; 15-day trial", short="Free for 3 users"),
+    "zoho":       dict(price="$14/user/mo", note="Standard, billed annually ($20 monthly)", trial="Free for 3 users; 15-day trial", short="Free for 3 users"),
     "close":      dict(price="$35/user/mo", note="Essentials, billed annually ($9 Solo plan for 1 user)", trial="14-day free trial", short="14-day trial"),
     "attio":      dict(price="$35/user/mo", note="Plus, billed annually ($44 monthly)", trial="Free plan (3 seats); 14-day Pro trial", short="Free plan for 3 seats"),
     "freshsales": dict(price="$9/user/mo", note="Growth, billed annually", trial="21-day free trial", short="21-day trial"),
     "folk":       dict(price="$24/user/mo", note="Standard, billed annually ($30 monthly)", trial="14-day free trial", short="14-day trial"),
 }
-PRICES_CHECKED = "Oct 27, 2026"
+PRICES_CHECKED = "Nov 4, 2026"
 
 G2 = {
     "hubspot":    ("4.4", "14,383", "https://www.g2.com/products/hubspot-sales-hub/reviews"),
-    "pipedrive":  ("4.3", "5,100",  "https://www.g2.com/products/pipedrive/reviews"),
-    "salesforce": ("4.4", "27,585", "https://www.g2.com/products/salesforce-salesforce-sales-cloud/reviews"),
-    "zoho":       ("4.1", "2,953",  "https://www.g2.com/products/zoho-crm/reviews"),
-    "close":      ("4.7", "2,124",  "https://www.g2.com/products/close/reviews"),
-    "attio":      ("4.3", "598",    "https://www.g2.com/products/attio/reviews"),
+    "pipedrive":  ("4.3", "5,110",  "https://www.g2.com/products/pipedrive/reviews"),
+    "salesforce": ("4.4", "27,587", "https://www.g2.com/products/salesforce-salesforce-sales-cloud/reviews"),
+    "zoho":       ("4.1", "2,957",  "https://www.g2.com/products/zoho-crm/reviews"),
+    "close":      ("4.7", "2,144",  "https://www.g2.com/products/close/reviews"),
+    "attio":      ("4.3", "600",    "https://www.g2.com/products/attio/reviews"),
     "freshsales": ("4.5", "1,243",  "https://www.g2.com/products/freshsales/reviews"),
-    "folk":       ("4.5", "344",    "https://www.g2.com/products/folk-folk/reviews"),
+    "folk":       ("4.5", "346",    "https://www.g2.com/products/folk-folk/reviews"),
 }
 
 
