@@ -20,6 +20,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Gong Alternatives](https://vettlo.com/tools/best-gong-alternatives/): Three alternatives with published pricing and free trials or plans.
 - [Best Sales Dialers](https://vettlo.com/tools/best-sales-dialers/): Six dialers compared, from power dialers to AI parallel dialers.
 - [Best Aircall Alternatives](https://vettlo.com/tools/best-aircall-alternatives/): Five options with more dialing modes or parallel dialing.
+- [Best E-Signature Software](https://vettlo.com/tools/best-e-signature-software/): Six e-signature tools compared on envelope caps, bulk send and real price.
+- [Best Docusign Alternatives](https://vettlo.com/tools/best-docusign-alternatives/): Five e-signature tools with lower prices, free plans or unlimited sending.
 - [Best Email Marketing Software](https://vettlo.com/tools/best-email-marketing-software/): Six email tools compared on automation and price at 1,000 contacts.
 - [Best Mailchimp Alternatives](https://vettlo.com/tools/best-mailchimp-alternatives/): Five email tools with lower prices or deeper automation.
 - [Best Help Desk Software](https://vettlo.com/tools/best-help-desk-software/): Seven help desks compared on channels, AI and real per-agent price.
@@ -64,6 +66,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Clockify vs Toggl](https://vettlo.com/compare/clockify-vs-toggl/): Clockify and Toggl Track compared on price, features and fit.
 - [Power BI vs Tableau](https://vettlo.com/compare/power-bi-vs-tableau/): Microsoft Power BI and Tableau compared on price, features and fit.
 - [LiveChat vs Intercom](https://vettlo.com/compare/livechat-vs-intercom/): LiveChat and Intercom compared on price, features and fit.
+- [Docusign vs PandaDoc](https://vettlo.com/compare/docusign-vs-pandadoc/): Docusign and PandaDoc compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best free B2B contact data providers](https://vettlo.com/tools/best-free-b2b-data-providers/): Best free B2B contact data providers, from our scored shortlist.
@@ -72,6 +75,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best business intelligence tools for small business](https://vettlo.com/tools/best-business-intelligence-tools-for-small-business/): Best business intelligence tools for small business, from our scored shortlist.
 - [Best conversation intelligence tools for small business](https://vettlo.com/tools/best-conversation-intelligence-software-for-small-business/): Best conversation intelligence tools for small business, from our scored shortlist.
 - [Best sales dialers for small business](https://vettlo.com/tools/best-sales-dialers-for-small-business/): Best sales dialers for small business, from our scored shortlist.
+- [Best free e-signature tools](https://vettlo.com/tools/best-free-e-signature-software/): Best free e-signature tools, from our scored shortlist.
+- [Best e-signature tools for small business](https://vettlo.com/tools/best-e-signature-software-for-small-business/): Best e-signature tools for small business, from our scored shortlist.
 - [Best free email marketing tools](https://vettlo.com/tools/best-free-email-marketing-software/): Best free email marketing tools, from our scored shortlist.
 - [Best email marketing tools for small business](https://vettlo.com/tools/best-email-marketing-software-for-small-business/): Best email marketing tools for small business, from our scored shortlist.
 - [Best free help desk tools](https://vettlo.com/tools/best-free-help-desk-software/): Best free help desk tools, from our scored shortlist.
@@ -127,6 +132,12 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Kixie Review](https://vettlo.com/tools/kixie-review/): Kixie's pricing, pros, cons and score, from our sales dialers ranking.
 - [Aircall Review](https://vettlo.com/tools/aircall-review/): Aircall's pricing, pros, cons and score, from our sales dialers ranking.
 - [CloudTalk Review](https://vettlo.com/tools/cloudtalk-review/): CloudTalk's pricing, pros, cons and score, from our sales dialers ranking.
+- [Docusign Review](https://vettlo.com/tools/docusign-review/): Docusign's pricing, pros, cons and score, from our e-signature tools ranking.
+- [PandaDoc Review](https://vettlo.com/tools/pandadoc-review/): PandaDoc's pricing, pros, cons and score, from our e-signature tools ranking.
+- [signNow Review](https://vettlo.com/tools/signnow-review/): signNow's pricing, pros, cons and score, from our e-signature tools ranking.
+- [Adobe Acrobat Sign Review](https://vettlo.com/tools/adobe-acrobat-sign-review/): Adobe Acrobat Sign's pricing, pros, cons and score, from our e-signature tools ranking.
+- [SignWell Review](https://vettlo.com/tools/signwell-review/): SignWell's pricing, pros, cons and score, from our e-signature tools ranking.
+- [Dropbox Sign Review](https://vettlo.com/tools/dropbox-sign-review/): Dropbox Sign's pricing, pros, cons and score, from our e-signature tools ranking.
 - [MailerLite Review](https://vettlo.com/tools/mailerlite-review/): MailerLite's pricing, pros, cons and score, from our email marketing tools ranking.
 - [Klaviyo Review](https://vettlo.com/tools/klaviyo-review/): Klaviyo's pricing, pros, cons and score, from our email marketing tools ranking.
 - [ActiveCampaign Review](https://vettlo.com/tools/activecampaign-review/): ActiveCampaign's pricing, pros, cons and score, from our marketing automation tools ranking.

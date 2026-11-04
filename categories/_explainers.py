@@ -149,4 +149,12 @@ EXPLAIN = {
                      ("Sharing and governance", "Workspaces, row-level security, SSO and audit logs that control who sees what."),
                      ("AI and natural language queries", "Ask questions in plain English, get suggested insights and automated summaries.")],
     },
+    "best-e-signature-software": {
+        "what": "E-signature software lets you send a document for signature online: you upload it or build it from a template, place signature, date and form fields, and signers sign from any browser or phone without an account. The tool tracks who has signed, sends reminders, and returns a completed PDF with an audit trail that records each signer's actions and timestamps.",
+        "features": [("Templates and fields", "Reusable documents with signature, initial, date, text and drop-down fields placed once."),
+                     ("Signing order and reminders", "Sequential or parallel signers, automatic reminders and expiry dates."),
+                     ("Bulk send and web forms", "Send one document to many recipients, or publish a signable form on a link."),
+                     ("Audit trail and signer verification", "Timestamped history of every action, plus options such as SMS codes or ID checks."),
+                     ("Integrations and API", "Send from a CRM, cloud storage or your own app, and file signed copies automatically.")],
+    },
 }
