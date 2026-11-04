@@ -298,7 +298,8 @@ def explainer_sections(slug, only_what=False):
     if pr and pr["rows"] and not only_what:
         rows = pr["rows"]
         priced = sorted([(_money(p), n, p, a) for n, p, nt, t, a in rows if _money(p)], key=lambda x: x[0])
-        onreq = [n for n, p, nt, t, a in rows if not _money(p) and not p[:1] in "€£"]
+        freeonly = [n for n, p, nt, t, a in rows if p == "Free" and "quote" not in nt.lower()]
+        onreq = [n for n, p, nt, t, a in rows if not _money(p) and not p[:1] in "€£" and n not in freeonly]
         other_cur = [(n, p) for n, p, nt, t, a in rows if p[:1] in "€£"]
         free = [n for n, p, nt, t, a in rows if _FREE.search(t)]
         lis = "".join(f'<li><a href="{a}">{n}</a>: {p}</li>' for v, n, p, a in priced) + "".join(f"<li>{n}: {p}</li>" for n, p in other_cur)
@@ -307,6 +308,8 @@ def explainer_sections(slug, only_what=False):
             summary.append(f"Among the {len(rows)} {pr['noun']} we ranked, published entry prices start at {priced[0][2].replace("From ", "")} ({priced[0][1]})" + (f" and go up to {priced[-1][2].replace("From ", "")} ({priced[-1][1]})" if len(priced) > 1 else "") + ". Units differ by vendor (per user, per agent, per contact tier or flat), so compare at your own team size.")
         if free:
             summary.append(f"Free plans: {', '.join(free)}.")
+        if freeonly:
+            summary.append(f"Free to use, with optional paid add-ons: {', '.join(freeonly)}.")
         if onreq:
             summary.append(f"No published price: {', '.join(onreq)}.")
         out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'

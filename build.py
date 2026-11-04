@@ -166,7 +166,7 @@ DEPTS = [
         ("best-appointment-scheduling-software", "Appointment Scheduling Software", "Booking pages and calendars", False)]),
     ("Customer support", "Tickets, chat and feedback", [
         ("best-help-desk-software", "Help Desk Software", "Ticketing, SLAs and shared inboxes", True),
-        ("best-live-chat-software", "Live Chat Software", "Website chat, bots and routing", False),
+        ("best-live-chat-software", "Live Chat Software", "Website chat, bots and routing", True),
         ("best-ai-customer-service-agents", "AI Customer Service Agents", "AI that resolves tickets on its own", False),
         ("best-call-center-software", "Call Center Software", "Inbound queues, IVR and routing", False),
         ("best-customer-success-software", "Customer Success Software", "Health scores, renewals and playbooks", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 4, 2026</span></div><h3><a href="/tools/best-live-chat-software/">Best live chat software</a></h3><p class="muted small">Seven live chat tools compared on AI, routing and billing basis, from free tawk.to to LiveChat at $19 a seat.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 3, 2026</span></div><h3><a href="/tools/best-business-intelligence-tools/">Best business intelligence tools</a></h3><p class="muted small">Seven BI tools compared on free versions, data limits and per-user price, from Power BI Pro at $14 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 3, 2026</span></div><h3><a href="/tools/best-time-tracking-software/">Best time tracking software</a></h3><p class="muted small">Seven time trackers compared on free plans, approvals and billable rates, from $3.99 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 2, 2026</span></div><h3><a href="/tools/best-issue-tracking-software/">Best issue tracking software</a></h3><p class="muted small">Seven issue trackers compared on free plans for 5 to 10 users, sprints and price, from $4 a user.</p></article>
-<article><div class="meta"><span>Comparison</span><span>Nov 2, 2026</span></div><h3><a href="/compare/clickup-vs-asana/">ClickUp vs Asana</a></h3><p class="muted small">ClickUp Core at $9 a seat vs Asana Starter at $10.99, priced for 10 users, and which plan first includes dashboards.</p></article>
 
 </div>
 </div></section>

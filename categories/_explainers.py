@@ -77,6 +77,14 @@ EXPLAIN = {
                      ("AI agents and copilots", "AI that answers customers or drafts replies for agents.")],
         "guide": "/guides/help-desk-software-cost/",
     },
+    "best-live-chat-software": {
+        "what": "Live chat software puts a chat widget on your website or app so visitors can message your team in real time, and gives agents a shared inbox to answer, route and follow up on those conversations. Most tools now add chatbots or AI agents that answer common questions on their own and hand harder ones to a person.",
+        "features": [("Chat widget", "A customizable chat window for your website, app or online store."),
+                     ("Shared inbox and routing", "Conversations assigned to the right agent or team, with transfers and supervision."),
+                     ("AI agents and chatbots", "Automated answers from your help content, with handoff to a human."),
+                     ("Proactive messages", "Triggered greetings and campaigns based on page, time or visitor data."),
+                     ("Reports", "Chat volume, response times, ratings and agent performance.")],
+    },
     "best-hris-software": {
         "what": "An HRIS (human resources information system) is the system of record for employee data: personal details, job and compensation history, time off, documents and onboarding. Many HRIS platforms also run payroll and benefits, or connect to a payroll provider.",
         "features": [("Employee records", "One profile per person with job, pay and document history."),
