@@ -336,3 +336,110 @@ guide_page({
         ("Is there free sales engagement software?", _se_faq.get("Is there a free sales engagement platform?", "Some platforms have free plans; most offer 14-day trials.")),
     ],
 })
+
+
+# ---------- How much does payroll software cost?
+_py = PAY["tools"]
+_py_ranked = PAY["_ranked"]
+_py_cat = "/tools/best-payroll-software/"
+_py_faq = dict(PAY["faqs"])
+_py_choose = dict(PAY["choose"])
+_py_and = lambda xs: xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+
+
+def _py_bp(s):
+    """(base, per-person) from strings like "$49/mo + $6/person"; None when not base-plus-per-person."""
+    m = re.search(r"\$([\d,.]+)(?:/mo)?\s*\+\s*\$([\d,.]+)", s)
+    return (float(m.group(1).replace(",", "")), float(m.group(2).replace(",", ""))) if m else None
+
+
+_py_pub = [(k, _py_bp(_py[k]["price"])) for k in _py_ranked if _py_bp(_py[k]["price"])]  # published base + per-person entry plans
+_py_unpub = [k for k in _py_ranked if not _py_bp(_py[k]["price"])]
+_py_cost = lambda bp, n: bp[0] + bp[1] * n
+_py_10 = sorted((_py_cost(bp, 10), _py[k]["name"], k) for k, bp in _py_pub)
+_py_lo, _py_hi = _py_10[0], _py_10[-1]
+_py_bases = sorted(bp[0] for _k, bp in _py_pub)
+_py_pers = sorted(bp[1] for _k, bp in _py_pub)
+_py_rows = [(f'<a href="{_py_cat}#{k}">{_py[k]["name"]}</a>', _py[k]["price"], _py[k]["price_note"], _py[k]["trial"]) for k in _py_ranked]
+_py_ex = "".join(f'<tr><td>{n}</td>' + "".join(f"<td>{_fmt(_py_cost(dict(_py_pub)[k], h))}</td>" for h in (5, 10, 25))
+                 + f'<td>{_fmt(_py_cost(dict(_py_pub)[k], 10) * 12)}</td></tr>' for _v, n, k in _py_10)
+# Higher tiers listed in price notes, e.g. "Plus $80 + $12/person" or "Premium $88 + $13"
+_py_tiers = []
+for k in ("gusto", "quickbooks_payroll"):
+    if k in _py and _py_bp(_py[k]["price"]):
+        _t = [(f'{_py[k]["short"].split()[0]} {_py[k]["price_note"].split(";")[0].split(",")[0]}', _py_bp(_py[k]["price"]))]
+        _t += [(f'{_py[k]["short"].split()[0]} {nm}', (float(b), float(p))) for nm, b, p in re.findall(r"([A-Z][a-z]+) \$([\d.]+) \+ \$([\d.]+)", _py[k]["price_note"])]
+        _py_tiers.append(_t)
+_py_tier_rows = "".join(f"<tr><td>{nm}</td><td>{_fmt(bp[0])} + {_fmt(bp[1])}</td><td>{_fmt(_py_cost(bp, 10))}</td><td>{_fmt(_py_cost(bp, 10) * 12)}</td></tr>" for t in _py_tiers for nm, bp in t)
+# OnPay add-ons and Patriot's per-state fee, read from the category text
+_op = _py.get("onpay", {})
+_op_bp = _py_bp(_op.get("price", "")) if _op else None
+_op_hr = re.search(r"HR add-on \$([\d.]+) \+ \$([\d.]+)/worker", _op.get("price_note", ""))
+_op_tt = re.search(r"time tracking \$([\d.]+) \+ \$([\d.]+)/worker", _op.get("price_note", ""))
+_op_txt = ""
+if _op_bp and _op_hr and _op_tt:
+    _op_hr10 = float(_op_hr.group(1)) + float(_op_hr.group(2)) * 10
+    _op_tt10 = float(_op_tt.group(1)) + float(_op_tt.group(2)) * 10
+    _op_txt = (f"<li><b>OnPay add-ons.</b> OnPay's single plan is {_fmt(_py_cost(_op_bp, 10))} a month for 10 people. Its HR tools ({_fmt(float(_op_hr.group(1)))} + {_fmt(float(_op_hr.group(2)))} per worker) add {_fmt(_op_hr10)} "
+               f"and time tracking ({_fmt(float(_op_tt.group(1)))} + {_fmt(float(_op_tt.group(2)))} per worker) adds {_fmt(_op_tt10)}, so the bundle comes to {_fmt(_py_cost(_op_bp, 10) + _op_hr10 + _op_tt10)} a month.</li>")
+_pa = _py.get("patriot", {})
+_pa_st = re.search(r"additional state costs \$([\d.]+) a month", _pa.get("what", ""))
+_pa_bp = _py_bp(_pa.get("price", "")) if _pa else None
+_pa_basic = re.search(r"Basic \(you file taxes\) \$([\d.]+) \+ \$([\d.]+)", _pa.get("price_note", ""))
+_pa_txt = (f"<li><b>Extra states.</b> {_py_choose.get('Check multi-state before you sign.', '')} At 10 employees in two states, Patriot Full Service comes to {_fmt(_py_cost(_pa_bp, 10) + float(_pa_st.group(1)))} a month.</li>"
+           if _pa_st and _pa_bp else "")
+_sq = _py.get("square_payroll", {})
+_sq_c = re.search(r"Contractor-only payroll costs \$([\d.]+) per person", _sq.get("what", ""))
+_gu_c = re.search(r"Contractor plan costs \$([\d.]+) a month plus \$([\d.]+) per contractor", _py.get("gusto", {}).get("what", ""))
+_py_contr = []
+if _sq_c:
+    _py_contr.append(f"Square Payroll's contractor-only payroll costs {_fmt(float(_sq_c.group(1)))} per person with no base fee")
+if _gu_c:
+    _py_contr.append(f"Gusto's Contractor plan costs {_fmt(float(_gu_c.group(1)))} a month plus {_fmt(float(_gu_c.group(2)))} per contractor")
+_py_unpub_li = "".join(f'<li><b>{_py[k]["name"]}:</b> {_py[k]["price"]}. {_py[k]["price_note"]}.</li>' for k in _py_unpub)
+_py_rev = lambda k, slug: f'<a href="/tools/{slug}-review/">{_py[k]["short"]}</a>' if k in _py else ""
+
+guide_page({
+    "slug": "payroll-software-cost", "crumb": "Payroll software cost", "dept": "HR & people", "cats": ["best-payroll-software"],
+    "date": "2026-11-04", "kicker": "Pricing guide",
+    "title": f"How Much Does Payroll Software Cost in {YEAR}?",
+    "seo_title": f"How Much Does Payroll Software Cost? ({YEAR} Prices) | Vettlo",
+    "desc": "Payroll software prices: base fee plus per-employee fees, what 5, 10 and 25 employees pay, higher plans, add-ons and the cost of extra states.",
+    "card": "Base and per-employee fees, costs at 5, 10 and 25 employees, and the add-ons.",
+    "answer": (f"Full-service payroll software, which files your payroll taxes, costs a monthly base fee of {_fmt(_py_bases[0])} to {_fmt(_py_bases[-1])} plus {_fmt(_py_pers[0])} to {_fmt(_py_pers[-1])} per employee among the providers we rank that publish prices. "
+               f"For 10 employees that's {_fmt(_py_lo[0])} a month ({_py_lo[1]}) to {_fmt(_py_hi[0])} ({_py_hi[1]}), or {_fmt(_py_lo[0] * 12)} to {_fmt(_py_hi[0] * 12)} a year. "
+               + (f"{_py_and([_py[k]['name'] for k in _py_unpub])} price by quote." if _py_unpub else "")),
+    "sections": [
+        ("model", "How payroll software is priced", f"""<p>Almost every small-business payroll service charges the same way: a <b>monthly base fee</b> for the account plus a <b>fee for each person you pay</b> that month. The base fee matters most for very small teams; past a handful of employees, the per-person fee decides the bill.</p>
+<ul><li><b>Full-service vs do-it-yourself.</b> Full-service plans calculate, file and pay federal, state and local payroll taxes for you. {f"Patriot also sells a Basic plan for {_fmt(float(_pa_basic.group(1)))} a month plus {_fmt(float(_pa_basic.group(2)))} per worker, but you file the taxes yourself." if _pa_basic else "A few vendors sell cheaper plans where you file the taxes yourself."}</li>
+<li><b>Who counts as a person.</b> The per-person fee can cover contractors as well as employees; OnPay, for example, counts both. If you pay many contractors, check how each vendor counts them, or look at a contractor-only plan.</li>
+<li><b>Plan tiers.</b> Higher tiers raise both the base and the per-person fee, and add things like multi-state payroll, faster direct deposit, time tracking and HR support.</li>
+<li><b>Quotes.</b> Platforms that bundle payroll with HR, benefits or IT often publish only a starting price or none at all.</li></ul>"""),
+        ("prices", "Entry prices by provider", f"""<p>The entry plan that files payroll taxes for each provider in our ranking, from each vendor's pricing page:</p>
+{_ptable(_py_rows, ("Provider", "Entry price", "Plans and add-ons", "Trial"))}
+<p class="small muted">{PAY['price_footnote']}</p>"""),
+        ("example", "What 5, 10 and 25 employees cost", f"""<p>Monthly cost on each entry plan at the published base and per-person fees, with the yearly total for 10 employees. Introductory discounts, add-ons and taxes are excluded:</p>
+<div class="table-wrap"><table><thead><tr><th>Provider</th><th>5 employees</th><th>10 employees</th><th>25 employees</th><th>10 employees per year</th></tr></thead><tbody>{_py_ex}</tbody></table></div>
+<p>Entry plans differ in what they include, so the cheapest line isn't always the cheapest fit. Multi-state payroll, next-day direct deposit and time tracking sit on different plans at each vendor; our <a href="{_py_cat}">payroll shortlist</a> shows where each one starts.</p>
+{(f"<p>Not in the table because they don't publish a full price:</p><ul>{_py_unpub_li}</ul>") if _py_unpub else ""}"""),
+        ("tiers", "Higher plans and add-ons", f"""<p>The entry plan is often not where a growing team stays. Monthly prices for the higher tiers that Gusto and QuickBooks publish:</p>
+<div class="table-wrap"><table><thead><tr><th>Plan</th><th>Base + per person</th><th>10 employees per month</th><th>10 employees per year</th></tr></thead><tbody>{_py_tier_rows}</tbody></table></div>
+<p>Our <a href="/compare/gusto-vs-quickbooks-payroll/">Gusto vs QuickBooks Payroll</a> comparison matches these tiers feature by feature. Other costs to price in:</p>
+<ul>{_pa_txt}{_op_txt}
+<li><b>Faster direct deposit.</b> {_py_choose.get("Decide how fast you need to pay people.", "Next-day and same-day direct deposit often sit on higher plans.")}</li>
+{f"<li><b>Contractors.</b> {"; ".join(_py_contr)}.</li>" if _py_contr else ""}
+<li><b>Benefits and insurance.</b> Health insurance, retirement plans and workers' compensation are usually separate products or add-ons, priced on top of payroll.</li></ul>"""),
+        ("budget", "How to budget for payroll software", f"""<ol><li><b>Count everyone you pay</b>, employees and contractors, and the states they work in.</li>
+<li><b>Find the cheapest plan on each provider that covers your must-haves,</b> such as multi-state payroll, next-day deposit or time tracking, then multiply its per-person fee by your headcount and add the base fee.</li>
+<li><b>Add the add-ons you'll switch on</b>, such as HR tools, time tracking or extra states, and multiply by 12.</li>
+<li><b>{"Look past introductory offers." if "Look past introductory offers." in _py_choose else "Price the regular rate."}</b> {_py_choose.get("Look past introductory offers.", "Compare regular prices, not introductory discounts.")}</li>
+<li><b>Run a test payroll</b> before your next pay date, and check how it posts to your accounting software.</li></ol>
+<p>Our <a href="{_py_cat}">payroll shortlist</a> scores each provider on six weighted criteria, and our <a href="/tools/best-payroll-software-for-small-business/">small business list</a> reweights them for smaller teams. Read the reviews of {_py_and([x for x in (_py_rev("gusto", "gusto"), _py_rev("rippling", "rippling"), _py_rev("square_payroll", "square-payroll"), _py_rev("patriot", "patriot-payroll"), _py_rev("quickbooks_payroll", "quickbooks-payroll")) if x])}, or see <a href="/tools/best-gusto-alternatives/">Gusto alternatives</a> if multi-state pay or per-person fees are pushing you off Gusto. Need employee records and time off too? See our <a href="/tools/best-hris-software/">HRIS shortlist</a>.</p>"""),
+    ],
+    "faqs": [
+        ("How much does payroll software cost per employee?", f"Among the providers we rank that publish prices, full-service payroll costs {_fmt(_py_pers[0])} to {_fmt(_py_pers[-1])} per employee per month on the entry plan, plus a monthly base fee of {_fmt(_py_bases[0])} to {_fmt(_py_bases[-1])}."),
+        ("How much does payroll software cost for 10 employees?", _py_faq.get("How much does payroll software cost?", f"{_fmt(_py_lo[0])} to {_fmt(_py_hi[0])} a month on entry plans.")),
+        ("What is the cheapest payroll software?", _py_faq.get("What is the cheapest payroll software?", f"{_py_lo[1]} has the lowest entry cost for 10 employees.")),
+        ("Does ADP publish payroll prices?", _py_faq.get("Does ADP publish RUN prices?", "No; ADP prices by quote.")),
+    ],
+})

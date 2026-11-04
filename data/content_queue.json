@@ -297,7 +297,9 @@
       "department": "HR & people",
       "category": "best-payroll-software",
       "note": "Pricing guide",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-04",
+      "url": "/guides/payroll-software-cost/"
     },
     {
       "type": "guide",
