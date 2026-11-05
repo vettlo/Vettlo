@@ -443,3 +443,84 @@ guide_page({
         ("Does ADP publish payroll prices?", _py_faq.get("Does ADP publish RUN prices?", "No; ADP prices by quote.")),
     ],
 })
+
+
+# ---------- What is conversation intelligence software?
+_ci = CI["tools"]
+_ci_ranked = CI["_ranked"]
+_ci_cat = "/tools/best-conversation-intelligence-software/"
+_ci_faq = dict(CI["faqs"])
+_ci_and = lambda xs: xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+_ci_rv = lambda k: (f'<a href="{REVIEW_URL[_ci[k]["name"]]}">{_ci[k]["name"]}</a>' if _ci[k]["name"] in REVIEW_URL else _ci[k]["name"])
+_ci_by = lambda *ks: _ci_and([_ci_rv(k) for k in ks if k in _ci_ranked]) if any(k in _ci_ranked for k in ks) else ""
+_ci_rows = [(f'<a href="{_ci_cat}#{k}">{_ci[k]["name"]}</a>', _ci[k]["price"], _ci[k]["price_note"], _ci[k]["trial"]) for k in _ci_ranked]
+_ci_quote = [_ci[k]["name"] for k in _ci_ranked if not _money(_ci[k]["price"])]
+_ci_free = [_ci[k]["name"] for k in _ci_ranked if re.search(r"free plan", _ci[k]["trial"], re.I)]
+_ci_feats = "".join(f"<li><b>{a}.</b> {b}</li>" for a, b in EXPLAIN["best-conversation-intelligence-software"]["features"])
+_ci_others = [n for n, _d in CI.get("others", [])]
+# Per-seat price of the plan that includes conversation intelligence, read from the category text
+_av = _ci.get("avoma", {})
+_av_base = _money(_av.get("price", "")) if _av else None
+_av_ci = re.search(r"Conversation Intelligence add-on \$([\d.]+)", _av.get("price_note", ""))
+_av_ri = re.search(r"Revenue Intelligence add-ons \(\$([\d.]+) per seat per month each", _av.get("what", ""))
+_ff = _ci.get("fireflies", {})
+_ff_pro = re.search(r"Pro from \$([\d.]+)", _ff.get("price_note", ""))
+_ci_plans = []  # (tool, plan label, per-seat monthly price)
+for k in _ci_ranked:
+    v = _money(_ci[k]["price"])
+    if not v:
+        continue
+    if k == "avoma" and _av_ci:
+        _ci_plans.append((_ci[k]["name"], "Startup, notes and CRM sync only", v))
+        _ci_plans.append((_ci[k]["name"], "Startup + Conversation Intelligence add-on", v + float(_av_ci.group(1))))
+        if _av_ri:
+            _ci_plans.append((_ci[k]["name"], "Startup + Conversation and Revenue Intelligence add-ons", v + float(_av_ci.group(1)) + float(_av_ri.group(1))))
+    else:
+        _ci_plans.append((_ci[k]["name"], _ci[k]["price_note"].split(";")[0].split(",")[0], v))
+_ci_ex = "".join(f"<tr><td>{n}</td><td>{p}</td><td>{_fmt(v)}</td><td>{_fmt(v * 10 * 12)}</td></tr>" for n, p, v in _ci_plans)
+_ci_full = sorted((v, n) for n, p, v in _ci_plans if "notes and CRM sync only" not in p)  # plans that include CI-type features
+_ci_lo, _ci_hi = _ci_full[0], _ci_full[-1]
+_ci_av_txt = (f"Avoma's Startup plan is {_fmt(_av_base)} per recording seat, but AI call scoring and coaching come with its Conversation Intelligence add-on at {_fmt(float(_av_ci.group(1)))} more, so a seat with coaching costs {_fmt(_av_base + float(_av_ci.group(1)))}"
+              + (f", or {_fmt(_av_base + float(_av_ci.group(1)) + float(_av_ri.group(1)))} with Revenue Intelligence for deal risk and forecasting" if _av_ri else "") + ".") if _av_base and _av_ci else ""
+_ci_ff_txt = (f"Fireflies.ai's Pro plan starts at {_fmt(float(_ff_pro.group(1)))}, but conversation intelligence starts on Business at {_fmt(_money(_ff['price']))} per seat per month." if _ff_pro and _ff else "")
+
+guide_page({
+    "slug": "what-is-conversation-intelligence", "crumb": "What is conversation intelligence?", "dept": "Sales", "cats": ["best-conversation-intelligence-software"],
+    "date": "2026-11-05", "kicker": "Explainer",
+    "title": "What Is Conversation Intelligence Software? Features and Cost",
+    "seo_title": "What Is Conversation Intelligence? Features and Cost | Vettlo",
+    "desc": "Conversation intelligence explained: what it does with sales calls, how it differs from AI notetakers, the main types and what the tools we rank cost.",
+    "card": "What it does with sales calls, how it differs from notetakers, and what it costs.",
+    "answer": ("Conversation intelligence software records and transcribes sales calls and video meetings, then analyzes them to coach reps, flag deal risks and write notes back to the CRM. "
+               "Unlike a plain AI notetaker, it adds call scoring, coaching workflows and reporting across the whole team. "
+               f"Among the tools we rank, plans that include these features start at {_fmt(_ci_lo[0])} per seat per month ({_ci_lo[1]})"
+               + (f", while {_ci_and(_ci_quote)} {'sells' if len(_ci_quote) == 1 else 'sell'} by quote." if _ci_quote else ".")),
+    "sections": [
+        ("does", "What conversation intelligence software does", f"""<p>The tool joins your calls and video meetings as a recorder, or connects to your phone system, and works in three steps: it captures the conversation, transcribes it with speaker labels, then analyzes what was said. Around that, platforms add:</p>
+<ul>{_ci_feats}</ul>
+<p>Reps use it to skip note-taking and follow-up admin. Sales managers use it to coach without sitting in on calls: they review scored calls, jump to key moments such as pricing or objections, and see patterns across the team, such as which reps talk too much or which competitors come up most.</p>"""),
+        ("vs", "Conversation intelligence vs AI notetakers", f"""<p>The line between the two has blurred, because many notetakers now sell a sales plan. The useful difference is who the output is for:</p>
+<ul><li><b>An AI notetaker</b> records, transcribes and summarizes meetings for the people in them. It's a personal productivity tool, and it works the same for a sales call, a stand-up or an interview.</li>
+<li><b>Conversation intelligence</b> treats calls as team data. It adds call scoring and scorecards, coaching workflows for managers, analytics across reps, deal risk signals and structured CRM updates.</li></ul>
+<p>The practical effect is on price: the sales features usually sit on a higher plan or a paid add-on. {_ci_ff_txt} {_ci_av_txt}{(" " + _ci["otter"]["what"].split(". ", 1)[-1].replace("Its ", "Otter.ai's ", 1)) if "otter" in _ci else ""} Sales dialers also record and transcribe calls; if your team mostly calls by phone, compare with our <a href="/tools/best-sales-dialers/">sales dialer shortlist</a>.</p>"""),
+        ("types", "The main types of conversation intelligence tool", f"""<ul>{f"<li><b>Enterprise revenue platforms</b> put coaching, deal inspection and forecasting on the same conversation data, sold by annual contract to sales orgs with a RevOps team. {_ci_by('gong')} is the best-known example.</li>" if _ci_by('gong') else ""}
+{f"<li><b>Meeting assistants with conversation intelligence add-ons</b> publish prices and let you buy only the modules you need, such as call scoring or deal risk. {_ci_by('avoma')} works this way.</li>" if _ci_by('avoma') else ""}
+{f"<li><b>AI sales assistants</b> focus on the admin after a call: summaries, follow-up emails and CRM field updates for individual reps, with lighter team coaching. {_ci_by('sybill')} sits here.</li>" if _ci_by('sybill') else ""}
+{f"<li><b>Notetakers with a sales tier</b> start as general meeting recorders and add conversation intelligence and team analytics on a business plan, at the lowest prices in the category. {_ci_by('fireflies')} is one.</li>" if _ci_by('fireflies') else ""}</ul>
+{f"<p>Other tools in the category include {_ci_and(_ci_others)}. " if _ci_others else "<p>"}Our <a href="{_ci_cat}">shortlist</a> scores the ranked tools on recording, coaching, deal insights, CRM integration, ease of use and price.</p>"""),
+        ("cost", "How much conversation intelligence software costs", f"""<p>Most tools charge per recording seat per month, and enterprise vendors quote. Entry plans for the tools we rank, from each vendor's pricing page:</p>
+{_ptable(_ci_rows)}
+<p class="small muted">{CI['price_footnote']}</p>
+<p>Ten recording seats for a year at the published per-seat prices, before taxes and other add-ons:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Plan</th><th>Per seat per month</th><th>10 seats per year</th></tr></thead><tbody>{_ci_ex}</tbody></table></div>
+<p>{(_ci_faq.get("How much does Gong cost?", "") + " ") if "gong" in _ci_ranked else ""}Compare what each plan includes, not only the total: our <a href="/compare/gong-vs-avoma/">Gong vs Avoma</a> comparison prices 10 seats at each feature level, and seat rules differ, since Avoma charges only for people who record while viewers are free.</p>"""),
+        ("choose", "How to choose a conversation intelligence tool", "<ol>" + "".join(f"<li><b>{a}</b> {b}</li>" for a, b in CI["choose"]) + f"""</ol>
+<p>Our <a href="{_ci_cat}">conversation intelligence shortlist</a> ranks {len(_ci_ranked)} tools, our <a href="/tools/best-conversation-intelligence-software-for-small-business/">small business list</a> reweights them for smaller teams, and <a href="/tools/best-gong-alternatives/">Gong alternatives</a> covers options with published pricing. New to outbound tooling? See <a href="/guides/what-is-sales-engagement-software/">what sales engagement software is</a>.</p>"""),
+    ],
+    "faqs": [
+        ("What is conversation intelligence software?", _ci_faq.get("What is conversation intelligence software?", "It records, transcribes and analyzes sales calls for coaching, deal insights and CRM updates.")),
+        ("What is the difference between conversation intelligence and an AI notetaker?", "A notetaker records and summarizes meetings for the people in them. Conversation intelligence treats calls as team data: it scores calls, supports manager coaching, reports across reps and flags deal risks. Many notetakers sell these features on a higher plan."),
+        ("How much does conversation intelligence software cost?", f"Among the tools we rank, plans that include conversation intelligence features cost {_fmt(_ci_lo[0])} ({_ci_lo[1]}) to {_fmt(_ci_hi[0])} ({_ci_hi[1]}) per seat per month at published prices, or {_fmt(_ci_lo[0] * 120)} to {_fmt(_ci_hi[0] * 120)} a year for 10 seats." + (f" {_ci_and(_ci_quote)} {'doesn' if len(_ci_quote) == 1 else 'don'}'t publish prices." if _ci_quote else "")),
+        ("Is there a free conversation intelligence tool?", _ci_faq.get("Is there a free conversation intelligence tool?", "Some tools have free plans with limits; coaching usually needs a paid plan.")),
+    ],
+})

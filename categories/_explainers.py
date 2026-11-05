@@ -26,6 +26,7 @@ EXPLAIN = {
                      ("Call scoring and coaching", "Scorecards against a sales methodology and talk-ratio analysis."),
                      ("Deal and pipeline insights", "Risk alerts based on what buyers say and how engaged they are."),
                      ("Searchable call library", "Find every mention of a competitor, objection or feature.")],
+        "guide": "/guides/what-is-conversation-intelligence/",
     },
     "best-b2b-data-providers": {
         "what": "B2B data providers sell access to databases of business contacts and companies, including verified work emails, direct dials and mobile numbers, and firmographics such as company size and industry. Sales and marketing teams use them to build prospect lists and to enrich records already in the CRM.",

@@ -311,7 +311,9 @@
       "department": "Sales",
       "category": "best-conversation-intelligence-software",
       "note": "Explainer",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-05",
+      "url": "/guides/what-is-conversation-intelligence/"
     },
     {
       "type": "guide",
