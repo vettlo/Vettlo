@@ -365,5 +365,116 @@
       "Extra users cost $2.50 a month billed annually ($3 monthly).",
       "Prices are per organization and exclude local taxes."
     ]
+  },
+  "Avoma": {
+    "checked": "2026-11-05",
+    "source": ["Avoma pricing", "https://www.avoma.com/pricing"],
+    "plans": [
+      ["Startup", "$19 per recorder seat/mo billed annually, or $29 monthly", "AI meeting notes, recording and real-time transcription, notes saved to CRM records, 1:1 scheduling; up to 25 paid seats"],
+      ["Organization", "$29 per recorder seat/mo billed annually, or $39 monthly", "Adds transcript and note translation, API integration and webhooks, org-level policies and a customer success manager; up to 100 paid seats"],
+      ["Enterprise", "$39 per recorder seat/mo, billed annually only", "Adds single sign-on (SAML/OIDC) and data retention policies; minimum 10 paid seats"],
+      ["Conversation Intelligence add-on", "$29 per seat/mo billed annually, or $35 monthly", "AI coaching, call scoring, custom scorecards, real-time answer assistant, smart playlists, keyword and topic trackers"],
+      ["Revenue Intelligence add-on", "$29 per seat/mo billed annually, or $35 monthly", "Deal risk alerts, deal health scoring, methodology tracking, win-loss analysis, forecasting, deal dashboard, two-way CRM field updates"],
+      ["Lead Router add-on", "$19 per seat/mo billed annually, or $25 monthly", "Scheduling links, group and round-robin scheduling, CRM-based and form-based routing, SDR-to-AE handoff"]
+    ],
+    "first_plan": [
+      ["AI summary notes", "Startup"],
+      ["Recording and real-time transcription", "Startup"],
+      ["Auto-save notes to CRM records", "Startup"],
+      ["Translate transcription and notes", "Organization"],
+      ["API integration and webhooks", "Organization"],
+      ["Org-level policies", "Organization"],
+      ["Customer success manager", "Organization"],
+      ["Single sign-on (SAML/OIDC)", "Enterprise"],
+      ["Data retention policies", "Enterprise"],
+      ["AI call scoring and deal risk alerts", "Paid add-ons on any plan"]
+    ],
+    "limits": {
+      "cols": ["Startup", "Organization", "Enterprise"],
+      "rows": [
+        ["Paid (recorder) seats", "Up to 25", "Up to 100", "Minimum 10"],
+        ["View-only seats", "Unlimited, free", "Unlimited, free", "Not shown"],
+        ["Transcription minutes", "Unlimited", "Unlimited", "Unlimited"],
+        ["Recording storage duration", "Unlimited", "Unlimited", "Unlimited"]
+      ]
+    },
+    "notes": [
+      "14-day trial of Organization with all add-ons enabled, no credit card required; afterwards the account becomes a Viewer account and past recordings stay accessible.",
+      "Viewers, collaborators and listeners don't need a paid seat.",
+      "Add-ons follow the base plan's billing cycle. No setup fee, minimum platform fee or ongoing support fee.",
+      "Transcription and translation support 70+ languages."
+    ]
+  },
+  "JustCall": {
+    "checked": "2026-11-05",
+    "source": ["JustCall pricing", "https://justcall.io/pricing/"],
+    "plans": [
+      ["Team", "$29 per user/mo, billed annually", "IVR and call menus, unlimited AI transcription, SMS, API access and workflows, 100+ CRM and data integrations"],
+      ["Pro", "$49 per user/mo, billed annually", "Adds a power dialer and Salesforce CTI integration"],
+      ["Pro Plus", "$89 per user/mo, billed annually", "Adds AI call scoring and real-time agent assist"],
+      ["Business", "Request a quote", "Adds single sign-on and unlimited calling and SMS; minimum 10 users"],
+      ["SalesPro", "Request a quote", "Sales dialer with power, dynamic and predictive dialing on up to 10 lines, call scoring and real-time agent assist"]
+    ],
+    "first_plan": [
+      ["IVR and call menus", "Team"],
+      ["Unlimited AI transcription", "Team"],
+      ["SMS", "Team"],
+      ["API access and workflows", "Team"],
+      ["Power dialer", "Pro"],
+      ["Salesforce CTI integration", "Pro"],
+      ["AI call scoring", "Pro Plus"],
+      ["Real-time agent assist", "Pro Plus"],
+      ["Single sign-on", "Business"],
+      ["Predictive dialer (up to 10 lines)", "SalesPro"]
+    ],
+    "limits": {
+      "cols": ["Team", "Pro", "Pro Plus", "Business", "SalesPro"],
+      "rows": [
+        ["Minimum users", "2", "2", "2", "10", "2"],
+        ["Outbound minutes (US/Canada)", "1,000 per user", "1,000 per user", "1,000 per user", "1,000 per user", "Unlimited"],
+        ["Inbound minutes (US/Canada)", "1,000 per user", "1,000 per user", "1,000 per user", "1,000 per user", "1,000 per license"],
+        ["SMS segments (US/Canada)", "500 per user", "1,000 per user", "1,000 per user", "Custom", "1,000 per license"],
+        ["Predictive dialer lines", "None", "None", "None", "None", "Up to 10"]
+      ]
+    },
+    "notes": [
+      "14-day free trial with full SalesPro features, no credit card required; you have 30 days after the trial to subscribe before the account is deleted.",
+      "Each account includes two phone numbers (one JustCall and one SalesDialer number).",
+      "Annual billing saves up to 29%; monthly prices aren't shown on the page.",
+      "Minutes are pooled per account. AI Voice Agent minutes are usage-priced, with the first 100 minutes free."
+    ]
+  },
+  "ZoomInfo": {
+    "checked": "2026-11-05",
+    "source": ["ZoomInfo pricing", "https://www.zoominfo.com/pricing"],
+    "plans": [
+      ["ZoomInfo Professional", "Pricing on request", "Contact and company profiles, search and export, mobile numbers and business email, prospect lists and alerts, CRM integrations, Chrome extension, AI email generation, intelligent dialing"],
+      ["Copilot Advanced", "Pricing on request", "Adds Account Fit Score, buyer intent signals, website visitors, champion tracking, buying group filters, workflows and GTM plays, export to Outreach or Salesloft"],
+      ["Copilot Enterprise", "Pricing on request", "Adds real-time and custom intent signals, competitor and earnings call alerts, advanced reporting, custom integrations, Copilot chat, a dedicated customer service manager and white-glove onboarding"]
+    ],
+    "first_plan": [
+      ["Mobile numbers and business email", "ZoomInfo Professional"],
+      ["CRM integrations (HubSpot, Salesforce and more)", "ZoomInfo Professional"],
+      ["AI email generation", "ZoomInfo Professional"],
+      ["Intelligent dialing", "ZoomInfo Professional"],
+      ["Buyer intent signals", "Copilot Advanced"],
+      ["Website visitors and champion tracking", "Copilot Advanced"],
+      ["Export emails to Outreach or Salesloft", "Copilot Advanced"],
+      ["Real-time and custom intent signals", "Copilot Enterprise"],
+      ["Advanced reporting and analytics", "Copilot Enterprise"],
+      ["Dedicated customer service manager", "Copilot Enterprise"]
+    ],
+    "limits": {
+      "cols": ["ZoomInfo Professional", "Copilot Advanced", "Copilot Enterprise"],
+      "rows": [
+        ["Seats and credits", "Set by quote", "Set by quote", "Set by quote"]
+      ]
+    },
+    "notes": [
+      "Pricing is based on features and functionality, number of licenses and credit usage; each export of a contact or company profile costs one credit, and credits can be added to any package.",
+      "Packages include a predetermined number of monthly credits; the page doesn't state the amounts for the sales editions.",
+      "Add-ons such as Streaming Intent are priced on expected usage; pre-packaged integrations have a base cost and require a minimum bulk credit purchase.",
+      "Each sales edition offers a free trial; the page doesn't state its length."
+    ]
   }
 }

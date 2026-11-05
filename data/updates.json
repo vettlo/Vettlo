@@ -123,5 +123,15 @@
     "updated": "2026-11-03",
     "checked": "2026-11-03",
     "note": "Re-verified Zendesk and Freshdesk plan prices, AI allowances, add-on prices and trials on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/compare/gong-vs-avoma/": {
+    "updated": "2026-11-05",
+    "checked": "2026-11-05",
+    "note": "Re-verified Gong and Avoma pricing pages (Gong still quote-only; Avoma's Organization plan, $29/seat annually, added to the pricing row) and refreshed G2 review counts."
+  },
+  "/compare/aircall-vs-justcall/": {
+    "updated": "2026-11-05",
+    "checked": "2026-11-05",
+    "note": "Re-verified Aircall and JustCall plan prices, license minimums, dialers, AI add-ons and trials (no price changes) and refreshed G2 review counts."
   }
 }

@@ -137,7 +137,8 @@ compare_page(ACC, "quickbooks", "xero", "2026-10-26",
     desc="QuickBooks vs Xero at regular prices: $38 vs $27 entry plans, user limits vs no per-user fees, and which to pick for your business and accountant.")
 
 # Sales comparisons. Apollo.io plan prices and credits from apollo.io/pricing, ZoomInfo editions from zoominfo.com/pricing,
-# Gong and Avoma from their pricing pages, Aircall and JustCall from their pricing pages; all checked Oct 26, 2026.
+# Gong and Avoma from their pricing pages, Aircall and JustCall from their pricing pages; checked Oct 26, 2026,
+# Gong, Avoma, Aircall and JustCall re-checked Nov 5, 2026.
 
 compare_page(DATA, "apollo", "zoominfo", "2026-10-26",
     ["You want to see the price before you talk to sales", "You need data and email sequences in one subscription", "You're a startup or small team that may start on the free plan"],
@@ -178,7 +179,7 @@ compare_page(CI, "gong", "avoma", "2026-10-26",
      ("Plus AI call scoring and coaching", "Quote", "Quote", "Startup + Conversation Intelligence ($48)", "$5,760"),
      ("Plus deal risk and forecasting", "Quote", "Quote", "Startup + Conversation and Revenue Intelligence ($77)", "$9,240")],
     "Gong prices licenses per user and adds a platform fee that depends on the number of users. Avoma's Startup plan allows up to 25 paid seats; viewers and collaborators are free.",
-    [("Published pricing", "No; per-user licenses plus a platform fee", "Yes: Startup $19, Enterprise $39 per seat per month billed annually"),
+    [("Published pricing", "No; per-user licenses plus a platform fee", "Yes: Startup $19, Organization $29, Enterprise $39 per seat per month billed annually"),
      ("Who needs a paid seat", "Priced per user", "Only people who record meetings; viewers are free"),
      ("Call scoring and coaching", "Core of the platform", "Conversation Intelligence add-on, $29 per seat: AI call scoring, custom scorecards such as SPICED and MEDDICC"),
      ("Deal risk and forecasting", "Gong Forecast", "Revenue Intelligence add-on, $29 per seat: deal risk alerts, deal health score, forecasting"),
