@@ -166,4 +166,12 @@ EXPLAIN = {
                      ("Audit trail and signer verification", "Timestamped history of every action, plus options such as SMS codes or ID checks."),
                      ("Integrations and API", "Send from a CRM, cloud storage or your own app, and file signed copies automatically.")],
     },
+    "best-contract-management-software": {
+        "what": "Contract management software, also called contract lifecycle management (CLM), handles a contract from the first request to renewal. Teams request and draft contracts from approved templates, negotiate redlines, route them for internal approval and signature, then store them in a searchable repository that tracks key dates, obligations and renewals.",
+        "features": [("Intake and templates", "Request forms and approved templates so routine contracts start the same way every time."),
+                     ("Redlining and negotiation", "Edit, comment and track changes with the other side, with version history."),
+                     ("Approval workflows", "Route contracts to legal, finance or managers based on value, type or clause changes."),
+                     ("Repository and AI extraction", "Searchable storage that pulls out parties, dates, values and terms automatically."),
+                     ("Renewal and obligation alerts", "Reminders before renewal, notice and expiry dates, and tracking of what each party owes.")],
+    },
 }

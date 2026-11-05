@@ -16,6 +16,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best ZoomInfo Alternatives](https://vettlo.com/tools/best-zoominfo-alternatives/): Five providers with published pricing or better mobile data.
 - [Best Business Intelligence Tools](https://vettlo.com/tools/best-business-intelligence-tools/): Seven BI tools compared on per-user and capacity pricing, free versions and governance.
 - [Best Tableau Alternatives](https://vettlo.com/tools/best-tableau-alternatives/): Five BI tools that cost less than Tableau, price by data or are free to start.
+- [Best Contract Management Software](https://vettlo.com/tools/best-contract-management-software/): Seven contract management tools compared on approvals, AI and real price.
+- [Best Ironclad Alternatives](https://vettlo.com/tools/best-ironclad-alternatives/): Five contract management tools with published prices, unlimited users or faster setup.
 - [Best Conversation Intelligence Tools](https://vettlo.com/tools/best-conversation-intelligence-software/): Four tools compared on coaching, deal insights, CRM sync and real price.
 - [Best Gong Alternatives](https://vettlo.com/tools/best-gong-alternatives/): Three alternatives with published pricing and free trials or plans.
 - [Best Sales Dialers](https://vettlo.com/tools/best-sales-dialers/): Six dialers compared, from power dialers to AI parallel dialers.
@@ -70,12 +72,14 @@ Scores are editorial only and based on published, weighted criteria per category
 - [LiveChat vs Intercom](https://vettlo.com/compare/livechat-vs-intercom/): LiveChat and Intercom compared on price, features and fit.
 - [Docusign vs PandaDoc](https://vettlo.com/compare/docusign-vs-pandadoc/): Docusign and PandaDoc compared on price, features and fit.
 - [Ramp vs Brex](https://vettlo.com/compare/ramp-vs-brex/): Ramp and Brex compared on price, features and fit.
+- [Concord vs ContractSafe](https://vettlo.com/compare/concord-vs-contractsafe/): Concord and ContractSafe compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best free B2B contact data providers](https://vettlo.com/tools/best-free-b2b-data-providers/): Best free B2B contact data providers, from our scored shortlist.
 - [Best B2B contact data providers for small business](https://vettlo.com/tools/best-b2b-data-providers-for-small-business/): Best B2B contact data providers for small business, from our scored shortlist.
 - [Best free business intelligence tools](https://vettlo.com/tools/best-free-business-intelligence-tools/): Best free business intelligence tools, from our scored shortlist.
 - [Best business intelligence tools for small business](https://vettlo.com/tools/best-business-intelligence-tools-for-small-business/): Best business intelligence tools for small business, from our scored shortlist.
+- [Best contract management tools for small business](https://vettlo.com/tools/best-contract-management-software-for-small-business/): Best contract management tools for small business, from our scored shortlist.
 - [Best conversation intelligence tools for small business](https://vettlo.com/tools/best-conversation-intelligence-software-for-small-business/): Best conversation intelligence tools for small business, from our scored shortlist.
 - [Best sales dialers for small business](https://vettlo.com/tools/best-sales-dialers-for-small-business/): Best sales dialers for small business, from our scored shortlist.
 - [Best free e-signature tools](https://vettlo.com/tools/best-free-e-signature-software/): Best free e-signature tools, from our scored shortlist.
@@ -127,6 +131,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Zoho Analytics Review](https://vettlo.com/tools/zoho-analytics-review/): Zoho Analytics's pricing, pros, cons and score, from our business intelligence tools ranking.
 - [Data Studio Review](https://vettlo.com/tools/data-studio-review/): Data Studio's pricing, pros, cons and score, from our business intelligence tools ranking.
 - [Domo Review](https://vettlo.com/tools/domo-review/): Domo's pricing, pros, cons and score, from our business intelligence tools ranking.
+- [Ironclad Review](https://vettlo.com/tools/ironclad-review/): Ironclad's pricing, pros, cons and score, from our contract management tools ranking.
+- [Juro Review](https://vettlo.com/tools/juro-review/): Juro's pricing, pros, cons and score, from our contract management tools ranking.
+- [Docusign IAM Review](https://vettlo.com/tools/docusign-iam-review/): Docusign IAM's pricing, pros, cons and score, from our contract management tools ranking.
+- [PandaDoc Review](https://vettlo.com/tools/pandadoc-review/): PandaDoc's pricing, pros, cons and score, from our e-signature tools ranking.
+- [Concord Review](https://vettlo.com/tools/concord-review/): Concord's pricing, pros, cons and score, from our contract management tools ranking.
+- [Zoho Contracts Review](https://vettlo.com/tools/zoho-contracts-review/): Zoho Contracts's pricing, pros, cons and score, from our contract management tools ranking.
+- [ContractSafe Review](https://vettlo.com/tools/contractsafe-review/): ContractSafe's pricing, pros, cons and score, from our contract management tools ranking.
 - [Gong Review](https://vettlo.com/tools/gong-review/): Gong's pricing, pros, cons and score, from our conversation intelligence tools ranking.
 - [Avoma Review](https://vettlo.com/tools/avoma-review/): Avoma's pricing, pros, cons and score, from our conversation intelligence tools ranking.
 - [Sybill Review](https://vettlo.com/tools/sybill-review/): Sybill's pricing, pros, cons and score, from our conversation intelligence tools ranking.
@@ -138,7 +149,6 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Aircall Review](https://vettlo.com/tools/aircall-review/): Aircall's pricing, pros, cons and score, from our sales dialers ranking.
 - [CloudTalk Review](https://vettlo.com/tools/cloudtalk-review/): CloudTalk's pricing, pros, cons and score, from our sales dialers ranking.
 - [Docusign Review](https://vettlo.com/tools/docusign-review/): Docusign's pricing, pros, cons and score, from our e-signature tools ranking.
-- [PandaDoc Review](https://vettlo.com/tools/pandadoc-review/): PandaDoc's pricing, pros, cons and score, from our e-signature tools ranking.
 - [signNow Review](https://vettlo.com/tools/signnow-review/): signNow's pricing, pros, cons and score, from our e-signature tools ranking.
 - [Adobe Acrobat Sign Review](https://vettlo.com/tools/adobe-acrobat-sign-review/): Adobe Acrobat Sign's pricing, pros, cons and score, from our e-signature tools ranking.
 - [SignWell Review](https://vettlo.com/tools/signwell-review/): SignWell's pricing, pros, cons and score, from our e-signature tools ranking.

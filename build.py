@@ -224,7 +224,7 @@ DEPTS = [
         ("best-e-signature-software", "E-Signature Software", "Send, sign and track agreements", True),
         ("best-file-sharing-software", "File Sharing Software", "Secure sharing and sync", False)]),
     ("Legal & compliance", "Contracts, risk and privacy", [
-        ("best-contract-management-software", "Contract Management Software", "Drafting, approvals and renewals", False),
+        ("best-contract-management-software", "Contract Management Software", "Drafting, approvals and renewals", True),
         ("best-compliance-management-software", "Compliance Management Software", "SOC 2, ISO 27001 and audits", False),
         ("best-privacy-management-software", "Privacy Management Software", "Consent, DSARs and data mapping", False),
         ("best-policy-management-software", "Policy Management Software", "Policies, attestations and versions", False)]),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 5, 2026</span></div><h3><a href="/tools/best-contract-management-software/">Best contract management software</a></h3><p class="muted small">Seven CLM tools compared on approvals, AI and pricing basis, from a free Zoho Contracts plan to Concord at $499 a month for 5 users.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 5, 2026</span></div><h3><a href="/tools/best-expense-management-software/">Best expense management software</a></h3><p class="muted small">Seven expense tools compared on cards, receipts and approvals, from free Brex, Ramp and BILL plans to Zoho Expense at $3 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 4, 2026</span></div><h3><a href="/tools/best-e-signature-software/">Best e-signature software</a></h3><p class="muted small">Six e-signature tools compared on envelope caps, bulk send and price, from signNow at $8 a user to free plans.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 4, 2026</span></div><h3><a href="/tools/best-live-chat-software/">Best live chat software</a></h3><p class="muted small">Seven live chat tools compared on AI, routing and billing basis, from free tawk.to to LiveChat at $19 a seat.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 3, 2026</span></div><h3><a href="/tools/best-business-intelligence-tools/">Best business intelligence tools</a></h3><p class="muted small">Seven BI tools compared on free versions, data limits and per-user price, from Power BI Pro at $14 a user.</p></article>
 
 </div>
 </div></section>
