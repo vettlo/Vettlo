@@ -182,7 +182,7 @@ DEPTS = [
         ("best-employer-of-record-services", "Employer of Record Services", "Hiring and paying staff abroad", False)]),
     ("Finance", "Books, spend and payables", [
         ("best-accounting-software", "Accounting Software", "Bookkeeping, invoicing and reporting", True),
-        ("best-expense-management-software", "Expense Management", "Cards, receipts and reimbursements", False),
+        ("best-expense-management-software", "Expense Management", "Cards, receipts and reimbursements", True),
         ("best-accounts-payable-software", "Accounts Payable Automation", "Bill capture, approvals and payments", False),
         ("best-accounts-receivable-software", "Accounts Receivable Software", "Invoicing, collections and cash application", False),
         ("best-subscription-billing-software", "Subscription Billing Software", "Recurring billing and revenue", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 5, 2026</span></div><h3><a href="/tools/best-expense-management-software/">Best expense management software</a></h3><p class="muted small">Seven expense tools compared on cards, receipts and approvals, from free Brex, Ramp and BILL plans to Zoho Expense at $3 a user.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 4, 2026</span></div><h3><a href="/tools/best-e-signature-software/">Best e-signature software</a></h3><p class="muted small">Six e-signature tools compared on envelope caps, bulk send and price, from signNow at $8 a user to free plans.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 4, 2026</span></div><h3><a href="/tools/best-live-chat-software/">Best live chat software</a></h3><p class="muted small">Seven live chat tools compared on AI, routing and billing basis, from free tawk.to to LiveChat at $19 a seat.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 3, 2026</span></div><h3><a href="/tools/best-business-intelligence-tools/">Best business intelligence tools</a></h3><p class="muted small">Seven BI tools compared on free versions, data limits and per-user price, from Power BI Pro at $14 a user.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 3, 2026</span></div><h3><a href="/tools/best-time-tracking-software/">Best time tracking software</a></h3><p class="muted small">Seven time trackers compared on free plans, approvals and billable rates, from $3.99 a user.</p></article>
 
 </div>
 </div></section>

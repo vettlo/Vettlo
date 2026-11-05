@@ -109,6 +109,14 @@ EXPLAIN = {
                      ("Security reporting", "Weak, reused and exposed passwords across the company."),
                      ("Browser and app autofill", "Fill credentials across browsers and devices.")],
     },
+    "best-expense-management-software": {
+        "what": "Expense management software collects receipts, card transactions and mileage, checks them against company policy, routes them for approval and reimburses employees, then syncs coded expenses to the accounting system. Many tools now issue their own corporate cards with spend limits, so expenses are matched to receipts as they happen instead of being filed in monthly reports.",
+        "features": [("Receipt capture", "Scan or forward receipts and extract amount, date and merchant automatically."),
+                     ("Corporate cards and limits", "Virtual and physical cards with per-person or per-team spend limits."),
+                     ("Policies and approvals", "Flag out-of-policy spend and route expenses through one or more approvers."),
+                     ("Reimbursements", "Pay back out-of-pocket expenses and mileage by ACH or bank transfer."),
+                     ("Accounting sync", "Code expenses and sync them to QuickBooks, Xero, NetSuite or Sage Intacct.")],
+    },
     "best-accounting-software": {
         "what": "Accounting software records a business's income and expenses, sends invoices, pays bills and produces financial statements such as the profit and loss and balance sheet. It connects to bank accounts to import transactions and is usually shared with an accountant or bookkeeper.",
         "features": [("Bank feeds and reconciliation", "Import and match transactions automatically."),

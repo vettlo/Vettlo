@@ -24,6 +24,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Docusign Alternatives](https://vettlo.com/tools/best-docusign-alternatives/): Five e-signature tools with lower prices, free plans or unlimited sending.
 - [Best Email Marketing Software](https://vettlo.com/tools/best-email-marketing-software/): Six email tools compared on automation and price at 1,000 contacts.
 - [Best Mailchimp Alternatives](https://vettlo.com/tools/best-mailchimp-alternatives/): Five email tools with lower prices or deeper automation.
+- [Best Expense Management Software](https://vettlo.com/tools/best-expense-management-software/): Seven expense tools compared on cards, receipts, approvals and real price.
+- [Best Expensify Alternatives](https://vettlo.com/tools/best-expensify-alternatives/): Five expense tools with free cards, lower prices or built-in travel.
 - [Best Help Desk Software](https://vettlo.com/tools/best-help-desk-software/): Seven help desks compared on channels, AI and real per-agent price.
 - [Best Zendesk Alternatives](https://vettlo.com/tools/best-zendesk-alternatives/): Five help desks with lower prices or simpler setup.
 - [Best HRIS Software](https://vettlo.com/tools/best-hris-software/): Six HRIS platforms compared on records, time off, reviews and real per-employee cost.
@@ -67,6 +69,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Power BI vs Tableau](https://vettlo.com/compare/power-bi-vs-tableau/): Microsoft Power BI and Tableau compared on price, features and fit.
 - [LiveChat vs Intercom](https://vettlo.com/compare/livechat-vs-intercom/): LiveChat and Intercom compared on price, features and fit.
 - [Docusign vs PandaDoc](https://vettlo.com/compare/docusign-vs-pandadoc/): Docusign and PandaDoc compared on price, features and fit.
+- [Ramp vs Brex](https://vettlo.com/compare/ramp-vs-brex/): Ramp and Brex compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best free B2B contact data providers](https://vettlo.com/tools/best-free-b2b-data-providers/): Best free B2B contact data providers, from our scored shortlist.
@@ -79,6 +82,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best e-signature tools for small business](https://vettlo.com/tools/best-e-signature-software-for-small-business/): Best e-signature tools for small business, from our scored shortlist.
 - [Best free email marketing tools](https://vettlo.com/tools/best-free-email-marketing-software/): Best free email marketing tools, from our scored shortlist.
 - [Best email marketing tools for small business](https://vettlo.com/tools/best-email-marketing-software-for-small-business/): Best email marketing tools for small business, from our scored shortlist.
+- [Best free expense management tools](https://vettlo.com/tools/best-free-expense-management-software/): Best free expense management tools, from our scored shortlist.
+- [Best expense management tools for small business](https://vettlo.com/tools/best-expense-management-software-for-small-business/): Best expense management tools for small business, from our scored shortlist.
 - [Best free help desk tools](https://vettlo.com/tools/best-free-help-desk-software/): Best free help desk tools, from our scored shortlist.
 - [Best help desk tools for small business](https://vettlo.com/tools/best-help-desk-software-for-small-business/): Best help desk tools for small business, from our scored shortlist.
 - [Best HRIS tools for small business](https://vettlo.com/tools/best-hris-software-for-small-business/): Best HRIS tools for small business, from our scored shortlist.
@@ -144,6 +149,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Brevo Review](https://vettlo.com/tools/brevo-review/): Brevo's pricing, pros, cons and score, from our email marketing tools ranking.
 - [Mailchimp Review](https://vettlo.com/tools/mailchimp-review/): Mailchimp's pricing, pros, cons and score, from our email marketing tools ranking.
 - [Kit Review](https://vettlo.com/tools/kit-review/): Kit's pricing, pros, cons and score, from our email marketing tools ranking.
+- [Brex Review](https://vettlo.com/tools/brex-review/): Brex's pricing, pros, cons and score, from our expense management tools ranking.
+- [Ramp Review](https://vettlo.com/tools/ramp-review/): Ramp's pricing, pros, cons and score, from our expense management tools ranking.
+- [Expensify Review](https://vettlo.com/tools/expensify-review/): Expensify's pricing, pros, cons and score, from our expense management tools ranking.
+- [Zoho Expense Review](https://vettlo.com/tools/zoho-expense-review/): Zoho Expense's pricing, pros, cons and score, from our expense management tools ranking.
+- [BILL Spend & Expense Review](https://vettlo.com/tools/bill-spend-expense-review/): BILL Spend & Expense's pricing, pros, cons and score, from our expense management tools ranking.
+- [Navan Review](https://vettlo.com/tools/navan-review/): Navan's pricing, pros, cons and score, from our expense management tools ranking.
+- [SAP Concur Review](https://vettlo.com/tools/sap-concur-review/): SAP Concur's pricing, pros, cons and score, from our expense management tools ranking.
 - [Zendesk Review](https://vettlo.com/tools/zendesk-review/): Zendesk's pricing, pros, cons and score, from our help desk tools ranking.
 - [Zoho Desk Review](https://vettlo.com/tools/zoho-desk-review/): Zoho Desk's pricing, pros, cons and score, from our help desk tools ranking.
 - [Freshdesk Review](https://vettlo.com/tools/freshdesk-review/): Freshdesk's pricing, pros, cons and score, from our help desk tools ranking.
