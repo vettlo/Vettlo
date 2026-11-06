@@ -102,6 +102,14 @@ EXPLAIN = {
                      ("Employee self-service", "Pay stubs, tax forms and personal details in one place."),
                      ("Benefits and time tracking", "Health insurance, retirement and hours that feed payroll.")],
     },
+    "best-itsm-software": {
+        "what": "ITSM (IT service management) software is the system an IT team uses to deliver and support technology for the rest of the company. Employees submit requests and report incidents through a portal or email, and IT works them against SLAs, investigates recurring problems, approves changes before they go live and tracks the devices, software and configuration items it supports. Most tools follow the ITIL framework and price per agent, with requesters free.",
+        "features": [("Incident and request management", "Tickets from a portal, email or chat, routed to the right group and tracked against SLAs."),
+                     ("Service catalog", "A menu of standard requests, such as new laptops or software access, with approval steps."),
+                     ("Problem and change management", "Root-cause tracking for recurring incidents and approval workflows for changes."),
+                     ("Asset management and CMDB", "An inventory of hardware and software, and how configuration items depend on each other."),
+                     ("Self-service and AI", "A knowledge base and virtual agents that answer common requests before they become tickets.")],
+    },
     "best-password-managers-for-business": {
         "what": "A business password manager stores logins and other secrets in encrypted vaults and lets teams share them safely, without passing passwords around in chat or spreadsheets. Admins control who can see what and enforce security policies across the company.",
         "features": [("Shared vaults", "Team and project collections with granular permissions."),

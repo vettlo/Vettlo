@@ -312,7 +312,7 @@ def explainer_sections(slug, only_what=False):
             summary.append(f"Free to use, with optional paid add-ons: {', '.join(freeonly)}.")
         if onreq:
             summary.append(f"No published price: {', '.join(onreq)}.")
-        out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'
+        out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS").replace("itsm", "ITSM")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'
                 f'<ul>{lis}</ul><p class="small muted">Entry prices from each vendor\'s pricing page, as shown in the comparison table above. Higher tiers usually add automation, reporting and admin controls.</p></section>')
     if pr and pr.get("others"):
         ol = "".join(f'<li><b>{n}</b>: {d}</li>' for n, d in pr["others"])
@@ -335,7 +335,10 @@ GUIDES = []
 def _money(price):
     """Numeric monthly price from strings like "$19/agent/mo"; None for non-dollar or unpriced."""
     m = re.match(r"\$([\d,]+(?:\.\d+)?)", price.replace("From ", ""))
-    return float(m.group(1).replace(",", "")) if m else None
+    if not m:
+        return None
+    v = float(m.group(1).replace(",", ""))
+    return v / 12 if price.endswith("/yr") else v  # yearly prices sort by their monthly equivalent
 
 
 def _fmt(x):

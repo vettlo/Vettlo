@@ -34,6 +34,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best BambooHR Alternatives](https://vettlo.com/tools/best-bamboohr-alternatives/): Five HRIS options with lower prices, time tracking included or payroll on the same record.
 - [Best Issue Tracking Software](https://vettlo.com/tools/best-issue-tracking-software/): Seven issue trackers compared on free plans, sprints and per-user price.
 - [Best Jira Alternatives](https://vettlo.com/tools/best-jira-alternatives/): Five issue trackers that are simpler, cheaper or already in your stack.
+- [Best ITSM Software](https://vettlo.com/tools/best-itsm-software/): Six ITSM tools compared on ITIL processes, assets, AI and per-agent price.
+- [Best Freshservice Alternatives](https://vettlo.com/tools/best-freshservice-alternatives/): Five ITSM tools with free plans or cheaper change management.
 - [Best Live Chat Software](https://vettlo.com/tools/best-live-chat-software/): Seven live chat tools compared on AI, routing and real price, from free.
 - [Best Intercom Alternatives](https://vettlo.com/tools/best-intercom-alternatives/): Five live chat tools with free plans or more predictable pricing.
 - [Best Marketing Automation Software](https://vettlo.com/tools/best-marketing-automation-software/): Six platforms compared on journeys, lead scoring and real cost.
@@ -74,6 +76,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Docusign vs PandaDoc](https://vettlo.com/compare/docusign-vs-pandadoc/): Docusign and PandaDoc compared on price, features and fit.
 - [Ramp vs Brex](https://vettlo.com/compare/ramp-vs-brex/): Ramp and Brex compared on price, features and fit.
 - [Concord vs ContractSafe](https://vettlo.com/compare/concord-vs-contractsafe/): Concord and ContractSafe compared on price, features and fit.
+- [Freshservice vs Jira Service Management](https://vettlo.com/compare/freshservice-vs-jira-service-management/): Freshservice and Jira Service Management compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best free B2B contact data providers](https://vettlo.com/tools/best-free-b2b-data-providers/): Best free B2B contact data providers, from our scored shortlist.
@@ -94,6 +97,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best HRIS tools for small business](https://vettlo.com/tools/best-hris-software-for-small-business/): Best HRIS tools for small business, from our scored shortlist.
 - [Best free issue tracking tools](https://vettlo.com/tools/best-free-issue-tracking-software/): Best free issue tracking tools, from our scored shortlist.
 - [Best issue tracking tools for small business](https://vettlo.com/tools/best-issue-tracking-software-for-small-business/): Best issue tracking tools for small business, from our scored shortlist.
+- [Best ITSM tools for small business](https://vettlo.com/tools/best-itsm-software-for-small-business/): Best ITSM tools for small business, from our scored shortlist.
 - [Best free live chat tools](https://vettlo.com/tools/best-free-live-chat-software/): Best free live chat tools, from our scored shortlist.
 - [Best live chat tools for small business](https://vettlo.com/tools/best-live-chat-software-for-small-business/): Best live chat tools for small business, from our scored shortlist.
 - [Best marketing automation tools for small business](https://vettlo.com/tools/best-marketing-automation-software-for-small-business/): Best marketing automation tools for small business, from our scored shortlist.
@@ -187,6 +191,12 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Azure Boards Review](https://vettlo.com/tools/azure-boards-review/): Azure Boards's pricing, pros, cons and score, from our issue tracking tools ranking.
 - [Shortcut Review](https://vettlo.com/tools/shortcut-review/): Shortcut's pricing, pros, cons and score, from our issue tracking tools ranking.
 - [GitLab Review](https://vettlo.com/tools/gitlab-review/): GitLab's pricing, pros, cons and score, from our issue tracking tools ranking.
+- [Jira Service Management Review](https://vettlo.com/tools/jira-service-management-review/): Jira Service Management's pricing, pros, cons and score, from our ITSM tools ranking.
+- [Freshservice Review](https://vettlo.com/tools/freshservice-review/): Freshservice's pricing, pros, cons and score, from our ITSM tools ranking.
+- [InvGate Service Management Review](https://vettlo.com/tools/invgate-service-management-review/): InvGate Service Management's pricing, pros, cons and score, from our ITSM tools ranking.
+- [SysAid Review](https://vettlo.com/tools/sysaid-review/): SysAid's pricing, pros, cons and score, from our ITSM tools ranking.
+- [ManageEngine ServiceDesk Plus Review](https://vettlo.com/tools/manageengine-servicedesk-plus-review/): ManageEngine ServiceDesk Plus's pricing, pros, cons and score, from our ITSM tools ranking.
+- [SolarWinds Service Desk Review](https://vettlo.com/tools/solarwinds-service-desk-review/): SolarWinds Service Desk's pricing, pros, cons and score, from our ITSM tools ranking.
 - [LiveChat Review](https://vettlo.com/tools/livechat-review/): LiveChat's pricing, pros, cons and score, from our live chat tools ranking.
 - [Freshchat Review](https://vettlo.com/tools/freshchat-review/): Freshchat's pricing, pros, cons and score, from our live chat tools ranking.
 - [Tidio Review](https://vettlo.com/tools/tidio-review/): Tidio's pricing, pros, cons and score, from our live chat tools ranking.

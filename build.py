@@ -193,7 +193,7 @@ DEPTS = [
         ("best-password-managers-for-business", "Password Managers", "Shared vaults, SSO and access policies", True),
         ("best-mdm-software", "Mobile Device Management", "Device enrollment, policies and remote wipe", False),
         ("best-incident-management-software", "Incident Management", "On-call, alerting and postmortems", False),
-        ("best-itsm-software", "ITSM Software", "Service desk, assets and change", False),
+        ("best-itsm-software", "ITSM Software", "Service desk, assets and change", True),
         ("best-identity-and-access-management-software", "Identity and Access Management", "SSO, MFA and provisioning", False),
         ("best-endpoint-protection-software", "Endpoint Protection", "Antivirus, EDR and device security", False),
         ("best-business-vpn", "Business VPNs", "Secure remote network access", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 6, 2026</span></div><h3><a href="/tools/best-itsm-software/">Best ITSM software</a></h3><p class="muted small">Six ITSM tools compared on ITIL processes, assets and AI, from free plans for 3 to 5 agents to change management at $39 a technician on SolarWinds.</p></article>
 <article><div class="meta"><span>Alternatives</span><span>Nov 6, 2026</span></div><h3><a href="/tools/best-monday-alternatives/">Best monday.com alternatives</a></h3><p class="muted small">Five tools for teams hitting monday.com's 3-seat minimum or automation caps, from Trello at $5 a user to Asana with unlimited automations at $10.99.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 5, 2026</span></div><h3><a href="/tools/best-contract-management-software/">Best contract management software</a></h3><p class="muted small">Seven CLM tools compared on approvals, AI and pricing basis, from a free Zoho Contracts plan to Concord at $499 a month for 5 users.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 5, 2026</span></div><h3><a href="/tools/best-expense-management-software/">Best expense management software</a></h3><p class="muted small">Seven expense tools compared on cards, receipts and approvals, from free Brex, Ramp and BILL plans to Zoho Expense at $3 a user.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 4, 2026</span></div><h3><a href="/tools/best-e-signature-software/">Best e-signature software</a></h3><p class="muted small">Six e-signature tools compared on envelope caps, bulk send and price, from signNow at $8 a user to free plans.</p></article>
 
 </div>
 </div></section>
@@ -1277,7 +1277,7 @@ def badges_page():
         for tid, name, rank in items:
             fn = f"{slug}-{tid}.svg"
             BADGE_FILES[fn] = badge_svg(rank == 1, cat)
-            alt = f"{name}: {'Top pick' if rank == 1 else 'Shortlisted'} in Vettlo's best {cat.lower()} {YEAR}"
+            alt = f"{name}: {'Top pick' if rank == 1 else 'Shortlisted'} in Vettlo's best {cat.lower().replace('itsm', 'ITSM')} {YEAR}"
             BADGE_CODES.append((name, cat, rank, f'<a href="{DOMAIN}/tools/{slug}/"><img src="{DOMAIN}/badges/{fn}" alt="{alt}" width="260" height="84"></a>'))
     BADGE_FILES["sample-top-pick.svg"] = badge_svg(True, "Project management")
     BADGE_FILES["sample-shortlisted.svg"] = badge_svg(False, "Project management")
@@ -1340,7 +1340,7 @@ DEPT_INTRO = {
     "Data & analytics": "The software teams use to collect, move and understand their data: business intelligence for dashboards, product and web analytics for user behavior, ETL tools and data warehouses for pipelines, and customer data platforms for unified profiles. Each shortlist explains how pricing scales with usage, seats or data volume.",
     "Collaboration": "The tools teams use to work together every day: video conferencing, team chat, online whiteboards, document management, e-signature and file sharing. Each shortlist compares free plan limits, per-user prices and the admin and security controls bigger companies need.",
     "Legal & compliance": "The software legal, security and operations teams use to manage contracts, risk and privacy: contract management, compliance automation for SOC 2 and ISO 27001, privacy management and policy management. Each shortlist explains what's included and how vendors price.",
-    "IT & security": "The software IT teams use to secure people, devices and systems: a password manager for shared logins and access policies, mobile device management to enroll and wipe laptops and phones, and incident management for on-call and alerting. Each shortlist compares which plan first includes SSO, provisioning and the admin controls a security review asks for, at published per-user prices.",
+    "IT & security": "The software IT teams use to secure and support people and systems: a password manager for shared logins and access policies, and ITSM software for service requests, incidents, changes and IT assets. Each shortlist compares which plan first includes what IT asks for, such as SSO and provisioning in a password manager or change management and a CMDB in a service desk, at published prices.",
 }
 HUB_URLS = []
 
@@ -1411,7 +1411,8 @@ def dept_hubs():
             url = f"/tools/{slug}/"
             others = [c for c in live if c[0] != slug]
             lis = "".join(f'<li><a href="/tools/{c[0]}/">Best {_catname(c[1])}</a>: top pick {top[f"/tools/{c[0]}/"][0]} ({top[f"/tools/{c[0]}/"][1]}/100)</li>' for c in others)
-            block = (f'<section class="prose"><h2>More {label.lower()}</h2><ul>{lis}<li><a href="{hub}">All {label.lower()}</a></li></ul></section>\n')
+            lab = label.lower().replace('hr ', 'HR ').replace('it &', 'IT &').replace('devops', 'DevOps')
+            block = (f'<section class="prose"><h2>More {lab}</h2><ul>{lis}<li><a href="{hub}">All {lab}</a></li></ul></section>\n')
             b = PAGES[url]["body"]
             i = b.find('<section class="author-box">')
             if i > 0:
