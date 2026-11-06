@@ -75,14 +75,14 @@
     "note": "Re-verified prices, plans and trials for all 7 tools on vendor pricing pages: ClickUp now lists a single plan layout (Core $9, Business $17 billed yearly; old $7 Unlimited plan gone) and Basecamp raised its flat plans (Freelancer $25 to $29; top plan now Pro Unlimited $199/mo annual); others unchanged. Refreshed G2 review counts (ratings unchanged)."
   },
   "/tools/best-accounting-software/": {
-    "updated": "2026-10-31",
+    "updated": "2026-11-06",
     "checked": "2026-10-31",
-    "note": "Re-verified regular prices, plans, user limits and trials for all 6 tools on vendor pricing pages (no changes; Sage Intacct still quote-only) and refreshed G2 review counts (ratings unchanged)."
+    "note": "Re-verified regular prices, plans, user limits and trials for all 6 tools on vendor pricing pages (no changes; Sage Intacct still quote-only) and refreshed G2 review counts (ratings unchanged). Nov 6, 2026: corrected QuickBooks Online bill approval workflows to Advanced (not Plus), per QuickBooks' pricing page; QuickBooks and Xero G2 counts refreshed."
   },
   "/tools/best-quickbooks-alternatives/": {
-    "updated": "2026-10-31",
+    "updated": "2026-11-06",
     "checked": "2026-10-31",
-    "note": "Re-verified regular prices, plans, user limits and trials for all 6 tools on vendor pricing pages (no changes; Sage Intacct still quote-only) and refreshed G2 review counts (ratings unchanged)."
+    "note": "Re-verified regular prices, plans, user limits and trials for all 6 tools on vendor pricing pages (no changes; Sage Intacct still quote-only) and refreshed G2 review counts (ratings unchanged). Nov 6, 2026: corrected QuickBooks Online bill approval workflows to Advanced (not Plus), per QuickBooks' pricing page; QuickBooks and Xero G2 counts refreshed."
   },
   "/tools/best-help-desk-software/": {
     "updated": "2026-10-31",
@@ -133,5 +133,15 @@
     "updated": "2026-11-05",
     "checked": "2026-11-05",
     "note": "Re-verified Aircall and JustCall plan prices, license minimums, dialers, AI add-ons and trials (no price changes) and refreshed G2 review counts."
+  },
+  "/compare/quickbooks-vs-xero/": {
+    "updated": "2026-11-06",
+    "checked": "2026-11-06",
+    "note": "Re-verified QuickBooks Online and Xero pricing pages (prices unchanged; bill approval workflows corrected to QuickBooks Advanced, not Plus) and refreshed G2 review counts."
+  },
+  "/compare/outreach-vs-salesloft/": {
+    "updated": "2026-11-06",
+    "checked": "2026-11-06",
+    "note": "Re-verified Outreach Amplify tiers and Salesloft pricing page (both still quote-only, packaging unchanged) and refreshed G2 review counts."
   }
 }

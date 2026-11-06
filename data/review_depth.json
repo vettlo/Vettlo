@@ -476,5 +476,112 @@
       "Add-ons such as Streaming Intent are priced on expected usage; pre-packaged integrations have a base cost and require a minimum bulk credit purchase.",
       "Each sales edition offers a free trial; the page doesn't state its length."
     ]
+  },
+  "Microsoft Power BI": {
+    "checked": "2026-11-06",
+    "source": ["Power BI pricing", "https://www.microsoft.com/en-us/power-platform/products/power-bi/pricing"],
+    "plans": [
+      ["Power BI Free", "Free", "Build interactive reports in Power BI Desktop, free to download; sharing needs Pro or Premium; no credit card needed"],
+      ["Power BI Pro", "$14.00 per user/month, billed yearly", "Publish and share reports; 1 GB model memory, 8 refreshes a day, 10 GB storage per license; included with Microsoft 365 E5 and Office 365 E5"],
+      ["Power BI Premium Per User", "$24.00 per user/month, billed yearly", "Everything in Pro plus 100 GB models, 48 refreshes a day, advanced AI, advanced dataflows and datamarts, XMLA endpoint read/write"],
+      ["Power BI Embedded", "Variable (see pricing or contact sales)", "Customer-facing reports and analytics inside your own applications, with branding and automated monitoring and deployment"],
+      ["Fabric Capacity (F SKUs)", "Variable: annual reservation or pay-as-you-go", "Capacity for Fabric workloads; viewers can consume content without paid per-user licenses from F64 up"]
+    ],
+    "first_plan": [
+      ["Build reports in Power BI Desktop", "Power BI Free"],
+      ["Publish and share reports", "Power BI Pro"],
+      ["Advanced AI", "Power BI Premium Per User"],
+      ["Advanced dataflows and datamarts", "Power BI Premium Per User"],
+      ["XMLA endpoint read/write", "Power BI Premium Per User"],
+      ["Reports embedded in your own apps", "Power BI Embedded"],
+      ["Viewing without a per-user license", "Fabric Capacity F64 and above (P1 and above)"]
+    ],
+    "limits": {
+      "cols": ["Power BI Pro", "Power BI Premium Per User", "Power BI Embedded"],
+      "rows": [
+        ["Model memory", "1 GB", "100 GB", "Varies"],
+        ["Refreshes per day", "8", "48", "48"],
+        ["Storage", "10 GB per license", "100 TB", "Varies"]
+      ]
+    },
+    "notes": [
+      "Pro and E5 users can step up to Premium Per User for a $14.00 per user/month add-on, billed yearly.",
+      "Publishing content to Fabric requires a Pro license for all P and F SKUs.",
+      "The pricing page says an annual Fabric capacity reservation saves 40.5% over pay-as-you-go; F SKU prices are on a separate Fabric pricing page.",
+      "Academic, government and nonprofit pricing is available; checkout prices can differ by country or region."
+    ]
+  },
+  "Docusign": {
+    "checked": "2026-11-06",
+    "source": ["Docusign eSignature plans and pricing", "https://ecom.docusign.com/plans-and-pricing/esignature"],
+    "plans": [
+      ["Personal", "$11/month, billed annually ($132 a year)", "1 user, 5 envelopes a month, reusable templates, audit trail, mobile app"],
+      ["Standard", "$30/user/month, billed annually ($360 a year per user)", "Up to 50 users, 100 envelopes per user per year, shared templates, branding, commenting, scheduled sending, in-person signing, delegated signing, team reports"],
+      ["Business Pro", "$45/user/month, billed annually ($540 a year per user)", "Everything in Standard plus bulk send, payment collection, signer attachments, PowerForms, web forms, advanced form fields and APIs"],
+      ["Enhanced plans", "Contact sales", "50+ users, custom envelope limits, SSO, centralized org management, conditional routing, signing groups, retention policies, 24/7 live support"]
+    ],
+    "first_plan": [
+      ["Reusable templates", "Personal"],
+      ["Shared templates", "Standard"],
+      ["Custom branding", "Standard"],
+      ["In-person and delegated signing", "Standard"],
+      ["Bulk send", "Business Pro"],
+      ["Payment collection", "Business Pro"],
+      ["Signer attachments and PowerForms", "Business Pro"],
+      ["Web forms", "Business Pro"],
+      ["SSO and conditional routing", "Enhanced plans"],
+      ["24/7 live support", "Enhanced plans"]
+    ],
+    "limits": {
+      "cols": ["Personal", "Standard", "Business Pro", "Enhanced plans"],
+      "rows": [
+        ["Users", "1", "Up to 50", "Up to 50", "50+"],
+        ["Envelopes", "5 a month", "100 per user per year", "100 per user per year", "Custom"],
+        ["SMS and ID verification bonus", "Not listed", "5 each, one-time", "5 each, one-time", "Not listed"]
+      ]
+    },
+    "notes": [
+      "Standard and Business Pro also offer monthly plans with up to 10 envelopes per user per month; the page doesn't list their monthly price.",
+      "Envelopes over the allowance on Standard and Business Pro are billed pay-as-you-go; pre-purchased envelopes are available.",
+      "Add-ons on Standard and Business Pro: SMS delivery from $0.36 per delivery, ID verification from $2.40 per attempt.",
+      "Annual plans bought on docusign.com can be refunded within 30 days of purchase (once per customer); monthly plans can be cancelled anytime."
+    ]
+  },
+  "Ironclad": {
+    "checked": "2026-11-06",
+    "source": ["Ironclad pricing", "https://ironcladapp.com/pricing"],
+    "plans": [
+      ["Ironclad CLM", "Pricing on request", "Contract lifecycle management: Workflow Designer, Repository, Insights and AI tools (AI Clauses, AI Properties, AI Playbooks, Smart Import), with Administrator, Standard and Module seats"],
+      ["Ironclad Signature", "Pricing on request", "E-signature for capturing contract assent; its API access is a separate fee"],
+      ["Jurist", "Pricing on request", "Generative AI legal assistant, standalone or with CLM; needs a Jurist seat"],
+      ["Success Plans: Standard, Professional, Enterprise", "Pricing on request", "Support and success tiers; Enterprise can add 24/7 phone support"]
+    ],
+    "first_plan": [
+      ["Workflow Designer, Repository and Insights", "Ironclad CLM"],
+      ["AI Clauses, AI Properties and AI Playbooks", "Ironclad CLM"],
+      ["Smart Import of existing contracts", "Ironclad CLM"],
+      ["E-signature", "Ironclad Signature"],
+      ["Generative AI legal assistant", "Jurist (per seat)"],
+      ["API access, ERP integrations, obligation management, clickwrap", "Order Form entitlements"],
+      ["24/7 phone support", "Enterprise Success Plan add-on"]
+    ],
+    "limits": {
+      "cols": ["Ironclad CLM"],
+      "rows": [
+        ["Smart Import", "Uncapped in year 1, then up to 50,000 runs a quarter"],
+        ["Extract Metadata", "Up to 30,000 runs per 30 days"],
+        ["Custom AI Clauses", "Up to 100 per instance"],
+        ["Custom AI Properties", "Up to 100 per instance"],
+        ["Pre-configured AI Clause types", "175"],
+        ["Completed signature requests", "250,000 a year"],
+        ["Legal Centers", "Up to 5"]
+      ]
+    },
+    "notes": [
+      "The pricing page shows no prices; pricing depends on products, users, workflows and growth, via a custom quote or demo.",
+      "No free trial is mentioned.",
+      "Academy, community and in-app guides are included at no charge.",
+      "Limits come from Ironclad's FY2026 product descriptions (version 1.7, effective Sep 2, 2026) and apply unless the Order Form says otherwise; AI credits can be bought beyond an edition's allowance."
+    ]
   }
 }
