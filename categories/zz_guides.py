@@ -524,3 +524,114 @@ guide_page({
         ("Is there a free conversation intelligence tool?", _ci_faq.get("Is there a free conversation intelligence tool?", "Some tools have free plans with limits; coaching usually needs a paid plan.")),
     ],
 })
+
+
+# ---------- How much does a business password manager cost?
+_pw = PWM["tools"]
+_pw_ranked = PWM["_ranked"]
+_pw_cat = "/tools/best-password-managers-for-business/"
+_pw_faq = dict(PWM["faqs"])
+_pw_choose = dict(PWM["choose"])
+_pw_and = lambda xs: xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+_pw_rv = lambda k: f'<a href="/tools/{_tslug(_pw[k]["name"])}-review/">{_pw[k]["name"]}</a>'
+_pw_rows = [(f'<a href="{_pw_cat}#{k}">{_pw[k]["name"]}</a>', _pw[k]["price"], _pw[k]["price_note"], _pw[k]["trial"]) for k in _pw_ranked]
+
+
+def _pw_limits(note):
+    """(min users, max users) for the entry plan, read from its price note; None where no limit is stated."""
+    first = note.split(";")[0]
+    m = re.search(r"(\d+)[–-](\d+) users", first)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+    m = re.search(r"under (\d+) users", first)
+    return (None, int(m.group(1)) - 1) if m else (None, None)
+
+
+_pw_entry = []  # (per-user price, name, key, (min, max))
+for k in _pw_ranked:
+    v = _money(_pw[k]["price"])
+    if v:
+        _pw_entry.append((v, _pw[k]["name"], k, _pw_limits(_pw[k]["price_note"])))
+_pw_entry.sort()
+_pw_sizes = (10, 25, 50)
+
+
+def _pw_cell(v, lim, n):
+    lo, hi = lim
+    if (lo and n < lo) or (hi and n > hi):
+        return '<span class="muted">Not offered at this size</span>'
+    return _fmt(v * n * 12)
+
+
+_pw_ex = "".join(f"<tr><td>{n}</td><td>{_fmt(v)}</td>" + "".join(f"<td>{_pw_cell(v, lim, s)}</td>" for s in _pw_sizes) + "</tr>" for v, n, k, lim in _pw_entry)
+_pw_pn = lambda n, plan: n + " " + " ".join(w for i, w in enumerate(plan.split()) if not (i == 0 and w in n.split()))
+_pw_lim_txt = [f"{_pw_pn(n, re.match(r'([^,;]+?)(?:,| billed|;|$)', _pw[k]['price_note']).group(1).strip())} is for {re.search(r'[0-9]+[–-][0-9]+ users|under [0-9]+ users', _pw[k]['price_note'].split(';')[0]).group(0)}" for v, n, k, lim in _pw_entry if lim != (None, None)]
+_pw_lo, _pw_hi = _pw_entry[0], _pw_entry[-1]
+_pw_quote = [_pw[k]["name"] for k in _pw_ranked if not _money(_pw[k]["price"])]
+
+# Other published plans, read from each tool's price note: (tool, plan, per-user/month, flat monthly fee, (min, max) users)
+_pw_tiers = []
+for k in _pw_ranked:
+    for seg in _pw[k]["price_note"].split("; ")[1:]:
+        m = re.match(r"(.+?) \$([\d.]+)(/user|/mo)?", seg)
+        if not m:
+            continue
+        cap = re.search(r"up to (\d+) users", seg)
+        lim = (None, int(cap.group(1))) if cap else _pw_limits(seg)
+        flat = m.group(3) == "/mo"
+        _pw_tiers.append((_pw[k]["name"], m.group(1), None if flat else float(m.group(2)), float(m.group(2)) if flat else None, lim))
+_pw_plan = lambda k: re.match(r"([^,;]+?)(?:,| billed|;|$)", _pw[k]["price_note"]).group(1).strip()
+_pw_limtxt = lambda seg: (lambda m: m.group(0) if m else "")(re.search(r"\d+[–-]\d+ users|under \d+ users|up to \d+ users", seg))
+_pw_tier_rows = ""
+for n, plan, per, flat, lim in _pw_tiers:
+    if per:
+        _pw_tier_rows += f"<tr><td>{n}</td><td>{plan}</td><td>{_fmt(per)} per user</td><td>{_pw_cell(per, lim, 10)}</td><td>{_pw_cell(per, lim, 50)}</td></tr>"
+    else:
+        _pw_tier_rows += f'<tr><td>{n}</td><td>{plan}</td><td>{_fmt(flat)} a month{f" for up to {lim[1]} users" if lim[1] else ""}</td><td>{_fmt(flat * 12)}</td><td>{_pw_cell(flat / 50, lim, 50) if lim[1] else _fmt(flat * 12)}</td></tr>'
+_pw_flat = next(((n, plan, flat, lim[1]) for n, plan, per, flat, lim in _pw_tiers if flat), None)
+_pw_num = lambda c: {2: "two", 3: "three", 4: "four", 5: "five"}.get(c, str(c))
+_pw_free_org = [(_pw[k]["name"], int(m.group(1))) for k in _pw_ranked if (m := re.search(r"free (\d+)-(?:person|user) org", _pw[k]["trial"] + " " + _pw[k]["trial_short"], re.I))]
+_pw_ent_quote = [_pw[k]["name"] for k in _pw_ranked if re.search(r"Enterprise (custom|quoted|pricing is by quote|, now quoted)", _pw[k]["price_note"] + " " + _pw[k]["what"] + " " + " ".join(_pw[k]["cons"]))]
+
+guide_page({
+    "slug": "password-manager-cost-for-business", "crumb": "Password manager cost", "dept": "IT & security", "cats": ["best-password-managers-for-business"],
+    "date": "2026-11-06", "kicker": "Pricing guide",
+    "title": f"How Much Does a Business Password Manager Cost in {YEAR}?",
+    "seo_title": "How Much Does a Business Password Manager Cost? | Vettlo",
+    "desc": "Business password manager prices per user, what 10, 25 and 50 users pay a year, what SSO plans cost, small-team packs and the limits to check.",
+    "card": "Per-user prices, yearly cost for 10, 25 and 50 users, and what SSO adds.",
+    "answer": (f"Business password managers charge per user per month, billed annually. Among the tools we rank, entry plans cost {_fmt(_pw_lo[0])} ({_pw_lo[1]}) to {_fmt(_pw_hi[0])} ({_pw_hi[1]}) per user, "
+               f"or {_fmt(_pw_lo[0] * 120)} to {_fmt(_pw_hi[0] * 120)} a year for 10 users. "
+               f"Single sign-on usually needs a higher plan: {_pw_choose.get('Price the plan with SSO, not the entry plan.', '').split('. ')[0]}."),
+    "sections": [
+        ("model", "How business password managers are priced", f"""<p>Every password manager we rank uses the same basic model: a <b>price per user per month</b>, with the headline price assuming you pay for a year up front. What changes between vendors is which plan unlocks the features IT asks for.</p>
+<ul><li><b>Plan ladders.</b> Most vendors sell two or three business plans. The entry plan covers vaults, sharing and an admin console; higher plans add single sign-on (SSO), automatic provisioning from your identity provider (SCIM), advanced policies and reporting.</li>
+<li><b>User limits.</b> Some plans only apply to a certain team size. {_pw_and(_pw_lim_txt) + "; outside those limits you move to another plan." if _pw_lim_txt else "Check each plan's minimum and maximum seats."}</li>
+{f"<li><b>Flat small-team packs.</b> {_pw_flat[0]} also sells {_pw_flat[1]} for {_fmt(_pw_flat[2])} a month for up to {_pw_flat[3]} users, a fixed fee rather than a per-user price.</li>" if _pw_flat and _pw_flat[3] else ""}
+<li><b>Quotes at the top.</b> {f"{_pw_and(_pw_ent_quote)} price their enterprise plans by quote." if _pw_ent_quote else "Enterprise plans are often priced by quote."} {f"{_pw_and(_pw_quote)} {'has' if len(_pw_quote) == 1 else 'have'} no published entry price." if _pw_quote else ""}</li>
+<li><b>Free tiers.</b> {" ".join(f"{n}'s free organization lets {_pw_num(c)} people share passwords without paying." for n, c in _pw_free_org) + " Beyond that, business features need a paid plan." if _pw_free_org else "Business features need a paid plan; vendors offer free trials instead."}</li></ul>"""),
+        ("prices", "Entry prices by password manager", f"""<p>The cheapest business plan for each password manager in our ranking, from each vendor's pricing pages:</p>
+{_ptable(_pw_rows, ("Password manager", "Entry price", "Plans and billing", "Free plan / trial"))}
+<p class="small muted">{PWM['price_footnote']}</p>"""),
+        ("example", "What 10, 25 and 50 users cost per year", f"""<p>Yearly cost on each entry plan at the published per-user price, billed annually, before taxes and add-ons. Where a plan has a user limit, sizes outside it are marked:</p>
+<div class="table-wrap"><table><thead><tr><th>Password manager</th><th>Per user per month</th>{''.join(f'<th>{s} users per year</th>' for s in _pw_sizes)}</tr></thead><tbody>{_pw_ex}</tbody></table></div>
+<p>Entry plans don't include the same things, so the cheapest line isn't always the cheapest fit. {_pw_choose.get("Check where provisioning starts.", "")}</p>"""),
+        ("tiers", "What SSO plans and small-team packs cost", f"""<p>The plan your security team needs is often a step up from the entry plan, and very small teams can sometimes pay less. Other plans each vendor publishes, from the same pricing pages:</p>
+<div class="table-wrap"><table><thead><tr><th>Password manager</th><th>Plan</th><th>Price</th><th>10 users per year</th><th>50 users per year</th></tr></thead><tbody>{_pw_tier_rows}</tbody></table></div>
+<p><b>Where SSO starts.</b> {_pw_choose.get("Price the plan with SSO, not the entry plan.", "")}</p>
+<p><b>Small teams.</b> {_pw_choose.get("Price small-team plans separately.", "")}</p>
+<p>Our <a href="/compare/1password-vs-bitwarden/">1Password vs Bitwarden</a> comparison matches two of these ladders plan by plan.</p>"""),
+        ("budget", "How to budget for a business password manager", f"""<ol><li><b>Count seats, not just employees.</b> Include contractors and anyone who needs shared logins, and check the plan's user minimum or maximum.</li>
+<li><b>Decide whether you need SSO and SCIM now.</b> If your company already uses an identity provider such as Okta or Microsoft Entra ID, price the plan that connects to it, since that is usually the one you end up on.</li>
+<li><b>{"Ask about add-ons before you sign." if "Ask about add-ons before you sign." in _pw_choose else "Price the add-ons."}</b> {_pw_choose.get("Ask about add-ons before you sign.", "Some reporting and developer features are sold separately.")}</li>
+<li><b>Count the family accounts.</b> {_pw_choose.get("Look at what staff get at home.", "")}</li>
+<li><b>Multiply by 12.</b> Headline prices assume annual billing, so the first invoice is a full year.</li></ol>
+<p>Our <a href="{_pw_cat}">password manager shortlist</a> scores {len(_pw_ranked)} tools on six weighted criteria, and our <a href="/tools/best-password-managers-for-small-business/">small business list</a> reweights them for smaller teams. Read the reviews of {_pw_and([_pw_rv(k) for k in _pw_ranked])}, or see <a href="/tools/best-lastpass-alternatives/">LastPass alternatives</a> if you're moving off LastPass.</p>"""),
+    ],
+    "faqs": [
+        ("How much does a business password manager cost?", _pw_faq.get("How much does a business password manager cost?", f"{_fmt(_pw_lo[0])} to {_fmt(_pw_hi[0])} per user per month on entry plans.")),
+        ("Which business password manager includes SSO for the lowest price?", _pw_faq.get("Which business password manager includes SSO for the lowest price?", "")),
+        ("What is the cheapest business password manager?", f"{_pw_lo[1]} has the lowest entry price we found, {_fmt(_pw_lo[0])} per user per month billed annually on {_pw_plan(_pw_lo[2])}{f" ({_pw_limtxt(_pw[_pw_lo[2]]['price_note'].split(';')[0])})" if _pw_limtxt(_pw[_pw_lo[2]]['price_note'].split(';')[0]) else ""}, or {_fmt(_pw_lo[0] * 120)} a year for 10 users. It doesn't include SSO on that plan."),
+        ("Is there a free password manager for business?", (" ".join(f"{n} has a free organization for {_pw_num(c)} people that can share passwords." for n, c in _pw_free_org) + f" {'It is the only free business option' if len(_pw_free_org) == 1 else 'These are the only free business options'} among the tools we rank; for more people or admin features you need a paid plan, and the others offer free trials." if _pw_free_org else "Not among the tools we rank; they offer free trials instead.")),
+    ],
+})

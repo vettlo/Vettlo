@@ -325,7 +325,9 @@
       "department": "IT & security",
       "category": "best-password-managers-for-business",
       "note": "Pricing guide",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-06",
+      "url": "/guides/password-manager-cost-for-business/"
     },
     {
       "type": "guide",
