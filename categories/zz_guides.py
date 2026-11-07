@@ -635,3 +635,186 @@ guide_page({
         ("Is there a free password manager for business?", (" ".join(f"{n} has a free organization for {_pw_num(c)} people that can share passwords." for n, c in _pw_free_org) + f" {'It is the only free business option' if len(_pw_free_org) == 1 else 'These are the only free business options'} among the tools we rank; for more people or admin features you need a paid plan, and the others offer free trials." if _pw_free_org else "Not among the tools we rank; they offer free trials instead.")),
     ],
 })
+
+
+# ---------- How much does accounting software cost?
+_ac = ACC["tools"]
+_ac_ranked = ACC["_ranked"]
+_ac_cat = "/tools/best-accounting-software/"
+_ac_faq = dict(ACC["faqs"])
+_ac_choose = dict(ACC["choose"])
+_ac_and = lambda xs: xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+_ac_rv = lambda k: f'<a href="/tools/{_tslug(_ac[k]["name"])}-review/">{_ac[k]["short"]}</a>'
+_ac_rows = [(f'<a href="{_ac_cat}#{k}">{_ac[k]["name"]}</a>', _ac[k]["price"], _ac[k]["price_note"], _ac[k]["trial"]) for k in _ac_ranked]
+_ac_usd = sorted((_money(_ac[k]["price"]), _ac[k]["name"], k) for k in _ac_ranked if _money(_ac[k]["price"]))
+_ac_lo, _ac_hi = _ac_usd[0], _ac_usd[-1]
+_ac_quote = [_ac[k]["name"] for k in _ac_ranked if not _money(_ac[k]["price"])]
+_ac_free = [_ac[k]["name"] for k in _ac_ranked if re.search(r"free (plan|starter)", _ac[k]["trial"], re.I)]
+_ac_annual = [_ac[k]["name"] for k in _ac_ranked if "billed annually" in _ac[k]["price_note"]]
+
+# Full plan ladders from the vendor pricing detail kept for review pages (data/review_depth.json),
+# used only where its entry price matches the category data, so the two never disagree.
+_ac_depth = json.load(open(ROOT / "data" / "review_depth.json"))
+_ac_num = lambda s: float(s.replace(",", ""))
+
+
+def _ac_ladder(k):
+    """[(plan, regular $/mo, month-to-month $/mo or None, (promo $/mo, months) or None, users)] or []."""
+    d = _ac_depth.get(_ac[k]["name"]) if k in _ac else None
+    if not d:
+        return []
+    users = {}
+    lim = d.get("limits", {})
+    for r in lim.get("rows", []):
+        if r[0] == "Users":
+            users = dict(zip(lim["cols"], r[1:]))
+    out = []
+    for plan, price, _inc in d["plans"]:
+        m = re.match(r"\$([\d,.]+)/(?:org/)?mo", price)
+        if not m:
+            continue
+        mo = re.search(r"or \$([\d,.]+) monthly", price)
+        pr = re.search(r"\(\$([\d,.]+)/mo for (?:the first )?(\d+) months", price)
+        out.append((plan, _ac_num(m.group(1)), _ac_num(mo.group(1)) if mo else None,
+                    (_ac_num(pr.group(1)), int(pr.group(2))) if pr else None, users.get(plan, "")))
+    if not out or out[0][1] != _money(_ac[k]["price"]):
+        return []
+    return out
+
+
+_ac_lad = {k: _ac_ladder(k) for k in _ac_ranked}
+_ac_lad = {k: v for k, v in _ac_lad.items() if v}
+_ac_tier_rows = ""
+for k, lad in _ac_lad.items():
+    for plan, reg, mo, pr, us in lad:
+        u = ("No per-user fees" if "per-user" in us else f"{us} user{'s' if us != '1' else ''}") if us else "Not stated"
+        bill = f"{_fmt(reg)}" + (f" billed annually ({_fmt(mo)} monthly)" if mo else "")
+        _ac_tier_rows += f"<tr><td>{_ac[k]['short']}</td><td>{plan}</td><td>{bill}</td><td>{u}</td><td>{_fmt(reg * 12)}</td></tr>"
+# FreshBooks and Wave ladders, read from the category text
+_fb = _ac.get("freshbooks", {})
+_fb_tiers = re.findall(r"(Plus|Premium) \(\$([\d.]+)\) (\d+|unlimited) clients", _fb.get("what", ""))
+_fb_lite = re.search(r"Lite covers (\d+) billable clients", _fb.get("what", ""))
+_fb_tm = re.search(r"team members \$([\d.]+) each", _fb.get("price_note", ""))
+if _fb and _money(_fb["price"]) and _fb_lite:
+    _ac_tier_rows += f"<tr><td>{_fb['short']}</td><td>Lite</td><td>{_fmt(_money(_fb['price']))}</td><td>{_fb_lite.group(1)} billable clients</td><td>{_fmt(_money(_fb['price']) * 12)}</td></tr>"
+    for plan, p, c in _fb_tiers:
+        _ac_tier_rows += f"<tr><td>{_fb['short']}</td><td>{plan}</td><td>{_fmt(float(p))}</td><td>{'Unlimited' if c == 'unlimited' else c} billable clients</td><td>{_fmt(float(p) * 12)}</td></tr>"
+_wv = _ac.get("wave", {})
+_wv_yr = re.search(r"\(\$([\d,]+) a year\)", _wv.get("price_note", ""))
+if _wv and _money(_wv["price"]):
+    _ac_tier_rows += f"<tr><td>{_wv['short']}</td><td>Starter</td><td>Free</td><td>Not stated</td><td>$0</td></tr>"
+    _ac_tier_rows += f"<tr><td>{_wv['short']}</td><td>Pro</td><td>{_fmt(_money(_wv['price']))} monthly" + (f" or {_fmt(_ac_num(_wv_yr.group(1)))} a year" if _wv_yr else "") + f"</td><td>Not stated</td><td>{_fmt(_ac_num(_wv_yr.group(1))) if _wv_yr else _fmt(_money(_wv['price']) * 12)}</td></tr>"
+
+# Cheapest plan that includes 1, 3, 5 and 10 users, for vendors that publish user counts per plan
+_ac_sizes = (1, 3, 5, 10)
+
+
+def _ac_fit(lad, n):
+    for plan, reg, mo, pr, us in lad:
+        if "per-user" in us or (us.isdigit() and int(us) >= n):
+            return plan, reg
+    return None
+
+
+_ac_size_rows = ""
+for k, lad in _ac_lad.items():
+    cells = []
+    for n in _ac_sizes:
+        f = _ac_fit(lad, n)
+        cells.append(f'<td>{_fmt(f[1] * 12)}<br><span class="small muted">{f[0]}</span></td>' if f else '<td><span class="muted">Not listed</span></td>')
+    _ac_size_rows += f"<tr><td>{_ac[k]['short']}</td>{''.join(cells)}</tr>"
+
+# Introductory offers: first-year cost vs a full year at the regular price
+_ac_promo = [(k, plan, reg, pr) for k, lad in _ac_lad.items() for plan, reg, mo, pr, us in lad if pr]
+_ac_promo_rows = "".join(f"<tr><td>{_ac[k]['short']} {plan}</td><td>{_fmt(pr[0])} for {pr[1]} months, then {_fmt(reg)}</td>"
+                         f"<td>{_fmt(pr[0] * pr[1] + reg * (12 - pr[1]))}</td><td>{_fmt(reg * 12)}</td></tr>" for k, plan, reg, pr in _ac_promo)
+_ac_promo_pct = {}
+for k, plan, reg, pr in _ac_promo:
+    _ac_promo_pct.setdefault(k, (round((1 - pr[0] / reg) * 100), pr[1]))
+_ac_promo_txt = _ac_and([f"{_ac[k]['short']} takes {p}% off for the first {m} months" for k, (p, m) in _ac_promo_pct.items()]) if _ac_promo_pct else ""
+_ac_promo_simple = [(k, plan, reg, pr) for k, plan, reg, pr in _ac_promo if plan == _ac_lad[k][0][0]]
+# Add-on and usage costs stated in the vendor notes
+_ac_notes = {k: " ".join(_ac_depth[_ac[k]["name"]].get("notes", [])) for k in _ac_lad}
+_xp = re.search(r"Xero Payroll, powered by Gusto: \$([\d.]+) a month \+ \$([\d.]+) per employee or contractor", _ac_notes.get("xero", ""))
+_xr = next((p for f, p in _ac_depth.get("Xero", {}).get("first_plan", []) if f == "Auto-reconcile"), "") if "xero" in _ac_lad else ""
+_xr = re.search(r"optional on Early for \$([\d.]+)/mo", _xr)
+_qa = re.search(r"free up to a monthly allotment, then \$([\d.]+) per transaction", _ac_notes.get("quickbooks", ""))
+_qp = "pricing page does not list its price" in _ac_notes.get("quickbooks", "")
+_zu = re.search(r"Extra users cost \$([\d.]+) a month billed annually \(\$([\d.]+) monthly\)", _ac_notes.get("zohobooks", ""))
+_ac_mo = [(_ac[k]["short"], plan, reg, mo) for k, lad in _ac_lad.items() for plan, reg, mo, pr, us in lad if mo]
+_qau = {}
+for _r in _ac_depth.get("QuickBooks Online", {}).get("limits", {}).get("rows", []) if "quickbooks" in _ac_lad else []:
+    if _r[0] == "Accountant users":
+        _qau = dict(zip(_ac_depth["QuickBooks Online"]["limits"]["cols"], _r[1:]))
+_ac_extra = []
+if _xp:
+    _ac_extra.append(f"<li><b>Payroll.</b> Payroll is usually a separate subscription. Xero Payroll, powered by Gusto, costs {_fmt(float(_xp.group(1)))} a month plus {_fmt(float(_xp.group(2)))} per employee or contractor, or {_fmt(float(_xp.group(1)) + float(_xp.group(2)) * 10)} a month for 10 people, on top of any Xero plan."
+                     + (" QuickBooks offers payroll as an add-on at checkout but doesn't list its price on the accounting pricing page." if _qp else "")
+                     + ' Our <a href="/guides/payroll-software-cost/">payroll cost guide</a> compares the providers.</li>')
+if _fb_tm or _zu:
+    _ac_extra.append("<li><b>Extra people.</b> " + " ".join(x for x in (
+        f"FreshBooks charges {_fmt(float(_fb_tm.group(1)))} a month for each team member you add." if _fb_tm else "",
+        f"Zoho Books sells extra users for {_fmt(float(_zu.group(1)))} a month billed annually ({_fmt(float(_zu.group(2)))} monthly)." if _zu else "",
+        "Xero has no per-user fees on any plan." if "xero" in _ac_lad else "") if x) + "</li>")
+if _xr:
+    _ac_extra.append(f"<li><b>Feature add-ons.</b> Xero Early can add auto-reconcile for {_fmt(float(_xr.group(1)))} a month, which brings it to {_fmt(_ac_lad['xero'][0][1] + float(_xr.group(1)))}; Growing includes it.</li>")
+_ac_extra.append("<li><b>Payment and bill-pay fees.</b> "
+                 + (f"Wave's free plan charges card processing fees when customers pay invoices online. " if _wv else "")
+                 + (f"QuickBooks includes free standard ACH bill payments up to a monthly allotment, then charges {_fmt(float(_qa.group(1)))} per transaction. " if _qa else "")
+                 + "Online card and bank payments from customers carry processing fees with most tools, so check the rates if you get paid through your invoices.</li>")
+_ac_extra.append("<li><b>Your accountant or bookkeeper.</b> Most plans include free access for your accountant"
+                 + (f" (QuickBooks includes {" or ".join(sorted(set(_qau.values())))} accountant users depending on the plan)" if _qau else "")
+                 + ", but their fees for bookkeeping, month-end close and tax returns are a separate cost, and often a larger one than the software.</li>")
+if "intacct" in _ac:
+    _ac_extra.append(f'<li><b>Mid-market software.</b> {_ac["intacct"]["name"]} is {_ac["intacct"]["price_note"][0].lower() + _ac["intacct"]["price_note"][1:]}, and it needs implementation, so expect a quote that covers both. See our <a href="/tools/{_tslug(_ac["intacct"]["name"])}-review/">Sage Intacct review</a>.</li>')
+
+guide_page({
+    "slug": "accounting-software-cost", "crumb": "Accounting software cost", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-07", "kicker": "Pricing guide",
+    "title": f"How Much Does Accounting Software Cost in {YEAR}?",
+    "seo_title": f"How Much Does Accounting Software Cost? ({YEAR} Prices) | Vettlo",
+    "desc": "Accounting software prices at regular rates: entry plans, every tier, cost for 1 to 10 users, what intro discounts save and the add-ons to budget for.",
+    "card": "Regular prices, cost by team size, intro discounts and the add-ons.",
+    "answer": (f"Small business accounting software costs {_fmt(_ac_lo[0])} ({_ac_lo[1]}) to {_fmt(_ac_hi[0])} ({_ac_hi[1]}) a month at regular prices for the entry plan among the tools we rank, "
+               f"or {_fmt(_ac_lo[0] * 12)} to {_fmt(_ac_hi[0] * 12)} a year. It's priced per business, not per user, but plans cap users, invoices or clients, "
+               "so growing teams often pay for a mid-tier plan"
+               + (f", and {_ac_and(_ac_free)} {'has' if len(_ac_free) == 1 else 'have'} free plans" if _ac_free else "")
+               + ". Introductory discounts cut the first few months, not the price you'll pay after that."),
+    "sections": [
+        ("model", "How accounting software is priced", f"""<p>Small business accounting tools charge a <b>flat monthly fee for your business</b> (the company file or organization), not a fee per employee. What decides your price is which plan you need, and plans are gated in a few ways:</p>
+<ul><li><b>Users.</b> Some plans include a fixed number of people who can log in. QuickBooks Online steps up by users, while Xero has no per-user fees on any plan.</li>
+<li><b>Volume.</b> Entry plans may cap invoices and bills (Xero Early) or billable clients (FreshBooks Lite), and Zoho Books caps invoices, bills and records per year on every plan.</li>
+<li><b>Features.</b> {_ac_choose.get("Plan for inventory, projects and currencies.", "Inventory, projects and multi-currency usually start on mid-tier plans.")}</li>
+<li><b>Introductory offers.</b> {_ac_choose.get("Compare regular prices, not promotions.", "")}</li>
+<li><b>Billing period.</b> {f"{_ac_and(_ac_annual)} quotes {'its' if len(_ac_annual) == 1 else 'their'} headline price billed annually and charges more month to month; " if _ac_annual else ""}QuickBooks and Xero list monthly prices.</li></ul>
+<p>Mid-market financial software such as {_ac_and(_ac_quote) if _ac_quote else "Sage Intacct"} works differently: it's sold by module and priced by quote, usually with an implementation project.</p>"""),
+        ("prices", "Entry prices by tool", f"""<p>The cheapest paid plan for each accounting tool in our ranking, at the regular price:</p>
+{_ptable(_ac_rows)}
+<p class="small muted">{ACC['price_footnote']}</p>"""),
+        ("tiers", "Every plan and what it costs per year", f"""<p>The entry plan rarely fits for long once a second person needs access or you start tracking inventory. Every published plan, at the regular price from each vendor's pricing page:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Plan</th><th>Regular price per month</th><th>Users or limit</th><th>Per year</th></tr></thead><tbody>{_ac_tier_rows}</tbody></table></div>
+<p>Where the plan you need starts depends on the feature: inventory starts on QuickBooks Plus and Zoho Books Professional, multi-currency and projects on Xero Established, and project profitability on FreshBooks Premium. Our <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> comparison matches the two ladders plan by plan.</p>
+<h3>Cost by number of users</h3>
+<p>The cheapest plan that includes 1, 3, 5 and 10 users, per year at the regular price{f" (Zoho Books billed annually)" if "zohobooks" in _ac_lad else ""}:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th>{''.join(f'<th>{n} user{"s" if n > 1 else ""}</th>' for n in _ac_sizes)}</tr></thead><tbody>{_ac_size_rows}</tbody></table></div>
+<p>{"Xero's price doesn't change with users, but Early's caps of 20 invoices and 5 bills a month can push a busier business to Growing. " if "xero" in _ac_lad else ""}{f"Zoho Books can also add users to a plan for {_fmt(float(_zu.group(1)))} each a month instead of moving up a tier. " if _zu else ""}{f"FreshBooks adds {_fmt(float(_fb_tm.group(1)))} a month per team member, and Wave doesn't list user limits." if _fb_tm else ""}</p>"""),
+        ("promos", "Introductory discounts and other costs", f"""<p>{_ac_promo_txt + " for new customers. " if _ac_promo_txt else ""}That makes the first year cheaper, but the regular price applies once the offer ends. First year on the promotion compared with a full year at the regular price:</p>
+<div class="table-wrap"><table><thead><tr><th>Plan</th><th>Offer</th><th>First year with offer</th><th>Each year after</th></tr></thead><tbody>{_ac_promo_rows}</tbody></table></div>
+<p class="small muted">{"QuickBooks offers new customers either its 30-day free trial or the discount, not both. " if "alternative offer" in _ac_notes.get("quickbooks", "") else ""}Offers change often; check the vendor's page on the day you sign up.</p>
+<p>Beyond the plan itself, budget for:</p>
+<ul>{''.join(_ac_extra)}</ul>"""),
+        ("budget", "How to budget for accounting software", f"""<ol><li><b>Count the people who need access</b>, including a bookkeeper, and the invoices and bills you handle each month. Those set your plan.</li>
+<li><b>List the features you'll need within a year,</b> such as inventory, projects, multi-currency or bill approvals, and find the first plan on each tool that includes them.</li>
+<li><b>Multiply the regular price by 12,</b> then add payroll, extra users and any add-ons.</li>
+<li><b>{"Ask your accountant." if "Ask your accountant." in _ac_choose else "Talk to your accountant."}</b> {_ac_choose.get("Ask your accountant.", "Use the tool your accountant already knows.")}</li>
+<li><b>{"Make sure your bank connects." if "Make sure your bank connects." in _ac_choose else "Check bank feeds."}</b> {_ac_choose.get("Make sure your bank connects.", "Check that your bank is supported before you migrate.")}</li></ol>
+<p>Our <a href="{_ac_cat}">accounting software shortlist</a> scores {len(_ac_ranked)} tools on six weighted criteria, and our <a href="/tools/best-accounting-software-for-small-business/">small business list</a> reweights them for smaller teams. Read the reviews of {_ac_and([_ac_rv(k) for k in _ac_ranked])}, or see <a href="/tools/best-quickbooks-alternatives/">QuickBooks alternatives</a> if its regular price or user limits are the problem. Tracking receipts and company cards too? See our <a href="/tools/best-expense-management-software/">expense management shortlist</a>.</p>"""),
+    ],
+    "faqs": [
+        ("How much does accounting software cost per month?", f"Entry plans for the accounting tools we rank cost {_fmt(_ac_lo[0])} to {_fmt(_ac_hi[0])} a month at regular prices. Plans with more users, inventory or projects cost more; for example, "
+         + _ac_and([f"{_ac[k]['short']} {lad[-1][0]} is {_fmt(lad[-1][1])}" for k, lad in _ac_lad.items()]) + " a month." if _ac_lad else f"Entry plans cost {_fmt(_ac_lo[0])} to {_fmt(_ac_hi[0])} a month at regular prices."),
+        ("How much does QuickBooks Online cost?", _ac_faq.get("How much does QuickBooks Online cost?", "See our shortlist for current QuickBooks prices.")),
+        ("Is Xero cheaper than QuickBooks?", _ac_faq.get("Is Xero cheaper than QuickBooks?", "See our QuickBooks vs Xero comparison.")),
+        ("Is there free accounting software?", _ac_faq.get("What is the best free accounting software?", "Some tools have free plans; see our shortlist.")),
+    ],
+})

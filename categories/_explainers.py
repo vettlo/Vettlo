@@ -133,6 +133,7 @@ EXPLAIN = {
                      ("Bills and expenses", "Track what you owe and categorize spending."),
                      ("Financial reports", "Profit and loss, balance sheet and cash flow."),
                      ("Tax and accountant access", "Sales tax tracking and access for your accountant.")],
+        "guide": "/guides/accounting-software-cost/",
     },
     "best-video-conferencing-software": {
         "what": "Video conferencing software lets people meet over video and audio from a browser, desktop app or phone, with screen sharing, chat and recording. Business plans add longer and larger meetings, cloud recordings, AI summaries and the admin and security controls IT teams need.",

@@ -339,7 +339,9 @@
       "department": "Finance",
       "category": "best-accounting-software",
       "note": "Pricing guide",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-07",
+      "url": "/guides/accounting-software-cost/"
     },
     {
       "type": "guide",
