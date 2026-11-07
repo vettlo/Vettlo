@@ -51,6 +51,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best monday.com Alternatives](https://vettlo.com/tools/best-monday-alternatives/): Five tools for teams hitting monday.com's seat minimum, automation caps or Enterprise-only portfolios.
 - [Best Sales Engagement Platforms](https://vettlo.com/tools/best-sales-engagement-software/): Outreach tools scored on sequencing, deliverability, data and price.
 - [Best Apollo.io Alternatives](https://vettlo.com/tools/best-apollo-alternatives/): Five tools for teams outgrowing Apollo's credits or sending limits.
+- [Best Team Chat Apps](https://vettlo.com/tools/best-team-chat-apps/): Seven chat apps compared on free-plan history, calls, SSO and per-user price.
+- [Best Slack Alternatives](https://vettlo.com/tools/best-slack-alternatives/): Five chat apps with unlimited free history, cheaper SSO or chat bundled with your suite.
 - [Best Time Tracking Software](https://vettlo.com/tools/best-time-tracking-software/): Seven time trackers compared on free plans, approvals and per-user price.
 - [Best Toggl Alternatives](https://vettlo.com/tools/best-toggl-alternatives/): Five time trackers with bigger free plans, cheaper approvals or automatic tracking.
 - [Best Video Conferencing Software](https://vettlo.com/tools/best-video-conferencing-software/): Six meeting tools compared on free-plan limits, recording and per-user price.
@@ -80,6 +82,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Concord vs ContractSafe](https://vettlo.com/compare/concord-vs-contractsafe/): Concord and ContractSafe compared on price, features and fit.
 - [Freshservice vs Jira Service Management](https://vettlo.com/compare/freshservice-vs-jira-service-management/): Freshservice and Jira Service Management compared on price, features and fit.
 - [Workable vs Breezy HR](https://vettlo.com/compare/workable-vs-breezy-hr/): Workable and Breezy HR compared on price, features and fit.
+- [Slack vs Microsoft Teams](https://vettlo.com/compare/slack-vs-teams/): Slack and Microsoft Teams compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best applicant tracking systems for small business](https://vettlo.com/tools/best-applicant-tracking-systems-for-small-business/): Best applicant tracking systems for small business, from our scored shortlist.
@@ -110,6 +113,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best free project management tools](https://vettlo.com/tools/best-free-project-management-software/): Best free project management tools, from our scored shortlist.
 - [Best project management tools for small business](https://vettlo.com/tools/best-project-management-software-for-small-business/): Best project management tools for small business, from our scored shortlist.
 - [Best sales engagement platforms for small business](https://vettlo.com/tools/best-sales-engagement-software-for-small-business/): Best sales engagement platforms for small business, from our scored shortlist.
+- [Best free team chat apps](https://vettlo.com/tools/best-free-team-chat-apps/): Best free team chat apps, from our scored shortlist.
+- [Best team chat apps for small business](https://vettlo.com/tools/best-team-chat-apps-for-small-business/): Best team chat apps for small business, from our scored shortlist.
 - [Best free time tracking tools](https://vettlo.com/tools/best-free-time-tracking-software/): Best free time tracking tools, from our scored shortlist.
 - [Best time tracking tools for small business](https://vettlo.com/tools/best-time-tracking-software-for-small-business/): Best time tracking tools for small business, from our scored shortlist.
 - [Best free video conferencing tools](https://vettlo.com/tools/best-free-video-conferencing-software/): Best free video conferencing tools, from our scored shortlist.
@@ -240,6 +245,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Reply.io Review](https://vettlo.com/tools/reply-review/): Reply.io's pricing, pros, cons and score, from our sales engagement platforms ranking.
 - [lemlist Review](https://vettlo.com/tools/lemlist-review/): lemlist's pricing, pros, cons and score, from our sales engagement platforms ranking.
 - [Instantly Review](https://vettlo.com/tools/instantly-review/): Instantly's pricing, pros, cons and score, from our sales engagement platforms ranking.
+- [Slack Review](https://vettlo.com/tools/slack-review/): Slack's pricing, pros, cons and score, from our team chat apps ranking.
+- [Microsoft Teams Review](https://vettlo.com/tools/microsoft-teams-review/): Microsoft Teams's pricing, pros, cons and score, from our video conferencing tools ranking.
+- [Google Chat Review](https://vettlo.com/tools/google-chat-review/): Google Chat's pricing, pros, cons and score, from our team chat apps ranking.
+- [Zoom Workplace Review](https://vettlo.com/tools/zoom-workplace-review/): Zoom Workplace's pricing, pros, cons and score, from our video conferencing tools ranking.
+- [Pumble Review](https://vettlo.com/tools/pumble-review/): Pumble's pricing, pros, cons and score, from our team chat apps ranking.
+- [Zulip Review](https://vettlo.com/tools/zulip-review/): Zulip's pricing, pros, cons and score, from our team chat apps ranking.
+- [Chanty Review](https://vettlo.com/tools/chanty-review/): Chanty's pricing, pros, cons and score, from our team chat apps ranking.
 - [Clockify Review](https://vettlo.com/tools/clockify-review/): Clockify's pricing, pros, cons and score, from our time tracking tools ranking.
 - [Toggl Track Review](https://vettlo.com/tools/toggl-track-review/): Toggl Track's pricing, pros, cons and score, from our time tracking tools ranking.
 - [Everhour Review](https://vettlo.com/tools/everhour-review/): Everhour's pricing, pros, cons and score, from our time tracking tools ranking.
@@ -247,8 +259,6 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Harvest Review](https://vettlo.com/tools/harvest-review/): Harvest's pricing, pros, cons and score, from our time tracking tools ranking.
 - [TimeCamp Review](https://vettlo.com/tools/timecamp-review/): TimeCamp's pricing, pros, cons and score, from our time tracking tools ranking.
 - [Timely Review](https://vettlo.com/tools/timely-review/): Timely's pricing, pros, cons and score, from our time tracking tools ranking.
-- [Zoom Workplace Review](https://vettlo.com/tools/zoom-workplace-review/): Zoom Workplace's pricing, pros, cons and score, from our video conferencing tools ranking.
-- [Microsoft Teams Review](https://vettlo.com/tools/microsoft-teams-review/): Microsoft Teams's pricing, pros, cons and score, from our video conferencing tools ranking.
 - [Google Meet Review](https://vettlo.com/tools/google-meet-review/): Google Meet's pricing, pros, cons and score, from our video conferencing tools ranking.
 - [Webex Review](https://vettlo.com/tools/webex-review/): Webex's pricing, pros, cons and score, from our video conferencing tools ranking.
 - [Zoho Meeting Review](https://vettlo.com/tools/zoho-meeting-review/): Zoho Meeting's pricing, pros, cons and score, from our video conferencing tools ranking.

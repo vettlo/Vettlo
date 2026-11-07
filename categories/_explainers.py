@@ -191,4 +191,12 @@ EXPLAIN = {
                      ("Scorecards and collaboration", "Structured interview kits, scorecards and comments so hiring managers rate candidates the same way."),
                      ("Offers and reporting", "Offer letters and e-signatures, plus reports on time to hire, sources and EEO data.")],
     },
+    "best-team-chat-apps": {
+        "what": "A team chat app is a messaging tool for work, where conversations happen in channels organized by team, project or topic instead of long email threads. It adds direct and group messages, file sharing, search across past conversations, voice and video calls, and integrations that post updates from other tools into the right channel.",
+        "features": [("Channels and threads", "Public and private conversations by team or project, with replies kept together."),
+                     ("Search and message history", "Find past messages and files; free plans often limit how far back you can search."),
+                     ("Calls and huddles", "Quick voice or video calls and screen sharing without scheduling a meeting."),
+                     ("Integrations and bots", "Alerts and updates from other apps posted into channels, plus workflows that act on them."),
+                     ("Guests and external channels", "Work with clients, contractors and partners in shared channels, with admin controls.")],
+    },
 }

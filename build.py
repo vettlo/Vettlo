@@ -218,7 +218,7 @@ DEPTS = [
         ("best-customer-data-platforms", "Customer Data Platforms", "Unified customer profiles", False)]),
     ("Collaboration", "Meetings, chat and documents", [
         ("best-video-conferencing-software", "Video Conferencing Software", "Meetings, recordings and webinars", True),
-        ("best-team-chat-apps", "Team Chat Apps", "Channels, DMs and huddles", False),
+        ("best-team-chat-apps", "Team Chat Apps", "Channels, DMs and huddles", True),
         ("best-online-whiteboards", "Online Whiteboards", "Brainstorms, diagrams and workshops", False),
         ("best-document-management-software", "Document Management Software", "Storage, versions and permissions", False),
         ("best-e-signature-software", "E-Signature Software", "Send, sign and track agreements", True),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 7, 2026</span></div><h3><a href="/tools/best-team-chat-apps/">Best team chat apps</a></h3><p class="muted small">Seven chat apps compared on free-plan history, calls and SSO, from Pumble at $2.49 a seat with unlimited free history to Slack Pro at $7.25.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 7, 2026</span></div><h3><a href="/tools/best-applicant-tracking-systems/">Best applicant tracking systems</a></h3><p class="muted small">Seven ATS tools compared on pipelines, scheduling and AI, from Manatal at $15 a user to Breezy HR at $157 a month with unlimited users.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 6, 2026</span></div><h3><a href="/tools/best-itsm-software/">Best ITSM software</a></h3><p class="muted small">Six ITSM tools compared on ITIL processes, assets and AI, from free plans for 3 to 5 agents to change management at $39 a technician on SolarWinds.</p></article>
 <article><div class="meta"><span>Alternatives</span><span>Nov 6, 2026</span></div><h3><a href="/tools/best-monday-alternatives/">Best monday.com alternatives</a></h3><p class="muted small">Five tools for teams hitting monday.com's 3-seat minimum or automation caps, from Trello at $5 a user to Asana with unlimited automations at $10.99.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 5, 2026</span></div><h3><a href="/tools/best-contract-management-software/">Best contract management software</a></h3><p class="muted small">Seven CLM tools compared on approvals, AI and pricing basis, from a free Zoho Contracts plan to Concord at $499 a month for 5 users.</p></article>
 
 </div>
 </div></section>
