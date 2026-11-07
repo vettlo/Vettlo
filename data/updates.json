@@ -143,5 +143,25 @@
     "updated": "2026-11-06",
     "checked": "2026-11-06",
     "note": "Re-verified Outreach Amplify tiers and Salesloft pricing page (both still quote-only, packaging unchanged) and refreshed G2 review counts."
+  },
+  "/tools/best-payroll-software/": {
+    "updated": "2026-11-07",
+    "checked": "2026-11-07",
+    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-gusto-alternatives/": {
+    "updated": "2026-11-07",
+    "checked": "2026-11-07",
+    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/compare/gusto-vs-quickbooks-payroll/": {
+    "updated": "2026-11-07",
+    "checked": "2026-11-07",
+    "note": "Re-verified Gusto Simple and Plus and all three QuickBooks Workforce plan prices, direct deposit speeds and HR tiers on vendor pages (no changes) and refreshed G2 review counts."
+  },
+  "/compare/mailchimp-vs-brevo/": {
+    "updated": "2026-11-07",
+    "checked": "2026-11-07",
+    "note": "Re-verified Mailchimp and Brevo entry prices, free plans, seats, send limits and automation limits on vendor pages; Brevo's extra Standard seat corrected to $9 a month, and G2 review counts refreshed."
   }
 }

@@ -583,5 +583,113 @@
       "Academy, community and in-app guides are included at no charge.",
       "Limits come from Ironclad's FY2026 product descriptions (version 1.7, effective Sep 2, 2026) and apply unless the Order Form says otherwise; AI credits can be bought beyond an edition's allowance."
     ]
+  },
+  "Gong": {
+    "checked": "2026-11-07",
+    "source": ["Gong pricing", "https://www.gong.io/pricing"],
+    "plans": [
+      ["Gong Foundation", "Pricing on request", "Core license every plan starts with; licenses are priced per user, plus a platform fee based on the number of users supported"],
+      ["Enable Essentials", "Pricing on request", "Application seats for AI-based coaching for sales teams"],
+      ["Forecast Essentials", "Pricing on request", "Application seats for pipeline visibility and deal intelligence for forecasting"],
+      ["Gong Forecast", "Pricing on request", "Application seats for forecasting tools and AI-powered data for submitting forecast numbers"],
+      ["Gong Engage", "Pricing on request", "Application seats for outreach prioritization, personalization and automation"],
+      ["Data Cloud", "Pricing on request", "Exporting Gong data to external platforms and BI tools"]
+    ],
+    "first_plan": [
+      ["Integrations with your existing tech stack (free)", "Gong Foundation"],
+      ["Everyday AI: email writing, meeting prep, Gong Assistant (no credits used)", "Gong Foundation"],
+      ["Pool of Gong Credits for Gong Agents", "Included with seats"],
+      ["AI-based coaching", "Enable Essentials"],
+      ["Pipeline visibility and deal intelligence", "Forecast Essentials"],
+      ["Forecast submission tools", "Gong Forecast"],
+      ["Outreach automation and prioritization", "Gong Engage"],
+      ["Export to BI tools and external platforms", "Data Cloud"]
+    ],
+    "limits": {
+      "cols": ["Any plan"],
+      "rows": [
+        ["Paid seats", "Up to the number in your contract; core license plus each application has its own seat count"],
+        ["Collaborators (no seat)", "Free, with limited access to Gong"],
+        ["Gong Credits", "A pool sized for standard agent use comes with seats; more can be bought"]
+      ]
+    },
+    "notes": [
+      "The pricing page shows no prices: Gong builds a proposal from user count, selected modules (forecasting, engagement, enablement) and required integrations.",
+      "No free trial is mentioned on Gong's pricing page or FAQ.",
+      "The plan structure applies to contracts renewed from March 2025, per Gong's help center; older customers may still be on legacy plans such as Core Professional.",
+      "Seats added after renewal are billed separately, prorated to the end of the term, and need both the core license and the matching application."
+    ]
+  },
+  "Brex": {
+    "checked": "2026-11-07",
+    "source": ["Brex pricing", "https://www.brex.com/pricing"],
+    "plans": [
+      ["Essentials", "$0 per user/month", "Global card acceptance with 1 local card program, AI-powered custom rules, up to two entities, accounting integrations, local currency wires, travel booking, bill pay, reimbursements, real-time reporting and API access"],
+      ["Premium", "$12 per user/month", "Everything in Essentials plus multiple customizable expense policies, dynamic review chains, AI compliance audit, advanced approvals, multi-entity (US and international), customizable ERP and HRIS integrations, VAT documentation, group travel and live budgets"],
+      ["Enterprise", "Custom pricing", "Everything in Premium plus unlimited US or global entities, local card issuance, collections, reimbursements and policies, a named account manager, admin center and customizable implementation"]
+    ],
+    "first_plan": [
+      ["Bill pay and reimbursements", "Essentials"],
+      ["Travel booking", "Essentials"],
+      ["Accounting integrations", "Essentials"],
+      ["AI-powered custom rules", "Essentials"],
+      ["Multiple customizable expense policies", "Premium"],
+      ["Live budgets", "Premium"],
+      ["Customizable ERP and HRIS integrations", "Premium"],
+      ["VAT documentation", "Premium"],
+      ["Local card issuance in other countries", "Enterprise"],
+      ["Named account manager", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Essentials", "Premium", "Enterprise"],
+      "rows": [
+        ["Price per user", "$0", "$12/month", "Custom"],
+        ["Entities", "Up to two (1 global)", "Multi-entity, US and international", "Unlimited US or global"],
+        ["Local card programs", "1", "Not stated", "Local card issuance"]
+      ]
+    },
+    "notes": [
+      "Cards are accepted in 210+ countries and territories on every plan.",
+      "The page lists no user cap, minimum or platform fee.",
+      "The page's comparison table lists local-currency cards in 50+ countries on all tiers, while its plan lists put local card issuance on Enterprise.",
+      "A separate Smart Card offering for procurement is priced by quote."
+    ]
+  },
+  "BambooHR": {
+    "checked": "2026-11-07",
+    "source": ["BambooHR pricing", "https://www.bamboohr.com/pricing/"],
+    "plans": [
+      ["Core", "$250/month flat for 25 or fewer employees; $10 per employee/month above 25", "Employee records, custom reports, workflows and approvals, hiring and onboarding, time off with unlimited custom policies, benefits tracking, eNPS, compliance intelligence, On-Demand Pay and AI Assistant"],
+      ["Pro", "$425/month flat for 25 or fewer employees; $17 per employee/month above 25", "Everything in Core plus 360° review cycles, 1:1s, employee community, recognition and rewards"],
+      ["Elite", "$650/month flat for 25 or fewer employees; $25 per employee/month above 25", "Everything in Pro plus compensation planning, salary benchmarking (Mercer), levels and bands, custom dashboards, HR benchmarks and premium services"],
+      ["Add-ons: Payroll, Benefits Administration, Time & Attendance, Global Employment", "Pricing on request", "Payroll and benefits administration are for US employees only"]
+    ],
+    "first_plan": [
+      ["Applicant tracking and onboarding", "Core"],
+      ["Time off with unlimited custom policies", "Core"],
+      ["eNPS and employee wellbeing", "Core"],
+      ["Custom report builder and workflows", "Core"],
+      ["360° reviews and 1:1s", "Pro"],
+      ["Recognition and rewards", "Pro"],
+      ["Compensation planning and salary benchmarking", "Elite"],
+      ["HR benchmarks and custom dashboards", "Elite"],
+      ["Dedicated support", "Elite"]
+    ],
+    "limits": {
+      "cols": ["Core", "Pro", "Elite"],
+      "rows": [
+        ["Job openings", "5", "25", "50"],
+        ["Compliance training courses", "1", "15", "300+"],
+        ["Flat rate covers", "Up to 25 employees", "Up to 25 employees", "Up to 25 employees"],
+        ["Data integrity services", "Not listed", "Not listed", "2 hours a year"],
+        ["New administrator training sessions", "Not listed", "Not listed", "2 a year"]
+      ]
+    },
+    "notes": [
+      "Above 25 employees you pay per employee, with volume discounts applied automatically; the page's FAQ gives $10.25 (Core) and $17.50 (Pro) per employee, against $10 and $17 in the plan headers.",
+      "Month-to-month terms or a longer term are offered.",
+      "Payroll plus Benefits Administration with any plan gets a 15% bundle discount (US employees); registered nonprofits get an extra 15%.",
+      "No free trial is listed; the page offers a free price quote."
+    ]
   }
 }

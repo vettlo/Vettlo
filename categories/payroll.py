@@ -1,4 +1,4 @@
-# Payroll software. Prices and G2 ratings checked Oct 28, 2026.
+# Payroll software. Prices and G2 ratings checked Oct 28, 2026; re-verified Nov 7, 2026.
 PAY = {
     "slug": "best-payroll-software",
     "plural": "Payroll Software",
@@ -12,13 +12,13 @@ PAY = {
     ],
     "criteria": [("Payroll & tax filing", 25), ("Compliance & multi-state", 15), ("HR & benefits", 15),
                  ("Time tracking & integrations", 10), ("Ease of use", 15), ("Price & value", 20)],
-    "price_footnote": "Starting prices are the entry plan that files payroll taxes for you, from each vendor's pricing page on Oct 28, 2026, billed monthly. Gusto's pricing page didn't load for us; its Simple price is from Gusto's comparison pages, and its Plus and Premium prices from a pricing guide published on gusto.com. Patriot and QuickBooks also advertise introductory discounts; these are the regular prices. Rippling lists only its per-employee starting price; ADP prices by quote.",
+    "price_footnote": "Starting prices are the entry plan that files payroll taxes for you, from each vendor's pricing page on Nov 7, 2026, billed monthly. Gusto's pricing page didn't load for us; its Simple price is from Gusto's comparison pages and its Plus price from a guide published on gusto.com, while its Premium price is as last published by Gusto and could not be re-confirmed. Patriot and QuickBooks also advertise introductory discounts; these are the regular prices. Rippling lists only its per-employee starting price and $40 monthly base fee; ADP prices by quote.",
     "tools": {
         "gusto": {
             "name": "Gusto", "short": "Gusto", "url": "https://gusto.com/",
             "bf": "Best for small businesses that want payroll, benefits and core people tools in one place",
             "price": "$49/mo + $6/person", "price_note": "Simple, single-state; Plus $80 + $12/person; Premium $180 + $22/person", "trial": "Free to set up; you pay once you run payroll", "trial_short": "Free until first payroll",
-            "g2": ("4.6", "13,677", "https://www.g2.com/products/gusto/reviews"),
+            "g2": ("4.6", "13,942", "https://www.g2.com/products/gusto/reviews"),
             "scores": [5, 4.5, 4.5, 4, 4.5, 3.5],
             "what": "Gusto is full-service payroll with built-in HR and benefits administration. Simple ($49 a month plus $6 per person) covers single-state payroll, tax filing and core HR; Plus ($80 plus $12 per person) adds multi-state payroll, next-day direct deposit and time tracking; Premium ($180 plus $22 per person) adds access to HR experts. A Contractor plan costs $35 a month plus $6 per contractor.",
             "who": "Small businesses that want payroll, health benefits administration and core HR handled by one tool.",
@@ -32,7 +32,7 @@ PAY = {
             "name": "OnPay", "short": "OnPay", "url": "https://onpay.com/",
             "bf": "Best value for multi-state payroll",
             "price": "$49/mo + $6/person", "price_note": "One plan; HR add-on $15 + $2/worker, time tracking $15 + $4/worker", "trial": "First month free", "trial_short": "1 month free",
-            "g2": ("4.8", "422", "https://www.g2.com/products/onpay/reviews"),
+            "g2": ("4.8", "424", "https://www.g2.com/products/onpay/reviews"),
             "scores": [4.5, 5, 3.5, 3.5, 4.5, 4.5],
             "what": "OnPay is full-service payroll with one base plan: $49 a month plus $6 per person paid. It includes unlimited pay runs, tax filings and payments in all 50 states, W-2s and 1099s, and integrations with no extra fee. HR tools, time tracking, compliance resources and live HR support are paid add-ons.",
             "who": "Small businesses with employees or contractors in more than one state that want one simple price.",
@@ -44,21 +44,21 @@ PAY = {
         "rippling": {
             "name": "Rippling", "short": "Rippling", "url": "https://www.rippling.com/",
             "bf": "Best for growing companies that want payroll, benefits and employee records in one system",
-            "price": "From $8/employee/mo", "price_note": "Plus a monthly base fee; quoted by the products you choose", "trial": "No trial listed; 6 months free for eligible VC-backed startups", "trial_short": "Quote",
-            "g2": ("4.7", "14,754", "https://www.g2.com/products/rippling/reviews"),
+            "price": "From $8/employee/mo", "price_note": "Plus a $40/mo base fee; final price quoted by the products you choose", "trial": "No trial listed; 6 months free for eligible VC-backed startups", "trial_short": "Quote",
+            "g2": ("4.7", "15,061", "https://www.g2.com/products/rippling/reviews"),
             "scores": [4.5, 4.5, 5, 5, 3.5, 2.5],
-            "what": "Rippling is a modular workforce platform. You pick products, such as payroll, global payroll, contractor payments, HRIS, benefits administration and time and attendance, and Rippling quotes a price that starts at $8 per employee per month plus a monthly base fee.",
+            "what": "Rippling is a modular workforce platform. You pick products, such as payroll, global payroll, contractor payments, HRIS, benefits administration and time and attendance, and Rippling quotes a price that starts at $8 per employee per month plus a $40 monthly base fee.",
             "who": "Companies that expect to add HR, benefits, time tracking or international hires to payroll.",
             "why": "It has the widest product range here, so payroll, HR records, benefits and time tracking share one employee database as the company grows.",
             "pros": ["Payroll, HRIS, benefits and time tracking on one employee record", "Global payroll and contractor payments in the same platform", "Rated 4.7/5 on G2 across more than 14,000 reviews"],
-            "cons": ["Only a starting price is published; the base fee and module prices come from a quote", "No free trial listed", "More setup than a payroll-only tool"],
+            "cons": ["Only the $8 starting price and $40 base fee are published; module prices come from a quote", "No free trial listed", "More setup than a payroll-only tool"],
             "skip": "You only need to pay a handful of employees in one state.",
         },
         "adp_run": {
             "name": "RUN Powered by ADP", "short": "ADP RUN", "url": "https://www.adp.com/what-we-offer/products/run-powered-by-adp.aspx",
             "bf": "Best for small businesses that want a large provider's compliance and help desk services",
             "price": "Pricing on request", "price_note": "Four packages: Essential, Enhanced, Complete and HR Pro", "trial": "Promotional free months for new customers", "trial_short": "Free months (promo)",
-            "g2": ("4.7", "6,641", "https://www.g2.com/products/run-powered-by-adp/reviews"),
+            "g2": ("4.7", "6,768", "https://www.g2.com/products/run-powered-by-adp/reviews"),
             "scores": [5, 4.5, 4.5, 4, 4, 2],
             "what": "RUN Powered by ADP is ADP's payroll service for businesses with 1 to 49 employees. Essential covers payroll, direct deposit, tax filing, multi-state payroll and onboarding; Enhanced adds state unemployment management, job costing and labor law posters; Complete adds an HR HelpDesk and handbook wizard; HR Pro adds applicant tracking, training and legal assistance.",
             "who": "Small businesses that expect to need HR help desk support, compliance services and add-ons such as workers' compensation from one large provider.",
@@ -97,7 +97,7 @@ PAY = {
             "name": "QuickBooks Payroll", "short": "QuickBooks Payroll", "url": "https://quickbooks.intuit.com/payroll/",
             "bf": "Best for faster direct deposit on entry plans",
             "price": "$50/mo + $7/employee", "price_note": "Workforce Payroll; Premium $88 + $13; Elite $134 + $17", "trial": "30-day trial of the base price, or 50% off for 3 months", "trial_short": "30-day trial",
-            "g2": ("4.4", "514", "https://www.g2.com/products/intuit-quickbooks-payroll/reviews"),
+            "g2": ("4.4", "526", "https://www.g2.com/products/intuit-quickbooks-payroll/reviews"),
             "scores": [4.5, 4, 3.5, 4, 4, 3],
             "what": "QuickBooks Payroll, now sold as QuickBooks Workforce, works with or without QuickBooks Online. Workforce Payroll ($50 a month plus $7 per employee) includes next-day direct deposit; Premium ($88 plus $13) adds same-day direct deposit, time tracking and an HR resource center; Elite ($134 plus $17) adds expert setup, a certified HR advisor and tax penalty protection up to $25,000 a year.",
             "who": "Small businesses whose bookkeeping already runs in QuickBooks Online and want payroll to post there automatically.",
@@ -118,7 +118,7 @@ PAY = {
         ("What is the best payroll software for small businesses?", "Gusto scores highest in our ranking (88/100) for small businesses that want payroll, benefits and HR in one place. OnPay (87/100) is the best value if you pay people in more than one state, since all 50 states are included for $49 a month plus $6 per person."),
         ("How much does payroll software cost?", "Most small-business payroll costs a monthly base fee plus a per-person fee. At published prices, full-service payroll for 10 employees costs $87 a month on Patriot Full Service, $95 on Square Payroll, $109 on Gusto Simple or OnPay and $120 on QuickBooks Workforce Payroll."),
         ("What is the cheapest payroll software?", "Patriot Basic is $17 a month plus $4 per worker, but you file payroll taxes yourself. For full-service payroll that files taxes, Patriot ($37 + $5 per worker) and Square Payroll ($35 + $6 per person) are the cheapest here."),
-        ("Does ADP publish RUN prices?", "No. Each RUN Powered by ADP package (Essential, Enhanced, Complete and HR Pro) shows a Get pricing button, and ADP was advertising free months for new customers when we checked on Oct 28, 2026."),
+        ("Does ADP publish RUN prices?", "No. Each RUN Powered by ADP package (Essential, Enhanced, Complete and HR Pro) shows a Get pricing button, and ADP was advertising up to 6 months free for businesses that switch when we checked on Nov 7, 2026."),
     ],
     "related": [("/tools/best-gusto-alternatives/", "Best Gusto alternatives"), ("/tools/best-accounting-software/", "Best accounting software"), ("/hr-software/", "All HR software")],
 }
@@ -151,7 +151,7 @@ alternatives_page(PAY, "gusto", "best-gusto-alternatives",
     [("What is the best alternative to Gusto?", "OnPay for most small businesses: it costs the same $49 a month plus $6 per person as Gusto Simple but includes payroll and tax filing in all 50 states."),
      ("What is cheaper than Gusto?", "For 10 employees, Square Payroll costs $95 a month and Patriot Full Service $87, against $109 for Gusto Simple and $200 for Gusto Plus at published prices."),
      ("Which Gusto alternative is best for multi-state payroll?", "OnPay and Square Payroll include multi-state payroll on their only full-service plan; Gusto needs Plus."),
-     ("Which Gusto alternative is best for a growing company?", "Rippling, which adds HRIS, benefits, time tracking and global payroll on the same platform, priced by quote from $8 per employee per month plus a base fee.")],
+     ("Which Gusto alternative is best for a growing company?", "Rippling, which adds HRIS, benefits, time tracking and global payroll on the same platform, priced by quote from $8 per employee per month plus a $40 monthly base fee.")],
     [("/tools/best-payroll-software/", "Best payroll software"), ("/hr-software/", "All HR software")])
 
 CATEGORY_PAGES += [
