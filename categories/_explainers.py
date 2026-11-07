@@ -182,4 +182,12 @@ EXPLAIN = {
                      ("Repository and AI extraction", "Searchable storage that pulls out parties, dates, values and terms automatically."),
                      ("Renewal and obligation alerts", "Reminders before renewal, notice and expiry dates, and tracking of what each party owes.")],
     },
+    "best-applicant-tracking-systems": {
+        "what": "An applicant tracking system (ATS) manages hiring from job post to offer. It publishes openings to a careers page and job boards, collects every application in a pipeline, and lets recruiters and hiring managers screen candidates, schedule interviews, share feedback and send offers, keeping a record of each step for reporting and compliance.",
+        "features": [("Job posting and careers page", "Publish openings to a branded careers site and job boards from one place."),
+                     ("Candidate pipeline", "Stages for every role, with resume parsing, bulk actions and automations that move candidates on."),
+                     ("Interview scheduling", "Calendar sync and self-scheduling links so candidates pick a time without email back-and-forth."),
+                     ("Scorecards and collaboration", "Structured interview kits, scorecards and comments so hiring managers rate candidates the same way."),
+                     ("Offers and reporting", "Offer letters and e-signatures, plus reports on time to hire, sources and EEO data.")],
+    },
 }

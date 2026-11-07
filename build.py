@@ -174,7 +174,7 @@ DEPTS = [
     ("HR & people", "Hiring, payroll and people data", [
         ("best-hris-software", "HRIS Software", "Employee records, time off and onboarding", True),
         ("best-payroll-software", "Payroll Software", "Pay runs, taxes and benefits", True),
-        ("best-applicant-tracking-systems", "Applicant Tracking Systems", "Job posts, pipelines and interviews", False),
+        ("best-applicant-tracking-systems", "Applicant Tracking Systems", "Job posts, pipelines and interviews", True),
         ("best-performance-management-software", "Performance Management Software", "Reviews, goals and feedback", False),
         ("best-employee-engagement-software", "Employee Engagement Software", "Pulse surveys and recognition", False),
         ("best-time-and-attendance-software", "Time and Attendance Software", "Clock-ins, shifts and overtime", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 7, 2026</span></div><h3><a href="/tools/best-applicant-tracking-systems/">Best applicant tracking systems</a></h3><p class="muted small">Seven ATS tools compared on pipelines, scheduling and AI, from Manatal at $15 a user to Breezy HR at $157 a month with unlimited users.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 6, 2026</span></div><h3><a href="/tools/best-itsm-software/">Best ITSM software</a></h3><p class="muted small">Six ITSM tools compared on ITIL processes, assets and AI, from free plans for 3 to 5 agents to change management at $39 a technician on SolarWinds.</p></article>
 <article><div class="meta"><span>Alternatives</span><span>Nov 6, 2026</span></div><h3><a href="/tools/best-monday-alternatives/">Best monday.com alternatives</a></h3><p class="muted small">Five tools for teams hitting monday.com's 3-seat minimum or automation caps, from Trello at $5 a user to Asana with unlimited automations at $10.99.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 5, 2026</span></div><h3><a href="/tools/best-contract-management-software/">Best contract management software</a></h3><p class="muted small">Seven CLM tools compared on approvals, AI and pricing basis, from a free Zoho Contracts plan to Concord at $499 a month for 5 users.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 5, 2026</span></div><h3><a href="/tools/best-expense-management-software/">Best expense management software</a></h3><p class="muted small">Seven expense tools compared on cards, receipts and approvals, from free Brex, Ramp and BILL plans to Zoho Expense at $3 a user.</p></article>
 
 </div>
 </div></section>
