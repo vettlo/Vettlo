@@ -691,5 +691,106 @@
       "Payroll plus Benefits Administration with any plan gets a 15% bundle discount (US employees); registered nonprofits get an extra 15%.",
       "No free trial is listed; the page offers a free price quote."
     ]
+  },
+  "Workable": {
+    "checked": "2026-11-08",
+    "source": ["Workable pricing", "https://www.workable.com/pricing"],
+    "plans": [
+      ["Standard", "$299/mo or $3,588/yr (1 to 20 employees)", "Recruiting (sourcing suite, ATS, unlimited active jobs subject to fair use, hiring plan, custom report builder) plus HR (HRIS, onboarding, time off, time tracking, e-signatures, payroll preparation); monthly or annual billing"],
+      ["Premier", "$599/mo or $7,188/yr (1 to 20 employees), billed annually", "Everything in Standard, plus texting, video interviews, assessments, referrals and Performance & Engagement included"],
+      ["Enterprise", "$719/mo or $8,628/yr (1 to 20 employees), billed annually", "Everything in Premier, plus the complete Enterprise feature set"]
+    ],
+    "first_plan": [
+      ["Applicant tracking and candidate sourcing suite", "Standard"],
+      ["Unlimited active jobs (fair use)", "Standard"],
+      ["Custom report builder", "Standard"],
+      ["HRIS, onboarding, time off and e-signatures", "Standard"],
+      ["Job Brief Agent", "Standard"],
+      ["Texting, video interviews and assessments included", "Premier"],
+      ["Referrals", "Premier"],
+      ["Performance & Engagement", "Premier"]
+    ],
+    "limits": {
+      "cols": ["Standard", "Premier", "Enterprise"],
+      "rows": [
+        ["Active jobs", "Unlimited (fair use)", "Unlimited (fair use)", "Unlimited (fair use)"],
+        ["Free AI credits to start", "3,000", "3,000", "3,000"],
+        ["Billing", "Monthly or annual", "Annual only", "Annual only"]
+      ]
+    },
+    "notes": [
+      "Prices shown are for the 1 to 20 employee band; the page lists nine employee bands up to 1000+ and prices rise with company size.",
+      "Add-ons on Standard: Texting+ $89/mo, Video interviews+ $109/mo, Assessments+ $59/mo, Performance & Engagement+ $39/mo.",
+      "AI credits: every paid account starts with 3,000 free credits; bundles are 5,000 for $600, 10,000 for $1,000 and 50,000 for $4,750, and credits expire 1 year from purchase.",
+      "The Sourcing, Screening and Engagement Agents are add-ons that use AI credits.",
+      "15-day free trial with no credit card; the trial doesn't include Workable Agent."
+    ]
+  },
+  "Nooks": {
+    "checked": "2026-11-08",
+    "source": ["Nooks pricing", "https://www.nooks.ai/pricing"],
+    "plans": [
+      ["AI Dialer", "Pricing on request", "Parallel and power dialing, answer detection, number rotation for spam protection, voicemail drops, live battlecards, virtual sales floor with listen-in and whisper coaching"],
+      ["AI Sequencing", "Pricing on request", "Multi-channel sequences (call, email, SMS, social), prospect sourcing, AI email drafting, deliverability controls"],
+      ["Signals and Intelligence", "Pricing on request", "100+ pre-built buying signals, custom signal builder, intent scoring, account research, dynamic lists"],
+      ["AI Coaching", "Pricing on request", "AI roleplay bots, call library with recording and transcription, AI call scoring, call insights"],
+      ["Contact Data Enrichment", "Pricing on request", "Number verification, catch-all and verified emails, waterfall enrichment, mobile number enrichment"]
+    ],
+    "first_plan": [
+      ["Parallel dialing", "AI Dialer"],
+      ["Listen-in and whisper coaching", "AI Dialer"],
+      ["Voicemail drops", "AI Dialer"],
+      ["Multi-channel sequences", "AI Sequencing"],
+      ["Buying signals and intent scoring", "Signals and Intelligence"],
+      ["AI roleplay and call scoring", "AI Coaching"],
+      ["Mobile number enrichment", "Contact Data Enrichment"]
+    ],
+    "notes": [
+      "The pricing page shows no prices, plan tiers or limits; Nooks gives a custom quote through its pricing form or a demo.",
+      "No free trial terms are listed on the pricing page.",
+      "Contact data from ZoomInfo, Cognism or LeadIQ is passed through by API and needs your own subscription with those providers; the FAQ also mentions a data package with providers such as Wiza, People Data Labs and Apollo.",
+      "Nooks integrates with HubSpot and Salesforce; other CRMs can use the dialer by uploading a CSV."
+    ]
+  },
+  "LiveChat": {
+    "checked": "2026-11-08",
+    "source": ["LiveChat pricing", "https://www.livechat.com/pricing/"],
+    "plans": [
+      ["Essential", "$19/user/mo billed annually ($228/user/yr) or $25 monthly", "Chat and inbox, ticketing, Shopify selling, workflow automation, AI Copilot and 1 AI Agent"],
+      ["Growth", "$79/user/mo billed annually ($948/user/yr) or $99 monthly", "Everything in Essential, plus chat supervision and takeover, shared canned responses, unlimited chat history, team performance reports, chat topic insights and summaries"],
+      ["Enterprise", "Custom", "Everything in Growth, plus custom AI Agents, SLAs, white-label widget, SSO and audit logs, dedicated team and onboarding"]
+    ],
+    "first_plan": [
+      ["AI Copilot and AI Agent", "Essential"],
+      ["Workflow automation", "Essential"],
+      ["Chat supervision and takeover", "Growth"],
+      ["Shared canned responses", "Growth"],
+      ["Unlimited chat history", "Growth"],
+      ["Team performance reports", "Growth"],
+      ["Chat and ticket summaries", "Growth"],
+      ["SSO and audit logs", "Enterprise"],
+      ["White-label widget", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Essential", "Growth"],
+      "rows": [
+        ["AI Agents", "1", "10"],
+        ["AI resolutions a month", "10", "200"],
+        ["Live visitors tracked", "50", "400"],
+        ["Chat history", "60 days", "Unlimited"],
+        ["Teams", "1", "10"],
+        ["Workflow rules", "3", "10"],
+        ["Workflow executions", "300", "1,000"],
+        ["Proactive campaigns", "3", "30"],
+        ["Included API calls a month", "10,000", "20,000"],
+        ["Files and data storage", "2 GB + 50 MB/user", "15 GB + 100 MB/user"]
+      ]
+    },
+    "notes": [
+      "14-day free trial on Essential and Growth with no credit card; you're not charged automatically when it ends.",
+      "Add-ons: 50 extra AI resolutions for $49.50 and 100,000 extra API calls for $29.50 on either plan.",
+      "Monthly plans can be cancelled anytime; annual plans run for 12 months. Prices exclude sales tax.",
+      "Enterprise is priced by quote after a call; legacy LiveChat plans are on a separate page."
+    ]
   }
 }
