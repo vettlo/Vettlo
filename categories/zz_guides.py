@@ -818,3 +818,99 @@ guide_page({
         ("Is there free accounting software?", _ac_faq.get("What is the best free accounting software?", "Some tools have free plans; see our shortlist.")),
     ],
 })
+
+
+# ---------- What is an HRIS?
+_hr = HRIS["tools"]
+_hr_ranked = HRIS["_ranked"]
+_hr_cat = "/tools/best-hris-software/"
+_hr_faq = dict(HRIS["faqs"])
+_hr_choose = dict(HRIS["choose"])
+_hr_and = lambda xs: xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+_hr_rv = lambda k: (f'<a href="{REVIEW_URL[_hr[k]["name"]]}">{_hr[k]["name"]}</a>' if _hr[k]["name"] in REVIEW_URL else _hr[k]["name"])
+_hr_by = lambda *ks: _hr_and([_hr_rv(k) for k in ks if k in _hr_ranked]) if any(k in _hr_ranked for k in ks) else ""
+_hr_rows = [(f'<a href="{_hr_cat}#{k}">{_hr[k]["name"]}</a>', _hr[k]["price"], _hr[k]["price_note"], _hr[k]["trial"]) for k in _hr_ranked]
+_hr_quote = [_hr[k]["name"] for k in _hr_ranked if not _money(_hr[k]["price"])]
+_hr_free = [_hr[k]["name"] for k in _hr_ranked if re.search(r"free plan", _hr[k]["trial"], re.I)]
+_hr_feats = "".join(f"<li><b>{a}.</b> {b}</li>" for a, b in EXPLAIN["best-hris-software"]["features"])
+
+
+def _hr_cost(k, n):
+    """Monthly cost of a tool's published entry plan for n employees, read from its price strings; None if not published or n is outside the plan."""
+    p, note = _hr[k]["price"], _hr[k]["price_note"]
+    v = _money(p)
+    if not v:
+        return None
+    if re.search(r"/(employee|user)/", p):
+        cap = re.search(r"up to (\d+) employees", note)
+        if cap and n > int(cap.group(1)):
+            return None
+        mn = re.search(r"from (\d+) users", note)
+        return v * max(n, int(mn.group(1)) if mn else n)
+    flat = re.search(r"for (\d+) users", p) or re.search(r"up to (\d+) employees", note)
+    return v if flat and n <= int(flat.group(1)) else None
+
+
+_hr_sizes = (10, 20)
+_hr_unit = lambda k: ("Per employee" if "/employee/" in _hr[k]["price"] else "Per user" if "/user/" in _hr[k]["price"]
+                      else "Flat fee for a headcount band" if _money(_hr[k]["price"]) else "Quote")
+_hr_plan = lambda k: (lambda l: "Entry paid plan" if l.startswith("Paid plans") else l)(_hr[k]["price_note"].split(";")[0].split(",")[0])
+_hr_cost_rows = "".join(f'<tr><td>{_hr[k]["name"]}</td><td>{_hr_plan(k)}</td><td>{_hr_unit(k)}</td>'
+                        + "".join(f"<td>{_fmt(_hr_cost(k, n)) if _hr_cost(k, n) is not None else 'Quote'}</td>" for n in _hr_sizes) + "</tr>"
+                        for k in _hr_ranked if _money(_hr[k]["price"]))
+_hr_20 = sorted((_hr_cost(k, 20), _hr[k]["name"], k) for k in _hr_ranked if _hr_cost(k, 20) is not None)
+_hr_lo, _hr_hi = _hr_20[0], _hr_20[-1]
+_hr_yr = lambda k: ", billed yearly" if "billed yearly" in _hr[k]["price_note"] else ""
+_hr_lo_n, _hr_hi_n = _hr_lo[1] + _hr_yr(_hr_lo[2]), _hr_hi[1] + _hr_yr(_hr_hi[2])
+_hr_mod = [_hr[k]["name"] for k in _hr_ranked if "module" in _hr[k]["price_note"].lower() and _money(_hr[k]["price"])]
+_ats_faq = dict(ATS["faqs"]) if "ATS" in globals() else {}
+
+guide_page({
+    "slug": "what-is-an-hris", "crumb": "What is an HRIS?", "dept": "HR & people", "cats": ["best-hris-software"],
+    "date": "2026-11-08", "kicker": "Explainer",
+    "title": "What Is an HRIS? Features, Types and Cost",
+    "seo_title": "What Is an HRIS? Features, Types and Cost | Vettlo",
+    "desc": "HRIS software explained: what an HRIS does, how it differs from HRMS, HCM, payroll and an ATS, the main types and what 10 or 20 employees cost.",
+    "card": "What an HRIS does, how it differs from payroll and HCM, and what it costs.",
+    "answer": ("An HRIS (human resources information system) is the system of record for your employees: profiles, job and pay history, documents, time off and onboarding, with self-service for staff and reports for HR. "
+               "It doesn't calculate pay or file taxes on its own; that's payroll software, which many HRIS vendors sell as a module or connect to. "
+               f"At published prices, the HRIS platforms we rank cost {_fmt(_hr_lo[0])} ({_hr_lo_n}) to {_fmt(_hr_hi[0])} ({_hr_hi_n}) a month for 20 employees"
+               + (f", while {_hr_and(_hr_quote)} {'quotes' if len(_hr_quote) == 1 else 'quote'} every customer." if _hr_quote else ".")),
+    "sections": [
+        ("does", "What an HRIS does", f"""<p>An HRIS replaces the spreadsheets, shared folders and email threads where employee information usually starts out. Every person gets one record, and the rest of the system works off it:</p>
+<ul>{_hr_feats}</ul>
+<p>Three groups use it. <b>HR</b> keeps records accurate, runs onboarding and pulls headcount and turnover reports. <b>Managers</b> approve time off and see their team's details. <b>Employees</b> use self-service to update their address or bank details, request leave, sign documents and find policies, which removes a lot of routine requests from HR's inbox.</p>
+<p>Higher plans and add-on modules extend the same record into performance reviews, compensation planning, time tracking, applicant tracking and payroll. Which of those you get, and on which plan, is where HRIS products differ most.</p>"""),
+        ("vs", "HRIS vs HRMS, HCM, payroll and ATS", f"""<p>HR software terms overlap, and vendors use them loosely. In common usage:</p>
+<ul><li><b>HRIS</b> means the core: employee records, documents, time off, onboarding and reporting.</li>
+<li><b>HRMS</b> (human resource management system) usually means an HRIS plus operational tools such as time tracking, attendance and payroll.</li>
+<li><b>HCM</b> (human capital management) is the broadest term, used mostly by enterprise suites. It adds talent management, such as recruiting, performance, learning, compensation and workforce planning, on top of core HR{f", as in {_hr_and([n for n, _d in HRIS.get('others', []) if 'HCM' in n])}" if any('HCM' in n for n, _d in HRIS.get('others', [])) else ""}.</li></ul>
+<p>Two neighboring categories are separate products, even when one vendor sells both:</p>
+<ul><li><b>Payroll software.</b> {_hr_faq.get("What's the difference between an HRIS and payroll software?", "An HRIS stores employee records; payroll software calculates pay and files taxes.")}</li>
+<li><b>Applicant tracking systems.</b> {_ats_faq.get("What's the difference between an ATS and an HRIS?", "An ATS manages hiring; an HRIS manages people after they're hired.").replace('<a href="/tools/best-hris-software/">HRIS software ranking</a> for the employee side', '<a href="/tools/best-applicant-tracking-systems/">applicant tracking ranking</a> for the hiring side')}</li></ul>
+<p>What matters in practice is that payroll, hiring and the HRIS share one employee record, either inside one platform or through an integration, so nobody types the same new hire in three places.</p>"""),
+        ("types", "The main types of HRIS", f"""<ul>{f"<li><b>Core HRIS for small and midsize companies</b> covers records, time off, onboarding and reporting in an easy package, with reviews and hiring on higher plans. {_hr_by('bamboohr', 'factorial')} sit here.</li>" if _hr_by('bamboohr', 'factorial') else ""}
+{f"<li><b>All-in-one HR, payroll and IT platforms</b> sell modules on one employee database, so onboarding can set up pay, apps and devices together. {_hr_by('rippling')} is the best-known example; our <a href='/compare/bamboohr-vs-rippling/'>BambooHR vs Rippling</a> comparison covers the trade-off.</li>" if _hr_by('rippling') else ""}
+{f"<li><b>Mid-market and international HR platforms</b> focus on culture, engagement and multi-country teams, with talent, compensation and payroll as add-on modules. {_hr_by('hibob')} works this way.</li>" if _hr_by('hibob') else ""}
+{f"<li><b>Low-cost HR suites</b> publish low per-user prices, often with a free tier, and fit best alongside the same vendor's other apps. {_hr_by('zoho_people')} is one.</li>" if _hr_by('zoho_people') else ""}
+{f"<li><b>Mobile-first apps for frontline teams</b> put documents, time off and onboarding on employees' phones for staff who don't sit at a computer, at flat prices per user band. {_hr_by('connecteam')} sits here.</li>" if _hr_by('connecteam') else ""}</ul>
+{f"<p>Other HR platforms in the category include {_hr_and([n for n, _d in HRIS.get('others', [])])}. " if HRIS.get('others') else "<p>"}Our <a href="{_hr_cat}">HRIS shortlist</a> scores the ranked platforms on core HR, time off and onboarding, performance, payroll and integrations, ease of use and price.</p>"""),
+        ("cost", "How much an HRIS costs", f"""<p>Most HRIS vendors charge per employee per month. Some charge a flat fee for a headcount band instead, and larger vendors quote by headcount and modules. Entry plans for the platforms we rank, from each vendor's pricing page:</p>
+{_ptable(_hr_rows)}
+<p class="small muted">{HRIS['price_footnote']}</p>
+<p>What the published entry plans come to each month for 10 and 20 employees:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Plan</th><th>Pricing unit</th>{''.join(f'<th>{n} employees</th>' for n in _hr_sizes)}</tr></thead><tbody>{_hr_cost_rows}</tbody></table></div>
+<p>{(_hr_and(_hr_quote) + " isn't in the table because it publishes no prices. ") if _hr_quote else ""}The cheapest line isn't always the cheapest system: {(_hr_and(_hr_mod) + "'s price covers only the base HRIS module, so payroll and other modules add to the quote, and ") if _hr_mod else ""}performance reviews and time tracking often sit on a higher plan or cost extra, so price the plan that includes the features you'll use.</p>
+<p>{"Free plans" if len(_hr_free) > 1 else "Free plan"}: {_hr_faq.get("Is there a free HRIS?", "").replace("Yes. ", "") if _hr_free else "none of the ranked platforms list one."} Budget too for payroll, which is usually a separate fee, and for any implementation or data migration charge in a quote. Pricing payroll as well? See <a href="/guides/payroll-software-cost/">how much payroll software costs</a>.</p>"""),
+        ("choose", "How to choose an HRIS", "<ol>" + "".join(f"<li><b>{a}</b> {b}</li>" for a, b in HRIS["choose"]) + f"""</ol>
+<p>Our <a href="{_hr_cat}">HRIS shortlist</a> ranks {len(_hr_ranked)} platforms, our <a href="/tools/best-hris-software-for-small-business/">small business list</a> reweights them for smaller teams, and <a href="/tools/best-bamboohr-alternatives/">BambooHR alternatives</a> covers cheaper options and ones with payroll on the same record. Read the reviews of {_hr_and([_hr_rv(k) for k in _hr_ranked])}.</p>"""),
+    ],
+    "faqs": [
+        ("What does HRIS stand for?", "Human resources information system: software that stores and manages employee data, such as personal details, job and pay history, documents and time off, and the HR processes built on it, such as onboarding."),
+        ("What's the difference between an HRIS and payroll software?", _hr_faq.get("What's the difference between an HRIS and payroll software?", "An HRIS stores employee records; payroll software calculates pay and files taxes.")),
+        ("How much does an HRIS cost?", f"At published prices, the HRIS platforms we rank cost {_fmt(_hr_lo[0])} ({_hr_lo_n}) to {_fmt(_hr_hi[0])} ({_hr_hi_n}) a month for 20 employees on their entry plans."
+         + (f" {_hr_and(_hr_quote)} {'doesn' if len(_hr_quote) == 1 else 'don'}'t publish prices." if _hr_quote else "")
+         + (f" {_hr_and(_hr_mod)}'s price covers only the base HRIS module." if _hr_mod else "")),
+        ("Is there a free HRIS?", _hr_faq.get("Is there a free HRIS?", "Some HRIS tools have free plans for very small teams; see our shortlist.")),
+    ],
+})

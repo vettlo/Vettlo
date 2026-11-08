@@ -353,7 +353,9 @@
       "department": "HR & people",
       "category": "best-hris-software",
       "note": "Explainer",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-08",
+      "url": "/guides/what-is-an-hris/"
     },
     {
       "type": "guide",

@@ -87,6 +87,7 @@ EXPLAIN = {
                      ("Reports", "Chat volume, response times, ratings and agent performance.")],
     },
     "best-hris-software": {
+        "guide": "/guides/what-is-an-hris/",
         "what": "An HRIS (human resources information system) is the system of record for employee data: personal details, job and compensation history, time off, documents and onboarding. Many HRIS platforms also run payroll and benefits, or connect to a payroll provider.",
         "features": [("Employee records", "One profile per person with job, pay and document history."),
                      ("Onboarding and offboarding", "Checklists, e-signatures and equipment tasks."),
