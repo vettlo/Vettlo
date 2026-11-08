@@ -83,6 +83,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Freshservice vs Jira Service Management](https://vettlo.com/compare/freshservice-vs-jira-service-management/): Freshservice and Jira Service Management compared on price, features and fit.
 - [Workable vs Breezy HR](https://vettlo.com/compare/workable-vs-breezy-hr/): Workable and Breezy HR compared on price, features and fit.
 - [Slack vs Microsoft Teams](https://vettlo.com/compare/slack-vs-teams/): Slack and Microsoft Teams compared on price, features and fit.
+- [Klaviyo vs Mailchimp](https://vettlo.com/compare/klaviyo-vs-mailchimp/): Klaviyo and Mailchimp compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best applicant tracking systems for small business](https://vettlo.com/tools/best-applicant-tracking-systems-for-small-business/): Best applicant tracking systems for small business, from our scored shortlist.
