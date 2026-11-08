@@ -298,8 +298,9 @@ def explainer_sections(slug, only_what=False):
     if pr and pr["rows"] and not only_what:
         rows = pr["rows"]
         priced = sorted([(_money(p), n, p, a) for n, p, nt, t, a in rows if _money(p)], key=lambda x: x[0])
-        freeonly = [n for n, p, nt, t, a in rows if p == "Free" and "quote" not in nt.lower()]
-        onreq = [n for n, p, nt, t, a in rows if not _money(p) and not p[:1] in "€£" and n not in freeonly]
+        opensrc = [n for n, p, nt, t, a in rows if p == "Free" and nt.lower().startswith("open source")]
+        freeonly = [n for n, p, nt, t, a in rows if p == "Free" and "quote" not in nt.lower() and n not in opensrc]
+        onreq = [n for n, p, nt, t, a in rows if not _money(p) and not p[:1] in "€£" and n not in freeonly and n not in opensrc]
         other_cur = [(n, p) for n, p, nt, t, a in rows if p[:1] in "€£"]
         free = [n for n, p, nt, t, a in rows if _FREE.search(t)]
         lis = "".join(f'<li><a href="{a}">{n}</a>: {p}</li>' for v, n, p, a in priced) + "".join(f"<li>{n}: {p}</li>" for n, p in other_cur)
@@ -310,9 +311,11 @@ def explainer_sections(slug, only_what=False):
             summary.append(f"Free plans: {', '.join(free)}.")
         if freeonly:
             summary.append(f"Free to use, with optional paid add-ons: {', '.join(freeonly)}.")
+        if opensrc:
+            summary.append(f"Free and open source, run on your own servers: {', '.join(opensrc)}.")
         if onreq:
             summary.append(f"No published price: {', '.join(onreq)}.")
-        out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS").replace("itsm", "ITSM")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'
+        out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS").replace("itsm", "ITSM").replace("ci/cd", "CI/CD")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'
                 f'<ul>{lis}</ul><p class="small muted">Entry prices from each vendor\'s pricing page, as shown in the comparison table above. Higher tiers usually add automation, reporting and admin controls.</p></section>')
     if pr and pr.get("others"):
         ol = "".join(f'<li><b>{n}</b>: {d}</li>' for n, d in pr["others"])

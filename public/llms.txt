@@ -18,6 +18,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best ZoomInfo Alternatives](https://vettlo.com/tools/best-zoominfo-alternatives/): Five providers with published pricing or better mobile data.
 - [Best Business Intelligence Tools](https://vettlo.com/tools/best-business-intelligence-tools/): Seven BI tools compared on per-user and capacity pricing, free versions and governance.
 - [Best Tableau Alternatives](https://vettlo.com/tools/best-tableau-alternatives/): Five BI tools that cost less than Tableau, price by data or are free to start.
+- [Best CI/CD Tools](https://vettlo.com/tools/best-ci-cd-tools/): Seven CI/CD tools compared on free minutes, runners and real cost.
+- [Best Jenkins Alternatives](https://vettlo.com/tools/best-jenkins-alternatives/): Five CI/CD tools that remove the server upkeep.
 - [Best Contract Management Software](https://vettlo.com/tools/best-contract-management-software/): Seven contract management tools compared on approvals, AI and real price.
 - [Best Ironclad Alternatives](https://vettlo.com/tools/best-ironclad-alternatives/): Five contract management tools with published prices, unlimited users or faster setup.
 - [Best Conversation Intelligence Tools](https://vettlo.com/tools/best-conversation-intelligence-software/): Four tools compared on coaching, deal insights, CRM sync and real price.
@@ -84,6 +86,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Workable vs Breezy HR](https://vettlo.com/compare/workable-vs-breezy-hr/): Workable and Breezy HR compared on price, features and fit.
 - [Slack vs Microsoft Teams](https://vettlo.com/compare/slack-vs-teams/): Slack and Microsoft Teams compared on price, features and fit.
 - [Klaviyo vs Mailchimp](https://vettlo.com/compare/klaviyo-vs-mailchimp/): Klaviyo and Mailchimp compared on price, features and fit.
+- [GitHub Actions vs GitLab](https://vettlo.com/compare/github-actions-vs-gitlab/): GitHub Actions and GitLab compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best applicant tracking systems for small business](https://vettlo.com/tools/best-applicant-tracking-systems-for-small-business/): Best applicant tracking systems for small business, from our scored shortlist.
@@ -91,6 +94,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best B2B contact data providers for small business](https://vettlo.com/tools/best-b2b-data-providers-for-small-business/): Best B2B contact data providers for small business, from our scored shortlist.
 - [Best free business intelligence tools](https://vettlo.com/tools/best-free-business-intelligence-tools/): Best free business intelligence tools, from our scored shortlist.
 - [Best business intelligence tools for small business](https://vettlo.com/tools/best-business-intelligence-tools-for-small-business/): Best business intelligence tools for small business, from our scored shortlist.
+- [Best free CI/CD tools](https://vettlo.com/tools/best-free-ci-cd-tools/): Best free CI/CD tools, from our scored shortlist.
+- [Best CI/CD tools for small business](https://vettlo.com/tools/best-ci-cd-tools-for-small-business/): Best CI/CD tools for small business, from our scored shortlist.
 - [Best contract management tools for small business](https://vettlo.com/tools/best-contract-management-software-for-small-business/): Best contract management tools for small business, from our scored shortlist.
 - [Best conversation intelligence tools for small business](https://vettlo.com/tools/best-conversation-intelligence-software-for-small-business/): Best conversation intelligence tools for small business, from our scored shortlist.
 - [Best sales dialers for small business](https://vettlo.com/tools/best-sales-dialers-for-small-business/): Best sales dialers for small business, from our scored shortlist.
@@ -153,6 +158,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Zoho Analytics Review](https://vettlo.com/tools/zoho-analytics-review/): Zoho Analytics's pricing, pros, cons and score, from our business intelligence tools ranking.
 - [Data Studio Review](https://vettlo.com/tools/data-studio-review/): Data Studio's pricing, pros, cons and score, from our business intelligence tools ranking.
 - [Domo Review](https://vettlo.com/tools/domo-review/): Domo's pricing, pros, cons and score, from our business intelligence tools ranking.
+- [GitHub Actions Review](https://vettlo.com/tools/github-actions-review/): GitHub Actions's pricing, pros, cons and score, from our CI/CD tools ranking.
+- [CircleCI Review](https://vettlo.com/tools/circleci-review/): CircleCI's pricing, pros, cons and score, from our CI/CD tools ranking.
+- [GitLab Review](https://vettlo.com/tools/gitlab-review/): GitLab's pricing, pros, cons and score, from our CI/CD tools ranking.
+- [Buildkite Review](https://vettlo.com/tools/buildkite-review/): Buildkite's pricing, pros, cons and score, from our CI/CD tools ranking.
+- [Azure Pipelines Review](https://vettlo.com/tools/azure-pipelines-review/): Azure Pipelines's pricing, pros, cons and score, from our CI/CD tools ranking.
+- [Jenkins Review](https://vettlo.com/tools/jenkins-review/): Jenkins's pricing, pros, cons and score, from our CI/CD tools ranking.
+- [Bitbucket Pipelines Review](https://vettlo.com/tools/bitbucket-pipelines-review/): Bitbucket Pipelines's pricing, pros, cons and score, from our CI/CD tools ranking.
 - [Ironclad Review](https://vettlo.com/tools/ironclad-review/): Ironclad's pricing, pros, cons and score, from our contract management tools ranking.
 - [Juro Review](https://vettlo.com/tools/juro-review/): Juro's pricing, pros, cons and score, from our contract management tools ranking.
 - [Docusign IAM Review](https://vettlo.com/tools/docusign-iam-review/): Docusign IAM's pricing, pros, cons and score, from our contract management tools ranking.
@@ -207,7 +219,6 @@ Scores are editorial only and based on published, weighted criteria per category
 - [GitHub Issues Review](https://vettlo.com/tools/github-issues-review/): GitHub Issues's pricing, pros, cons and score, from our issue tracking tools ranking.
 - [Azure Boards Review](https://vettlo.com/tools/azure-boards-review/): Azure Boards's pricing, pros, cons and score, from our issue tracking tools ranking.
 - [Shortcut Review](https://vettlo.com/tools/shortcut-review/): Shortcut's pricing, pros, cons and score, from our issue tracking tools ranking.
-- [GitLab Review](https://vettlo.com/tools/gitlab-review/): GitLab's pricing, pros, cons and score, from our issue tracking tools ranking.
 - [Jira Service Management Review](https://vettlo.com/tools/jira-service-management-review/): Jira Service Management's pricing, pros, cons and score, from our ITSM tools ranking.
 - [Freshservice Review](https://vettlo.com/tools/freshservice-review/): Freshservice's pricing, pros, cons and score, from our ITSM tools ranking.
 - [InvGate Service Management Review](https://vettlo.com/tools/invgate-service-management-review/): InvGate Service Management's pricing, pros, cons and score, from our ITSM tools ranking.

@@ -165,7 +165,9 @@
       "type": "category",
       "slug": "best-ci-cd-tools",
       "department": "Engineering & DevOps",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-08",
+      "url": "/tools/best-ci-cd-tools/"
     },
     {
       "type": "category",

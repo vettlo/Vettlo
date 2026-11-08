@@ -152,6 +152,14 @@ EXPLAIN = {
                      ("Git integration", "Commits, branches and pull requests linked to issues, often closing them automatically."),
                      ("Reports and automation", "Velocity and burndown charts, plus rules that update issues when something changes.")],
     },
+    "best-ci-cd-tools": {
+        "what": "CI/CD (continuous integration and continuous delivery or deployment) tools build and test code automatically every time someone pushes a change, then package and deploy the versions that pass. Pipelines are usually defined in a configuration file stored with the code, and the jobs run on hosted machines billed by the minute or on runners you host yourself.",
+        "features": [("Pipelines as code", "Build, test and deploy steps defined in a YAML or script file in the repository."),
+                     ("Hosted and self-hosted runners", "Linux, Windows and macOS machines from the vendor, or agents on your own servers."),
+                     ("Parallelism and caching", "Jobs split across machines, with dependency and Docker layer caches to cut build time."),
+                     ("Environments and approvals", "Deployment targets with secrets, protection rules and manual approval gates."),
+                     ("Integrations", "Connections to Git hosts, issue trackers, cloud providers, chat and test reporting.")],
+    },
     "best-time-tracking-software": {
         "what": "Time tracking software records the hours people spend on clients, projects and tasks, with timers, manual timesheets or automatic activity capture. It turns those hours into approved timesheets, billable amounts, invoices and reports on budgets and profitability.",
         "features": [("Timers and timesheets", "Start and stop timers on desktop, mobile or browser, or enter hours in a weekly grid."),
