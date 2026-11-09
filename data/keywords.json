@@ -1,0 +1,614 @@
+{
+ "_about": "Keyword data for planning. bing_3m = exact-match searches on Bing over Aug 9 - Nov 6, 2026 (all countries), bing_us_3m = US only, from Bing Webmaster Tools Keyword Research. 0 means below Bing's reporting threshold, not necessarily no demand. Bing is a small share of US search; use it to rank keywords against each other, not as absolute demand. Google Search Console impressions are the ground truth for queries we already appear for. Refresh monthly.",
+ "source": "Bing Webmaster Tools Keyword Research (exact match), pulled 2026-11-09; SERP competition checked 2026-11-09",
+ "opportunities": [
+  {
+   "type": "tool pricing pages",
+   "why": "'<tool> pricing' queries have the highest commercial demand we measured (docusign pricing 2,873; mailchimp pricing 1,834; gusto pricing 1,014 with 97% US; zoominfo pricing 786; zendesk pricing 674; bitwarden pricing 507) and the first page is mostly small and mid-size sites. Not built yet: needs a decision on page type (see report)."
+  },
+  {
+   "type": "high-volume explainers",
+   "why": "what is crm 16,236; hris 45,673 / what is hris 1,920; passkeys 10,143; bank reconciliation 6,359; cash vs accrual 995; expense policy 833; esign act 356."
+  }
+ ],
+ "keywords": {
+  "hris": {
+   "pillar": "hris",
+   "bing_3m": 45673,
+   "bing_us_3m": 4987
+  },
+  "what is crm": {
+   "pillar": "crm",
+   "bing_3m": 16236,
+   "bing_us_3m": 6689
+  },
+  "passkeys": {
+   "pillar": "passwords",
+   "bing_3m": 10143,
+   "bing_us_3m": 2911,
+   "competition": "medium",
+   "serp_note": "'passkeys for business': Proton, Uniqkey, TechRadar news; few dedicated business guides."
+  },
+  "crm software": {
+   "pillar": "crm",
+   "bing_3m": 8849,
+   "bing_us_3m": 4289
+  },
+  "accounting software": {
+   "pillar": "accounting",
+   "bing_3m": 7595,
+   "bing_us_3m": 3347
+  },
+  "bank reconciliation": {
+   "pillar": "accounting",
+   "bing_3m": 6359,
+   "bing_us_3m": 1524,
+   "competition": "medium",
+   "serp_note": "FitSmallBusiness, Tipalti, AccountingTools, CFO Club, Zoho, Brex; a strong step-by-step guide can compete."
+  },
+  "project management software": {
+   "pillar": "project_management",
+   "bing_3m": 6025,
+   "bing_us_3m": 3554
+  },
+  "docusign pricing": {
+   "pillar": "esign",
+   "bing_3m": 2873,
+   "bing_us_3m": 1406
+  },
+  "payroll software": {
+   "pillar": "payroll",
+   "bing_3m": 2328,
+   "bing_us_3m": 1172,
+   "competition": "hard",
+   "serp_note": "Software Advice, Forbes Advisor, FitSmallBusiness, ADP, Patriot, QuickBooks."
+  },
+  "what is hris": {
+   "pillar": "hris",
+   "bing_3m": 1920,
+   "bing_us_3m": 1194,
+   "competition": "medium",
+   "serp_note": "Vendor blogs (ADP, Infor, HiBob, SAP) plus small sites (Workstream, ThinkVidya); winnable."
+  },
+  "mailchimp pricing": {
+   "pillar": "email_marketing",
+   "bing_3m": 1834,
+   "bing_us_3m": 783
+  },
+  "best project management software": {
+   "pillar": "project_management",
+   "bing_3m": 1462,
+   "bing_us_3m": 437
+  },
+  "email marketing software": {
+   "pillar": "email_marketing",
+   "bing_3m": 1429,
+   "bing_us_3m": 1187
+  },
+  "spf dkim dmarc": {
+   "pillar": "sales_engagement",
+   "bing_3m": 1091,
+   "bing_us_3m": 122,
+   "competition": "medium",
+   "serp_note": "Many small cold-email SaaS blogs (Hunter, SmartReach, BounceZero); US share is small (122 of 1,091)."
+  },
+  "gusto pricing": {
+   "pillar": "payroll",
+   "bing_3m": 1014,
+   "bing_us_3m": 982,
+   "competition": "easy-medium",
+   "serp_note": "Mostly small/mid sites: Capterra, People Managing People, Rivermate, SpotSaaS, Tekpon, FindStack."
+  },
+  "cash vs accrual accounting": {
+   "pillar": "accounting",
+   "bing_3m": 995,
+   "bing_us_3m": 783,
+   "competition": "hard",
+   "serp_note": "Vendor blogs dominate: Sage, QuickBooks, Xero, FreshBooks, Zoho, plus NerdWallet."
+  },
+  "small business accounting software": {
+   "pillar": "accounting",
+   "bing_3m": 868,
+   "bing_us_3m": 611
+  },
+  "expense policy": {
+   "pillar": "expense",
+   "bing_3m": 833,
+   "bing_us_3m": 292,
+   "competition": "medium",
+   "serp_note": "Template pages from Mercury, Spendesk, Gusto, Concur, Zoho, Navan; an original template outline can compete."
+  },
+  "zoominfo pricing": {
+   "pillar": "b2b_data",
+   "bing_3m": 786,
+   "bing_us_3m": 346
+  },
+  "1password vs bitwarden": {
+   "pillar": "passwords",
+   "bing_3m": 765,
+   "bing_us_3m": 92
+  },
+  "zendesk pricing": {
+   "pillar": "help_desk",
+   "bing_3m": 674,
+   "bing_us_3m": 227
+  },
+  "gantt chart software": {
+   "pillar": "project_management",
+   "bing_3m": 607,
+   "bing_us_3m": 169
+  },
+  "bitwarden pricing": {
+   "pillar": "passwords",
+   "bing_3m": 507,
+   "bing_us_3m": 174
+  },
+  "best accounting software": {
+   "pillar": "accounting",
+   "bing_3m": 489,
+   "bing_us_3m": 149
+  },
+  "best crm": {
+   "pillar": "crm",
+   "bing_3m": 474,
+   "bing_us_3m": 177
+  },
+  "docusign alternatives": {
+   "pillar": "esign",
+   "bing_3m": 460,
+   "bing_us_3m": 227
+  },
+  "time tracking software": {
+   "pillar": "time_tracking",
+   "bing_3m": 403,
+   "bing_us_3m": 150
+  },
+  "esign act": {
+   "pillar": "esign",
+   "bing_3m": 356,
+   "bing_us_3m": 319,
+   "competition": "easy-medium",
+   "serp_note": "Glossary pages (SpotDraft, Blueink, eSignly) and Adobe help; winnable with a clear, sourced explainer."
+  },
+  "quickbooks alternatives": {
+   "pillar": "accounting",
+   "bing_3m": 352,
+   "bing_us_3m": 304
+  },
+  "best crm for small business": {
+   "pillar": "crm",
+   "bing_3m": 324,
+   "bing_us_3m": 243
+  },
+  "best payroll software": {
+   "pillar": "payroll",
+   "bing_3m": 302,
+   "bing_us_3m": 211
+  },
+  "mailchimp alternatives": {
+   "pillar": "email_marketing",
+   "bing_3m": 280,
+   "bing_us_3m": 72
+  },
+  "hris software": {
+   "pillar": "hris",
+   "bing_3m": 259,
+   "bing_us_3m": 84
+  },
+  "business password manager": {
+   "pillar": "passwords",
+   "bing_3m": 122,
+   "bing_us_3m": 37
+  },
+  "help desk software": {
+   "pillar": "help_desk",
+   "bing_3m": 98,
+   "bing_us_3m": 22
+  },
+  "sales pipeline stages": {
+   "pillar": "crm",
+   "bing_3m": 86,
+   "bing_us_3m": 19
+  },
+  "asana vs monday": {
+   "pillar": "project_management",
+   "bing_3m": 63,
+   "bing_us_3m": 46
+  },
+  "apollo vs zoominfo": {
+   "pillar": "b2b_data",
+   "bing_3m": 50,
+   "bing_us_3m": 15
+  },
+  "expense management software": {
+   "pillar": "expense",
+   "bing_3m": 50,
+   "bing_us_3m": 28
+  },
+  "freshbooks vs quickbooks": {
+   "pillar": "accounting",
+   "bing_3m": 41,
+   "bing_us_3m": 33
+  },
+  "what is accounting software": {
+   "pillar": "accounting",
+   "bing_3m": 25,
+   "bing_us_3m": 4
+  },
+  "full service payroll": {
+   "pillar": "payroll",
+   "bing_3m": 25,
+   "bing_us_3m": 0
+  },
+  "quickbooks desktop alternatives": {
+   "pillar": "accounting",
+   "bing_3m": 24,
+   "bing_us_3m": 7
+  },
+  "quickbooks vs xero": {
+   "pillar": "accounting",
+   "bing_3m": 21,
+   "bing_us_3m": 9
+  },
+  "salesforce vs hubspot": {
+   "pillar": "crm",
+   "bing_3m": 21,
+   "bing_us_3m": 17
+  },
+  "accounting software cost": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "accounting software pricing": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "how to reconcile bank statement": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "quickbooks desktop discontinued": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "xero vs zoho books": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "payroll software cost": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "payroll services pricing": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "what is payroll software": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "how to run payroll": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "how to do payroll": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "payroll tax deadlines": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "form 941 due date": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "switch payroll providers": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "multi state payroll": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "gusto alternatives": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "gusto vs quickbooks payroll": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "best password manager for business": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "password manager cost": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "password manager vs sso": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "passkeys for business": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "how to implement password manager": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "lastpass alternatives": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "1password business pricing": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "crm pricing": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "crm cost": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "how to choose a crm": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "crm migration": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "hubspot vs pipedrive": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "pipedrive alternatives": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "hubspot alternatives": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "sales engagement platform": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "sales engagement software": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "cold email deliverability": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "email warm up": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "sales sequence": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "outreach vs salesloft": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "apollo alternatives": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "lemlist vs instantly": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "best time tracking software": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "time tracking software cost": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "employee time tracking": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "flsa recordkeeping requirements": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "how to track billable hours": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "clockify vs toggl": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "toggl alternatives": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "project management software cost": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "what is project management software": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "kanban vs gantt": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "clickup vs asana": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "asana alternatives": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "hris vs payroll": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "hris pricing": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "hris implementation": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "bamboohr alternatives": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "bamboohr vs rippling": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "e signature software": {
+   "pillar": "esign",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "are electronic signatures legally binding": {
+   "pillar": "esign",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "docusign vs pandadoc": {
+   "pillar": "esign",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "b2b data providers": {
+   "pillar": "b2b_data",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "zoominfo alternatives": {
+   "pillar": "b2b_data",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "b2b data gdpr": {
+   "pillar": "b2b_data",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "help desk metrics": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "first response time": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "ai customer service pricing": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "zendesk alternatives": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "zendesk vs freshdesk": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "email deliverability": {
+   "pillar": "email_marketing",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "klaviyo vs mailchimp": {
+   "pillar": "email_marketing",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "expense policy template": {
+   "pillar": "expense",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "expensify alternatives": {
+   "pillar": "expense",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  },
+  "ramp vs brex": {
+   "pillar": "expense",
+   "bing_3m": 0,
+   "bing_us_3m": 0
+  }
+ }
+}
