@@ -852,7 +852,7 @@ CMP_FAQS = [
     ("Can I switch from Pipedrive to HubSpot later?", "Yes, both tools support CSV import and export and have migration integrations. Plan field mapping, deduplication and activity history before the cutover, because history is the part teams most often lose."),
 ]
 
-page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing, Features and Which to Choose | Vettlo",
+page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing and Features | Vettlo",
      "HubSpot Sales Hub vs Pipedrive compared on real list prices, plan features and team fit. See what a 10-rep team pays on each, and which CRM to pick.",
      f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / {dept_crumb("best-crm-software")} / <a href="/tools/best-crm-software/">CRM Software</a> / HubSpot vs Pipedrive</nav>

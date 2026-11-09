@@ -384,7 +384,7 @@ async function adminApi(request, env, vendor, path) {
     if (!status) return json({ ok: false, error: "Bad status." }, 400);
     await env.DB.prepare("UPDATE listings SET status = ?, tool_id = ?, review_note = ?, updated_at = ? WHERE id = ?")
       .bind(status, oneLine(body.tool_id, 60) || null, oneLine(body.review_note, 300) || null, now(), Number(m[1])).run();
-    placementCache.clear();
+    await clearPlacements();
     return json({ ok: true });
   }
   m = path.match(/^\/api\/admin\/invoices\/(\d+)$/);
@@ -402,7 +402,7 @@ async function adminApi(request, env, vendor, path) {
   m = path.match(/^\/api\/admin\/subs\/(\d+)\/end$/);
   if (m && method === "POST") {
     await env.DB.prepare("UPDATE subs SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), Number(m[1])).run();
-    placementCache.clear();
+    await clearPlacements();
     return json({ ok: true });
   }
   return json({ ok: false, error: "Not found." }, 404);
@@ -422,7 +422,7 @@ async function activateInvoice(env, inv, ref) {
   const r = await env.DB.prepare("UPDATE invoices SET status = 'paid', provider_ref = ?, updated_at = ? WHERE id = ? AND status = 'requested'").bind(ref, now(), inv.id).run();
   if (!r.meta.changes) return { ok: false, error: "This invoice was already closed." };
   await env.DB.prepare("UPDATE subs SET status = 'active', paid_through = ?, started_at = COALESCE(started_at, ?), updated_at = ? WHERE id = ?").bind(paidThrough, now(), now(), s.id).run();
-  placementCache.clear();
+  await clearPlacements();
   return { ok: true, paid_through: paidThrough, sub: s };
 }
 
@@ -546,19 +546,36 @@ export async function handlePortalApi(request, env, path) {
 
 // ---------- placement on category shortlists
 const placementCache = new Map();
-async function sponsors(env, category) {
-  const hit = placementCache.get(category);
+// Sponsor placements for every category, cached in memory (per isolate) and in the colo's edge cache (shared),
+// so public shortlist pages don't wait on the database. Admin and billing changes call clearPlacements().
+const SPONSOR_KEY = "https://vettlo.com/__cache/sponsors-v1";
+async function allSponsors(env) {
+  const hit = placementCache.get("*");
   if (hit && hit.t > Date.now() - 60e3) return hit.v;
-  const rows = (await env.DB.prepare(`SELECT l.*, s.plan FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
-    WHERE s.category = ? AND s.status = 'active' AND s.paid_through > ? AND l.status = 'approved' AND l.active = 1 AND v.status = 'active'
-    ORDER BY s.started_at ASC, s.id ASC`).bind(category, now()).all()).results;
+  let v = null;
+  try { const c = await caches.default.match(SPONSOR_KEY); if (c) v = await c.json(); } catch {}
+  if (!v) {
+    const rows = (await env.DB.prepare(`SELECT l.*, s.plan, s.category AS sub_category FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
+      WHERE s.status = 'active' AND s.paid_through > ? AND l.status = 'approved' AND l.active = 1 AND v.status = 'active'
+      ORDER BY s.started_at ASC, s.id ASC`).bind(now()).all()).results;
+    v = {};
+    for (const r of rows) (v[r.sub_category] ||= []).push(r);
+    try { await caches.default.put(SPONSOR_KEY, new Response(JSON.stringify(v), { headers: { "content-type": "application/json", "cache-control": "public, max-age=300" } })); } catch {}
+  }
+  placementCache.set("*", { t: Date.now(), v });
+  return v;
+}
+async function clearPlacements() {
+  placementCache.clear();
+  try { await caches.default.delete(SPONSOR_KEY); } catch {}
+}
+async function sponsors(env, category) {
+  const rows = (await allSponsors(env))[category] || [];
   // premium takes 1st place, pro takes 2nd and 3rd in order of subscription, basic goes to the top of "Other tools to consider"
   // Pro and Premium show only once we've scored the product (it maps to a tool on our list), so every ranked card looks and reads the same.
-  const v = [...rows.filter((r) => r.plan === "premium" && r.tool_id).slice(0, 1).map((r) => ({ ...r, position: 1 })),
+  return [...rows.filter((r) => r.plan === "premium" && r.tool_id).slice(0, 1).map((r) => ({ ...r, position: 1 })),
     ...rows.filter((r) => r.plan === "pro" && r.tool_id).slice(0, 2).map((r, i) => ({ ...r, position: 2 + i })),
     ...rows.filter((r) => r.plan === "basic").map((r) => ({ ...r, position: 0 }))];
-  placementCache.set(category, { t: Date.now(), v });
-  return v;
 }
 
 const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return ""; } };
@@ -586,10 +603,10 @@ function arrange(items, partners, find, make) {
 export async function placeOnShortlist(request, env, response, ctx) {
   const url = new URL(request.url);
   const m = url.pathname.match(/^\/tools\/(best-[a-z0-9-]+)\/$/);
-  if (!m || !env.DB || response.status !== 200 || !(response.headers.get("content-type") || "").includes("text/html")) return response;
+  if (!m || m[1].endsWith("-alternatives") || !env.DB || response.status !== 200 || !(response.headers.get("content-type") || "").includes("text/html")) return response;
   const slug = m[1];
   let partners;
-  try { await migrate(env); partners = await sponsors(env, slug); } catch { return response; }
+  try { partners = await sponsors(env, slug); } catch { return response; }  // no schema setup on the public path: tables exist once the portal has run
   if (!partners.length) return response;
   let html = await response.text();
   const path = url.pathname;

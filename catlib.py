@@ -239,7 +239,7 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#cost">Cost</a><a href="#features">Features</a><a href="#faq">FAQ</a></nav></div></div>
 {newsletter()}"""
     crumbs = [("/", "Home"), dept_crumb_ld(cat["slug"]), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{an} vs {bn}")]
-    page(url, f"{an} vs {bn} ({YEAR}): Pricing Compared | Vettlo",
+    page(url, f"{an} vs {bn} ({YEAR}): Pricing Compared | Vettlo" if len(f"{an} vs {bn} ({YEAR}): Pricing Compared | Vettlo") <= 65 else f"{an} vs {bn} ({YEAR}) | Vettlo",
          desc or f"{A['name']} vs {B['name']} compared on real prices, plan features and team fit, with a clear pick for each type of team.",
          body, cur="/best-tools/", ptype="article",
          jsonld=_ld(h1, url, date, crumbs, [], faqs))
@@ -560,7 +560,7 @@ def review_pages(cats):
                    "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
                    "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
                    "reviewRating": {"@type": "Rating", "ratingValue": s0, "bestRating": 100, "worstRating": 0},
-                   "itemReviewed": {"@type": "SoftwareApplication", "name": name, "applicationCategory": "BusinessApplication", "url": t["url"]}})
+                   "itemReviewed": _software_ld(name, t)})
         page(url, f"{name} Review ({YEAR}): Pricing, Pros & Cons | Vettlo",
              f"{name} review: {s0}/100 in our {_noun(cat)} ranking. {_price_sentence(t)} Pros, cons, who it's for and the best alternatives."[:300],
              body, cur="/reviews/", ptype="article", jsonld=ld)
@@ -724,3 +724,16 @@ def _units_sentence(rows):
     if kinds:
         return f" Most prices here are {kinds[0]}, so multiply by your team size."
     return ""
+
+
+def _software_ld(name, t):
+    """SoftwareApplication for a review's itemReviewed. Google's rich-result check wants offers (price) and an
+    operating system; we add the price only when the vendor publishes one (free plan = 0)."""
+    ld = {"@type": "SoftwareApplication", "name": name, "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web", "url": t["url"]}
+    m = re.match(r"(?:From )?\$([\d,]+(?:\.\d+)?)", t.get("price", ""))
+    if m:
+        ld["offers"] = {"@type": "Offer", "price": m.group(1).replace(",", ""), "priceCurrency": "USD"}
+    elif re.match(r"free plan", t.get("trial", ""), re.I) or t.get("price", "").lower().startswith("free"):
+        ld["offers"] = {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+    return ld
