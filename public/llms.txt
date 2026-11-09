@@ -40,6 +40,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Jira Alternatives](https://vettlo.com/tools/best-jira-alternatives/): Five issue trackers that are simpler, cheaper or already in your stack.
 - [Best ITSM Software](https://vettlo.com/tools/best-itsm-software/): Six ITSM tools compared on ITIL processes, assets, AI and per-agent price.
 - [Best Freshservice Alternatives](https://vettlo.com/tools/best-freshservice-alternatives/): Five ITSM tools with free plans or cheaper change management.
+- [Best Knowledge Base Software](https://vettlo.com/tools/best-knowledge-base-software/): Seven internal wikis compared on AI search, SSO and real cost.
+- [Best Confluence Alternatives](https://vettlo.com/tools/best-confluence-alternatives/): Five wikis that are easier to use or cheaper to secure.
 - [Best Live Chat Software](https://vettlo.com/tools/best-live-chat-software/): Seven live chat tools compared on AI, routing and real price, from free.
 - [Best Intercom Alternatives](https://vettlo.com/tools/best-intercom-alternatives/): Five live chat tools with free plans or more predictable pricing.
 - [Best Marketing Automation Software](https://vettlo.com/tools/best-marketing-automation-software/): Six platforms compared on journeys, lead scoring and real cost.
@@ -87,6 +89,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Slack vs Microsoft Teams](https://vettlo.com/compare/slack-vs-teams/): Slack and Microsoft Teams compared on price, features and fit.
 - [Klaviyo vs Mailchimp](https://vettlo.com/compare/klaviyo-vs-mailchimp/): Klaviyo and Mailchimp compared on price, features and fit.
 - [GitHub Actions vs GitLab](https://vettlo.com/compare/github-actions-vs-gitlab/): GitHub Actions and GitLab compared on price, features and fit.
+- [Notion vs Slab](https://vettlo.com/compare/notion-vs-slab/): Notion and Slab compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best applicant tracking systems for small business](https://vettlo.com/tools/best-applicant-tracking-systems-for-small-business/): Best applicant tracking systems for small business, from our scored shortlist.
@@ -111,6 +114,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best free issue tracking tools](https://vettlo.com/tools/best-free-issue-tracking-software/): Best free issue tracking tools, from our scored shortlist.
 - [Best issue tracking tools for small business](https://vettlo.com/tools/best-issue-tracking-software-for-small-business/): Best issue tracking tools for small business, from our scored shortlist.
 - [Best ITSM tools for small business](https://vettlo.com/tools/best-itsm-software-for-small-business/): Best ITSM tools for small business, from our scored shortlist.
+- [Best free knowledge base tools](https://vettlo.com/tools/best-free-knowledge-base-software/): Best free knowledge base tools, from our scored shortlist.
+- [Best knowledge base tools for small business](https://vettlo.com/tools/best-knowledge-base-software-for-small-business/): Best knowledge base tools for small business, from our scored shortlist.
 - [Best free live chat tools](https://vettlo.com/tools/best-free-live-chat-software/): Best free live chat tools, from our scored shortlist.
 - [Best live chat tools for small business](https://vettlo.com/tools/best-live-chat-software-for-small-business/): Best live chat tools for small business, from our scored shortlist.
 - [Best marketing automation tools for small business](https://vettlo.com/tools/best-marketing-automation-software-for-small-business/): Best marketing automation tools for small business, from our scored shortlist.
@@ -225,6 +230,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [SysAid Review](https://vettlo.com/tools/sysaid-review/): SysAid's pricing, pros, cons and score, from our ITSM tools ranking.
 - [ManageEngine ServiceDesk Plus Review](https://vettlo.com/tools/manageengine-servicedesk-plus-review/): ManageEngine ServiceDesk Plus's pricing, pros, cons and score, from our ITSM tools ranking.
 - [SolarWinds Service Desk Review](https://vettlo.com/tools/solarwinds-service-desk-review/): SolarWinds Service Desk's pricing, pros, cons and score, from our ITSM tools ranking.
+- [Notion Review](https://vettlo.com/tools/notion-review/): Notion's pricing, pros, cons and score, from our knowledge base tools ranking.
+- [Slab Review](https://vettlo.com/tools/slab-review/): Slab's pricing, pros, cons and score, from our knowledge base tools ranking.
+- [Confluence Review](https://vettlo.com/tools/confluence-review/): Confluence's pricing, pros, cons and score, from our knowledge base tools ranking.
+- [Slite Review](https://vettlo.com/tools/slite-review/): Slite's pricing, pros, cons and score, from our knowledge base tools ranking.
+- [Outline Review](https://vettlo.com/tools/outline-review/): Outline's pricing, pros, cons and score, from our knowledge base tools ranking.
+- [Nuclino Review](https://vettlo.com/tools/nuclino-review/): Nuclino's pricing, pros, cons and score, from our knowledge base tools ranking.
+- [Tettra Review](https://vettlo.com/tools/tettra-review/): Tettra's pricing, pros, cons and score, from our knowledge base tools ranking.
 - [LiveChat Review](https://vettlo.com/tools/livechat-review/): LiveChat's pricing, pros, cons and score, from our live chat tools ranking.
 - [Freshchat Review](https://vettlo.com/tools/freshchat-review/): Freshchat's pricing, pros, cons and score, from our live chat tools ranking.
 - [Tidio Review](https://vettlo.com/tools/tidio-review/): Tidio's pricing, pros, cons and score, from our live chat tools ranking.

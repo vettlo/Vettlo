@@ -208,4 +208,12 @@ EXPLAIN = {
                      ("Integrations and bots", "Alerts and updates from other apps posted into channels, plus workflows that act on them."),
                      ("Guests and external channels", "Work with clients, contractors and partners in shared channels, with admin controls.")],
     },
+    "best-knowledge-base-software": {
+        "what": "Knowledge base software is a shared, searchable place where a team documents how it works: processes, policies, onboarding guides, product details and answers to common questions. Internal wikis organize pages into spaces or topics with permissions, and many now add AI that answers questions from the pages and tools that flag content for review before it goes out of date.",
+        "features": [("Editor and structure", "Rich pages organized into spaces, topics or collections, with templates."),
+                     ("Search and AI answers", "Search across pages, and on many plans AI answers questions with links to the source docs."),
+                     ("Permissions and SSO", "Private spaces, guest access, SAML single sign-on and SCIM user provisioning."),
+                     ("Verification and analytics", "Page owners, review reminders and reports on stale or unread content."),
+                     ("Integrations", "Slack answers, Jira or project links, and imports from other wikis and Google Docs.")],
+    },
 }

@@ -300,7 +300,8 @@ def explainer_sections(slug, only_what=False):
         priced = sorted([(_money(p), n, p, a) for n, p, nt, t, a in rows if _money(p)], key=lambda x: x[0])
         opensrc = [n for n, p, nt, t, a in rows if p == "Free" and nt.lower().startswith("open source")]
         freeonly = [n for n, p, nt, t, a in rows if p == "Free" and "quote" not in nt.lower() and n not in opensrc]
-        onreq = [n for n, p, nt, t, a in rows if not _money(p) and not p[:1] in "€£" and n not in freeonly and n not in opensrc]
+        freeup = [(n, p) for n, p, nt, t, a in rows if p.startswith("Free up to")]
+        onreq = [n for n, p, nt, t, a in rows if not _money(p) and not p[:1] in "€£" and n not in freeonly and n not in opensrc and not p.startswith("Free up to")]
         other_cur = [(n, p) for n, p, nt, t, a in rows if p[:1] in "€£"]
         free = [n for n, p, nt, t, a in rows if _FREE.search(t)]
         lis = "".join(f'<li><a href="{a}">{n}</a>: {p}</li>' for v, n, p, a in priced) + "".join(f"<li>{n}: {p}</li>" for n, p in other_cur)
@@ -313,6 +314,8 @@ def explainer_sections(slug, only_what=False):
             summary.append(f"Free to use, with optional paid add-ons: {', '.join(freeonly)}.")
         if opensrc:
             summary.append(f"Free and open source, run on your own servers: {', '.join(opensrc)}.")
+        if freeup:
+            summary.append("Free for small teams, with paid per-user rates that weren't shown on the pricing page we checked: " + ", ".join(f"{n} ({_lc(p)})" for n, p in freeup) + ".")
         if onreq:
             summary.append(f"No published price: {', '.join(onreq)}.")
         out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS").replace("itsm", "ITSM").replace("ci/cd", "CI/CD")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'

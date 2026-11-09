@@ -158,7 +158,7 @@ DEPTS = [
     ("Projects & operations", "Planning, tracking and docs", [
         ("best-project-management-software", "Project Management Software", "Tasks, timelines and team workload", True),
         ("best-time-tracking-software", "Time Tracking Software", "Timesheets, billable hours and reports", True),
-        ("best-knowledge-base-software", "Knowledge Base Software", "Internal wikis and documentation", False),
+        ("best-knowledge-base-software", "Knowledge Base Software", "Internal wikis and documentation", True),
         ("best-resource-management-software", "Resource Management Software", "Capacity, scheduling and utilization", False),
         ("best-workflow-automation-software", "Workflow Automation Software", "No-code automations between apps", False),
         ("best-okr-software", "OKR Software", "Goals, check-ins and alignment", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 9, 2026</span></div><h3><a href="/tools/best-knowledge-base-software/">Best knowledge base software</a></h3><p class="muted small">Seven internal wikis compared on AI answers, SSO and upkeep, from Nuclino at $6 a user to Slab's SAML SSO at $12.50 and Outline at $79 a month for 100 people.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 8, 2026</span></div><h3><a href="/tools/best-ci-cd-tools/">Best CI/CD tools</a></h3><p class="muted small">Seven CI/CD tools compared on free minutes, runners and real cost, from 50 free build minutes on Bitbucket to 2,000 on GitHub and unlimited on self-hosted Jenkins.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Nov 8, 2026</span></div><h3><a href="/compare/klaviyo-vs-mailchimp/">Klaviyo vs Mailchimp</a></h3><p class="muted small">$20 vs $13 a month at 500 contacts, flows on Klaviyo's free plan against 4-step flows on Mailchimp Essentials, plus seats and support.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 7, 2026</span></div><h3><a href="/tools/best-team-chat-apps/">Best team chat apps</a></h3><p class="muted small">Seven chat apps compared on free-plan history, calls and SSO, from Pumble at $2.49 a seat with unlimited free history to Slack Pro at $7.25.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 7, 2026</span></div><h3><a href="/tools/best-applicant-tracking-systems/">Best applicant tracking systems</a></h3><p class="muted small">Seven ATS tools compared on pipelines, scheduling and AI, from Manatal at $15 a user to Breezy HR at $157 a month with unlimited users.</p></article>
 
 </div>
 </div></section>
