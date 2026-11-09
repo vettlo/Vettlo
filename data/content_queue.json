@@ -367,7 +367,9 @@
       "department": "Marketing",
       "category": "best-marketing-automation-software",
       "note": "Explainer comparing the two categories",
-      "status": "todo"
+      "status": "done",
+      "date": "2026-11-09",
+      "url": "/guides/marketing-automation-vs-email-marketing/"
     },
     {
       "type": "guide",

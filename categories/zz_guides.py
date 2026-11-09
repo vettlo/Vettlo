@@ -914,3 +914,92 @@ guide_page({
         ("Is there a free HRIS?", _hr_faq.get("Is there a free HRIS?", "Some HRIS tools have free plans for very small teams; see our shortlist.")),
     ],
 })
+
+
+# ---------- Marketing automation vs email marketing software
+_mv_em, _mv_ma = EM["tools"], MA["tools"]
+_mv_emr, _mv_mar = EM["_ranked"], MA["_ranked"]
+_mv_emc, _mv_mac = "/tools/best-email-marketing-software/", "/tools/best-marketing-automation-software/"
+_mv_and = lambda xs: xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
+_mv_rv = lambda n: f'<a href="{REVIEW_URL[n]}">{n}</a>' if n in REVIEW_URL else n
+_mv_emfaq, _mv_mafaq = dict(EM["faqs"]), dict(MA["faqs"])
+_mv_emch, _mv_mach = dict(EM["choose"]), dict(MA["choose"])
+_mv_unit = lambda p: " per seat" if "/seat/" in p else ""
+_mv_em_usd = sorted((_money(_mv_em[k]["price"]), _mv_em[k]["name"], k) for k in _mv_emr if _money(_mv_em[k]["price"]))
+_mv_ma_usd = sorted((_money(_mv_ma[k]["price"]), _mv_ma[k]["name"], k) for k in _mv_mar if _money(_mv_ma[k]["price"]))
+_mv_lo = lambda xs, t: f"{_fmt(xs[0][0])}{_mv_unit(t[xs[0][2]]['price'])} ({xs[0][1]})"
+_mv_hi = lambda xs, t: f"{_fmt(xs[-1][0])}{_mv_unit(t[xs[-1][2]]['price'])} ({xs[-1][1]})"
+_mv_em_rng = f"{_mv_lo(_mv_em_usd, _mv_em)} to {_mv_hi(_mv_em_usd, _mv_em)}"
+_mv_ma_rng = f"{_mv_lo(_mv_ma_usd, _mv_ma)} to {_mv_hi(_mv_ma_usd, _mv_ma)}"
+_mv_both = [k for k in _mv_mar if k in _mv_emr]
+_mv_both_n = [_mv_ma[k]["short"] for k in _mv_both]
+_mv_both_rows = "".join(
+    f'<tr><td>{_mv_rv(_mv_ma[k]["name"])}</td><td>{cat_score(EM, k)}/100, #{_mv_emr.index(k) + 1} of {len(_mv_emr)}</td>'
+    f'<td>{cat_score(MA, k)}/100, #{_mv_mar.index(k) + 1} of {len(_mv_mar)}</td><td>{_mv_ma[k]["price"]}: {_mv_ma[k]["price_note"]}</td></tr>'
+    for k in _mv_both)
+_mv_crit = "".join(f"<tr><td>{a[0]}</td><td>{a[1]}%</td><td>{b[0]}</td><td>{b[1]}%</td></tr>" for a, b in zip(EM["criteria"], MA["criteria"]))
+_mv_feat = lambda sl: "".join(f"<li><b>{a}.</b> {b}</li>" for a, b in EXPLAIN[sl]["features"])
+_mv_row = lambda t, k, cat: (f'<a href="{cat}#{k}">{t[k]["name"]}</a>', t[k]["price"], t[k]["price_note"], t[k]["trial"])
+_mv_free_em = [_mv_em[k]["name"] for k in _mv_emr if "free plan" in _mv_em[k]["trial"].lower()]
+_mv_free_ma = [_mv_ma[k]["name"] for k in _mv_mar if "free plan" in _mv_ma[k]["trial"].lower()]
+_mv_score = _mv_mafaq.get("Which marketing automation tool includes lead scoring for the lowest price?", "")
+_mv_diff = _mv_mafaq.get("What is the difference between email marketing and marketing automation software?", "")
+_mv_top = lambda cat, t: t[cat["_ranked"][0]]["name"]
+
+guide_page({
+    "slug": "marketing-automation-vs-email-marketing", "crumb": "Marketing automation vs email marketing", "dept": "Marketing",
+    "cats": ["best-marketing-automation-software", "best-email-marketing-software"],
+    "date": "2026-11-09", "kicker": "Explainer",
+    "title": "Marketing Automation vs Email Marketing: What's the Difference?",
+    "seo_title": "Marketing Automation vs Email Marketing Software | Vettlo",
+    "desc": "Email marketing vs marketing automation: what each does, where they overlap, what each costs at published prices and which one your team needs.",
+    "card": "What each category does, where they overlap and what each costs.",
+    "answer": ("Email marketing software sends newsletters and campaigns to a list and runs simple triggered emails, such as a welcome series. "
+               "Marketing automation software runs multi-step journeys across email and other channels based on what each contact does, scores leads and syncs with a CRM so sales knows who is ready to buy. "
+               f"Among the tools we rank, email marketing entry plans cost {_mv_em_rng} a month at the smallest list size, while marketing automation entry plans run from {_mv_ma_rng} a month, and lead scoring usually sits several tiers above the entry plan."),
+    "sections": [
+        ("what", "What each one does", f"""<h3>Email marketing software</h3>
+<p>{EXPLAIN["best-email-marketing-software"]["what"]} The core features:</p>
+<ul>{_mv_feat("best-email-marketing-software")}</ul>
+<h3>Marketing automation software</h3>
+<p>{EXPLAIN["best-marketing-automation-software"]["what"]} The core features:</p>
+<ul>{_mv_feat("best-marketing-automation-software")}</ul>
+<p>The short version: an email tool is organized around the <b>list and the campaign</b>, and asks "what do we send this week?" A marketing automation platform is organized around the <b>contact and the journey</b>, and asks "what should happen next for this person, and are they ready for sales?"</p>"""),
+        ("differences", "The key differences", f"""<p>Both categories send email and both offer automation, so the line is about depth, not presence:</p>
+<div class="table-wrap"><table><thead><tr><th></th><th>Email marketing</th><th>Marketing automation</th></tr></thead><tbody>
+<tr><td>Main job</td><td>Campaigns and newsletters to a list or segment</td><td>Behavior-based journeys for each contact, through to a sales handoff</td></tr>
+<tr><td>Automation</td><td>Welcome series, abandoned-cart and date-based emails; cheaper plans often cap steps or actions</td><td>Branching workflows with multiple triggers, goals and waits, often across several channels</td></tr>
+<tr><td>Lead scoring</td><td>Uncommon, or a paid add-on</td><td>A defining feature, though often on a higher tier or an add-on</td></tr>
+<tr><td>CRM</td><td>Integrations, sometimes a light contact database</td><td>Two-way CRM sync or a CRM built in, so sales sees engagement</td></tr>
+<tr><td>Reporting</td><td>Opens, clicks, conversions and A/B tests</td><td>Attribution of campaigns to pipeline and revenue</td></tr>
+<tr><td>Typical buyer</td><td>Small businesses, creators and online stores</td><td>B2B marketing teams working with sales, and product-led companies messaging on behavior</td></tr>
+</tbody></table></div>
+<p>Our two rankings weight their criteria differently for the same reason. Email marketing tools are judged more on the builder, segmentation and ease of use; marketing automation platforms on journeys, lead management and attribution:</p>
+<div class="table-wrap"><table><thead><tr><th>Email marketing criterion</th><th>Weight</th><th>Marketing automation criterion</th><th>Weight</th></tr></thead><tbody>{_mv_crit}</tbody></table></div>
+<p class="small muted">Weights from our <a href="{_mv_emc}">email marketing</a> and <a href="{_mv_mac}">marketing automation</a> rankings. See our <a href="/methodology/">methodology</a> for how scores are calculated.</p>"""),
+        ("overlap", "Where the two overlap", f"""<p>The categories blur in the middle. {_mv_and([_mv_rv(_mv_ma[k]["name"]) for k in _mv_both])} {"appears" if len(_mv_both) == 1 else "appear"} in both of our rankings, scored against each category's own criteria:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Email marketing ranking</th><th>Marketing automation ranking</th><th>Pricing</th></tr></thead><tbody>{_mv_both_rows}</tbody></table></div>
+<p>Tools like these are a sensible middle step: you get campaigns and newsletters on the entry plan and can move up to deeper journeys without migrating your list. The catch is that the automation features usually start one or two plans up. {_mv_emch.get("Check automation limits on the cheaper plans.", "")}</p>
+<p>At the other end, {_mv_rv(_mv_ma["hubspot"]["name"]) if "hubspot" in _mv_mar else "HubSpot Marketing Hub"} sells a Starter plan with limited automation and puts full workflows and lead scoring on Professional, which is why its <a href="/tools/best-hubspot-marketing-hub-alternatives/">alternatives</a> page and our <a href="/compare/hubspot-vs-activecampaign/">HubSpot vs ActiveCampaign</a> comparison focus on that jump.</p>"""),
+        ("cost", "What each one costs", f"""<p>Email marketing tools mostly price by contacts or subscribers, with Brevo pricing by emails sent. Marketing automation platforms price by contacts too, but some add per-seat charges, annual contracts or one-time onboarding fees. Entry prices from each vendor's pricing page:</p>
+<h3>Email marketing software</h3>
+{_ptable([_mv_row(_mv_em, k, _mv_emc) for k in _mv_emr])}
+<p class="small muted">{EM["price_footnote"]}</p>
+<h3>Marketing automation software</h3>
+{_ptable([_mv_row(_mv_ma, k, _mv_mac) for k in _mv_mar])}
+<p class="small muted">{MA["price_footnote"]}</p>
+<p>The entry prices overlap, but the plans that make a platform "marketing automation" don't. {_mv_score} {_mv_mach.get("Add onboarding and seats to year one.", "")} For prices at your list size, see <a href="/guides/email-marketing-software-cost/">how much email marketing software costs</a>.</p>"""),
+        ("choose", "Which one do you need?", f"""<p><b>Email marketing software is enough if</b> you mostly send newsletters, promotions and a handful of automated emails; you sell online and want abandoned-cart and post-purchase flows; or there's no sales team waiting for qualified leads. Start with our <a href="{_mv_emc}">email marketing shortlist</a> ({_mv_top(EM, _mv_em)} ranks first), the <a href="/tools/best-email-marketing-software-for-small-business/">small business list</a> or the <a href="/tools/best-free-email-marketing-software/">best free email marketing software</a>.</p>
+<p><b>You need marketing automation if</b> sales needs to know which leads are ready, you want journeys that branch on behavior across several channels, or you have to show which campaigns create pipeline. Start with our <a href="{_mv_mac}">marketing automation shortlist</a> ({_mv_top(MA, _mv_ma)} ranks first) or the <a href="/tools/best-marketing-automation-software-for-small-business/">small business list</a>.</p>
+<p>Whichever you pick, two checks from our rankings apply:</p>
+<ol><li><b>Price the plan that includes your must-have feature.</b> {_mv_mach.get("Find the plan where your must-have feature starts.", "")}</li>
+<li><b>Test one real workflow in the trial.</b> {_mv_mach.get("Build one real journey in the trial.", "")}</li></ol>
+<p>Comparing specific tools? See <a href="/compare/mailerlite-vs-mailchimp/">MailerLite vs Mailchimp</a>, <a href="/compare/mailchimp-vs-brevo/">Mailchimp vs Brevo</a>, <a href="/compare/klaviyo-vs-mailchimp/">Klaviyo vs Mailchimp</a> and <a href="/tools/best-mailchimp-alternatives/">Mailchimp alternatives</a>.</p>"""),
+    ],
+    "faqs": [
+        ("What is the difference between email marketing and marketing automation?", _mv_diff or "Email marketing tools focus on campaigns and simple automations; marketing automation platforms add multi-step journeys across channels, lead scoring and attribution."),
+        ("Is marketing automation just automated email?", "No. Automated emails are part of it, but marketing automation also scores leads, branches journeys on behavior, can use channels such as SMS, and syncs with a CRM so marketing and sales share the same view of each contact."),
+        ("Which tools do both email marketing and marketing automation?", f"{_mv_and(_mv_both_n)} {'is' if len(_mv_both) == 1 else 'are'} in both of our rankings: campaigns and newsletters on the entry plans, with deeper automation on higher plans." if _mv_both else "Several email tools offer automation on higher plans; see our shortlists."),
+        ("Which marketing automation tool has lead scoring for the lowest price?", _mv_score or "See our marketing automation shortlist for which plan first includes lead scoring."),
+    ],
+})

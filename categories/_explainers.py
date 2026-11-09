@@ -60,6 +60,7 @@ EXPLAIN = {
                      ("CRM integration", "Two-way sync so sales and marketing see the same data."),
                      ("Multichannel messaging", "Email plus SMS, in-app or ads audiences, depending on the tool."),
                      ("Attribution and reporting", "Which campaigns create pipeline and revenue.")],
+        "guide": "/guides/marketing-automation-vs-email-marketing/",
     },
     "best-project-management-software": {
         "what": "Project management software helps teams plan work, assign tasks, set deadlines and see progress in one place. Most tools offer several views of the same work, such as lists, boards, timelines and calendars, plus automation and reporting for managers.",
