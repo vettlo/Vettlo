@@ -792,5 +792,115 @@
       "Monthly plans can be cancelled anytime; annual plans run for 12 months. Prices exclude sales tax.",
       "Enterprise is priced by quote after a call; legacy LiveChat plans are on a separate page."
     ]
+  },
+  "ActiveCampaign": {
+    "checked": "2026-11-09",
+    "source": ["ActiveCampaign pricing", "https://www.activecampaign.com/pricing"],
+    "plans": [
+      ["Starter", "$15/mo at 1,000 contacts, billed yearly", "1 user, 10,000 email sends a month, multi-step automations capped at 5 actions each"],
+      ["Plus", "$49/mo at 1,000 contacts, billed yearly", "1 user, 10,000 email sends a month, unlimited automation actions, landing pages"],
+      ["Pro", "$79/mo at 1,000 contacts, billed yearly", "3 users, 12,000 email sends a month, sales automation, split automations and predictive sending"],
+      ["Enterprise", "$145/mo at 1,000 contacts, billed yearly", "5 users, 15,000 email sends a month, custom reporting, custom objects, dedicated account rep, HIPAA support"]
+    ],
+    "first_plan": [
+      ["Multi-step automations (up to 5 actions)", "Starter"],
+      ["Unlimited automation actions", "Plus"],
+      ["Landing pages", "Plus"],
+      ["Sales automation", "Pro"],
+      ["Split automations", "Pro"],
+      ["Predictive sending", "Pro"],
+      ["Custom reporting", "Enterprise"],
+      ["Custom objects", "Enterprise"],
+      ["Dedicated account rep", "Enterprise"],
+      ["HIPAA support", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Starter", "Plus", "Pro", "Enterprise"],
+      "rows": [
+        ["Contacts (base price)", "1,000", "1,000", "1,000", "1,000"],
+        ["Email sends a month", "10,000", "10,000", "12,000", "15,000"],
+        ["Users included", "1", "1", "3", "5"],
+        ["Actions per automation", "5", "Unlimited", "Unlimited", "Unlimited"]
+      ]
+    },
+    "notes": [
+      "Free 14-day trial with email sign-up; no credit card needed.",
+      "SMS is an add-on on Plus, Pro and Enterprise; custom reporting is an add-on below Enterprise.",
+      "Prices rise with contact count. The pricing page showed placeholder prices when we checked, so the prices above are from ActiveCampaign's own comparison page (at 1,000 contacts).",
+      "30-day money-back guarantee."
+    ]
+  },
+  "Bitwarden": {
+    "checked": "2026-11-09",
+    "source": ["Bitwarden business pricing", "https://bitwarden.com/pricing/business/"],
+    "plans": [
+      ["Free organization", "Free", "2 users and 2 collections, no encrypted file attachments"],
+      ["Teams", "$4/user/mo, billed annually", "Unlimited users and collections, event logs, directory sync, SCIM provisioning, 5 GB per user + 5 GB shared storage"],
+      ["Enterprise", "$6/user/mo, billed annually", "Everything in Teams plus SSO, enterprise policies, self-hosting, custom roles, account recovery and a free Families plan for all users"],
+      ["Custom", "Request a quote", "Tailored plan for large organizations"]
+    ],
+    "first_plan": [
+      ["Unlimited users and collections", "Teams"],
+      ["Event and audit logs", "Teams"],
+      ["Directory sync", "Teams"],
+      ["SCIM provisioning", "Teams"],
+      ["Login with SSO (including passwordless SSO)", "Enterprise"],
+      ["Enterprise policies", "Enterprise"],
+      ["Self-hosting", "Enterprise"],
+      ["Custom roles and granular access control", "Enterprise"],
+      ["Account recovery workflow", "Enterprise"],
+      ["Free Families plan for all users", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free organization", "Teams", "Enterprise"],
+      "rows": [
+        ["Users", "2", "Unlimited", "Unlimited"],
+        ["Collections", "2", "Unlimited", "Unlimited"],
+        ["Encrypted file storage", "None", "5 GB per user + 5 GB shared", "5 GB per user + 5 GB shared"],
+        ["Secrets Manager machine accounts (add-on)", "—", "Up to 20", "Up to 50"]
+      ]
+    },
+    "notes": [
+      "Prices are in USD on an annual subscription, excluding taxes.",
+      "Secrets Manager is an add-on: $6/user/mo on Teams and $12/user/mo on Enterprise, with a free 14-day trial; extra machine accounts are $1 each.",
+      "Teams and Enterprise offer a free trial; the pricing page doesn't state its length."
+    ]
+  },
+  "Clockify": {
+    "checked": "2026-11-09",
+    "source": ["Clockify subscription plans", "https://clockify.me/help/administration/subscription-plans"],
+    "plans": [
+      ["Free", "Free", "Up to 5 users, unlimited time tracking"],
+      ["Basic", "$3.99/user/mo billed annually, or $4.99 monthly", "Hide time and pages, kiosk, bulk edit, webhooks"],
+      ["Standard", "$5.49/user/mo billed annually, or $6.99 monthly", "Time approval, invoicing, lock timesheets, time off"],
+      ["Pro", "$7.99/user/mo billed annually, or $9.99 monthly", "Scheduling, expenses, labor cost and profit, GPS tracking, screenshots"],
+      ["Enterprise", "$11.99/user/mo billed annually, or $14.99 monthly", "Single sign-on, custom subdomain, audit log"],
+      ["CAKE.com Bundle", "$12.99/user/mo billed annually, or $15.99 monthly", "All Enterprise features plus Pumble and Plaky"]
+    ],
+    "first_plan": [
+      ["Kiosk", "Basic"],
+      ["Webhooks", "Basic"],
+      ["Time approval", "Standard"],
+      ["Invoicing", "Standard"],
+      ["Lock timesheets", "Standard"],
+      ["Time off", "Standard"],
+      ["Scheduling", "Pro"],
+      ["Expenses", "Pro"],
+      ["GPS tracking and screenshots", "Pro"],
+      ["Single sign-on (SSO) and audit log", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Basic", "Standard", "Pro", "Enterprise"],
+      "rows": [
+        ["Users", "Up to 5", "Not stated", "Not stated", "Not stated", "Not stated"],
+        ["Price per user, billed annually", "$0", "$3.99", "$5.49", "$7.99", "$11.99"],
+        ["Price per user, billed monthly", "$0", "$4.99", "$6.99", "$9.99", "$14.99"]
+      ]
+    },
+    "notes": [
+      "Annual plans are charged in advance for the full 12 months.",
+      "The CAKE.com Bundle is only available for workspaces on global servers.",
+      "The plans page doesn't state trial terms; Clockify covers its free trial in a separate help article."
+    ]
   }
 }

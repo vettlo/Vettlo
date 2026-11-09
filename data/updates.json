@@ -45,24 +45,24 @@
     "note": "Re-verified prices, plans, add-ons and trials for all 5 tools on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged; Otter.ai 511 to 535 reviews)."
   },
   "/tools/best-sales-dialers/": {
-    "updated": "2026-10-29",
-    "checked": "2026-10-29",
-    "note": "Re-verified prices, plans, dialer availability and trials for all 6 dialers on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-09",
+    "checked": "2026-11-09",
+    "note": "Re-verified plans, dialer availability, seat minimums and trials for all 6 dialers on vendor pages (no price changes; CloudTalk's pricing page couldn't be read; its help center lists the same Essential 29 and Expert 49 price points and Expert's 3-seat minimum, so CloudTalk is unchanged) and refreshed G2 review counts (ratings unchanged)."
   },
   "/tools/best-aircall-alternatives/": {
-    "updated": "2026-10-29",
-    "checked": "2026-10-29",
-    "note": "Re-verified prices, plans, dialer availability and trials for all 6 dialers on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-09",
+    "checked": "2026-11-09",
+    "note": "Re-verified plans, dialer availability, seat minimums and trials for all 6 dialers on vendor pages (no price changes; CloudTalk's pricing page couldn't be read; its help center lists the same Essential 29 and Expert 49 price points and Expert's 3-seat minimum, so CloudTalk is unchanged) and refreshed G2 review counts (ratings unchanged)."
   },
   "/tools/best-sales-engagement-software/": {
-    "updated": "2026-10-29",
-    "checked": "2026-10-29",
-    "note": "Re-verified prices, plans and trials on vendor pricing pages (no changes found; Apollo's plan prices aren't in its pricing page text, and Reply.io's pricing page now shows Free/Starter/Professional/Ultimate tiers without prices, so Reply.io's listed price is unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-09",
+    "checked": "2026-11-09",
+    "note": "Re-verified prices, plans and trials on vendor pages (no price changes found) and refreshed G2 review counts (ratings unchanged). Reply.io's pricing page now shows Free, Starter, Professional, Ultimate and Reply Unlimited plans without per-user prices, so its listed prices are unchanged pending verification; Apollo.io prices were confirmed via Apollo's own plan guide."
   },
   "/tools/best-apollo-alternatives/": {
-    "updated": "2026-10-29",
-    "checked": "2026-10-29",
-    "note": "Re-verified prices, plans and trials on vendor pricing pages (no changes found; Apollo's plan prices aren't in its pricing page text, and Reply.io's pricing page now shows Free/Starter/Professional/Ultimate tiers without prices, so Reply.io's listed price is unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-09",
+    "checked": "2026-11-09",
+    "note": "Re-verified prices, plans and trials on vendor pages (no price changes found) and refreshed G2 review counts (ratings unchanged). Reply.io's pricing page now shows Free, Starter, Professional, Ultimate and Reply Unlimited plans without per-user prices, so its listed prices are unchanged pending verification; Apollo.io prices were confirmed via Apollo's own plan guide."
   },
   "/tools/best-project-management-software/": {
     "updated": "2026-10-30",
