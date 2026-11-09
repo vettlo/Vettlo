@@ -1,6 +1,7 @@
 {
  "_about": "Topic clusters around each pillar (category shortlist). One supporting article per day, taken from the highest-priority pillar (list order) whose next article is 'todo'. Each article answers ONE distinct search intent that the pillar page doesn't, links up to its pillar and across to sibling articles, and must pass scripts/similarity.py (<=30% overlap with any page). Never add 'best free X', 'X for small business' or other variants of a shortlist: they duplicate the pillar. Comparisons (X vs Y) live in data/content_queue.json 'items' and need both tools in the pillar. Order: pillars and their todo articles are sorted by the priority of the next article's target_keyword (data/keywords.json: Google US volume estimate x (1 - difficulty/100)). Each article targets target_keyword in its title, H1, first 100 words and URL slug where natural, and covers close variants and questions people ask.",
  "rules": [
+  "One keyword, one URL. Every article's target_keyword must be free: run `python3 scripts/keyword_check.py \"<keyword>\"` before planning or writing, and `python3 scripts/keyword_check.py` (whole site + plan) before publishing; both must pass. A tool's own pricing ('<tool> pricing') belongs to its review page; '<tool> alternatives' to its alternatives page; '<a> vs <b>' to the comparison; a category's head terms ('crm software', 'password manager') to its shortlist. Guides take informational or cost/how-to keywords around them ('what is X', 'X cost', 'how to Y').",
   "One search intent per article; check the pillar and siblings don't already answer it.",
   "Facts: prices/plans from category data in code; laws, deadlines and statistics only from official sources fetched the same day, listed in 'sources'.",
   "Every article: link to its pillar in the first two paragraphs, and to 2+ sibling articles or comparisons; the build adds the pillar's Guides block.",
@@ -146,22 +147,6 @@
      "priority": 13980
     },
     {
-     "slug": "what-is-a-business-password-manager",
-     "type": "explainer",
-     "title": "What Is a Business Password Manager and How Does It Work?",
-     "intent": "business password manager",
-     "angle": "Vaults, sharing, zero-knowledge encryption, admin policies, SSO/SCIM; personal vs business plans with plan facts from data.",
-     "status": "todo",
-     "url": "/guides/what-is-a-business-password-manager/",
-     "target_keyword": "business password manager",
-     "bing_3m": 122,
-     "bing_us_3m": 37,
-     "google_us_range": "1K-10K",
-     "google_us_est": 1000,
-     "kd": 55,
-     "priority": 450
-    },
-    {
      "slug": "password-manager-vs-sso",
      "type": "concept",
      "title": "Password Manager vs SSO: Do You Need Both?",
@@ -176,6 +161,22 @@
      "google_us_est": 30,
      "kd": null,
      "priority": 12
+    },
+    {
+     "slug": "what-is-a-business-password-manager",
+     "type": "explainer",
+     "title": "What Is a Business Password Manager and How Does It Work?",
+     "intent": "business password manager",
+     "angle": "Vaults, sharing, zero-knowledge encryption, admin policies, SSO/SCIM; personal vs business plans with plan facts from data.",
+     "status": "todo",
+     "url": "/guides/what-is-a-business-password-manager/",
+     "target_keyword": "what is a business password manager",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
     },
     {
      "slug": "password-manager-rollout",
@@ -206,13 +207,13 @@
      "title": "How Much Does Help Desk Software Cost?",
      "status": "done",
      "url": "/guides/help-desk-software-cost/",
-     "target_keyword": "zendesk pricing",
-     "bing_3m": 674,
-     "bing_us_3m": 227,
-     "google_us_range": "1K-10K",
-     "google_us_est": 3600,
+     "target_keyword": "help desk software cost",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
      "kd": null,
-     "priority": 1440
+     "priority": null
     },
     {
      "slug": "what-is-csat",
@@ -385,22 +386,6 @@
    "why": "~140 impressions plus merged free/small-business pages.",
    "articles": [
     {
-     "slug": "e-signature-software-cost",
-     "type": "pricing",
-     "title": "How Much Does E-Signature Software Cost?",
-     "intent": "e signature pricing",
-     "angle": "Per-sender pricing, envelope limits, API costs from data.",
-     "status": "todo",
-     "url": "/guides/e-signature-software-cost/",
-     "target_keyword": "docusign pricing",
-     "bing_3m": 2873,
-     "bing_us_3m": 1406,
-     "google_us_range": "1K-10K",
-     "google_us_est": 10000,
-     "kd": null,
-     "priority": 4000
-    },
-    {
      "slug": "are-electronic-signatures-legal",
      "type": "reference",
      "title": "Are Electronic Signatures Legally Binding?",
@@ -416,45 +401,22 @@
      "google_us_est": 5100,
      "kd": null,
      "priority": 2040
-    }
-   ]
-  },
-  {
-   "pillar": "best-b2b-data-providers",
-   "dept": "Sales",
-   "why": "~115 impressions, position ~42.",
-   "articles": [
-    {
-     "slug": "how-b2b-data-credits-work",
-     "type": "explainer",
-     "title": "How B2B Data Credits Work (and How to Compare Providers)",
-     "intent": "b2b data credits",
-     "angle": "Credit types, what a credit buys per provider, effective cost per verified contact from data.",
-     "status": "todo",
-     "url": "/guides/how-b2b-data-credits-work/",
-     "target_keyword": "zoominfo pricing",
-     "bing_3m": 786,
-     "bing_us_3m": 346,
-     "google_us_range": "1K-10K",
-     "google_us_est": 5500,
-     "kd": null,
-     "priority": 2200
     },
     {
-     "slug": "b2b-data-gdpr-ccpa",
-     "type": "reference",
-     "title": "Using B2B Contact Data Under GDPR and CCPA",
-     "intent": "b2b data gdpr",
-     "angle": "Lawful basis, legitimate interest, opt-out, data subject requests, from official regulator pages fetched today; not legal advice.",
+     "slug": "e-signature-software-cost",
+     "type": "pricing",
+     "title": "How Much Does E-Signature Software Cost?",
+     "intent": "e signature pricing",
+     "angle": "Per-sender pricing, envelope limits, API costs from data.",
      "status": "todo",
-     "url": "/guides/b2b-data-gdpr-ccpa/",
-     "target_keyword": "b2b data gdpr",
-     "bing_3m": 0,
-     "bing_us_3m": 0,
-     "google_us_range": "10-100",
-     "google_us_est": 30,
+     "url": "/guides/e-signature-software-cost/",
+     "target_keyword": "e-signature software cost",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
      "kd": null,
-     "priority": 12
+     "priority": null
     }
    ]
   },
@@ -512,77 +474,6 @@
    ]
   },
   {
-   "pillar": "best-time-tracking-software",
-   "dept": "Projects & operations",
-   "why": "~270 impressions on the pillar plus ~590 on the retired free/small-business pages, now merged into it.",
-   "articles": [
-    {
-     "slug": "what-is-time-tracking-software",
-     "type": "explainer",
-     "title": "What Is Time Tracking Software and How Do Teams Use It?",
-     "intent": "time tracking software",
-     "angle": "Timers vs timesheets, billable rates, approvals, payroll export, monitoring features and the privacy trade-off.",
-     "status": "todo",
-     "url": "/guides/what-is-time-tracking-software/",
-     "target_keyword": "employee time tracking",
-     "bing_3m": 0,
-     "bing_us_3m": 0,
-     "google_us_range": "1K-10K",
-     "google_us_est": 3200,
-     "kd": null,
-     "priority": 1280
-    },
-    {
-     "slug": "time-tracking-software-cost",
-     "type": "pricing",
-     "title": "How Much Does Time Tracking Software Cost?",
-     "intent": "time tracking software pricing",
-     "angle": "Free plans and per-user prices, cost for 10 and 50 users computed from data.",
-     "status": "todo",
-     "url": "/guides/time-tracking-software-cost/",
-     "target_keyword": "time tracking software cost",
-     "bing_3m": 0,
-     "bing_us_3m": 0,
-     "google_us_range": "10-100",
-     "google_us_est": 30,
-     "kd": null,
-     "priority": 12
-    },
-    {
-     "slug": "employee-time-tracking-rules",
-     "type": "reference",
-     "title": "Employee Time Tracking Rules: What US Employers Must Record",
-     "intent": "flsa timekeeping requirements",
-     "angle": "FLSA recordkeeping requirements from dol.gov fetched today, exempt vs non-exempt, how software helps; not legal advice.",
-     "status": "todo",
-     "url": "/guides/employee-time-tracking-rules/",
-     "target_keyword": "flsa recordkeeping requirements",
-     "bing_3m": 0,
-     "bing_us_3m": 0,
-     "google_us_range": "10-100",
-     "google_us_est": 30,
-     "kd": null,
-     "priority": 12
-    },
-    {
-     "slug": "track-billable-hours",
-     "type": "how-to",
-     "title": "How to Track Billable Hours Accurately",
-     "intent": "how to track billable hours",
-     "angle": "Rates, rounding, approvals, invoicing exports; tool features from data.",
-     "status": "todo",
-     "url": "/guides/track-billable-hours/",
-     "target_keyword": "how to track billable hours",
-     "bing_3m": 0,
-     "bing_us_3m": 0,
-     "google_us_range": "10-100",
-     "google_us_est": 30,
-     "kd": null,
-     "priority": 12
-    }
-   ]
-  },
-  {
    "pillar": "best-expense-management-software",
    "dept": "Finance",
    "why": "~100 impressions, position ~65.",
@@ -627,13 +518,13 @@
      "angle": "Free corporate-card models vs per-user pricing, cost for 25 users from data.",
      "status": "todo",
      "url": "/guides/expense-management-software-cost/",
-     "target_keyword": "expensify pricing",
+     "target_keyword": "expense management software cost",
      "bing_3m": null,
      "bing_us_3m": null,
-     "google_us_range": "100-1K",
-     "google_us_est": 320,
+     "google_us_range": null,
+     "google_us_est": null,
      "kd": null,
-     "priority": 128
+     "priority": null
     }
    ]
   },
@@ -648,20 +539,20 @@
      "title": "How Much Does Email Marketing Software Cost?",
      "status": "done",
      "url": "/guides/email-marketing-software-cost/",
-     "target_keyword": "mailchimp pricing",
-     "bing_3m": 1834,
-     "bing_us_3m": 783,
-     "google_us_range": "1K-10K",
-     "google_us_est": 10000,
+     "target_keyword": "email marketing software cost",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
      "kd": null,
-     "priority": 4000
+     "priority": null
     },
     {
      "slug": "email-deliverability-basics",
      "type": "how-to",
      "title": "Email Deliverability Basics for Newsletters and Campaigns",
-     "intent": "email deliverability",
-     "angle": "List hygiene, authentication, engagement, bulk sender rules from official pages fetched today.",
+     "intent": "improve inbox placement for marketing email (newsletters, campaigns)",
+     "angle": "List hygiene, double opt-in, engagement and sunsetting, bounce and spam-complaint rates, sending reputation, content and frequency, and what email marketing tools report. Doesn't explain SPF/DKIM/DMARC setup: one sentence and a link to the authentication article.",
      "status": "todo",
      "url": "/guides/email-deliverability-basics/",
      "target_keyword": "email deliverability",
@@ -685,20 +576,20 @@
      "title": "What Is Sales Engagement Software?",
      "status": "done",
      "url": "/guides/what-is-sales-engagement-software/",
-     "target_keyword": "sales engagement platform",
-     "bing_3m": 0,
-     "bing_us_3m": 0,
-     "google_us_range": "100-1K",
-     "google_us_est": 320,
+     "target_keyword": "what is sales engagement software",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
      "kd": null,
-     "priority": 128
+     "priority": null
     },
     {
      "slug": "cold-email-deliverability",
      "type": "how-to",
-     "title": "Cold Email Deliverability: SPF, DKIM, DMARC and Sending Limits",
-     "intent": "cold email deliverability",
-     "angle": "Authentication records, Google/Yahoo bulk sender requirements (cite their official pages fetched today), warm-up, limits, which tools include deliverability features.",
+     "title": "SPF, DKIM and DMARC: How to Set Up Email Authentication",
+     "intent": "set up SPF, DKIM and DMARC records (and meet Google/Yahoo sender rules) for a sending domain",
+     "angle": "Owns email authentication on the site: what each record does, example records, setup order, Google/Yahoo bulk sender requirements from their official pages fetched today, how to check them, what sales engagement tools require. email-deliverability-basics links here instead of explaining records.",
      "status": "todo",
      "url": "/guides/cold-email-deliverability/",
      "target_keyword": "spf dkim dmarc",
@@ -734,13 +625,13 @@
      "angle": "Per-seat prices, minimums, annual billing, cost for 5 and 20 reps computed from data.",
      "status": "todo",
      "url": "/guides/sales-engagement-software-cost/",
-     "target_keyword": "outreach pricing",
+     "target_keyword": "sales engagement software pricing",
      "bing_3m": null,
      "bing_us_3m": null,
-     "google_us_range": "100-1K",
-     "google_us_est": 320,
+     "google_us_range": null,
+     "google_us_est": null,
      "kd": null,
-     "priority": 128
+     "priority": null
     }
    ]
   },
@@ -894,6 +785,116 @@
      "google_us_est": 30,
      "kd": null,
      "priority": 12
+    }
+   ]
+  },
+  {
+   "pillar": "best-b2b-data-providers",
+   "dept": "Sales",
+   "why": "~115 impressions, position ~42.",
+   "articles": [
+    {
+     "slug": "b2b-data-gdpr-ccpa",
+     "type": "reference",
+     "title": "Using B2B Contact Data Under GDPR and CCPA",
+     "intent": "b2b data gdpr",
+     "angle": "Lawful basis, legitimate interest, opt-out, data subject requests, from official regulator pages fetched today; not legal advice.",
+     "status": "todo",
+     "url": "/guides/b2b-data-gdpr-ccpa/",
+     "target_keyword": "b2b data gdpr",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "how-b2b-data-credits-work",
+     "type": "explainer",
+     "title": "How B2B Data Credits Work (and How to Compare Providers)",
+     "intent": "b2b data credits",
+     "angle": "Credit types, what a credit buys per provider, effective cost per verified contact from data.",
+     "status": "todo",
+     "url": "/guides/how-b2b-data-credits-work/",
+     "target_keyword": "b2b data credits",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    }
+   ]
+  },
+  {
+   "pillar": "best-time-tracking-software",
+   "dept": "Projects & operations",
+   "why": "~270 impressions on the pillar plus ~590 on the retired free/small-business pages, now merged into it.",
+   "articles": [
+    {
+     "slug": "time-tracking-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Time Tracking Software Cost?",
+     "intent": "time tracking software pricing",
+     "angle": "Free plans and per-user prices, cost for 10 and 50 users computed from data.",
+     "status": "todo",
+     "url": "/guides/time-tracking-software-cost/",
+     "target_keyword": "time tracking software cost",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "employee-time-tracking-rules",
+     "type": "reference",
+     "title": "Employee Time Tracking Rules: What US Employers Must Record",
+     "intent": "flsa timekeeping requirements",
+     "angle": "FLSA recordkeeping requirements from dol.gov fetched today, exempt vs non-exempt, how software helps; not legal advice.",
+     "status": "todo",
+     "url": "/guides/employee-time-tracking-rules/",
+     "target_keyword": "flsa recordkeeping requirements",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "track-billable-hours",
+     "type": "how-to",
+     "title": "How to Track Billable Hours Accurately",
+     "intent": "how to track billable hours",
+     "angle": "Rates, rounding, approvals, invoicing exports; tool features from data.",
+     "status": "todo",
+     "url": "/guides/track-billable-hours/",
+     "target_keyword": "how to track billable hours",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "what-is-time-tracking-software",
+     "type": "explainer",
+     "title": "What Is Time Tracking Software and How Do Teams Use It?",
+     "intent": "understand what time tracking software does and whether a team needs it (informational, not a shortlist)",
+     "angle": "Timers vs timesheets, billable rates, approvals, payroll export, monitoring features and the privacy trade-off.",
+     "status": "todo",
+     "url": "/guides/what-is-time-tracking-software/",
+     "target_keyword": "what is time tracking software",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
     }
    ]
   }
