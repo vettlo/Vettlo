@@ -1,6 +1,6 @@
 {
- "_about": "Keyword data for planning. bing_3m = exact-match searches on Bing over Aug 9 - Nov 6, 2026 (all countries), bing_us_3m = US only, from Bing Webmaster Tools Keyword Research. 0 means below Bing's reporting threshold, not necessarily no demand. Bing is a small share of US search; use it to rank keywords against each other, not as absolute demand. Google Search Console impressions are the ground truth for queries we already appear for. Refresh monthly.",
- "source": "Bing Webmaster Tools Keyword Research (exact match), pulled 2026-11-09; SERP competition checked 2026-11-09",
+ "_about": "Keyword data for planning. google_us_range = Google Keyword Planner average monthly searches, United States, Oct 2025-Sep 2026 (shown as a range because the Ads account has no spend). google_us_est = a point estimate inside that range, scaled from Bing's exact count (bing_us_3m/3 x 48, the median ratio across 36 keywords with both), or the range's geometric middle when Bing has no data. kd = Vettlo difficulty 20-100 from the domains on Google's US first page (checked 2026-11-10): A = household-name authority (10 pts), B = well-known SaaS or review media (6), C = small and mid-size sites (2); averaged and scaled. serp_tiers shows them in rank order. kd is null where the SERP wasn't checked yet. priority = google_us_est x (1 - kd/100), with kd 60 assumed when unknown. bing_3m / bing_us_3m = Bing exact-match searches over Aug 9 - Nov 6, 2026 (0 = below Bing's threshold). ads_competition and top_bid_try (top-of-page high bid, Turkish lira) show commercial value. Refresh monthly.",
+ "source": "Google Keyword Planner (US, pulled 2026-11-10); Google US first-page domains (2026-11-10, 35 keywords); Bing Webmaster Tools Keyword Research (2026-11-09)",
  "opportunities": [
   {
    "type": "tool pricing pages",
@@ -12,603 +12,2496 @@
   }
  ],
  "keywords": {
+  "password manager": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1M-10M",
+   "google_us_est": 3162300,
+   "ads_competition": "low",
+   "top_bid_try": 368,
+   "priority": 1264920
+  },
+  "email marketing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100K-1M",
+   "google_us_est": 316200,
+   "ads_competition": "low",
+   "top_bid_try": 7876,
+   "priority": 126480
+  },
+  "gantt chart": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100K-1M",
+   "google_us_est": 316200,
+   "ads_competition": "low",
+   "top_bid_try": 864,
+   "priority": 126480
+  },
+  "crm": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100K-1M",
+   "google_us_est": 316200,
+   "ads_competition": "medium",
+   "top_bid_try": 1972,
+   "priority": 126480
+  },
+  "sso": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100K-1M",
+   "google_us_est": 316200,
+   "ads_competition": "low",
+   "top_bid_try": 976,
+   "priority": 126480
+  },
+  "crm software": {
+   "pillar": "crm",
+   "bing_3m": 8849,
+   "bing_us_3m": 4289,
+   "google_us_range": "100K-1M",
+   "google_us_est": 100000,
+   "ads_competition": "low",
+   "top_bid_try": 2588,
+   "priority": 40000
+  },
+  "accounting software": {
+   "pillar": "accounting",
+   "bing_3m": 7595,
+   "bing_us_3m": 3347,
+   "google_us_range": "100K-1M",
+   "google_us_est": 100000,
+   "ads_competition": "low",
+   "top_bid_try": 2819,
+   "priority": 40000
+  },
+  "project management software": {
+   "pillar": "project_management",
+   "bing_3m": 6025,
+   "bing_us_3m": 3554,
+   "google_us_range": "100K-1M",
+   "google_us_est": 100000,
+   "ads_competition": "low",
+   "top_bid_try": 2179,
+   "priority": 40000
+  },
+  "email marketing software": {
+   "pillar": "email_marketing",
+   "bing_3m": 1429,
+   "bing_us_3m": 1187,
+   "google_us_range": "100K-1M",
+   "google_us_est": 100000,
+   "ads_competition": "low",
+   "top_bid_try": 5122,
+   "priority": 40000
+  },
   "hris": {
    "pillar": "hris",
    "bing_3m": 45673,
-   "bing_us_3m": 4987
+   "bing_us_3m": 4987,
+   "google_us_range": "10K-100K",
+   "google_us_est": 79800,
+   "ads_competition": "medium",
+   "top_bid_try": 2508,
+   "kd": 80,
+   "serp_tiers": "AAACABAB",
+   "serp_top": [
+    "adp.com",
+    "sap.com",
+    "paychex.com",
+    "myshortlister.com",
+    "coursera.org",
+    "workday.com",
+    "servicenow.com",
+    "peoplemanagingpeople.com"
+   ],
+   "priority": 15960
   },
-  "what is crm": {
-   "pillar": "crm",
-   "bing_3m": 16236,
-   "bing_us_3m": 6689
+  "accounts payable": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 1505,
+   "kd": 52,
+   "serp_tiers": "ACACC",
+   "serp_top": [
+    "investopedia.com",
+    "rillion.com",
+    "coursera.org",
+    "celonis.com",
+    "stampli.com"
+   ],
+   "priority": 15168
   },
   "passkeys": {
    "pillar": "passwords",
    "bing_3m": 10143,
    "bing_us_3m": 2911,
    "competition": "medium",
-   "serp_note": "'passkeys for business': Proton, Uniqkey, TechRadar news; few dedicated business guides."
+   "serp_note": "'passkeys for business': Proton, Uniqkey, TechRadar news; few dedicated business guides.",
+   "google_us_range": "10K-100K",
+   "google_us_est": 46600,
+   "ads_competition": "low",
+   "top_bid_try": 345,
+   "kd": 70,
+   "serp_tiers": "ACAAAACC",
+   "serp_top": [
+    "safety.google",
+    "passkeys.com",
+    "google.com",
+    "fidoalliance.org",
+    "developers.google.com",
+    "support.microsoft.com",
+    "passkeys.io",
+    "passkey.org"
+   ],
+   "priority": 13980
   },
-  "crm software": {
-   "pillar": "crm",
-   "bing_3m": 8849,
-   "bing_us_3m": 4289
+  "accounts receivable": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 1731,
+   "priority": 12640
   },
-  "accounting software": {
-   "pillar": "accounting",
-   "bing_3m": 7595,
-   "bing_us_3m": 3347
+  "flsa": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 387,
+   "priority": 12640
   },
-  "bank reconciliation": {
-   "pillar": "accounting",
-   "bing_3m": 6359,
-   "bing_us_3m": 1524,
-   "competition": "medium",
-   "serp_note": "FitSmallBusiness, Tipalti, AccountingTools, CFO Club, Zoho, Brex; a strong step-by-step guide can compete."
+  "crm meaning": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 683,
+   "priority": 12640
   },
-  "project management software": {
-   "pillar": "project_management",
-   "bing_3m": 6025,
-   "bing_us_3m": 3554
+  "csat": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 875,
+   "priority": 12640
   },
-  "docusign pricing": {
-   "pillar": "esign",
-   "bing_3m": 2873,
-   "bing_us_3m": 1406
+  "e signature": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "medium",
+   "top_bid_try": 351,
+   "priority": 12640
+  },
+  "electronic signature": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "medium",
+   "top_bid_try": 504,
+   "priority": 12640
+  },
+  "best crm software": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 2513,
+   "priority": 12640
+  },
+  "irs mileage rate": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 1004,
+   "priority": 12640
+  },
+  "kanban board": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "medium",
+   "top_bid_try": 803,
+   "priority": 12640
+  },
+  "nps": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 1004,
+   "priority": 12640
+  },
+  "per diem rates": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 810,
+   "priority": 12640
+  },
+  "project management tools": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "medium",
+   "top_bid_try": 2557,
+   "priority": 12640
+  },
+  "quickbooks pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "medium",
+   "top_bid_try": 1924,
+   "priority": 12640
+  },
+  "rippling pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 5018,
+   "priority": 12640
+  },
+  "sla": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 2429,
+   "priority": 12640
+  },
+  "timesheet": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 738,
+   "priority": 12640
+  },
+  "form 940": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 2446,
+   "kd": 66,
+   "serp_tiers": "AABBBCB",
+   "serp_top": [
+    "irs.gov",
+    "paychex.com",
+    "surepayroll.com",
+    "waveapps.com",
+    "paylocity.com",
+    "irssolution.com",
+    "taxbandits.com"
+   ],
+   "priority": 10744
+  },
+  "general ledger": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 1505,
+   "kd": 76,
+   "serp_tiers": "AABBB",
+   "serp_top": [
+    "investopedia.com",
+    "en.wikipedia.org",
+    "workday.com",
+    "bill.com",
+    "waveapps.com"
+   ],
+   "priority": 7584
   },
   "payroll software": {
    "pillar": "payroll",
    "bing_3m": 2328,
    "bing_us_3m": 1172,
    "competition": "hard",
-   "serp_note": "Software Advice, Forbes Advisor, FitSmallBusiness, ADP, Patriot, QuickBooks."
+   "serp_note": "Software Advice, Forbes Advisor, FitSmallBusiness, ADP, Patriot, QuickBooks.",
+   "google_us_range": "10K-100K",
+   "google_us_est": 18800,
+   "ads_competition": "low",
+   "top_bid_try": 8400,
+   "priority": 7520
   },
-  "what is hris": {
-   "pillar": "hris",
-   "bing_3m": 1920,
-   "bing_us_3m": 1194,
-   "competition": "medium",
-   "serp_note": "Vendor blogs (ADP, Infor, HiBob, SAP) plus small sites (Workstream, ThinkVidya); winnable."
+  "single sign on": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 929,
+   "kd": 80,
+   "serp_tiers": "CAAAAB",
+   "serp_top": [
+    "curity.io",
+    "cloudflare.com",
+    "okta.com",
+    "learn.microsoft.com",
+    "techtarget.com",
+    "onelogin.com"
+   ],
+   "priority": 6320
+  },
+  "form 941": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 2258,
+   "kd": 84,
+   "serp_tiers": "ABABA",
+   "serp_top": [
+    "irs.gov",
+    "uschamber.com",
+    "turbotax.intuit.com",
+    "taxbandits.com",
+    "gusto.com"
+   ],
+   "priority": 5056
+  },
+  "w-2 vs 1099": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 143,
+   "kd": 85,
+   "serp_tiers": "ACAAAAAB",
+   "serp_top": [
+    "adp.com",
+    "completepayrollsolutions.com",
+    "reddit.com",
+    "irs.gov",
+    "turbotax.intuit.com",
+    "docusign.com",
+    "nerdwallet.com",
+    "paycor.com"
+   ],
+   "priority": 4740
+  },
+  "payroll taxes": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10K-100K",
+   "google_us_est": 31600,
+   "ads_competition": "low",
+   "top_bid_try": 1682,
+   "kd": 87,
+   "serp_tiers": "ABAABA",
+   "serp_top": [
+    "irs.gov",
+    "taxfoundation.org",
+    "adp.com",
+    "investopedia.com",
+    "fidelity.com",
+    "congress.gov"
+   ],
+   "priority": 4108
+  },
+  "docusign pricing": {
+   "pillar": "esign",
+   "bing_3m": 2873,
+   "bing_us_3m": 1406,
+   "google_us_range": "1K-10K",
+   "google_us_est": 10000,
+   "ads_competition": "medium",
+   "top_bid_try": 2143,
+   "priority": 4000
   },
   "mailchimp pricing": {
    "pillar": "email_marketing",
    "bing_3m": 1834,
-   "bing_us_3m": 783
-  },
-  "best project management software": {
-   "pillar": "project_management",
-   "bing_3m": 1462,
-   "bing_us_3m": 437
-  },
-  "email marketing software": {
-   "pillar": "email_marketing",
-   "bing_3m": 1429,
-   "bing_us_3m": 1187
-  },
-  "spf dkim dmarc": {
-   "pillar": "sales_engagement",
-   "bing_3m": 1091,
-   "bing_us_3m": 122,
-   "competition": "medium",
-   "serp_note": "Many small cold-email SaaS blogs (Hunter, SmartReach, BounceZero); US share is small (122 of 1,091)."
+   "bing_us_3m": 783,
+   "google_us_range": "1K-10K",
+   "google_us_est": 10000,
+   "ads_competition": "medium",
+   "top_bid_try": 1907,
+   "priority": 4000
   },
   "gusto pricing": {
    "pillar": "payroll",
    "bing_3m": 1014,
    "bing_us_3m": 982,
    "competition": "easy-medium",
-   "serp_note": "Mostly small/mid sites: Capterra, People Managing People, Rivermate, SpotSaaS, Tekpon, FindStack."
+   "serp_note": "Mostly small/mid sites: Capterra, People Managing People, Rivermate, SpotSaaS, Tekpon, FindStack.",
+   "google_us_range": "1K-10K",
+   "google_us_est": 10000,
+   "ads_competition": "medium",
+   "top_bid_try": 3597,
+   "priority": 4000
+  },
+  "small business accounting software": {
+   "pillar": "accounting",
+   "bing_3m": 868,
+   "bing_us_3m": 611,
+   "google_us_range": "10K-100K",
+   "google_us_est": 10000,
+   "ads_competition": "medium",
+   "top_bid_try": 2489,
+   "priority": 4000
+  },
+  "best project management software": {
+   "pillar": "project_management",
+   "bing_3m": 1462,
+   "bing_us_3m": 437,
+   "google_us_range": "1K-10K",
+   "google_us_est": 7000,
+   "ads_competition": "low",
+   "top_bid_try": 3694,
+   "priority": 2800
   },
   "cash vs accrual accounting": {
    "pillar": "accounting",
    "bing_3m": 995,
    "bing_us_3m": 783,
    "competition": "hard",
-   "serp_note": "Vendor blogs dominate: Sage, QuickBooks, Xero, FreshBooks, Zoho, plus NerdWallet."
-  },
-  "small business accounting software": {
-   "pillar": "accounting",
-   "bing_3m": 868,
-   "bing_us_3m": 611
-  },
-  "expense policy": {
-   "pillar": "expense",
-   "bing_3m": 833,
-   "bing_us_3m": 292,
-   "competition": "medium",
-   "serp_note": "Template pages from Mercury, Spendesk, Gusto, Concur, Zoho, Navan; an original template outline can compete."
+   "serp_note": "Vendor blogs dominate: Sage, QuickBooks, Xero, FreshBooks, Zoho, plus NerdWallet.",
+   "google_us_range": "1K-10K",
+   "google_us_est": 10000,
+   "ads_competition": "low",
+   "top_bid_try": 1004,
+   "kd": 76,
+   "serp_tiers": "ABAAC",
+   "serp_top": [
+    "quickbooks.intuit.com",
+    "stripe.com",
+    "reddit.com",
+    "investopedia.com",
+    "preferredcfo.com"
+   ],
+   "priority": 2400
   },
   "zoominfo pricing": {
    "pillar": "b2b_data",
    "bing_3m": 786,
-   "bing_us_3m": 346
-  },
-  "1password vs bitwarden": {
-   "pillar": "passwords",
-   "bing_3m": 765,
-   "bing_us_3m": 92
-  },
-  "zendesk pricing": {
-   "pillar": "help_desk",
-   "bing_3m": 674,
-   "bing_us_3m": 227
-  },
-  "gantt chart software": {
-   "pillar": "project_management",
-   "bing_3m": 607,
-   "bing_us_3m": 169
-  },
-  "bitwarden pricing": {
-   "pillar": "passwords",
-   "bing_3m": 507,
-   "bing_us_3m": 174
-  },
-  "best accounting software": {
-   "pillar": "accounting",
-   "bing_3m": 489,
-   "bing_us_3m": 149
-  },
-  "best crm": {
-   "pillar": "crm",
-   "bing_3m": 474,
-   "bing_us_3m": 177
-  },
-  "docusign alternatives": {
-   "pillar": "esign",
-   "bing_3m": 460,
-   "bing_us_3m": 227
-  },
-  "time tracking software": {
-   "pillar": "time_tracking",
-   "bing_3m": 403,
-   "bing_us_3m": 150
+   "bing_us_3m": 346,
+   "google_us_range": "1K-10K",
+   "google_us_est": 5500,
+   "ads_competition": "medium",
+   "top_bid_try": 2248,
+   "priority": 2200
   },
   "esign act": {
    "pillar": "esign",
    "bing_3m": 356,
    "bing_us_3m": 319,
    "competition": "easy-medium",
-   "serp_note": "Glossary pages (SpotDraft, Blueink, eSignly) and Adobe help; winnable with a clear, sourced explainer."
+   "serp_note": "Glossary pages (SpotDraft, Blueink, eSignly) and Adobe help; winnable with a clear, sourced explainer.",
+   "google_us_range": "1K-10K",
+   "google_us_est": 5100,
+   "ads_competition": "low",
+   "top_bid_try": 582,
+   "priority": 2040
+  },
+  "what is hris": {
+   "pillar": "hris",
+   "bing_3m": 1920,
+   "bing_us_3m": 1194,
+   "competition": "medium",
+   "serp_note": "Vendor blogs (ADP, Infor, HiBob, SAP) plus small sites (Workstream, ThinkVidya); winnable.",
+   "google_us_range": "1K-10K",
+   "google_us_est": 10000,
+   "ads_competition": "low",
+   "top_bid_try": 809,
+   "kd": 80,
+   "serp_tiers": "AABABB",
+   "serp_top": [
+    "adp.com",
+    "sap.com",
+    "workday.com",
+    "coursera.org",
+    "hibob.com",
+    "paylocity.com"
+   ],
+   "priority": 2000
   },
   "quickbooks alternatives": {
    "pillar": "accounting",
    "bing_3m": 352,
-   "bing_us_3m": 304
+   "bing_us_3m": 304,
+   "google_us_range": "1K-10K",
+   "google_us_est": 4900,
+   "ads_competition": "medium",
+   "top_bid_try": 3108,
+   "priority": 1960
+  },
+  "cold email": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 2109,
+   "kd": 49,
+   "serp_tiers": "BCACBCB",
+   "serp_top": [
+    "hunter.io",
+    "proposify.com",
+    "reddit.com",
+    "woodpecker.co",
+    "activecampaign.com",
+    "carly.substack.com",
+    "klaviyo.com"
+   ],
+   "priority": 1632
   },
   "best crm for small business": {
    "pillar": "crm",
    "bing_3m": 324,
-   "bing_us_3m": 243
+   "bing_us_3m": 243,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3900,
+   "ads_competition": "low",
+   "top_bid_try": 3109,
+   "priority": 1560
   },
-  "best payroll software": {
-   "pillar": "payroll",
-   "bing_3m": 302,
-   "bing_us_3m": 211
-  },
-  "mailchimp alternatives": {
-   "pillar": "email_marketing",
-   "bing_3m": 280,
-   "bing_us_3m": 72
-  },
-  "hris software": {
-   "pillar": "hris",
-   "bing_3m": 259,
-   "bing_us_3m": 84
-  },
-  "business password manager": {
-   "pillar": "passwords",
-   "bing_3m": 122,
-   "bing_us_3m": 37
-  },
-  "help desk software": {
+  "zendesk pricing": {
    "pillar": "help_desk",
-   "bing_3m": 98,
-   "bing_us_3m": 22
+   "bing_3m": 674,
+   "bing_us_3m": 227,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3600,
+   "ads_competition": "medium",
+   "top_bid_try": 6220,
+   "priority": 1440
   },
-  "sales pipeline stages": {
-   "pillar": "crm",
-   "bing_3m": 86,
-   "bing_us_3m": 19
+  "docusign alternatives": {
+   "pillar": "esign",
+   "bing_3m": 460,
+   "bing_us_3m": 227,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3600,
+   "ads_competition": "medium",
+   "top_bid_try": 3270,
+   "priority": 1440
   },
-  "asana vs monday": {
-   "pillar": "project_management",
-   "bing_3m": 63,
-   "bing_us_3m": 46
-  },
-  "apollo vs zoominfo": {
-   "pillar": "b2b_data",
-   "bing_3m": 50,
-   "bing_us_3m": 15
-  },
-  "expense management software": {
-   "pillar": "expense",
-   "bing_3m": 50,
-   "bing_us_3m": 28
-  },
-  "freshbooks vs quickbooks": {
+  "bank reconciliation": {
    "pillar": "accounting",
-   "bing_3m": 41,
-   "bing_us_3m": 33
-  },
-  "what is accounting software": {
-   "pillar": "accounting",
-   "bing_3m": 25,
-   "bing_us_3m": 4
-  },
-  "full service payroll": {
-   "pillar": "payroll",
-   "bing_3m": 25,
-   "bing_us_3m": 0
-  },
-  "quickbooks desktop alternatives": {
-   "pillar": "accounting",
-   "bing_3m": 24,
-   "bing_us_3m": 7
-  },
-  "quickbooks vs xero": {
-   "pillar": "accounting",
-   "bing_3m": 21,
-   "bing_us_3m": 9
-  },
-  "salesforce vs hubspot": {
-   "pillar": "crm",
-   "bing_3m": 21,
-   "bing_us_3m": 17
-  },
-  "accounting software cost": {
-   "pillar": "accounting",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "accounting software pricing": {
-   "pillar": "accounting",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "how to reconcile bank statement": {
-   "pillar": "accounting",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "quickbooks desktop discontinued": {
-   "pillar": "accounting",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "xero vs zoho books": {
-   "pillar": "accounting",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "payroll software cost": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "payroll services pricing": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "what is payroll software": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "how to run payroll": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "how to do payroll": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "payroll tax deadlines": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "form 941 due date": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "switch payroll providers": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "multi state payroll": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "gusto alternatives": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "gusto vs quickbooks payroll": {
-   "pillar": "payroll",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "best password manager for business": {
-   "pillar": "passwords",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "password manager cost": {
-   "pillar": "passwords",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "password manager vs sso": {
-   "pillar": "passwords",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "passkeys for business": {
-   "pillar": "passwords",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "how to implement password manager": {
-   "pillar": "passwords",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "lastpass alternatives": {
-   "pillar": "passwords",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "1password business pricing": {
-   "pillar": "passwords",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_3m": 6359,
+   "bing_us_3m": 1524,
+   "competition": "medium",
+   "serp_note": "FitSmallBusiness, Tipalti, AccountingTools, CFO Club, Zoho, Brex; a strong step-by-step guide can compete.",
+   "google_us_range": "1K-10K",
+   "google_us_est": 10000,
+   "ads_competition": "low",
+   "top_bid_try": 1567,
+   "kd": 87,
+   "serp_tiers": "AAAACA",
+   "serp_top": [
+    "netsuite.com",
+    "investopedia.com",
+    "sage.com",
+    "sao.wa.gov",
+    "webfiles-sc1.blackbaud.com",
+    "reddit.com"
+   ],
+   "priority": 1300
   },
   "crm pricing": {
    "pillar": "crm",
    "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "crm cost": {
-   "pillar": "crm",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "how to choose a crm": {
-   "pillar": "crm",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "crm migration": {
-   "pillar": "crm",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "hubspot vs pipedrive": {
-   "pillar": "crm",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "pipedrive alternatives": {
-   "pillar": "crm",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "hubspot alternatives": {
-   "pillar": "crm",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "sales engagement platform": {
-   "pillar": "sales_engagement",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "sales engagement software": {
-   "pillar": "sales_engagement",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "cold email deliverability": {
-   "pillar": "sales_engagement",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "email warm up": {
-   "pillar": "sales_engagement",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "sales sequence": {
-   "pillar": "sales_engagement",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "outreach vs salesloft": {
-   "pillar": "sales_engagement",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "apollo alternatives": {
-   "pillar": "sales_engagement",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "lemlist vs instantly": {
-   "pillar": "sales_engagement",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "best time tracking software": {
-   "pillar": "time_tracking",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "time tracking software cost": {
-   "pillar": "time_tracking",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_us_3m": 0,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 1793,
+   "priority": 1280
   },
   "employee time tracking": {
    "pillar": "time_tracking",
    "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "flsa recordkeeping requirements": {
-   "pillar": "time_tracking",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "how to track billable hours": {
-   "pillar": "time_tracking",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "clockify vs toggl": {
-   "pillar": "time_tracking",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "toggl alternatives": {
-   "pillar": "time_tracking",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "project management software cost": {
-   "pillar": "project_management",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_us_3m": 0,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 2457,
+   "priority": 1280
   },
   "what is project management software": {
    "pillar": "project_management",
    "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "kanban vs gantt": {
-   "pillar": "project_management",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "clickup vs asana": {
-   "pillar": "project_management",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "asana alternatives": {
-   "pillar": "project_management",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "hris vs payroll": {
-   "pillar": "hris",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "hris pricing": {
-   "pillar": "hris",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "hris implementation": {
-   "pillar": "hris",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "bamboohr alternatives": {
-   "pillar": "hris",
-   "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "bamboohr vs rippling": {
-   "pillar": "hris",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_us_3m": 0,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 722,
+   "priority": 1280
   },
   "e signature software": {
    "pillar": "esign",
    "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_us_3m": 0,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 2824,
+   "priority": 1280
   },
-  "are electronic signatures legally binding": {
-   "pillar": "esign",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "1password pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 406,
+   "priority": 1280
   },
-  "docusign vs pandadoc": {
-   "pillar": "esign",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "adp payroll pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 5018,
+   "priority": 1280
   },
-  "b2b data providers": {
-   "pillar": "b2b_data",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "expense report template": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 753,
+   "priority": 1280
   },
-  "zoominfo alternatives": {
-   "pillar": "b2b_data",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "clickup pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 663,
+   "priority": 1280
   },
-  "b2b data gdpr": {
-   "pillar": "b2b_data",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "constant contact pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 1505,
+   "priority": 1280
   },
-  "help desk metrics": {
-   "pillar": "help_desk",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "dkim": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 601,
+   "priority": 1280
   },
-  "first response time": {
-   "pillar": "help_desk",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "dmarc": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 523,
+   "kd": 60,
+   "serp_tiers": "CBACAB",
+   "serp_top": [
+    "dmarc.org",
+    "fortinet.com",
+    "en.wikipedia.org",
+    "easydmarc.com",
+    "cloudflare.com",
+    "proofpoint.com"
+   ],
+   "priority": 1280
   },
-  "ai customer service pricing": {
-   "pillar": "help_desk",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "agile project management": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 392,
+   "priority": 1280
   },
-  "zendesk alternatives": {
-   "pillar": "help_desk",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "apollo pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 1119,
+   "priority": 1280
   },
-  "zendesk vs freshdesk": {
-   "pillar": "help_desk",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+  "asana pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 1438,
+   "priority": 1280
+  },
+  "hubspot pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 2505,
+   "priority": 1280
+  },
+  "jira pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 1498,
+   "priority": 1280
+  },
+  "klaviyo pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 3262,
+   "priority": 1280
+  },
+  "mileage reimbursement rate": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 932,
+   "priority": 1280
+  },
+  "monday pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 1654,
+   "priority": 1280
+  },
+  "overtime rules": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 421,
+   "priority": 1280
+  },
+  "pandadocs pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 2054,
+   "priority": 1280
+  },
+  "pipedrive pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 4288,
+   "priority": 1280
+  },
+  "quickbooks payroll pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 3385,
+   "priority": 1280
+  },
+  "ramp pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 3637,
+   "priority": 1280
+  },
+  "salesforce pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 1476,
+   "priority": 1280
+  },
+  "spf record": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 357,
+   "priority": 1280
+  },
+  "ticketing system": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 3730,
+   "priority": 1280
+  },
+  "ueta": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 1612,
+   "priority": 1280
+  },
+  "xero pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 1228,
+   "priority": 1280
+  },
+  "zoho crm pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "medium",
+   "top_bid_try": 1293,
+   "priority": 1280
+  },
+  "bitwarden pricing": {
+   "pillar": "passwords",
+   "bing_3m": 507,
+   "bing_us_3m": 174,
+   "google_us_range": "1K-10K",
+   "google_us_est": 2800,
+   "ads_competition": "low",
+   "top_bid_try": 786,
+   "priority": 1120
+  },
+  "best crm": {
+   "pillar": "crm",
+   "bing_3m": 474,
+   "bing_us_3m": 177,
+   "google_us_range": "1K-10K",
+   "google_us_est": 2800,
+   "ads_competition": "medium",
+   "top_bid_try": 4061,
+   "priority": 1120
   },
   "email deliverability": {
    "pillar": "email_marketing",
    "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_us_3m": 0,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 2262,
+   "kd": 65,
+   "serp_tiers": "BBBBBABB",
+   "serp_top": [
+    "validity.com",
+    "campaignmonitor.com",
+    "mxtoolbox.com",
+    "proofpoint.com",
+    "attentive.com",
+    "salesforce.com",
+    "omnisend.com",
+    "postmarkapp.com"
+   ],
+   "priority": 1120
+  },
+  "gantt chart software": {
+   "pillar": "project_management",
+   "bing_3m": 607,
+   "bing_us_3m": 169,
+   "google_us_range": "1K-10K",
+   "google_us_est": 2700,
+   "ads_competition": "low",
+   "top_bid_try": 1635,
+   "priority": 1080
+  },
+  "best accounting software": {
+   "pillar": "accounting",
+   "bing_3m": 489,
+   "bing_us_3m": 149,
+   "google_us_range": "1K-10K",
+   "google_us_est": 2400,
+   "ads_competition": "low",
+   "top_bid_try": 2915,
+   "priority": 960
+  },
+  "time tracking software": {
+   "pillar": "time_tracking",
+   "bing_3m": 403,
+   "bing_us_3m": 150,
+   "google_us_range": "1K-10K",
+   "google_us_est": 2400,
+   "ads_competition": "low",
+   "top_bid_try": 2316,
+   "priority": 960
+  },
+  "what is payroll": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 1718,
+   "kd": 76,
+   "serp_tiers": "CAAAB",
+   "serp_top": [
+    "lano.io",
+    "xero.com",
+    "gusto.com",
+    "netsuite.com",
+    "rippling.com"
+   ],
+   "priority": 768
+  },
+  "spf dkim dmarc": {
+   "pillar": "sales_engagement",
+   "bing_3m": 1091,
+   "bing_us_3m": 122,
+   "competition": "medium",
+   "serp_note": "Many small cold-email SaaS blogs (Hunter, SmartReach, BounceZero); US share is small (122 of 1,091).",
+   "google_us_range": "1K-10K",
+   "google_us_est": 2000,
+   "ads_competition": "low",
+   "top_bid_try": 1593,
+   "kd": 66,
+   "serp_tiers": "ABCBAAC",
+   "serp_top": [
+    "cloudflare.com",
+    "mxtoolbox.com",
+    "hostedscan.com",
+    "mimecast.com",
+    "reddit.com",
+    "learn.microsoft.com",
+    "mailroute.net"
+   ],
+   "priority": 680
+  },
+  "1password vs bitwarden": {
+   "pillar": "passwords",
+   "bing_3m": 765,
+   "bing_us_3m": 92,
+   "google_us_range": "1K-10K",
+   "google_us_est": 1500,
+   "ads_competition": "low",
+   "top_bid_try": 404,
+   "priority": 600
+  },
+  "hris software": {
+   "pillar": "hris",
+   "bing_3m": 259,
+   "bing_us_3m": 84,
+   "google_us_range": "1K-10K",
+   "google_us_est": 1300,
+   "ads_competition": "low",
+   "top_bid_try": 4577,
+   "priority": 520
+  },
+  "accrual accounting": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 1004,
+   "kd": 84,
+   "serp_tiers": "AABAB",
+   "serp_top": [
+    "investopedia.com",
+    "online.hbs.edu",
+    "patriotsoftware.com",
+    "reddit.com",
+    "stripe.com"
+   ],
+   "priority": 512
+  },
+  "mailchimp alternatives": {
+   "pillar": "email_marketing",
+   "bing_3m": 280,
+   "bing_us_3m": 72,
+   "google_us_range": "1K-10K",
+   "google_us_est": 1200,
+   "ads_competition": "medium",
+   "top_bid_try": 2557,
+   "priority": 480
+  },
+  "business password manager": {
+   "pillar": "passwords",
+   "bing_3m": 122,
+   "bing_us_3m": 37,
+   "google_us_range": "1K-10K",
+   "google_us_est": 1000,
+   "ads_competition": "low",
+   "top_bid_try": 9032,
+   "kd": 55,
+   "serp_tiers": "BBBBACBC",
+   "serp_top": [
+    "pcmag.com",
+    "1password.com",
+    "security.org",
+    "proton.me",
+    "reddit.com",
+    "passwordmanager.com",
+    "bitwarden.com",
+    "securden.com"
+   ],
+   "priority": 450
+  },
+  "double entry bookkeeping": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 1505,
+   "kd": 87,
+   "serp_tiers": "AAAACA",
+   "serp_top": [
+    "en.wikipedia.org",
+    "investopedia.com",
+    "coursera.org",
+    "phoenix.edu",
+    "accountingcoach.com",
+    "xero.com"
+   ],
+   "priority": 416
+  },
+  "what is sso": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 493,
+   "kd": 87,
+   "serp_tiers": "AABAAB",
+   "serp_top": [
+    "cloudflare.com",
+    "okta.com",
+    "fortinet.com",
+    "learn.microsoft.com",
+    "oracle.com",
+    "entrust.com"
+   ],
+   "priority": 416
+  },
+  "expense policy": {
+   "pillar": "expense",
+   "bing_3m": 833,
+   "bing_us_3m": 292,
+   "competition": "medium",
+   "serp_note": "Template pages from Mercury, Spendesk, Gusto, Concur, Zoho, Navan; an original template outline can compete.",
+   "google_us_range": "100-1K",
+   "google_us_est": 1000,
+   "ads_competition": "low",
+   "top_bid_try": 1667,
+   "priority": 400
+  },
+  "best payroll software": {
+   "pillar": "payroll",
+   "bing_3m": 302,
+   "bing_us_3m": 211,
+   "google_us_range": "100-1K",
+   "google_us_est": 1000,
+   "ads_competition": "low",
+   "top_bid_try": 7185,
+   "priority": 400
+  },
+  "help desk software": {
+   "pillar": "help_desk",
+   "bing_3m": 98,
+   "bing_us_3m": 22,
+   "google_us_range": "1K-10K",
+   "google_us_est": 1000,
+   "ads_competition": "low",
+   "top_bid_try": 3517,
+   "priority": 400
+  },
+  "asana vs monday": {
+   "pillar": "project_management",
+   "bing_3m": 63,
+   "bing_us_3m": 46,
+   "google_us_range": "1K-10K",
+   "google_us_est": 1000,
+   "ads_competition": "medium",
+   "top_bid_try": 1295,
+   "priority": 400
+  },
+  "expense management software": {
+   "pillar": "expense",
+   "bing_3m": 50,
+   "bing_us_3m": 28,
+   "google_us_range": "1K-10K",
+   "google_us_est": 1000,
+   "ads_competition": "low",
+   "top_bid_try": 5759,
+   "priority": 400
+  },
+  "freshbooks vs quickbooks": {
+   "pillar": "accounting",
+   "bing_3m": 41,
+   "bing_us_3m": 33,
+   "google_us_range": "1K-10K",
+   "google_us_est": 1000,
+   "ads_competition": "medium",
+   "top_bid_try": 1099,
+   "priority": 400
+  },
+  "chart of accounts": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 1505,
+   "kd": 89,
+   "serp_tiers": "AAABAAB",
+   "serp_top": [
+    "investopedia.com",
+    "netsuite.com",
+    "germanna.edu",
+    "mercury.com",
+    "en.wikipedia.org",
+    "xero.com",
+    "waveapps.com"
+   ],
+   "priority": 352
+  },
+  "sales pipeline": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 2056,
+   "kd": 92,
+   "serp_tiers": "AAABA",
+   "serp_top": [
+    "business.linkedin.com",
+    "salesforce.com",
+    "ibm.com",
+    "pipedrive.com",
+    "zendesk.com"
+   ],
+   "priority": 256
+  },
+  "sales sequence": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 4055,
+   "kd": 40,
+   "serp_tiers": "CBCBCCAC",
+   "serp_top": [
+    "revenue.io",
+    "apollo.io",
+    "getsales.io",
+    "highspot.com",
+    "saleshandy.com",
+    "reevo.ai",
+    "learn.microsoft.com",
+    "skaled.com"
+   ],
+   "priority": 192
+  },
+  "password manager cost": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 704,
+   "kd": 51,
+   "serp_tiers": "BCCABBCBB",
+   "serp_top": [
+    "1password.com",
+    "passwordmanager.com",
+    "securden.com",
+    "reddit.com",
+    "lastpass.com",
+    "pcmag.com",
+    "store.manageengine.com",
+    "bitwarden.com"
+   ],
+   "priority": 157
+  },
+  "full service payroll": {
+   "pillar": "payroll",
+   "bing_3m": 25,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 8454,
+   "kd": 56,
+   "serp_tiers": "AABABCCCC",
+   "serp_top": [
+    "quickbooks.intuit.com",
+    "adp.com",
+    "peoplemanagingpeople.com",
+    "gusto.com",
+    "squareup.com",
+    "workforce.com",
+    "hsccpa.com",
+    "joinhomebase.com"
+   ],
+   "priority": 141
+  },
+  "accounting software cost": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 1691,
+   "priority": 128
+  },
+  "accounting software pricing": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 1691,
+   "priority": 128
+  },
+  "how to reconcile bank statement": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 336,
+   "priority": 128
+  },
+  "quickbooks desktop discontinued": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 980,
+   "priority": 128
+  },
+  "xero vs zoho books": {
+   "pillar": "accounting",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 1403,
+   "priority": 128
+  },
+  "payroll software cost": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 3094,
+   "kd": 60,
+   "serp_tiers": "ACBBACCA",
+   "serp_top": [
+    "quickbooks.intuit.com",
+    "hybridpayroll.com",
+    "patriotsoftware.com",
+    "surepayroll.com",
+    "reddit.com",
+    "crozdesk.com",
+    "hirelevel.com",
+    "cnbc.com"
+   ],
+   "priority": 128
+  },
+  "payroll services pricing": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 4230,
+   "priority": 128
+  },
+  "form 941 due date": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": null,
+   "priority": 128
+  },
+  "gusto alternatives": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 8370,
+   "priority": 128
+  },
+  "gusto vs quickbooks payroll": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 4313,
+   "priority": 128
+  },
+  "best password manager for business": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 10544,
+   "priority": 128
+  },
+  "lastpass alternatives": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 1265,
+   "priority": 128
+  },
+  "1password business pricing": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 1602,
+   "priority": 128
+  },
+  "crm cost": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 1472,
+   "priority": 128
+  },
+  "crm migration": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 1677,
+   "priority": 128
+  },
+  "hubspot vs pipedrive": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 12844,
+   "priority": 128
+  },
+  "pipedrive alternatives": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 2509,
+   "priority": 128
+  },
+  "hubspot alternatives": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 3914,
+   "priority": 128
+  },
+  "sales engagement platform": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 4483,
+   "priority": 128
+  },
+  "sales engagement software": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 4237,
+   "priority": 128
+  },
+  "email warm up": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 1458,
+   "priority": 128
+  },
+  "outreach vs salesloft": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 3011,
+   "priority": 128
+  },
+  "apollo alternatives": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 3264,
+   "priority": 128
+  },
+  "best time tracking software": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 1582,
+   "priority": 128
+  },
+  "clockify vs toggl": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 707,
+   "priority": 128
+  },
+  "kanban vs gantt": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 900,
+   "priority": 128
+  },
+  "clickup vs asana": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 1127,
+   "priority": 128
+  },
+  "asana alternatives": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2502,
+   "priority": 128
+  },
+  "hris implementation": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 1775,
+   "kd": 60,
+   "serp_tiers": "ACBACBB",
+   "serp_top": [
+    "adp.com",
+    "eddy.com",
+    "rippling.com",
+    "linkedin.com",
+    "greenstep.com",
+    "paycom.com",
+    "personio.com"
+   ],
+   "priority": 128
+  },
+  "bamboohr alternatives": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 14113,
+   "priority": 128
+  },
+  "bamboohr vs rippling": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 3768,
+   "priority": 128
+  },
+  "are electronic signatures legally binding": {
+   "pillar": "esign",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 211,
+   "priority": 128
+  },
+  "docusign vs pandadoc": {
+   "pillar": "esign",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2113,
+   "priority": 128
+  },
+  "b2b data providers": {
+   "pillar": "b2b_data",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 4438,
+   "priority": 128
+  },
+  "zoominfo alternatives": {
+   "pillar": "b2b_data",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 3755,
+   "priority": 128
+  },
+  "zendesk alternatives": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 6521,
+   "priority": 128
+  },
+  "zendesk vs freshdesk": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 7327,
+   "priority": 128
   },
   "klaviyo vs mailchimp": {
    "pillar": "email_marketing",
    "bing_3m": 0,
-   "bing_us_3m": 0
-  },
-  "expense policy template": {
-   "pillar": "expense",
-   "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 2434,
+   "priority": 128
   },
   "expensify alternatives": {
    "pillar": "expense",
    "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 8033,
+   "priority": 128
   },
   "ramp vs brex": {
    "pillar": "expense",
    "bing_3m": 0,
-   "bing_us_3m": 0
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 5526,
+   "priority": 128
+  },
+  "adobe sign pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2509,
+   "priority": 128
+  },
+  "expensify pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 5961,
+   "priority": 128
+  },
+  "freshbooks pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2007,
+   "priority": 128
+  },
+  "freshdesk pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2206,
+   "priority": 128
+  },
+  "brevo pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "high",
+   "top_bid_try": 1505,
+   "priority": 128
+  },
+  "brex pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 3970,
+   "priority": 128
+  },
+  "clockify pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 1203,
+   "priority": 128
+  },
+  "dashlane pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 1411,
+   "priority": 128
+  },
+  "data enrichment": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 4119,
+   "priority": 128
+  },
+  "digital signature vs electronic signature": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 409,
+   "priority": 128
+  },
+  "dropbox sign pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2509,
+   "priority": 128
+  },
+  "b2b data": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2944,
+   "priority": 128
+  },
+  "bamboohr pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 13949,
+   "priority": 128
+  },
+  "best e signature software": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 2592,
+   "priority": 128
+  },
+  "best email marketing software": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 5226,
+   "priority": 128
+  },
+  "best expense management software": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 5056,
+   "priority": 128
+  },
+  "best help desk software": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 3447,
+   "priority": 128
+  },
+  "best hris software": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 5366,
+   "priority": 128
+  },
+  "harvest pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 1167,
+   "priority": 128
+  },
+  "help scout pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 3006,
+   "priority": 128
+  },
+  "intent data": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 4515,
+   "priority": 128
+  },
+  "intercom pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 3513,
+   "priority": 128
+  },
+  "lastpass pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 778,
+   "priority": 128
+  },
+  "newsletter software": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 2390,
+   "priority": 128
+  },
+  "outreach pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 3011,
+   "priority": 128
+  },
+  "paychex pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 4668,
+   "priority": 128
+  },
+  "salesloft pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 18048,
+   "priority": 128
+  },
+  "toggl pricing": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 363,
+   "priority": 128
+  },
+  "password policy": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "low",
+   "top_bid_try": 889,
+   "kd": 65,
+   "serp_tiers": "BAACCABB",
+   "serp_top": [
+    "nordpass.com",
+    "cisa.gov",
+    "learn.microsoft.com",
+    "securden.com",
+    "gibraltarsolutions.com",
+    "en.wikipedia.org",
+    "rippling.com",
+    "proton.me"
+   ],
+   "priority": 112
+  },
+  "salesforce vs hubspot": {
+   "pillar": "crm",
+   "bing_3m": 21,
+   "bing_us_3m": 17,
+   "google_us_range": "100-1K",
+   "google_us_est": 270,
+   "ads_competition": "medium",
+   "top_bid_try": 2081,
+   "priority": 108
+  },
+  "sales pipeline stages": {
+   "pillar": "crm",
+   "bing_3m": 86,
+   "bing_us_3m": 19,
+   "google_us_range": "100-1K",
+   "google_us_est": 300,
+   "ads_competition": "low",
+   "top_bid_try": 847,
+   "kd": 65,
+   "serp_tiers": "AABACCBB",
+   "serp_top": [
+    "salesforce.com",
+    "business.linkedin.com",
+    "gong.io",
+    "blog.hubspot.com",
+    "weflow.ai",
+    "copper.com",
+    "pipedrive.com",
+    "monday.com"
+   ],
+   "priority": 105
+  },
+  "apollo vs zoominfo": {
+   "pillar": "b2b_data",
+   "bing_3m": 50,
+   "bing_us_3m": 15,
+   "google_us_range": "100-1K",
+   "google_us_est": 240,
+   "ads_competition": "medium",
+   "top_bid_try": 2513,
+   "priority": 96
+  },
+  "sales cadence": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2537,
+   "kd": 71,
+   "serp_tiers": "BABABAC",
+   "serp_top": [
+    "pipedrive.com",
+    "salesforce.com",
+    "highspot.com",
+    "zendesk.com",
+    "apollo.io",
+    "reddit.com",
+    "saleshive.com"
+   ],
+   "priority": 93
+  },
+  "how to run payroll": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 4146,
+   "kd": 80,
+   "serp_tiers": "AAABBABB",
+   "serp_top": [
+    "reddit.com",
+    "adp.com",
+    "paychex.com",
+    "squareup.com",
+    "rippling.com",
+    "quickbooks.intuit.com",
+    "uschamber.com",
+    "businessnewsdaily.com"
+   ],
+   "priority": 64
+  },
+  "quickbooks vs xero": {
+   "pillar": "accounting",
+   "bing_3m": 21,
+   "bing_us_3m": 9,
+   "google_us_range": "100-1K",
+   "google_us_est": 140,
+   "ads_competition": "low",
+   "top_bid_try": 3127,
+   "priority": 56
+  },
+  "quickbooks desktop alternatives": {
+   "pillar": "accounting",
+   "bing_3m": 24,
+   "bing_us_3m": 7,
+   "google_us_range": "100-1K",
+   "google_us_est": 110,
+   "ads_competition": "high",
+   "top_bid_try": 1289,
+   "priority": 44
+  },
+  "what is accounting software": {
+   "pillar": "accounting",
+   "bing_3m": 25,
+   "bing_us_3m": 4,
+   "google_us_range": "100-1K",
+   "google_us_est": 100,
+   "ads_competition": "low",
+   "top_bid_try": 1072,
+   "priority": 40
+  },
+  "how to do payroll": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "100-1K",
+   "google_us_est": 320,
+   "ads_competition": "medium",
+   "top_bid_try": 2888,
+   "kd": 89,
+   "serp_tiers": "AABAABA",
+   "serp_top": [
+    "adp.com",
+    "reddit.com",
+    "squareup.com",
+    "quickbooks.intuit.com",
+    "paychex.com",
+    "paylocity.com",
+    "investopedia.com"
+   ],
+   "priority": 35
+  },
+  "what is payroll software": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 1661,
+   "priority": 12
+  },
+  "payroll tax deadlines": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": null,
+   "priority": 12
+  },
+  "switch payroll providers": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 6756,
+   "priority": 12
+  },
+  "multi state payroll": {
+   "pillar": "payroll",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "medium",
+   "top_bid_try": 14892,
+   "priority": 12
+  },
+  "password manager vs sso": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": null,
+   "priority": 12
+  },
+  "how to choose a crm": {
+   "pillar": "crm",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 4265,
+   "priority": 12
+  },
+  "cold email deliverability": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 1831,
+   "priority": 12
+  },
+  "lemlist vs instantly": {
+   "pillar": "sales_engagement",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 1734,
+   "priority": 12
+  },
+  "time tracking software cost": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": null,
+   "priority": 12
+  },
+  "flsa recordkeeping requirements": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 1004,
+   "priority": 12
+  },
+  "how to track billable hours": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "medium",
+   "top_bid_try": 466,
+   "priority": 12
+  },
+  "toggl alternatives": {
+   "pillar": "time_tracking",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 525,
+   "priority": 12
+  },
+  "project management software cost": {
+   "pillar": "project_management",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 1323,
+   "priority": 12
+  },
+  "hris vs payroll": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "medium",
+   "top_bid_try": 6494,
+   "priority": 12
+  },
+  "hris pricing": {
+   "pillar": "hris",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": null,
+   "priority": 12
+  },
+  "b2b data gdpr": {
+   "pillar": "b2b_data",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": null,
+   "top_bid_try": null,
+   "priority": 12
+  },
+  "help desk metrics": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 753,
+   "priority": 12
+  },
+  "first response time": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": null,
+   "priority": 12
+  },
+  "expense policy template": {
+   "pillar": "expense",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 936,
+   "priority": 12
+  },
+  "best sales engagement software": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": null,
+   "priority": 12
+  },
+  "best b2b data providers": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "10-100",
+   "google_us_est": 30,
+   "ads_competition": "low",
+   "top_bid_try": 4672,
+   "priority": 12
+  },
+  "what is crm": {
+   "pillar": "crm",
+   "bing_3m": 16236,
+   "bing_us_3m": 6689,
+   "google_us_range": "10K-100K",
+   "google_us_est": 100000,
+   "ads_competition": "low",
+   "top_bid_try": 809,
+   "kd": 100,
+   "serp_tiers": "AAAAAA",
+   "serp_top": [
+    "salesforce.com",
+    "reddit.com",
+    "ibm.com",
+    "servicenow.com",
+    "oracle.com",
+    "microsoft.com"
+   ],
+   "priority": 0
+  },
+  "passkeys for business": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": null,
+   "google_us_est": 0,
+   "ads_competition": null,
+   "top_bid_try": null,
+   "priority": 0
+  },
+  "how to implement password manager": {
+   "pillar": "passwords",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": null,
+   "google_us_est": 0,
+   "ads_competition": null,
+   "top_bid_try": null,
+   "priority": 0
+  },
+  "ai customer service pricing": {
+   "pillar": "help_desk",
+   "bing_3m": 0,
+   "bing_us_3m": 0,
+   "google_us_range": null,
+   "google_us_est": 0,
+   "ads_competition": null,
+   "top_bid_try": null,
+   "priority": 0
+  },
+  "lead scoring": {
+   "pillar": null,
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": "1K-10K",
+   "google_us_est": 3200,
+   "ads_competition": "low",
+   "top_bid_try": 2139,
+   "kd": 100,
+   "serp_tiers": "AAAAA",
+   "serp_top": [
+    "oracle.com",
+    "salesforce.com",
+    "knowledge.hubspot.com",
+    "business.linkedin.com",
+    "techtarget.com"
+   ],
+   "priority": 0
   }
  }
 }

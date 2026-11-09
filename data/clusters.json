@@ -1,5 +1,5 @@
 {
- "_about": "Topic clusters around each pillar (category shortlist). One supporting article per day, taken from the highest-priority pillar (list order) whose next article is 'todo'. Each article answers ONE distinct search intent that the pillar page doesn't, links up to its pillar and across to sibling articles, and must pass scripts/similarity.py (<=30% overlap with any page). Never add 'best free X', 'X for small business' or other variants of a shortlist: they duplicate the pillar. Comparisons (X vs Y) live in data/content_queue.json 'items' and need both tools in the pillar. Order: pillars and their todo articles are sorted by the Bing search volume of the next article's target_keyword (data/keywords.json). Each article targets target_keyword in its title, H1, first 100 words and URL slug where natural, and covers close variants and questions people ask.",
+ "_about": "Topic clusters around each pillar (category shortlist). One supporting article per day, taken from the highest-priority pillar (list order) whose next article is 'todo'. Each article answers ONE distinct search intent that the pillar page doesn't, links up to its pillar and across to sibling articles, and must pass scripts/similarity.py (<=30% overlap with any page). Never add 'best free X', 'X for small business' or other variants of a shortlist: they duplicate the pillar. Comparisons (X vs Y) live in data/content_queue.json 'items' and need both tools in the pillar. Order: pillars and their todo articles are sorted by the priority of the next article's target_keyword (data/keywords.json: Google US volume estimate x (1 - difficulty/100)). Each article targets target_keyword in its title, H1, first 100 words and URL slug where natural, and covers close variants and questions people ask.",
  "rules": [
   "One search intent per article; check the pillar and siblings don't already answer it.",
   "Facts: prices/plans from category data in code; laws, deadlines and statistics only from official sources fetched the same day, listed in 'sources'.",
@@ -7,72 +7,6 @@
   "No author names, no hands-on test claims, no invented examples presented as real customers."
  ],
  "pillars": [
-  {
-   "pillar": "best-password-managers-for-business",
-   "dept": "IT & security",
-   "why": "~740 impressions; position ~80, needs topical depth.",
-   "articles": [
-    {
-     "slug": "password-manager-cost-for-business",
-     "type": "pricing",
-     "title": "How Much Does a Business Password Manager Cost in 2026?",
-     "status": "done",
-     "url": "/guides/password-manager-cost-for-business/",
-     "target_keyword": "password manager cost",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "passkeys-for-business",
-     "type": "explainer",
-     "title": "Passkeys for Business: What They Are and How Password Managers Support Them",
-     "intent": "passkeys for business",
-     "angle": "FIDO passkeys explained (cite FIDO Alliance pages fetched today), which ranked tools store/share passkeys per their docs.",
-     "status": "todo",
-     "url": "/guides/passkeys-for-business/",
-     "target_keyword": "passkeys",
-     "bing_3m": 10143,
-     "bing_us_3m": 2911,
-     "competition": "medium"
-    },
-    {
-     "slug": "what-is-a-business-password-manager",
-     "type": "explainer",
-     "title": "What Is a Business Password Manager and How Does It Work?",
-     "intent": "business password manager",
-     "angle": "Vaults, sharing, zero-knowledge encryption, admin policies, SSO/SCIM; personal vs business plans with plan facts from data.",
-     "status": "todo",
-     "url": "/guides/what-is-a-business-password-manager/",
-     "target_keyword": "business password manager",
-     "bing_3m": 122,
-     "bing_us_3m": 37
-    },
-    {
-     "slug": "password-manager-vs-sso",
-     "type": "concept",
-     "title": "Password Manager vs SSO: Do You Need Both?",
-     "intent": "password manager vs sso",
-     "angle": "What each covers, the apps SSO can't reach, how they integrate, cost for a 25-person team from data.",
-     "status": "todo",
-     "url": "/guides/password-manager-vs-sso/",
-     "target_keyword": "password manager vs sso",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "password-manager-rollout",
-     "type": "how-to",
-     "title": "How to Roll Out a Password Manager to Your Team",
-     "intent": "how to implement password manager in company",
-     "angle": "Phased rollout plan, import, shared vault structure, policies, offboarding; checklist.",
-     "status": "todo",
-     "url": "/guides/password-manager-rollout/",
-     "target_keyword": "how to implement password manager",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    }
-   ]
-  },
   {
    "pillar": "best-accounting-software",
    "dept": "Finance",
@@ -86,20 +20,26 @@
      "url": "/guides/accounting-software-cost/",
      "target_keyword": "accounting software cost",
      "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": null,
+     "priority": 128
     },
     {
-     "slug": "bank-reconciliation",
+     "slug": "accounts-payable-process",
      "type": "how-to",
-     "title": "How to Reconcile Bank Accounts in Accounting Software",
-     "intent": "how to do bank reconciliation",
-     "angle": "Step-by-step process, common mismatches and fixes, how bank feeds and rules automate it; name which ranked tools include bank feeds on the entry plan from data.",
+     "title": "What Is Accounts Payable? The AP Process, Step by Step",
+     "intent": "Understand accounts payable and run the AP process (invoice capture, approval, payment, reconciliation) in a small business",
+     "angle": "Process walkthrough with a three-way-match table and where accounting software automates each step; links to the shortlist for AP features",
      "status": "todo",
-     "url": "/guides/bank-reconciliation/",
-     "target_keyword": "bank reconciliation",
-     "bing_3m": 6359,
-     "bing_us_3m": 1524,
-     "competition": "medium"
+     "target_keyword": "accounts payable",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": "10K-100K",
+     "google_us_est": 31600,
+     "kd": 52,
+     "priority": 15168
     },
     {
      "slug": "cash-vs-accrual-accounting",
@@ -112,19 +52,28 @@
      "target_keyword": "cash vs accrual accounting",
      "bing_3m": 995,
      "bing_us_3m": 783,
-     "competition": "hard"
+     "competition": "hard",
+     "google_us_range": "1K-10K",
+     "google_us_est": 10000,
+     "kd": 76,
+     "priority": 2400
     },
     {
-     "slug": "what-is-accounting-software",
-     "type": "explainer",
-     "title": "What Is Accounting Software? What It Does and Who Needs It",
-     "intent": "what is accounting software",
-     "angle": "Core jobs (ledger, invoicing, bills, bank feeds, reports), accounting vs bookkeeping software, when a spreadsheet stops working; feature-to-plan mapping from category data.",
+     "slug": "bank-reconciliation",
+     "type": "how-to",
+     "title": "How to Reconcile Bank Accounts in Accounting Software",
+     "intent": "how to do bank reconciliation",
+     "angle": "Step-by-step process, common mismatches and fixes, how bank feeds and rules automate it; name which ranked tools include bank feeds on the entry plan from data.",
      "status": "todo",
-     "url": "/guides/what-is-accounting-software/",
-     "target_keyword": "what is accounting software",
-     "bing_3m": 25,
-     "bing_us_3m": 4
+     "url": "/guides/bank-reconciliation/",
+     "target_keyword": "bank reconciliation",
+     "bing_3m": 6359,
+     "bing_us_3m": 1524,
+     "competition": "medium",
+     "google_us_range": "1K-10K",
+     "google_us_est": 10000,
+     "kd": 87,
+     "priority": 1300
     },
     {
      "slug": "move-from-quickbooks-desktop",
@@ -136,7 +85,297 @@
      "url": "/guides/move-from-quickbooks-desktop/",
      "target_keyword": "quickbooks desktop alternatives",
      "bing_3m": 24,
-     "bing_us_3m": 7
+     "bing_us_3m": 7,
+     "google_us_range": "100-1K",
+     "google_us_est": 110,
+     "kd": null,
+     "priority": 44
+    },
+    {
+     "slug": "what-is-accounting-software",
+     "type": "explainer",
+     "title": "What Is Accounting Software? What It Does and Who Needs It",
+     "intent": "what is accounting software",
+     "angle": "Core jobs (ledger, invoicing, bills, bank feeds, reports), accounting vs bookkeeping software, when a spreadsheet stops working; feature-to-plan mapping from category data.",
+     "status": "todo",
+     "url": "/guides/what-is-accounting-software/",
+     "target_keyword": "what is accounting software",
+     "bing_3m": 25,
+     "bing_us_3m": 4,
+     "google_us_range": "100-1K",
+     "google_us_est": 100,
+     "kd": null,
+     "priority": 40
+    }
+   ]
+  },
+  {
+   "pillar": "best-password-managers-for-business",
+   "dept": "IT & security",
+   "why": "~740 impressions; position ~80, needs topical depth.",
+   "articles": [
+    {
+     "slug": "password-manager-cost-for-business",
+     "type": "pricing",
+     "title": "How Much Does a Business Password Manager Cost in 2026?",
+     "status": "done",
+     "url": "/guides/password-manager-cost-for-business/",
+     "target_keyword": "password manager cost",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": 51,
+     "priority": 157
+    },
+    {
+     "slug": "passkeys-for-business",
+     "type": "explainer",
+     "title": "Passkeys for Business: What They Are and How Password Managers Support Them",
+     "intent": "passkeys for business",
+     "angle": "FIDO passkeys explained (cite FIDO Alliance pages fetched today), which ranked tools store/share passkeys per their docs.",
+     "status": "todo",
+     "url": "/guides/passkeys-for-business/",
+     "target_keyword": "passkeys",
+     "bing_3m": 10143,
+     "bing_us_3m": 2911,
+     "competition": "medium",
+     "google_us_range": "10K-100K",
+     "google_us_est": 46600,
+     "kd": 70,
+     "priority": 13980
+    },
+    {
+     "slug": "what-is-a-business-password-manager",
+     "type": "explainer",
+     "title": "What Is a Business Password Manager and How Does It Work?",
+     "intent": "business password manager",
+     "angle": "Vaults, sharing, zero-knowledge encryption, admin policies, SSO/SCIM; personal vs business plans with plan facts from data.",
+     "status": "todo",
+     "url": "/guides/what-is-a-business-password-manager/",
+     "target_keyword": "business password manager",
+     "bing_3m": 122,
+     "bing_us_3m": 37,
+     "google_us_range": "1K-10K",
+     "google_us_est": 1000,
+     "kd": 55,
+     "priority": 450
+    },
+    {
+     "slug": "password-manager-vs-sso",
+     "type": "concept",
+     "title": "Password Manager vs SSO: Do You Need Both?",
+     "intent": "password manager vs sso",
+     "angle": "What each covers, the apps SSO can't reach, how they integrate, cost for a 25-person team from data.",
+     "status": "todo",
+     "url": "/guides/password-manager-vs-sso/",
+     "target_keyword": "password manager vs sso",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "password-manager-rollout",
+     "type": "how-to",
+     "title": "How to Roll Out a Password Manager to Your Team",
+     "intent": "how to implement password manager in company",
+     "angle": "Phased rollout plan, import, shared vault structure, policies, offboarding; checklist.",
+     "status": "todo",
+     "url": "/guides/password-manager-rollout/",
+     "target_keyword": "how to implement password manager",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": null,
+     "google_us_est": 0,
+     "kd": null,
+     "priority": 0
+    }
+   ]
+  },
+  {
+   "pillar": "best-help-desk-software",
+   "dept": "Customer support",
+   "why": "Pillar with a cost guide already.",
+   "articles": [
+    {
+     "slug": "help-desk-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Help Desk Software Cost?",
+     "status": "done",
+     "url": "/guides/help-desk-software-cost/",
+     "target_keyword": "zendesk pricing",
+     "bing_3m": 674,
+     "bing_us_3m": 227,
+     "google_us_range": "1K-10K",
+     "google_us_est": 3600,
+     "kd": null,
+     "priority": 1440
+    },
+    {
+     "slug": "what-is-csat",
+     "type": "explainer",
+     "title": "What Is CSAT? How to Measure Customer Satisfaction Score",
+     "intent": "Define CSAT, calculate it and know what a good score is versus NPS",
+     "angle": "Formula with worked example, CSAT vs NPS vs CES table, how help desks collect it; distinct from help-desk-metrics (which covers operational metrics)",
+     "status": "todo",
+     "target_keyword": "csat",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": "10K-100K",
+     "google_us_est": 31600,
+     "kd": null,
+     "priority": 12640
+    },
+    {
+     "slug": "help-desk-metrics",
+     "type": "how-to",
+     "title": "Help Desk Metrics: What to Track and Good Targets",
+     "intent": "help desk metrics",
+     "angle": "First response time, resolution time, CSAT, backlog; how tools report them.",
+     "status": "todo",
+     "url": "/guides/help-desk-metrics/",
+     "target_keyword": "help desk metrics",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "ai-customer-service-pricing",
+     "type": "pricing",
+     "title": "AI Customer Service Pricing: Per-Resolution vs Per-Seat",
+     "intent": "ai agent pricing per resolution",
+     "angle": "How vendors charge for AI agents, worked example from data.",
+     "status": "todo",
+     "url": "/guides/ai-customer-service-pricing/",
+     "target_keyword": "ai customer service pricing",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": null,
+     "google_us_est": 0,
+     "kd": null,
+     "priority": 0
+    }
+   ]
+  },
+  {
+   "pillar": "best-payroll-software",
+   "dept": "HR & people",
+   "why": "~710 impressions; dropped to ~85 on Nov 5; needs supporting depth and links.",
+   "articles": [
+    {
+     "slug": "payroll-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Payroll Software Cost in 2026?",
+     "status": "done",
+     "url": "/guides/payroll-software-cost/",
+     "target_keyword": "payroll software cost",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": 60,
+     "priority": 128
+    },
+    {
+     "slug": "form-940",
+     "type": "reference",
+     "title": "Form 940: Who Files FUTA, When It's Due and How to Calculate It",
+     "intent": "Employers needing to file the annual federal unemployment (FUTA) return",
+     "angle": "From irs.gov only: who must file, rate and wage base, credit reduction states, deadline, deposits; how payroll software files it. Not tax advice",
+     "status": "todo",
+     "target_keyword": "form 940",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": "10K-100K",
+     "google_us_est": 31600,
+     "kd": 66,
+     "priority": 10744
+    },
+    {
+     "slug": "how-to-run-payroll",
+     "type": "how-to",
+     "title": "How to Run Payroll for the First Time: A Step-by-Step Guide",
+     "intent": "how to run payroll",
+     "angle": "EIN, state registrations, W-4/I-9, pay schedule, first run, filings; cite IRS/DOL pages fetched today; where software automates each step.",
+     "status": "todo",
+     "url": "/guides/how-to-run-payroll/",
+     "target_keyword": "how to run payroll",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": 80,
+     "priority": 64
+    },
+    {
+     "slug": "what-is-payroll-software",
+     "type": "explainer",
+     "title": "What Is Payroll Software? How It Works and What It Handles",
+     "intent": "what is payroll software",
+     "angle": "Gross-to-net, tax withholding and filing, year-end forms, full-service vs self-service; which ranked tools file taxes on the entry plan.",
+     "status": "todo",
+     "url": "/guides/what-is-payroll-software/",
+     "target_keyword": "what is payroll software",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "payroll-tax-deadlines",
+     "type": "reference",
+     "title": "Payroll Tax Deadlines: Federal Forms and Due Dates",
+     "intent": "payroll tax deadlines / form 941 due date",
+     "angle": "Forms 941, 940, W-2, 1099-NEC and deposit schedules with dates from IRS pages fetched today; which tasks full-service payroll files for you.",
+     "status": "todo",
+     "url": "/guides/payroll-tax-deadlines/",
+     "target_keyword": "payroll tax deadlines",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "switch-payroll-providers",
+     "type": "migration",
+     "title": "How to Switch Payroll Providers Without Breaking Payroll",
+     "intent": "switching payroll providers",
+     "angle": "Best timing (quarter/year start), year-to-date data, tax account handoff, parallel run, checklist.",
+     "status": "todo",
+     "url": "/guides/switch-payroll-providers/",
+     "target_keyword": "switch payroll providers",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
+    {
+     "slug": "multi-state-payroll",
+     "type": "explainer",
+     "title": "Multi-State Payroll: How It Works and What It Costs",
+     "intent": "multi state payroll",
+     "angle": "Registration in each state, withholding rules, reciprocity basics (cite state/IRS sources), which ranked providers include multi-state on which plan and price for 10 employees in 2 states from data.",
+     "status": "todo",
+     "url": "/guides/multi-state-payroll/",
+     "target_keyword": "multi state payroll",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
     }
    ]
   },
@@ -155,7 +394,11 @@
      "url": "/guides/e-signature-software-cost/",
      "target_keyword": "docusign pricing",
      "bing_3m": 2873,
-     "bing_us_3m": 1406
+     "bing_us_3m": 1406,
+     "google_us_range": "1K-10K",
+     "google_us_est": 10000,
+     "kd": null,
+     "priority": 4000
     },
     {
      "slug": "are-electronic-signatures-legal",
@@ -168,93 +411,50 @@
      "target_keyword": "esign act",
      "bing_3m": 356,
      "bing_us_3m": 319,
-     "competition": "easy-medium"
+     "competition": "easy-medium",
+     "google_us_range": "1K-10K",
+     "google_us_est": 5100,
+     "kd": null,
+     "priority": 2040
     }
    ]
   },
   {
-   "pillar": "best-sales-engagement-software",
+   "pillar": "best-b2b-data-providers",
    "dept": "Sales",
-   "why": "~670 impressions, position ~73.",
+   "why": "~115 impressions, position ~42.",
    "articles": [
     {
-     "slug": "what-is-sales-engagement-software",
+     "slug": "how-b2b-data-credits-work",
      "type": "explainer",
-     "title": "What Is Sales Engagement Software?",
-     "status": "done",
-     "url": "/guides/what-is-sales-engagement-software/",
-     "target_keyword": "sales engagement platform",
+     "title": "How B2B Data Credits Work (and How to Compare Providers)",
+     "intent": "b2b data credits",
+     "angle": "Credit types, what a credit buys per provider, effective cost per verified contact from data.",
+     "status": "todo",
+     "url": "/guides/how-b2b-data-credits-work/",
+     "target_keyword": "zoominfo pricing",
+     "bing_3m": 786,
+     "bing_us_3m": 346,
+     "google_us_range": "1K-10K",
+     "google_us_est": 5500,
+     "kd": null,
+     "priority": 2200
+    },
+    {
+     "slug": "b2b-data-gdpr-ccpa",
+     "type": "reference",
+     "title": "Using B2B Contact Data Under GDPR and CCPA",
+     "intent": "b2b data gdpr",
+     "angle": "Lawful basis, legitimate interest, opt-out, data subject requests, from official regulator pages fetched today; not legal advice.",
+     "status": "todo",
+     "url": "/guides/b2b-data-gdpr-ccpa/",
+     "target_keyword": "b2b data gdpr",
      "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "cold-email-deliverability",
-     "type": "how-to",
-     "title": "Cold Email Deliverability: SPF, DKIM, DMARC and Sending Limits",
-     "intent": "cold email deliverability",
-     "angle": "Authentication records, Google/Yahoo bulk sender requirements (cite their official pages fetched today), warm-up, limits, which tools include deliverability features.",
-     "status": "todo",
-     "url": "/guides/cold-email-deliverability/",
-     "target_keyword": "spf dkim dmarc",
-     "bing_3m": 1091,
-     "bing_us_3m": 122,
-     "competition": "medium"
-    },
-    {
-     "slug": "sales-engagement-software-cost",
-     "type": "pricing",
-     "title": "How Much Does Sales Engagement Software Cost?",
-     "intent": "sales engagement software pricing",
-     "angle": "Per-seat prices, minimums, annual billing, cost for 5 and 20 reps computed from data.",
-     "status": "todo",
-     "url": "/guides/sales-engagement-software-cost/",
-     "target_keyword": "sales engagement software",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "how-to-build-a-sales-sequence",
-     "type": "how-to",
-     "title": "How to Build a Sales Sequence That Gets Replies",
-     "intent": "sales sequence",
-     "angle": "Step types, timing, personalization, exit rules, A/B testing; how the ranked tools implement them.",
-     "status": "todo",
-     "url": "/guides/how-to-build-a-sales-sequence/",
-     "target_keyword": "sales sequence",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    }
-   ]
-  },
-  {
-   "pillar": "best-expense-management-software",
-   "dept": "Finance",
-   "why": "~100 impressions, position ~65.",
-   "articles": [
-    {
-     "slug": "expense-policy",
-     "type": "how-to",
-     "title": "How to Write an Expense Policy (With a Template Outline)",
-     "intent": "expense policy",
-     "angle": "Sections, limits, receipts, approvals, how software enforces rules.",
-     "status": "todo",
-     "url": "/guides/expense-policy/",
-     "target_keyword": "expense policy",
-     "bing_3m": 833,
-     "bing_us_3m": 292,
-     "competition": "medium"
-    },
-    {
-     "slug": "expense-management-software-cost",
-     "type": "pricing",
-     "title": "How Much Does Expense Management Software Cost?",
-     "intent": "expense management software pricing",
-     "angle": "Free corporate-card models vs per-user pricing, cost for 25 users from data.",
-     "status": "todo",
-     "url": "/guides/expense-management-software-cost/",
-     "target_keyword": "expense management software",
-     "bing_3m": 50,
-     "bing_us_3m": 28
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
     }
    ]
   },
@@ -271,19 +471,11 @@
      "url": "/guides/project-management-software-cost/",
      "target_keyword": "project management software cost",
      "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "kanban-vs-gantt",
-     "type": "concept",
-     "title": "Kanban vs Gantt Charts: Which View Fits Your Projects?",
-     "intent": "kanban vs gantt",
-     "angle": "When each works, examples, which ranked tools include each view on which plan.",
-     "status": "todo",
-     "url": "/guides/kanban-vs-gantt/",
-     "target_keyword": "gantt chart software",
-     "bing_3m": 607,
-     "bing_us_3m": 169
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
     },
     {
      "slug": "what-is-project-management-software",
@@ -295,7 +487,27 @@
      "url": "/guides/what-is-project-management-software/",
      "target_keyword": "what is project management software",
      "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "1K-10K",
+     "google_us_est": 3200,
+     "kd": null,
+     "priority": 1280
+    },
+    {
+     "slug": "kanban-vs-gantt",
+     "type": "concept",
+     "title": "Kanban vs Gantt Charts: Which View Fits Your Projects?",
+     "intent": "kanban vs gantt",
+     "angle": "When each works, examples, which ranked tools include each view on which plan.",
+     "status": "todo",
+     "url": "/guides/kanban-vs-gantt/",
+     "target_keyword": "kanban vs gantt",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": null,
+     "priority": 128
     }
    ]
   },
@@ -312,9 +524,13 @@
      "angle": "Timers vs timesheets, billable rates, approvals, payroll export, monitoring features and the privacy trade-off.",
      "status": "todo",
      "url": "/guides/what-is-time-tracking-software/",
-     "target_keyword": "time tracking software",
-     "bing_3m": 403,
-     "bing_us_3m": 150
+     "target_keyword": "employee time tracking",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "1K-10K",
+     "google_us_est": 3200,
+     "kd": null,
+     "priority": 1280
     },
     {
      "slug": "time-tracking-software-cost",
@@ -326,7 +542,11 @@
      "url": "/guides/time-tracking-software-cost/",
      "target_keyword": "time tracking software cost",
      "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
     },
     {
      "slug": "employee-time-tracking-rules",
@@ -338,7 +558,11 @@
      "url": "/guides/employee-time-tracking-rules/",
      "target_keyword": "flsa recordkeeping requirements",
      "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
     },
     {
      "slug": "track-billable-hours",
@@ -350,7 +574,173 @@
      "url": "/guides/track-billable-hours/",
      "target_keyword": "how to track billable hours",
      "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    }
+   ]
+  },
+  {
+   "pillar": "best-expense-management-software",
+   "dept": "Finance",
+   "why": "~100 impressions, position ~65.",
+   "articles": [
+    {
+     "slug": "mileage-reimbursement",
+     "type": "reference",
+     "title": "Mileage Reimbursement: IRS Rate, Rules and How to Reimburse",
+     "intent": "Employers setting up mileage reimbursement for employees",
+     "angle": "Current IRS standard mileage rate from irs.gov, accountable plan rules, logs required, how expense tools track mileage",
+     "status": "todo",
+     "target_keyword": "mileage reimbursement rate",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": "1K-10K",
+     "google_us_est": 3200,
+     "kd": null,
+     "priority": 1280
+    },
+    {
+     "slug": "expense-policy",
+     "type": "how-to",
+     "title": "How to Write an Expense Policy (With a Template Outline)",
+     "intent": "expense policy",
+     "angle": "Sections, limits, receipts, approvals, how software enforces rules.",
+     "status": "todo",
+     "url": "/guides/expense-policy/",
+     "target_keyword": "expense policy",
+     "bing_3m": 833,
+     "bing_us_3m": 292,
+     "competition": "medium",
+     "google_us_range": "100-1K",
+     "google_us_est": 1000,
+     "kd": null,
+     "priority": 400
+    },
+    {
+     "slug": "expense-management-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Expense Management Software Cost?",
+     "intent": "expense management software pricing",
+     "angle": "Free corporate-card models vs per-user pricing, cost for 25 users from data.",
+     "status": "todo",
+     "url": "/guides/expense-management-software-cost/",
+     "target_keyword": "expensify pricing",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": null,
+     "priority": 128
+    }
+   ]
+  },
+  {
+   "pillar": "best-email-marketing-software",
+   "dept": "Marketing",
+   "why": "Pillar with cost guide and an MA vs EM explainer.",
+   "articles": [
+    {
+     "slug": "email-marketing-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Email Marketing Software Cost?",
+     "status": "done",
+     "url": "/guides/email-marketing-software-cost/",
+     "target_keyword": "mailchimp pricing",
+     "bing_3m": 1834,
+     "bing_us_3m": 783,
+     "google_us_range": "1K-10K",
+     "google_us_est": 10000,
+     "kd": null,
+     "priority": 4000
+    },
+    {
+     "slug": "email-deliverability-basics",
+     "type": "how-to",
+     "title": "Email Deliverability Basics for Newsletters and Campaigns",
+     "intent": "email deliverability",
+     "angle": "List hygiene, authentication, engagement, bulk sender rules from official pages fetched today.",
+     "status": "todo",
+     "url": "/guides/email-deliverability-basics/",
+     "target_keyword": "email deliverability",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "1K-10K",
+     "google_us_est": 3200,
+     "kd": 65,
+     "priority": 1120
+    }
+   ]
+  },
+  {
+   "pillar": "best-sales-engagement-software",
+   "dept": "Sales",
+   "why": "~670 impressions, position ~73.",
+   "articles": [
+    {
+     "slug": "what-is-sales-engagement-software",
+     "type": "explainer",
+     "title": "What Is Sales Engagement Software?",
+     "status": "done",
+     "url": "/guides/what-is-sales-engagement-software/",
+     "target_keyword": "sales engagement platform",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": null,
+     "priority": 128
+    },
+    {
+     "slug": "cold-email-deliverability",
+     "type": "how-to",
+     "title": "Cold Email Deliverability: SPF, DKIM, DMARC and Sending Limits",
+     "intent": "cold email deliverability",
+     "angle": "Authentication records, Google/Yahoo bulk sender requirements (cite their official pages fetched today), warm-up, limits, which tools include deliverability features.",
+     "status": "todo",
+     "url": "/guides/cold-email-deliverability/",
+     "target_keyword": "spf dkim dmarc",
+     "bing_3m": 1091,
+     "bing_us_3m": 122,
+     "competition": "medium",
+     "google_us_range": "1K-10K",
+     "google_us_est": 2000,
+     "kd": 66,
+     "priority": 680
+    },
+    {
+     "slug": "how-to-build-a-sales-sequence",
+     "type": "how-to",
+     "title": "How to Build a Sales Sequence That Gets Replies",
+     "intent": "sales sequence",
+     "angle": "Step types, timing, personalization, exit rules, A/B testing; how the ranked tools implement them.",
+     "status": "todo",
+     "url": "/guides/how-to-build-a-sales-sequence/",
+     "target_keyword": "sales sequence",
+     "bing_3m": 0,
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": 40,
+     "priority": 192
+    },
+    {
+     "slug": "sales-engagement-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Sales Engagement Software Cost?",
+     "intent": "sales engagement software pricing",
+     "angle": "Per-seat prices, minimums, annual billing, cost for 5 and 20 reps computed from data.",
+     "status": "todo",
+     "url": "/guides/sales-engagement-software-cost/",
+     "target_keyword": "outreach pricing",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": null,
+     "priority": 128
     }
    ]
   },
@@ -367,7 +757,11 @@
      "url": "/guides/what-is-crm-software/",
      "target_keyword": "what is crm",
      "bing_3m": 16236,
-     "bing_us_3m": 6689
+     "bing_us_3m": 6689,
+     "google_us_range": "10K-100K",
+     "google_us_est": 100000,
+     "kd": 100,
+     "priority": 0
     },
     {
      "slug": "crm-software-cost",
@@ -377,31 +771,11 @@
      "url": "/guides/crm-software-cost/",
      "target_keyword": "crm cost",
      "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "sales-pipeline-stages",
-     "type": "how-to",
-     "title": "Sales Pipeline Stages: How to Set Them Up in Your CRM",
-     "intent": "sales pipeline stages",
-     "angle": "Typical B2B stages with entry/exit criteria, probability, how to configure in CRMs, reports to watch.",
-     "status": "todo",
-     "url": "/guides/sales-pipeline-stages/",
-     "target_keyword": "sales pipeline stages",
-     "bing_3m": 86,
-     "bing_us_3m": 19
-    },
-    {
-     "slug": "how-to-choose-a-crm",
-     "type": "buying",
-     "title": "How to Choose a CRM: A Step-by-Step Buying Checklist",
-     "intent": "how to choose a crm",
-     "angle": "Requirements worksheet, must-have vs nice-to-have features, trial plan, cost model for 5/10/25 users from data; deeper than the pillar's short section, link back.",
-     "status": "todo",
-     "url": "/guides/how-to-choose-a-crm/",
-     "target_keyword": "how to choose a crm",
-     "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": null,
+     "priority": 128
     },
     {
      "slug": "crm-data-migration",
@@ -413,84 +787,43 @@
      "url": "/guides/crm-data-migration/",
      "target_keyword": "crm migration",
      "bing_3m": 0,
-     "bing_us_3m": 0
-    }
-   ]
-  },
-  {
-   "pillar": "best-payroll-software",
-   "dept": "HR & people",
-   "why": "~710 impressions; dropped to ~85 on Nov 5; needs supporting depth and links.",
-   "articles": [
-    {
-     "slug": "payroll-software-cost",
-     "type": "pricing",
-     "title": "How Much Does Payroll Software Cost in 2026?",
-     "status": "done",
-     "url": "/guides/payroll-software-cost/",
-     "target_keyword": "payroll software cost",
-     "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": null,
+     "priority": 128
     },
     {
-     "slug": "what-is-payroll-software",
-     "type": "explainer",
-     "title": "What Is Payroll Software? How It Works and What It Handles",
-     "intent": "what is payroll software",
-     "angle": "Gross-to-net, tax withholding and filing, year-end forms, full-service vs self-service; which ranked tools file taxes on the entry plan.",
-     "status": "todo",
-     "url": "/guides/what-is-payroll-software/",
-     "target_keyword": "what is payroll software",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "how-to-run-payroll",
+     "slug": "sales-pipeline-stages",
      "type": "how-to",
-     "title": "How to Run Payroll for the First Time: A Step-by-Step Guide",
-     "intent": "how to run payroll",
-     "angle": "EIN, state registrations, W-4/I-9, pay schedule, first run, filings; cite IRS/DOL pages fetched today; where software automates each step.",
+     "title": "Sales Pipeline Stages: How to Set Them Up in Your CRM",
+     "intent": "sales pipeline stages",
+     "angle": "Typical B2B stages with entry/exit criteria, probability, how to configure in CRMs, reports to watch.",
      "status": "todo",
-     "url": "/guides/how-to-run-payroll/",
-     "target_keyword": "how to run payroll",
-     "bing_3m": 0,
-     "bing_us_3m": 0
+     "url": "/guides/sales-pipeline-stages/",
+     "target_keyword": "sales pipeline stages",
+     "bing_3m": 86,
+     "bing_us_3m": 19,
+     "google_us_range": "100-1K",
+     "google_us_est": 300,
+     "kd": 65,
+     "priority": 105
     },
     {
-     "slug": "payroll-tax-deadlines",
-     "type": "reference",
-     "title": "Payroll Tax Deadlines: Federal Forms and Due Dates",
-     "intent": "payroll tax deadlines / form 941 due date",
-     "angle": "Forms 941, 940, W-2, 1099-NEC and deposit schedules with dates from IRS pages fetched today; which tasks full-service payroll files for you.",
+     "slug": "how-to-choose-a-crm",
+     "type": "buying",
+     "title": "How to Choose a CRM: A Step-by-Step Buying Checklist",
+     "intent": "how to choose a crm",
+     "angle": "Requirements worksheet, must-have vs nice-to-have features, trial plan, cost model for 5/10/25 users from data; deeper than the pillar's short section, link back.",
      "status": "todo",
-     "url": "/guides/payroll-tax-deadlines/",
-     "target_keyword": "payroll tax deadlines",
+     "url": "/guides/how-to-choose-a-crm/",
+     "target_keyword": "how to choose a crm",
      "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "switch-payroll-providers",
-     "type": "migration",
-     "title": "How to Switch Payroll Providers Without Breaking Payroll",
-     "intent": "switching payroll providers",
-     "angle": "Best timing (quarter/year start), year-to-date data, tax account handoff, parallel run, checklist.",
-     "status": "todo",
-     "url": "/guides/switch-payroll-providers/",
-     "target_keyword": "switch payroll providers",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "multi-state-payroll",
-     "type": "explainer",
-     "title": "Multi-State Payroll: How It Works and What It Costs",
-     "intent": "multi state payroll",
-     "angle": "Registration in each state, withholding rules, reciprocity basics (cite state/IRS sources), which ranked providers include multi-state on which plan and price for 10 employees in 2 states from data.",
-     "status": "todo",
-     "url": "/guides/multi-state-payroll/",
-     "target_keyword": "multi state payroll",
-     "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
     }
    ]
   },
@@ -508,31 +841,11 @@
      "target_keyword": "what is hris",
      "bing_3m": 1920,
      "bing_us_3m": 1194,
-     "competition": "medium"
-    },
-    {
-     "slug": "hris-vs-payroll-software",
-     "type": "concept",
-     "title": "HRIS vs Payroll Software: What's the Difference and Do You Need Both?",
-     "intent": "hris vs payroll",
-     "angle": "Scope of each, when one platform is enough, integration vs all-in-one, cost example from data.",
-     "status": "todo",
-     "url": "/guides/hris-vs-payroll-software/",
-     "target_keyword": "hris vs payroll",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "hris-cost",
-     "type": "pricing",
-     "title": "How Much Does an HRIS Cost?",
-     "intent": "hris pricing",
-     "angle": "Per-employee pricing, quote-based vendors, cost for 25 and 100 employees from data.",
-     "status": "todo",
-     "url": "/guides/hris-cost/",
-     "target_keyword": "hris pricing",
-     "bing_3m": 0,
-     "bing_us_3m": 0
+     "competition": "medium",
+     "google_us_range": "1K-10K",
+     "google_us_est": 10000,
+     "kd": 80,
+     "priority": 2000
     },
     {
      "slug": "hris-implementation",
@@ -544,108 +857,43 @@
      "url": "/guides/hris-implementation/",
      "target_keyword": "hris implementation",
      "bing_3m": 0,
-     "bing_us_3m": 0
-    }
-   ]
-  },
-  {
-   "pillar": "best-b2b-data-providers",
-   "dept": "Sales",
-   "why": "~115 impressions, position ~42.",
-   "articles": [
-    {
-     "slug": "how-b2b-data-credits-work",
-     "type": "explainer",
-     "title": "How B2B Data Credits Work (and How to Compare Providers)",
-     "intent": "b2b data credits",
-     "angle": "Credit types, what a credit buys per provider, effective cost per verified contact from data.",
-     "status": "todo",
-     "url": "/guides/how-b2b-data-credits-work/",
-     "target_keyword": "b2b data providers",
-     "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "100-1K",
+     "google_us_est": 320,
+     "kd": 60,
+     "priority": 128
     },
     {
-     "slug": "b2b-data-gdpr-ccpa",
-     "type": "reference",
-     "title": "Using B2B Contact Data Under GDPR and CCPA",
-     "intent": "b2b data gdpr",
-     "angle": "Lawful basis, legitimate interest, opt-out, data subject requests, from official regulator pages fetched today; not legal advice.",
+     "slug": "hris-vs-payroll-software",
+     "type": "concept",
+     "title": "HRIS vs Payroll Software: What's the Difference and Do You Need Both?",
+     "intent": "hris vs payroll",
+     "angle": "Scope of each, when one platform is enough, integration vs all-in-one, cost example from data.",
      "status": "todo",
-     "url": "/guides/b2b-data-gdpr-ccpa/",
-     "target_keyword": "b2b data gdpr",
+     "url": "/guides/hris-vs-payroll-software/",
+     "target_keyword": "hris vs payroll",
      "bing_3m": 0,
-     "bing_us_3m": 0
-    }
-   ]
-  },
-  {
-   "pillar": "best-help-desk-software",
-   "dept": "Customer support",
-   "why": "Pillar with a cost guide already.",
-   "articles": [
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
+    },
     {
-     "slug": "help-desk-software-cost",
+     "slug": "hris-cost",
      "type": "pricing",
-     "title": "How Much Does Help Desk Software Cost?",
-     "status": "done",
-     "url": "/guides/help-desk-software-cost/",
-     "target_keyword": "zendesk pricing",
-     "bing_3m": 674,
-     "bing_us_3m": 227
-    },
-    {
-     "slug": "ai-customer-service-pricing",
-     "type": "pricing",
-     "title": "AI Customer Service Pricing: Per-Resolution vs Per-Seat",
-     "intent": "ai agent pricing per resolution",
-     "angle": "How vendors charge for AI agents, worked example from data.",
+     "title": "How Much Does an HRIS Cost?",
+     "intent": "hris pricing",
+     "angle": "Per-employee pricing, quote-based vendors, cost for 25 and 100 employees from data.",
      "status": "todo",
-     "url": "/guides/ai-customer-service-pricing/",
-     "target_keyword": "ai customer service pricing",
+     "url": "/guides/hris-cost/",
+     "target_keyword": "hris pricing",
      "bing_3m": 0,
-     "bing_us_3m": 0
-    },
-    {
-     "slug": "help-desk-metrics",
-     "type": "how-to",
-     "title": "Help Desk Metrics: What to Track and Good Targets",
-     "intent": "help desk metrics",
-     "angle": "First response time, resolution time, CSAT, backlog; how tools report them.",
-     "status": "todo",
-     "url": "/guides/help-desk-metrics/",
-     "target_keyword": "help desk metrics",
-     "bing_3m": 0,
-     "bing_us_3m": 0
-    }
-   ]
-  },
-  {
-   "pillar": "best-email-marketing-software",
-   "dept": "Marketing",
-   "why": "Pillar with cost guide and an MA vs EM explainer.",
-   "articles": [
-    {
-     "slug": "email-marketing-software-cost",
-     "type": "pricing",
-     "title": "How Much Does Email Marketing Software Cost?",
-     "status": "done",
-     "url": "/guides/email-marketing-software-cost/",
-     "target_keyword": "mailchimp pricing",
-     "bing_3m": 1834,
-     "bing_us_3m": 783
-    },
-    {
-     "slug": "email-deliverability-basics",
-     "type": "how-to",
-     "title": "Email Deliverability Basics for Newsletters and Campaigns",
-     "intent": "email deliverability",
-     "angle": "List hygiene, authentication, engagement, bulk sender rules from official pages fetched today.",
-     "status": "todo",
-     "url": "/guides/email-deliverability-basics/",
-     "target_keyword": "email deliverability",
-     "bing_3m": 0,
-     "bing_us_3m": 0
+     "bing_us_3m": 0,
+     "google_us_range": "10-100",
+     "google_us_est": 30,
+     "kd": null,
+     "priority": 12
     }
    ]
   }
