@@ -883,7 +883,7 @@ page("/compare/hubspot-vs-pipedrive/", f"HubSpot vs Pipedrive ({YEAR}): Pricing,
 <tr><td>Plus sequences, automation and forecasting</td><td>Professional ($90 + $1,500 onboarding)</td><td class="num">$12,300</td><td>Growth ($39)</td><td class="num">$4,680</td></tr>
 <tr><td>Plus custom reports</td><td>Professional ($90 + $1,500 onboarding)</td><td class="num">$12,300</td><td>Premium ($59)</td><td class="num">$7,080</td></tr>
 </tbody></table></div>
-<p class="small muted">Prices from <a href="https://www.hubspot.com/pricing/sales" target="_blank" rel="noopener">HubSpot</a> and <a href="https://www.pipedrive.com/en/pricing" target="_blank" rel="noopener">Pipedrive</a> pricing pages, checked {CMP_CHECKED_H}. Vendors change plans often; confirm before you buy.</p></section>
+<p class="small muted">Prices from <a href="https://www.hubspot.com/pricing/sales" target="_blank" rel="noopener">HubSpot</a> and <a href="https://www.pipedrive.com/en/pricing" target="_blank" rel="noopener">Pipedrive</a> pricing pages, checked {CMP_CHECKED_H}.</p></section>
 
 <section id="features"><h2>Plan features side by side</h2>
 <div class="table-wrap"><table><thead><tr><th>Feature</th><th>HubSpot Sales Hub</th><th>Pipedrive</th></tr></thead><tbody>
@@ -1386,11 +1386,11 @@ def dept_hubs():
                          f'<p class="hub-top">Top pick: <b>{tn}</b> <span class="sc">{tv}<small>/100</small></span> <span class="muted small">of {cnt} scored</span></p>'
                          + (f'<ul class="hub-sup">{sup}</ul>' if sup else '') + '</article>')
             faqs.append((f"What is the best {_catname(name)}?" if name.endswith("Software") else f"What are the best {_catname(name)}?",
-                         f"{tn} ranks first of the {cnt} {_catname(name)} we scored, at {tv}/100. See the full shortlist for who each tool is for and what it costs."))
+                         f"{tn} ranks first of the {cnt} {_catname(name)} we scored, at {tv}/100."))
         soon = [c for c in cats if not c[3]]
         soon_html = ("<section class=\"prose\"><h2>Coming next</h2><p>We're researching these categories and will publish them as soon as pricing and data are verified: "
                      + ", ".join(_catname(c[1]) for c in soon) + ".</p></section>") if soon else ""
-        faqs.append((f"How does Vettlo rank {label.lower()}?", "Each category has its own weighted criteria, published on the review. Tools get a 0 to 5 rating per criterion, converted to a score out of 100. Vendors cannot pay for a score. Partner compensation may affect which products we include and where they appear. See our methodology page for details."))
+        faqs.append((f"How does Vettlo rank {label.lower()}?", f"Each of the {len([c for c in cats if c[3]])} categories on this page has its own weighted criteria, listed on its shortlist. Tools get a 0 to 5 rating per criterion, converted to a score out of 100. Vendors cannot pay for a score. Partner compensation may affect which products we include and where they appear. See our methodology page for details."))
         h1 = f"Best {title} in {YEAR}"
         body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {dname}</nav>

@@ -173,7 +173,7 @@ guide_page({
     "sections": [
         ("prices", "Entry prices by CRM", f"""<p>The cheapest paid plan for each CRM in our ranking, from each vendor's pricing page:</p>
 {_ptable(_cc_rows)}
-<p class="small muted">Starting prices from each vendor's pricing page, checked {PRICES_CHECKED}. Vendors change plans often; confirm before you buy.</p>"""),
+<p class="small muted">Starting prices from each vendor's pricing page, checked {PRICES_CHECKED}.</p>"""),
         ("example", "What a 10-person sales team pays per year", f"""<p>Ten users on each vendor's entry plan, at the annual-billing prices above (taxes, add-ons and onboarding fees excluded):</p>
 <div class="table-wrap"><table><thead><tr><th>CRM</th><th>Per user per month</th><th>10 users per year</th></tr></thead><tbody>{_cc_ex}</tbody></table></div>
 <p>These totals compare entry plans only, and entry plans differ a lot in what they include. Check the plan that covers the workflows your team needs: our <a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a> comparison prices a 10-rep team on the plans that include sequences, automation and forecasting, and <a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a> does the same with Salesforce's suites.</p>"""),

@@ -129,7 +129,7 @@ def category_page(cat):
 {also}
 <!--EXPLAIN:{cat['slug']}-->
 <section id="criteria"><h2>How we scored {cat.get('plural_lc', cat['plural'].lower())}</h2>
-<p class="prose">Each tool gets a 0 to 5 rating on every criterion. We weight the ratings below, convert the total to a score out of 100, and only rank tools that score {THRESHOLD} or higher. Open any tool's <b>Score breakdown</b> to see its ratings. Full process on our <a href="/methodology/">methodology page</a>.</p>
+<p class="prose">{_crit_sentence(cat)} Each tool's <b>Score breakdown</b> shows its ratings; the <a href="/methodology/">methodology page</a> explains the process.</p>
 <div class="criteria">{crit}</div></section>
 <section id="choose" class="prose"><h2>How to choose {cat['choose_title']}</h2><ul>{choose}</ul></section>
 <section id="faq"><h2>{cat['crumb']} FAQ</h2><div>{_faq(cat['faqs'])}</div></section>
@@ -175,7 +175,7 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 <div class="table-wrap"><table><thead><tr><th>Tool</th><th>Why pick it</th><th>Starting price</th><th>Free plan / trial</th><th>Vettlo score</th></tr></thead><tbody>{rows}</tbody></table></div>
 <p class="small muted">{cat['price_footnote']} Scores use the same weighted criteria as our <a href="/tools/{cat['slug']}/">{cat.get('plural_lc', cat['plural'].lower())} ranking</a>.</p></section>
 <section id="reviews"><h2>The alternatives</h2>{''.join(cards)}</section>
-<section class="prose"><h2>How we picked these alternatives</h2><p>Every tool here comes from our <a href="/tools/{cat['slug']}/">{cat.get('plural_lc', cat['plural'].lower())} shortlist</a>. We ordered them by how well each one solves the most common reasons teams leave {tname}, not only by overall score. See our <a href="/methodology/">methodology</a>.</p></section>
+<section class="prose"><h2>How we picked these alternatives</h2><p>Every tool here comes from our <a href="/tools/{cat['slug']}/">{cat.get('plural_lc', cat['plural'].lower())} shortlist</a>. The order reflects how well each one deals with {_reasons_phrase(reasons)}, as well as its overall score (<a href="/methodology/">methodology</a>).</p></section>
 <section id="faq"><h2>{tname} alternatives FAQ</h2><div>{_faq(faqs)}</div></section>
 <section class="prose"><h2>Related</h2><ul>{rel}</ul></section>
 {_author_box()}
@@ -226,7 +226,7 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
 <div class="vs"><div><h3>Pick {an} if…</h3><ul>{li(pick_a)}</ul></div><div><h3>Pick {bn} if…</h3><ul>{li(pick_b)}</ul></div></div></section>
 <section id="cost"><h2>What it costs</h2><p class="prose">{cost_intro}</p>
 <div class="table-wrap"><table><thead><tr><th>Need</th><th>{an} plan</th><th>{an} per year</th><th>{bn} plan</th><th>{bn} per year</th></tr></thead><tbody>{cost}</tbody></table></div>
-<p class="small muted">{cost_note} Prices from <a href="{A['url']}" target="_blank" rel="noopener">{an}</a> and <a href="{B['url']}" target="_blank" rel="noopener">{bn}</a> pricing pages, checked {hdate(page_dates(url, date, date)[1])}. Vendors change plans often; confirm before you buy.</p></section>
+<p class="small muted">{cost_note} Prices from <a href="{A['url']}" target="_blank" rel="noopener">{an}</a> and <a href="{B['url']}" target="_blank" rel="noopener">{bn}</a> pricing pages, checked {hdate(page_dates(url, date, date)[1])}.</p></section>
 <section id="features"><h2>Plans and features side by side</h2>
 <div class="table-wrap"><table><thead><tr><th>Feature</th><th>{an}</th><th>{bn}</th></tr></thead><tbody>{frows}</tbody></table></div>
 <p class="small muted">"Listed from" means the feature first appears on that plan on the vendor's public pricing page.</p></section>
@@ -306,7 +306,7 @@ def explainer_sections(slug, only_what=False):
         lis = "".join(f'<li><a href="{a}">{n}</a>: {p}</li>' for v, n, p, a in priced) + "".join(f"<li>{n}: {p}</li>" for n, p in other_cur)
         summary = []
         if priced:
-            summary.append(f"Among the {len(rows)} {pr['noun']} we ranked, published entry prices start at {priced[0][2].replace("From ", "")} ({priced[0][1]})" + (f" and go up to {priced[-1][2].replace("From ", "")} ({priced[-1][1]})" if len(priced) > 1 else "") + ". Units differ by vendor (per user, per agent, per contact tier or flat), so compare at your own team size.")
+            summary.append(f"Among the {len(rows)} {pr['noun']} we ranked, published entry prices start at {priced[0][2].replace("From ", "")} ({priced[0][1]})" + (f" and go up to {priced[-1][2].replace("From ", "")} ({priced[-1][1]})" if len(priced) > 1 else "") + "." + _units_sentence(rows))
         if free:
             summary.append(f"Free plans: {', '.join(free)}.")
         if freeonly:
@@ -318,7 +318,7 @@ def explainer_sections(slug, only_what=False):
         if onreq:
             summary.append(f"No published price: {', '.join(onreq)}.")
         out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS").replace("itsm", "ITSM").replace("ci/cd", "CI/CD")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'
-                f'<ul>{lis}</ul><p class="small muted">Entry prices from each vendor\'s pricing page, as shown in the comparison table above. Higher tiers usually add automation, reporting and admin controls.</p></section>')
+                f'<ul>{lis}</ul><p class="small muted">Entry prices from each vendor\'s pricing page, as shown in the comparison table above.</p></section>')
     if pr and pr.get("others"):
         ol = "".join(f'<li><b>{n}</b>: {d}</li>' for n, d in pr["others"])
         out += (f'<section id="others" class="prose"><h2>Other {pr["noun"]} to consider</h2>'
@@ -692,3 +692,35 @@ def variant_pages(cat):
         COMPARES.setdefault(slug, []).append((u, title))
         CLUSTER.setdefault(slug, []).append((u, title, "Shortlist"))
         CATEGORY_PAGES.append((u, title[:1].upper() + title[1:], f"{title[:1].upper() + title[1:]}, from our scored shortlist.", "Shortlist"))
+
+
+def _crit_sentence(cat):
+    """Category-specific scoring sentence (avoids one boilerplate line repeated on every shortlist)."""
+    cr = sorted(cat["criteria"], key=lambda c: -c[1])
+    top = f"{cr[0][0].lower()} ({cr[0][1]}%)"
+    nxt = f"{cr[1][0].lower()} ({cr[1][1]}%)" if len(cr) > 1 else ""
+    low = f"{cr[-1][0].lower()} ({cr[-1][1]}%)" if len(cr) > 2 else ""
+    out = f"For {cat.get('plural_lc', cat['plural'].lower())}, {top} carries the most weight"
+    out += f", then {nxt}" if nxt else ""
+    out += f"; {low} counts least." if low else "."
+    return out + f" Every tool is rated 0 to 5 on each criterion, and only those whose weighted total reaches {THRESHOLD}/100 are ranked."
+
+
+def _reasons_phrase(reasons):
+    names = [a.rstrip(".").strip() for a, _ in reasons][:3]
+    names = [n[0].lower() + n[1:] if n[:2] != n[:2].upper() else n for n in names]
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+
+
+def _units_sentence(rows):
+    notes = " ".join((nt or "") + " " + (p or "") for _, p, nt, _, _ in rows).lower()
+    kinds = [w for k, w in (("per user", "per user"), ("per seat", "per seat"), ("per agent", "per agent"), ("per employee", "per employee"),
+                            ("contact", "by contact count"), ("per month", "")) if k in notes and w]
+    kinds = list(dict.fromkeys(kinds))
+    if len(kinds) >= 2:
+        return f" Here some vendors charge {kinds[0]} and others {kinds[1]}, so price them at your own team size."
+    if kinds == ["by contact count"]:
+        return " Most prices here scale with the number of contacts, so price them at your own list size."
+    if kinds:
+        return f" Most prices here are {kinds[0]}, so multiply by your team size."
+    return ""
