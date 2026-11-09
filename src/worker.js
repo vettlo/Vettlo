@@ -70,6 +70,18 @@ async function handleForm(request, env) {
   return json({ ok: true });
 }
 
+// Retired URLs (merged near-duplicate pages) -> the page that now holds their content. Built into /data/redirects.json.
+let REDIRECTS = null, REDIRECTS_AT = 0;
+async function redirects(env, request) {
+  if (REDIRECTS && Date.now() - REDIRECTS_AT < 300e3) return REDIRECTS;
+  try {
+    const r = await env.ASSETS.fetch(new Request(new URL("/data/redirects.json", request.url)));
+    REDIRECTS = r.ok ? await r.json() : {};
+  } catch (e) { REDIRECTS = REDIRECTS || {}; }
+  REDIRECTS_AT = Date.now();
+  return REDIRECTS;
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -79,6 +91,10 @@ export default {
     }
     if (url.pathname.startsWith("/api/")) return handlePortalApi(request, env, url.pathname);
     if (url.pathname.startsWith("/go/")) return handleGo(request, env, ctx);
+    if (url.pathname.startsWith("/tools/")) {
+      const to = (await redirects(env, request))[url.pathname.endsWith("/") ? url.pathname : url.pathname + "/"];
+      if (to) return new Response(null, { status: 301, headers: { location: new URL(to, url).toString() + url.search, "cache-control": "public, max-age=86400" } });
+    }
     const res = await env.ASSETS.fetch(request);
     if (url.pathname.startsWith("/tools/")) {
       try { return await placeOnShortlist(request, env, res, ctx); } catch (e) { return res; }

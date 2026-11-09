@@ -12,6 +12,6 @@ CRM_FULL = {"slug": "best-crm-software", "crumb": "CRM Software", "plural": "CRM
                                 "links": CRM_CARD_LINKS.get(t["id"], [])} for t in CONSIDERED}}
 CRM_FULL["_ranked"] = [t["id"] for t in TOOLS]
 
-for _c in [CRM_FULL] + ALLCATS:
-    variant_pages(_c)
+# "Best free X" and "X for small business" variants were retired: they repeated the shortlist and split its
+# search signals. Their URLs 301 to the shortlist (data/redirects.json). Don't reintroduce near-duplicate pages.
 review_pages([CRM_FULL] + ALLCATS)

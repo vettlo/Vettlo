@@ -1,0 +1,505 @@
+{
+ "_about": "Topic clusters around each pillar (category shortlist). One supporting article per day, taken from the highest-priority pillar (list order) whose next article is 'todo'. Each article answers ONE distinct search intent that the pillar page doesn't, links up to its pillar and across to sibling articles, and must pass scripts/similarity.py (<=30% overlap with any page). Never add 'best free X', 'X for small business' or other variants of a shortlist: they duplicate the pillar. Comparisons (X vs Y) live in data/content_queue.json 'items' and need both tools in the pillar.",
+ "rules": [
+  "One search intent per article; check the pillar and siblings don't already answer it.",
+  "Facts: prices/plans from category data in code; laws, deadlines and statistics only from official sources fetched the same day, listed in 'sources'.",
+  "Every article: link to its pillar in the first two paragraphs, and to 2+ sibling articles or comparisons; the build adds the pillar's Guides block.",
+  "No author names, no hands-on test claims, no invented examples presented as real customers."
+ ],
+ "pillars": [
+  {
+   "pillar": "best-accounting-software",
+   "dept": "Finance",
+   "why": "Most impressions on the site (~1,570 in 28 days); 'best accounting software' and 'accounting software for small business' queries.",
+   "articles": [
+    {
+     "slug": "accounting-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Accounting Software Cost in 2026?",
+     "status": "done",
+     "url": "/guides/accounting-software-cost/"
+    },
+    {
+     "slug": "what-is-accounting-software",
+     "type": "explainer",
+     "title": "What Is Accounting Software? What It Does and Who Needs It",
+     "intent": "what is accounting software",
+     "angle": "Core jobs (ledger, invoicing, bills, bank feeds, reports), accounting vs bookkeeping software, when a spreadsheet stops working; feature-to-plan mapping from category data.",
+     "status": "todo",
+     "url": "/guides/what-is-accounting-software/"
+    },
+    {
+     "slug": "cash-vs-accrual-accounting",
+     "type": "concept",
+     "title": "Cash vs Accrual Accounting: Which Method Should Your Business Use?",
+     "intent": "cash vs accrual accounting",
+     "angle": "Define both with a worked example, IRS rules on who may use cash (cite IRS Pub 538 fetched today), and which ranked tools support each/switching reports.",
+     "status": "todo",
+     "url": "/guides/cash-vs-accrual-accounting/"
+    },
+    {
+     "slug": "bank-reconciliation",
+     "type": "how-to",
+     "title": "How to Reconcile Bank Accounts in Accounting Software",
+     "intent": "how to do bank reconciliation",
+     "angle": "Step-by-step process, common mismatches and fixes, how bank feeds and rules automate it; name which ranked tools include bank feeds on the entry plan from data.",
+     "status": "todo",
+     "url": "/guides/bank-reconciliation/"
+    },
+    {
+     "slug": "move-from-quickbooks-desktop",
+     "type": "migration",
+     "title": "Moving Off QuickBooks Desktop: Your Options and How to Migrate",
+     "intent": "quickbooks desktop alternatives / migration",
+     "angle": "What Intuit has announced for Desktop (verify on intuit.com today), options (QuickBooks Online, Xero, Zoho Books...), what data moves and what doesn't, step-by-step checklist.",
+     "status": "todo",
+     "url": "/guides/move-from-quickbooks-desktop/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-password-managers-for-business",
+   "dept": "IT & security",
+   "why": "~740 impressions; position ~80, needs topical depth.",
+   "articles": [
+    {
+     "slug": "password-manager-cost-for-business",
+     "type": "pricing",
+     "title": "How Much Does a Business Password Manager Cost in 2026?",
+     "status": "done",
+     "url": "/guides/password-manager-cost-for-business/"
+    },
+    {
+     "slug": "what-is-a-business-password-manager",
+     "type": "explainer",
+     "title": "What Is a Business Password Manager and How Does It Work?",
+     "intent": "business password manager",
+     "angle": "Vaults, sharing, zero-knowledge encryption, admin policies, SSO/SCIM; personal vs business plans with plan facts from data.",
+     "status": "todo",
+     "url": "/guides/what-is-a-business-password-manager/"
+    },
+    {
+     "slug": "password-manager-vs-sso",
+     "type": "concept",
+     "title": "Password Manager vs SSO: Do You Need Both?",
+     "intent": "password manager vs sso",
+     "angle": "What each covers, the apps SSO can't reach, how they integrate, cost for a 25-person team from data.",
+     "status": "todo",
+     "url": "/guides/password-manager-vs-sso/"
+    },
+    {
+     "slug": "password-manager-rollout",
+     "type": "how-to",
+     "title": "How to Roll Out a Password Manager to Your Team",
+     "intent": "how to implement password manager in company",
+     "angle": "Phased rollout plan, import, shared vault structure, policies, offboarding; checklist.",
+     "status": "todo",
+     "url": "/guides/password-manager-rollout/"
+    },
+    {
+     "slug": "passkeys-for-business",
+     "type": "explainer",
+     "title": "Passkeys for Business: What They Are and How Password Managers Support Them",
+     "intent": "passkeys for business",
+     "angle": "FIDO passkeys explained (cite FIDO Alliance pages fetched today), which ranked tools store/share passkeys per their docs.",
+     "status": "todo",
+     "url": "/guides/passkeys-for-business/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-payroll-software",
+   "dept": "HR & people",
+   "why": "~710 impressions; dropped to ~85 on Nov 5; needs supporting depth and links.",
+   "articles": [
+    {
+     "slug": "payroll-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Payroll Software Cost in 2026?",
+     "status": "done",
+     "url": "/guides/payroll-software-cost/"
+    },
+    {
+     "slug": "what-is-payroll-software",
+     "type": "explainer",
+     "title": "What Is Payroll Software? How It Works and What It Handles",
+     "intent": "what is payroll software",
+     "angle": "Gross-to-net, tax withholding and filing, year-end forms, full-service vs self-service; which ranked tools file taxes on the entry plan.",
+     "status": "todo",
+     "url": "/guides/what-is-payroll-software/"
+    },
+    {
+     "slug": "how-to-run-payroll",
+     "type": "how-to",
+     "title": "How to Run Payroll for the First Time: A Step-by-Step Guide",
+     "intent": "how to run payroll",
+     "angle": "EIN, state registrations, W-4/I-9, pay schedule, first run, filings; cite IRS/DOL pages fetched today; where software automates each step.",
+     "status": "todo",
+     "url": "/guides/how-to-run-payroll/"
+    },
+    {
+     "slug": "payroll-tax-deadlines",
+     "type": "reference",
+     "title": "Payroll Tax Deadlines: Federal Forms and Due Dates",
+     "intent": "payroll tax deadlines / form 941 due date",
+     "angle": "Forms 941, 940, W-2, 1099-NEC and deposit schedules with dates from IRS pages fetched today; which tasks full-service payroll files for you.",
+     "status": "todo",
+     "url": "/guides/payroll-tax-deadlines/"
+    },
+    {
+     "slug": "switch-payroll-providers",
+     "type": "migration",
+     "title": "How to Switch Payroll Providers Without Breaking Payroll",
+     "intent": "switching payroll providers",
+     "angle": "Best timing (quarter/year start), year-to-date data, tax account handoff, parallel run, checklist.",
+     "status": "todo",
+     "url": "/guides/switch-payroll-providers/"
+    },
+    {
+     "slug": "multi-state-payroll",
+     "type": "explainer",
+     "title": "Multi-State Payroll: How It Works and What It Costs",
+     "intent": "multi state payroll",
+     "angle": "Registration in each state, withholding rules, reciprocity basics (cite state/IRS sources), which ranked providers include multi-state on which plan and price for 10 employees in 2 states from data.",
+     "status": "todo",
+     "url": "/guides/multi-state-payroll/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-crm-software",
+   "dept": "Sales",
+   "why": "~680 impressions; oldest pillar.",
+   "articles": [
+    {
+     "slug": "what-is-crm-software",
+     "type": "explainer",
+     "title": "What Is CRM Software?",
+     "status": "done",
+     "url": "/guides/what-is-crm-software/"
+    },
+    {
+     "slug": "crm-software-cost",
+     "type": "pricing",
+     "title": "How Much Does CRM Software Cost?",
+     "status": "done",
+     "url": "/guides/crm-software-cost/"
+    },
+    {
+     "slug": "how-to-choose-a-crm",
+     "type": "buying",
+     "title": "How to Choose a CRM: A Step-by-Step Buying Checklist",
+     "intent": "how to choose a crm",
+     "angle": "Requirements worksheet, must-have vs nice-to-have features, trial plan, cost model for 5/10/25 users from data; deeper than the pillar's short section, link back.",
+     "status": "todo",
+     "url": "/guides/how-to-choose-a-crm/"
+    },
+    {
+     "slug": "crm-data-migration",
+     "type": "migration",
+     "title": "How to Migrate to a New CRM: Data, Pipelines and Integrations",
+     "intent": "crm migration",
+     "angle": "What to export, field mapping, dedupe, pipelines, integrations, cutover plan, checklist.",
+     "status": "todo",
+     "url": "/guides/crm-data-migration/"
+    },
+    {
+     "slug": "sales-pipeline-stages",
+     "type": "how-to",
+     "title": "Sales Pipeline Stages: How to Set Them Up in Your CRM",
+     "intent": "sales pipeline stages",
+     "angle": "Typical B2B stages with entry/exit criteria, probability, how to configure in CRMs, reports to watch.",
+     "status": "todo",
+     "url": "/guides/sales-pipeline-stages/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-sales-engagement-software",
+   "dept": "Sales",
+   "why": "~670 impressions, position ~73.",
+   "articles": [
+    {
+     "slug": "what-is-sales-engagement-software",
+     "type": "explainer",
+     "title": "What Is Sales Engagement Software?",
+     "status": "done",
+     "url": "/guides/what-is-sales-engagement-software/"
+    },
+    {
+     "slug": "sales-engagement-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Sales Engagement Software Cost?",
+     "intent": "sales engagement software pricing",
+     "angle": "Per-seat prices, minimums, annual billing, cost for 5 and 20 reps computed from data.",
+     "status": "todo",
+     "url": "/guides/sales-engagement-software-cost/"
+    },
+    {
+     "slug": "cold-email-deliverability",
+     "type": "how-to",
+     "title": "Cold Email Deliverability: SPF, DKIM, DMARC and Sending Limits",
+     "intent": "cold email deliverability",
+     "angle": "Authentication records, Google/Yahoo bulk sender requirements (cite their official pages fetched today), warm-up, limits, which tools include deliverability features.",
+     "status": "todo",
+     "url": "/guides/cold-email-deliverability/"
+    },
+    {
+     "slug": "how-to-build-a-sales-sequence",
+     "type": "how-to",
+     "title": "How to Build a Sales Sequence That Gets Replies",
+     "intent": "sales sequence",
+     "angle": "Step types, timing, personalization, exit rules, A/B testing; how the ranked tools implement them.",
+     "status": "todo",
+     "url": "/guides/how-to-build-a-sales-sequence/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-time-tracking-software",
+   "dept": "Projects & operations",
+   "why": "~270 impressions on the pillar plus ~590 on the retired free/small-business pages, now merged into it.",
+   "articles": [
+    {
+     "slug": "what-is-time-tracking-software",
+     "type": "explainer",
+     "title": "What Is Time Tracking Software and How Do Teams Use It?",
+     "intent": "time tracking software",
+     "angle": "Timers vs timesheets, billable rates, approvals, payroll export, monitoring features and the privacy trade-off.",
+     "status": "todo",
+     "url": "/guides/what-is-time-tracking-software/"
+    },
+    {
+     "slug": "time-tracking-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Time Tracking Software Cost?",
+     "intent": "time tracking software pricing",
+     "angle": "Free plans and per-user prices, cost for 10 and 50 users computed from data.",
+     "status": "todo",
+     "url": "/guides/time-tracking-software-cost/"
+    },
+    {
+     "slug": "employee-time-tracking-rules",
+     "type": "reference",
+     "title": "Employee Time Tracking Rules: What US Employers Must Record",
+     "intent": "flsa timekeeping requirements",
+     "angle": "FLSA recordkeeping requirements from dol.gov fetched today, exempt vs non-exempt, how software helps; not legal advice.",
+     "status": "todo",
+     "url": "/guides/employee-time-tracking-rules/"
+    },
+    {
+     "slug": "track-billable-hours",
+     "type": "how-to",
+     "title": "How to Track Billable Hours Accurately",
+     "intent": "how to track billable hours",
+     "angle": "Rates, rounding, approvals, invoicing exports; tool features from data.",
+     "status": "todo",
+     "url": "/guides/track-billable-hours/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-project-management-software",
+   "dept": "Projects & operations",
+   "why": "~210 impressions, position ~82.",
+   "articles": [
+    {
+     "slug": "project-management-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Project Management Software Cost?",
+     "status": "done",
+     "url": "/guides/project-management-software-cost/"
+    },
+    {
+     "slug": "what-is-project-management-software",
+     "type": "explainer",
+     "title": "What Is Project Management Software?",
+     "intent": "what is project management software",
+     "angle": "Core features and views, who uses it, PM vs work management vs issue tracking.",
+     "status": "todo",
+     "url": "/guides/what-is-project-management-software/"
+    },
+    {
+     "slug": "kanban-vs-gantt",
+     "type": "concept",
+     "title": "Kanban vs Gantt Charts: Which View Fits Your Projects?",
+     "intent": "kanban vs gantt",
+     "angle": "When each works, examples, which ranked tools include each view on which plan.",
+     "status": "todo",
+     "url": "/guides/kanban-vs-gantt/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-hris-software",
+   "dept": "HR & people",
+   "why": "~120 impressions plus ~130 on the merged small-business page.",
+   "articles": [
+    {
+     "slug": "what-is-an-hris",
+     "type": "explainer",
+     "title": "What Is an HRIS?",
+     "status": "done",
+     "url": "/guides/what-is-an-hris/"
+    },
+    {
+     "slug": "hris-vs-payroll-software",
+     "type": "concept",
+     "title": "HRIS vs Payroll Software: What's the Difference and Do You Need Both?",
+     "intent": "hris vs payroll",
+     "angle": "Scope of each, when one platform is enough, integration vs all-in-one, cost example from data.",
+     "status": "todo",
+     "url": "/guides/hris-vs-payroll-software/"
+    },
+    {
+     "slug": "hris-cost",
+     "type": "pricing",
+     "title": "How Much Does an HRIS Cost?",
+     "intent": "hris pricing",
+     "angle": "Per-employee pricing, quote-based vendors, cost for 25 and 100 employees from data.",
+     "status": "todo",
+     "url": "/guides/hris-cost/"
+    },
+    {
+     "slug": "hris-implementation",
+     "type": "how-to",
+     "title": "HRIS Implementation: A Step-by-Step Plan",
+     "intent": "hris implementation",
+     "angle": "Data cleanup, configuration, integrations, rollout, timeline.",
+     "status": "todo",
+     "url": "/guides/hris-implementation/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-e-signature-software",
+   "dept": "Legal & compliance",
+   "why": "~140 impressions plus merged free/small-business pages.",
+   "articles": [
+    {
+     "slug": "are-electronic-signatures-legal",
+     "type": "reference",
+     "title": "Are Electronic Signatures Legally Binding?",
+     "intent": "are electronic signatures legal",
+     "angle": "ESIGN Act and UETA (US) and eIDAS (EU) from official sources fetched today, exceptions, audit trails; not legal advice.",
+     "status": "todo",
+     "url": "/guides/are-electronic-signatures-legal/"
+    },
+    {
+     "slug": "e-signature-software-cost",
+     "type": "pricing",
+     "title": "How Much Does E-Signature Software Cost?",
+     "intent": "e signature pricing",
+     "angle": "Per-sender pricing, envelope limits, API costs from data.",
+     "status": "todo",
+     "url": "/guides/e-signature-software-cost/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-b2b-data-providers",
+   "dept": "Sales",
+   "why": "~115 impressions, position ~42.",
+   "articles": [
+    {
+     "slug": "how-b2b-data-credits-work",
+     "type": "explainer",
+     "title": "How B2B Data Credits Work (and How to Compare Providers)",
+     "intent": "b2b data credits",
+     "angle": "Credit types, what a credit buys per provider, effective cost per verified contact from data.",
+     "status": "todo",
+     "url": "/guides/how-b2b-data-credits-work/"
+    },
+    {
+     "slug": "b2b-data-gdpr-ccpa",
+     "type": "reference",
+     "title": "Using B2B Contact Data Under GDPR and CCPA",
+     "intent": "b2b data gdpr",
+     "angle": "Lawful basis, legitimate interest, opt-out, data subject requests, from official regulator pages fetched today; not legal advice.",
+     "status": "todo",
+     "url": "/guides/b2b-data-gdpr-ccpa/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-help-desk-software",
+   "dept": "Customer support",
+   "why": "Pillar with a cost guide already.",
+   "articles": [
+    {
+     "slug": "help-desk-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Help Desk Software Cost?",
+     "status": "done",
+     "url": "/guides/help-desk-software-cost/"
+    },
+    {
+     "slug": "ai-customer-service-pricing",
+     "type": "pricing",
+     "title": "AI Customer Service Pricing: Per-Resolution vs Per-Seat",
+     "intent": "ai agent pricing per resolution",
+     "angle": "How vendors charge for AI agents, worked example from data.",
+     "status": "todo",
+     "url": "/guides/ai-customer-service-pricing/"
+    },
+    {
+     "slug": "help-desk-metrics",
+     "type": "how-to",
+     "title": "Help Desk Metrics: What to Track and Good Targets",
+     "intent": "help desk metrics",
+     "angle": "First response time, resolution time, CSAT, backlog; how tools report them.",
+     "status": "todo",
+     "url": "/guides/help-desk-metrics/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-email-marketing-software",
+   "dept": "Marketing",
+   "why": "Pillar with cost guide and an MA vs EM explainer.",
+   "articles": [
+    {
+     "slug": "email-marketing-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Email Marketing Software Cost?",
+     "status": "done",
+     "url": "/guides/email-marketing-software-cost/"
+    },
+    {
+     "slug": "email-deliverability-basics",
+     "type": "how-to",
+     "title": "Email Deliverability Basics for Newsletters and Campaigns",
+     "intent": "email deliverability",
+     "angle": "List hygiene, authentication, engagement, bulk sender rules from official pages fetched today.",
+     "status": "todo",
+     "url": "/guides/email-deliverability-basics/"
+    }
+   ]
+  },
+  {
+   "pillar": "best-expense-management-software",
+   "dept": "Finance",
+   "why": "~100 impressions, position ~65.",
+   "articles": [
+    {
+     "slug": "expense-management-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Expense Management Software Cost?",
+     "intent": "expense management software pricing",
+     "angle": "Free corporate-card models vs per-user pricing, cost for 25 users from data.",
+     "status": "todo",
+     "url": "/guides/expense-management-software-cost/"
+    },
+    {
+     "slug": "expense-policy",
+     "type": "how-to",
+     "title": "How to Write an Expense Policy (With a Template Outline)",
+     "intent": "expense policy",
+     "angle": "Sections, limits, receipts, approvals, how software enforces rules.",
+     "status": "todo",
+     "url": "/guides/expense-policy/"
+    }
+   ]
+  }
+ ]
+}

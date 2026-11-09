@@ -48,7 +48,7 @@ guide_page({
 <li><b>Price the plan you'll need in a year,</b> not the entry plan, including onboarding fees and add-ons.</li>
 <li><b>Check integrations</b> with your email, calendar, phone and marketing tools.</li>
 <li><b>Run a real trial:</b> import 20 live deals and work them for a week with the people who'll use it daily.</li></ol>
-<p>Our <a href="/tools/best-crm-software/">CRM shortlist</a> scores each option on six weighted criteria, and our <a href="/tools/best-crm-for-small-business/">small business guide</a> reweights them for teams of 1 to 20.</p>"""),
+<p>Our <a href="/tools/best-crm-software/">CRM shortlist</a> scores each option on six weighted criteria.</p>"""),
     ],
     "faqs": [
         ("What does CRM stand for?", "Customer relationship management: the practice, and the software, for managing a company's interactions with current and potential customers."),
@@ -188,8 +188,8 @@ guide_page({
         ("budget", "How to budget for a CRM", f"""<ol><li><b>List the three workflows you can't live without,</b> such as a follow-up sequence after a demo or a weekly forecast call, and find the cheapest plan on each CRM that includes all three. That's your real price.</li>
 <li><b>Multiply by every user for 12 months,</b> then add any onboarding fee and the add-ons you'll switch on.</li>
 <li><b>Price year two as well.</b> First-year discounts and seat growth both change the renewal.</li>
-<li><b>Start free if you're small.</b> {("Free options among the CRMs we rank: " + "; ".join(_cc_free) + ". ") if _cc_free else ""}See our <a href="/tools/best-free-crm-software/">best free CRM software</a> list for the limits of each.</li></ol>
-<p>Our <a href="/tools/best-crm-software/">CRM shortlist</a> scores each option on six weighted criteria, including price and value, and our <a href="/tools/best-crm-for-small-business/">small business guide</a> reweights them for teams of 1 to 20. New to CRMs? Start with <a href="/guides/what-is-crm-software/">what CRM software is and what it does</a>.</p>"""),
+<li><b>Start free if you're small.</b> {("Free options among the CRMs we rank: " + "; ".join(_cc_free) + ". ") if _cc_free else ""}Our <a href="/tools/best-crm-software/">CRM shortlist</a> shows what each free plan includes.</li></ol>
+<p>Our <a href="/tools/best-crm-software/">CRM shortlist</a> scores each option on six weighted criteria, including price and value. New to CRMs? Start with <a href="/guides/what-is-crm-software/">what CRM software is and what it does</a>.</p>"""),
     ],
     "faqs": [
         ("How much does a CRM cost per user?", f"Entry plans for the CRMs we rank cost {_fmt(_cc_lo)} to {_fmt(_cc_hi)} per user per month on annual billing. Plans with sequences, automation and forecasting cost more per user."),
@@ -259,8 +259,8 @@ guide_page({
         ("budget", "How to budget for project management software", f"""<ol><li><b>List the views and limits you need on day one,</b> such as a Gantt chart, 500 automations a month or time tracking, and find the cheapest plan on each tool that includes all of them.</li>
 <li><b>Count paid seats separately from viewers and guests,</b> then multiply by 12 months.</li>
 <li><b>Check seat minimums and caps</b> so a plan still fits when the team grows.</li>
-<li><b>Start free if you're small.</b> {(_pm_faq.get("What is the best free project management software?", "") + " ") if _pm_free else ""}See our <a href="/tools/best-free-project-management-software/">best free project management software</a> list for the limits of each.</li></ol>
-<p>Our <a href="{_pm_cat}">shortlist</a> scores each tool on six weighted criteria, including price and value, and our <a href="/tools/best-project-management-software-for-small-business/">small business list</a> reweights them for smaller teams. Moving off Asana? See <a href="/tools/best-asana-alternatives/">Asana alternatives</a>.</p>"""),
+<li><b>Start free if you're small.</b> {(_pm_faq.get("What is the best free project management software?", "") + " ") if _pm_free else ""}Our <a href="/tools/best-project-management-software/">project management shortlist</a> shows what each free plan includes.</li></ol>
+<p>Our <a href="{_pm_cat}">shortlist</a> scores each tool on six weighted criteria, including price and value. Moving off Asana? See <a href="/tools/best-asana-alternatives/">Asana alternatives</a>.</p>"""),
     ],
     "faqs": [
         ("How much does project management software cost per user?", f"Entry plans for the tools we rank cost {_fmt(_pm_lo)} to {_fmt(_pm_hi)} per user per month on annual billing. Plans with portfolios, resource planning and higher automation limits cost more per user."),
@@ -327,7 +327,7 @@ guide_page({
 <p>Per-user entry plans {_se_seat_verb} {_se_seat_range}, which is {_se_seat_year} a year for a 10-rep team before add-ons.{(" Priced differently:</p><ul>" + _se_other_li + "</ul><p>") if _se_other else " "}{(_se_q_txt + " ") if _se_quote else ""}{"Free plan" if len(_se_free) == 1 else "Free plans"}: {_se_and(_se_free) if _se_free else "none of the ranked platforms list one"}.</p>
 <p>Beyond the license, budget for contact data (credits or a separate provider), extra sending inboxes and domains for cold email, and dialer minutes. Comparing Apollo.io with a data-only provider? See <a href="/compare/apollo-vs-zoominfo/">Apollo.io vs ZoomInfo</a>.</p>"""),
         ("choose", "How to choose a sales engagement platform", "<ol>" + "".join(f"<li><b>{a}</b> {b}</li>" for a, b in _se_choose) + f"""</ol>
-<p>Our <a href="{_se_cat}">sales engagement shortlist</a> ranks {len(_se_ranked)} platforms, our <a href="/tools/best-sales-engagement-software-for-small-business/">small business list</a> reweights them for smaller teams, and <a href="/tools/best-apollo-alternatives/">Apollo.io alternatives</a> covers what to switch to when credits or sending limits run short.</p>"""),
+<p>Our <a href="{_se_cat}">sales engagement shortlist</a> ranks {len(_se_ranked)} platforms, and <a href="/tools/best-apollo-alternatives/">Apollo.io alternatives</a> covers what to switch to when credits or sending limits run short.</p>"""),
     ],
     "faqs": [
         ("What is a sales sequence?", "A sequence is a timed series of outreach steps, such as emails, call tasks and LinkedIn messages, that a prospect moves through automatically. It stops when the prospect replies or books a meeting, so reps don't follow up with someone who already answered."),
@@ -434,7 +434,7 @@ guide_page({
 <li><b>Add the add-ons you'll switch on</b>, such as HR tools, time tracking or extra states, and multiply by 12.</li>
 <li><b>{"Look past introductory offers." if "Look past introductory offers." in _py_choose else "Price the regular rate."}</b> {_py_choose.get("Look past introductory offers.", "Compare regular prices, not introductory discounts.")}</li>
 <li><b>Run a test payroll</b> before your next pay date, and check how it posts to your accounting software.</li></ol>
-<p>Our <a href="{_py_cat}">payroll shortlist</a> scores each provider on six weighted criteria, and our <a href="/tools/best-payroll-software-for-small-business/">small business list</a> reweights them for smaller teams. Read the reviews of {_py_and([x for x in (_py_rev("gusto", "gusto"), _py_rev("rippling", "rippling"), _py_rev("square_payroll", "square-payroll"), _py_rev("patriot", "patriot-payroll"), _py_rev("quickbooks_payroll", "quickbooks-payroll")) if x])}, or see <a href="/tools/best-gusto-alternatives/">Gusto alternatives</a> if multi-state pay or per-person fees are pushing you off Gusto. Need employee records and time off too? See our <a href="/tools/best-hris-software/">HRIS shortlist</a>.</p>"""),
+<p>Our <a href="{_py_cat}">payroll shortlist</a> scores each provider on six weighted criteria. Read the reviews of {_py_and([x for x in (_py_rev("gusto", "gusto"), _py_rev("rippling", "rippling"), _py_rev("square_payroll", "square-payroll"), _py_rev("patriot", "patriot-payroll"), _py_rev("quickbooks_payroll", "quickbooks-payroll")) if x])}, or see <a href="/tools/best-gusto-alternatives/">Gusto alternatives</a> if multi-state pay or per-person fees are pushing you off Gusto. Need employee records and time off too? See our <a href="/tools/best-hris-software/">HRIS shortlist</a>.</p>"""),
     ],
     "faqs": [
         ("How much does payroll software cost per employee?", f"Among the providers we rank that publish prices, full-service payroll costs {_fmt(_py_pers[0])} to {_fmt(_py_pers[-1])} per employee per month on the entry plan, plus a monthly base fee of {_fmt(_py_bases[0])} to {_fmt(_py_bases[-1])}."),
@@ -515,7 +515,7 @@ guide_page({
 <div class="table-wrap"><table><thead><tr><th>Tool</th><th>Plan</th><th>Per seat per month</th><th>10 seats per year</th></tr></thead><tbody>{_ci_ex}</tbody></table></div>
 <p>{(_ci_faq.get("How much does Gong cost?", "") + " ") if "gong" in _ci_ranked else ""}Compare what each plan includes, not only the total: our <a href="/compare/gong-vs-avoma/">Gong vs Avoma</a> comparison prices 10 seats at each feature level, and seat rules differ, since Avoma charges only for people who record while viewers are free.</p>"""),
         ("choose", "How to choose a conversation intelligence tool", "<ol>" + "".join(f"<li><b>{a}</b> {b}</li>" for a, b in CI["choose"]) + f"""</ol>
-<p>Our <a href="{_ci_cat}">conversation intelligence shortlist</a> ranks {len(_ci_ranked)} tools, our <a href="/tools/best-conversation-intelligence-software-for-small-business/">small business list</a> reweights them for smaller teams, and <a href="/tools/best-gong-alternatives/">Gong alternatives</a> covers options with published pricing. New to outbound tooling? See <a href="/guides/what-is-sales-engagement-software/">what sales engagement software is</a>.</p>"""),
+<p>Our <a href="{_ci_cat}">conversation intelligence shortlist</a> ranks {len(_ci_ranked)} tools, and <a href="/tools/best-gong-alternatives/">Gong alternatives</a> covers options with published pricing. New to outbound tooling? See <a href="/guides/what-is-sales-engagement-software/">what sales engagement software is</a>.</p>"""),
     ],
     "faqs": [
         ("What is conversation intelligence software?", _ci_faq.get("What is conversation intelligence software?", "It records, transcribes and analyzes sales calls for coaching, deal insights and CRM updates.")),
@@ -626,7 +626,7 @@ guide_page({
 <li><b>{"Ask about add-ons before you sign." if "Ask about add-ons before you sign." in _pw_choose else "Price the add-ons."}</b> {_pw_choose.get("Ask about add-ons before you sign.", "Some reporting and developer features are sold separately.")}</li>
 <li><b>Count the family accounts.</b> {_pw_choose.get("Look at what staff get at home.", "")}</li>
 <li><b>Multiply by 12.</b> Headline prices assume annual billing, so the first invoice is a full year.</li></ol>
-<p>Our <a href="{_pw_cat}">password manager shortlist</a> scores {len(_pw_ranked)} tools on six weighted criteria, and our <a href="/tools/best-password-managers-for-small-business/">small business list</a> reweights them for smaller teams. Read the reviews of {_pw_and([_pw_rv(k) for k in _pw_ranked])}, or see <a href="/tools/best-lastpass-alternatives/">LastPass alternatives</a> if you're moving off LastPass.</p>"""),
+<p>Our <a href="{_pw_cat}">password manager shortlist</a> scores {len(_pw_ranked)} tools on six weighted criteria. Read the reviews of {_pw_and([_pw_rv(k) for k in _pw_ranked])}, or see <a href="/tools/best-lastpass-alternatives/">LastPass alternatives</a> if you're moving off LastPass.</p>"""),
     ],
     "faqs": [
         ("How much does a business password manager cost?", _pw_faq.get("How much does a business password manager cost?", f"{_fmt(_pw_lo[0])} to {_fmt(_pw_hi[0])} per user per month on entry plans.")),
@@ -808,7 +808,7 @@ guide_page({
 <li><b>Multiply the regular price by 12,</b> then add payroll, extra users and any add-ons.</li>
 <li><b>{"Ask your accountant." if "Ask your accountant." in _ac_choose else "Talk to your accountant."}</b> {_ac_choose.get("Ask your accountant.", "Use the tool your accountant already knows.")}</li>
 <li><b>{"Make sure your bank connects." if "Make sure your bank connects." in _ac_choose else "Check bank feeds."}</b> {_ac_choose.get("Make sure your bank connects.", "Check that your bank is supported before you migrate.")}</li></ol>
-<p>Our <a href="{_ac_cat}">accounting software shortlist</a> scores {len(_ac_ranked)} tools on six weighted criteria, and our <a href="/tools/best-accounting-software-for-small-business/">small business list</a> reweights them for smaller teams. Read the reviews of {_ac_and([_ac_rv(k) for k in _ac_ranked])}, or see <a href="/tools/best-quickbooks-alternatives/">QuickBooks alternatives</a> if its regular price or user limits are the problem. Tracking receipts and company cards too? See our <a href="/tools/best-expense-management-software/">expense management shortlist</a>.</p>"""),
+<p>Our <a href="{_ac_cat}">accounting software shortlist</a> scores {len(_ac_ranked)} tools on six weighted criteria. Read the reviews of {_ac_and([_ac_rv(k) for k in _ac_ranked])}, or see <a href="/tools/best-quickbooks-alternatives/">QuickBooks alternatives</a> if its regular price or user limits are the problem. Tracking receipts and company cards too? See our <a href="/tools/best-expense-management-software/">expense management shortlist</a>.</p>"""),
     ],
     "faqs": [
         ("How much does accounting software cost per month?", f"Entry plans for the accounting tools we rank cost {_fmt(_ac_lo[0])} to {_fmt(_ac_hi[0])} a month at regular prices. Plans with more users, inventory or projects cost more; for example, "
@@ -903,7 +903,7 @@ guide_page({
 <p>{(_hr_and(_hr_quote) + " isn't in the table because it publishes no prices. ") if _hr_quote else ""}The cheapest line isn't always the cheapest system: {(_hr_and(_hr_mod) + "'s price covers only the base HRIS module, so payroll and other modules add to the quote, and ") if _hr_mod else ""}performance reviews and time tracking often sit on a higher plan or cost extra, so price the plan that includes the features you'll use.</p>
 <p>{"Free plans" if len(_hr_free) > 1 else "Free plan"}: {_hr_faq.get("Is there a free HRIS?", "").replace("Yes. ", "") if _hr_free else "none of the ranked platforms list one."} Budget too for payroll, which is usually a separate fee, and for any implementation or data migration charge in a quote. Pricing payroll as well? See <a href="/guides/payroll-software-cost/">how much payroll software costs</a>.</p>"""),
         ("choose", "How to choose an HRIS", "<ol>" + "".join(f"<li><b>{a}</b> {b}</li>" for a, b in HRIS["choose"]) + f"""</ol>
-<p>Our <a href="{_hr_cat}">HRIS shortlist</a> ranks {len(_hr_ranked)} platforms, our <a href="/tools/best-hris-software-for-small-business/">small business list</a> reweights them for smaller teams, and <a href="/tools/best-bamboohr-alternatives/">BambooHR alternatives</a> covers cheaper options and ones with payroll on the same record. Read the reviews of {_hr_and([_hr_rv(k) for k in _hr_ranked])}.</p>"""),
+<p>Our <a href="{_hr_cat}">HRIS shortlist</a> ranks {len(_hr_ranked)} platforms, and <a href="/tools/best-bamboohr-alternatives/">BambooHR alternatives</a> covers cheaper options and ones with payroll on the same record. Read the reviews of {_hr_and([_hr_rv(k) for k in _hr_ranked])}.</p>"""),
     ],
     "faqs": [
         ("What does HRIS stand for?", "Human resources information system: software that stores and manages employee data, such as personal details, job and pay history, documents and time off, and the HR processes built on it, such as onboarding."),
@@ -989,8 +989,8 @@ guide_page({
 {_ptable([_mv_row(_mv_ma, k, _mv_mac) for k in _mv_mar])}
 <p class="small muted">{MA["price_footnote"]}</p>
 <p>The entry prices overlap, but the plans that make a platform "marketing automation" don't. {_mv_score} {_mv_mach.get("Add onboarding and seats to year one.", "")} For prices at your list size, see <a href="/guides/email-marketing-software-cost/">how much email marketing software costs</a>.</p>"""),
-        ("choose", "Which one do you need?", f"""<p><b>Email marketing software is enough if</b> you mostly send newsletters, promotions and a handful of automated emails; you sell online and want abandoned-cart and post-purchase flows; or there's no sales team waiting for qualified leads. Start with our <a href="{_mv_emc}">email marketing shortlist</a> ({_mv_top(EM, _mv_em)} ranks first), the <a href="/tools/best-email-marketing-software-for-small-business/">small business list</a> or the <a href="/tools/best-free-email-marketing-software/">best free email marketing software</a>.</p>
-<p><b>You need marketing automation if</b> sales needs to know which leads are ready, you want journeys that branch on behavior across several channels, or you have to show which campaigns create pipeline. Start with our <a href="{_mv_mac}">marketing automation shortlist</a> ({_mv_top(MA, _mv_ma)} ranks first) or the <a href="/tools/best-marketing-automation-software-for-small-business/">small business list</a>.</p>
+        ("choose", "Which one do you need?", f"""<p><b>Email marketing software is enough if</b> you mostly send newsletters, promotions and a handful of automated emails; you sell online and want abandoned-cart and post-purchase flows; or there's no sales team waiting for qualified leads. Start with our <a href="{_mv_emc}">email marketing shortlist</a> ({_mv_top(EM, _mv_em)} ranks first).</p>
+<p><b>You need marketing automation if</b> sales needs to know which leads are ready, you want journeys that branch on behavior across several channels, or you have to show which campaigns create pipeline. Start with our <a href="{_mv_mac}">marketing automation shortlist</a> ({_mv_top(MA, _mv_ma)} ranks first).</p>
 <p>Whichever you pick, two checks from our rankings apply:</p>
 <ol><li><b>Price the plan that includes your must-have feature.</b> {_mv_mach.get("Find the plan where your must-have feature starts.", "")}</li>
 <li><b>Test one real workflow in the trial.</b> {_mv_mach.get("Build one real journey in the trial.", "")}</li></ol>

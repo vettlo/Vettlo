@@ -17,6 +17,9 @@ DOMAIN = "https://vettlo.com"
 UPDATED = "2026-10-02"
 # Pre-launch: keep the whole site out of search results until placeholders are filled.
 PRELAUNCH_NOINDEX = False
+# Pages built but kept out of the index (and the sitemap) until they carry enough unique content, e.g. tool reviews without plan-level depth.
+NOINDEX = set()
+NO_SITEMAP = {"/404/", "/vendors/login/", "/vendors/app/", "/vendors/admin/"}
 INDEXNOW_KEY = "c3fbbb23bcc5213c7fb866222a0f102b"
 UPDATED_H = "Oct 2, 2026"
 
@@ -467,7 +470,7 @@ def breakdown(tid):
 def also_considered():
     if not EXCLUDED:
         return ""
-    items = "".join(f'<li><b>{t["name"]}</b> scored {score(t["id"])}/100. {t["what"]} It\'s a good fit for {t["who"][0].lower() + t["who"][1:]} It fell short of our {THRESHOLD}-point bar mainly on reporting and forecasting, which matter for most sales teams. It does make our <a href="/tools/best-crm-for-small-business/">CRM shortlist for small businesses</a>, where ease of use and price carry more weight.</li>' for t in EXCLUDED)
+    items = "".join(f'<li><b>{t["name"]}</b> scored {score(t["id"])}/100. {t["what"]} It\'s a good fit for {t["who"][0].lower() + t["who"][1:]} It fell short of our {THRESHOLD}-point bar mainly on reporting and forecasting, which matter for most sales teams.</li>' for t in EXCLUDED)
     return f'<section id="also"><h2>Also considered</h2><ul class="prose">{items}</ul></section>'
 
 
@@ -835,7 +838,7 @@ def sb_page():
          body, cur="/best-tools/", jsonld=ld, ptype="article")
 
 
-sb_page()
+# The small-business CRM page was merged into the main CRM shortlist (301 in data/redirects.json).
 
 # ---------- COMPARE: HUBSPOT VS PIPEDRIVE
 CMP_UPDATED = "2026-10-14"
@@ -1188,7 +1191,9 @@ page("/404/", "Page Not Found | Vettlo", "This page doesn't exist.",
 def head_block(path, p, css_href):
     canon = DOMAIN + path
     ld = "".join(f'<script type="application/ld+json">{json.dumps(j, ensure_ascii=False)}</script>' for j in p["jsonld"])
-    robots = '<meta name="robots" content="noindex, nofollow">' if (path in ("/404/", "/vendors/login/", "/vendors/app/", "/vendors/admin/") or PRELAUNCH_NOINDEX) else '<meta name="robots" content="index, follow, max-image-preview:large">'
+    robots = ('<meta name="robots" content="noindex, nofollow">' if (path in NO_SITEMAP or PRELAUNCH_NOINDEX)
+              else '<meta name="robots" content="noindex, follow">' if path in NOINDEX
+              else '<meta name="robots" content="index, follow, max-image-preview:large">')
     return (f'<title>{p["title"]}</title><meta name="description" content="{p["desc"]}">{robots}'
             f'<link rel="canonical" href="{canon}"><meta property="og:type" content="{p["ptype"]}"><meta property="og:site_name" content="Vettlo">'
             f'<meta property="og:title" content="{p["title"]}"><meta property="og:description" content="{p["desc"]}"><meta property="og:url" content="{canon}">'
@@ -1229,7 +1234,6 @@ def relativize(html, path, out_rel):
 
 CRM_PAGES = [
     ("/tools/best-crm-software/", "Best CRM Software for Sales Teams", "Our CRM shortlist, scored on six weighted criteria.", "Shortlist"),
-    ("/tools/best-crm-for-small-business/", "Best CRM for Small Businesses", "Weighted toward ease of use and price, with free plans.", "Shortlist"),
     ("/compare/hubspot-vs-pipedrive/", "HubSpot vs Pipedrive", "What a 10-rep team pays for automation on each.", "Comparison"),
     ("/tools/best-pipedrive-alternatives/", "Best Pipedrive Alternatives", "Six CRMs for teams outgrowing Pipedrive.", "Alternatives"),
     ("/tools/best-hubspot-alternatives/", "Best HubSpot Alternatives", "Six CRMs for teams leaving HubSpot Sales Hub.", "Alternatives"),
@@ -1368,6 +1372,8 @@ def dept_hubs():
             continue
         hub = f"/{DEPT_SLUG[dname]}/"
         HUB_URLS.append(hub)
+        if len(live) < 2:
+            NOINDEX.add(hub)  # a hub with one shortlist is mostly template; index it once it has two or more
         title = DEPT_TITLE[dname]
         label = (title[0] + title[1:].lower().replace("hr ", "HR ").replace("it ", "IT ").replace("devops", "DevOps")).replace("It & ", "IT & ")
         items, cards, faqs = [], [], []
@@ -1471,6 +1477,8 @@ def build():
         _cats = [{"slug": "best-crm-software", "name": "CRM Software", "dept": "Sales", "tools": [{"id": t["id"], "name": t["name"]} for t in CONSIDERED]}]
         _cats += [{"slug": c["slug"], "name": c["plural"], "dept": DEPT_OF[c["slug"]][0], "tools": [{"id": k, "name": t["name"]} for k, t in c["tools"].items()]} for c in ALLCATS]
         (d / "data" / "categories.json").write_text(json.dumps(_cats))
+        # retired URLs -> where their content now lives (served as 301s by src/worker.js)
+        (d / "data" / "redirects.json").write_text((ROOT / "data" / "redirects.json").read_text() if (ROOT / "data" / "redirects.json").exists() else "{}")
         (d / "assets" / "logo.svg").write_text(LOGO.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replace("var(--brand-ink)", "#ffffff").replace("var(--brand)", "#00865e"))
     for path, p in PAGES.items():
         rel = out_file(path)
@@ -1501,7 +1509,7 @@ def build():
     newest = max(lastmod.values())
     for u in ("/", "/best-tools/", "/reviews/", *HUB_URLS):
         lastmod[u] = newest
-    urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p not in ("/404/", "/vendors/login/", "/vendors/app/", "/vendors/admin/"))
+    urls = "".join(f"<url><loc>{DOMAIN}{p}</loc><lastmod>{lastmod.get(p, UPDATED)}</lastmod></url>" for p in PAGES if p not in NO_SITEMAP and p not in NOINDEX)
     (site / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>')
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"""# Vettlo
@@ -1515,7 +1523,6 @@ Scores are editorial only and based on published, weighted criteria per category
 - [HubSpot vs Pipedrive]({DOMAIN}/compare/hubspot-vs-pipedrive/): list prices, plan features and year-one cost for a 10-rep team
 - [Best Pipedrive alternatives]({DOMAIN}/tools/best-pipedrive-alternatives/): 6 CRMs for teams leaving Pipedrive, with what you gain and give up
 - [Best HubSpot alternatives]({DOMAIN}/tools/best-hubspot-alternatives/): 6 CRMs for teams leaving HubSpot Sales Hub
-- [Best CRM for small businesses]({DOMAIN}/tools/best-crm-for-small-business/): CRMs for teams of 1 to 20, weighted toward ease of use and price, with free-plan details
 {"".join(f"- [{t}]({DOMAIN}{u}): {b}" + chr(10) for u, t, b, k in CATEGORY_PAGES)}- [All categories]({DOMAIN}/best-tools/)
 
 ## Guides

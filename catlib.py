@@ -158,10 +158,9 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
         cards.append(f"""<article class="tool" id="{k}">
 <div class="tool-head"><span class="num">{i}</span><div><h3>{t['name']}</h3><div class="bestfor">{fit}</div></div>
 <a class="btn small" href="{t['url']}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div>
-{_spec(cat, k)}
-<div class="tool-body"><p>{t['what']}</p>
+<div class="tool-body"><p class="small muted">Starts at {t['price']} · {t['trial_short']} · Vettlo score {cat_score(cat, k)}/100 (vs {cat_score(cat, target)} for {tname})</p>
 <div class="pc"><div class="pros"><h4>What you gain over {tname}</h4><ul>{''.join(f'<li>{g}</li>' for g in gain)}</ul></div><div class="cons"><h4>What you give up</h4><ul>{''.join(f'<li>{l}</li>' for l in lose)}</ul></div></div>
-<p class="small muted"><b>Skip it if:</b> {t['skip']}</p></div></article>""")
+<p class="small">Full detail: <a href="/tools/{cat['slug']}/#{k}">{t['name']} in our {cat.get('plural_lc', cat['plural'].lower())} ranking</a>.</p></div></article>""")
     reason_html = "".join(f"<li><b>{a}</b> {b}</li>" for a, b in reasons)
     rel = f"<!--COMPARES:{cat['slug']}-->" + "".join(f'<li><a href="{h}">{x}</a></li>' for h, x in related)
     body = f"""<div class="wrap">
@@ -367,7 +366,7 @@ def guide_page(g):
 <section class="answer" id="answer" aria-label="Short answer"><h2>Short answer</h2><p>{g['answer']}</p></section>
 {secs}
 <section id="faq"><h2>FAQ</h2><div>{_faq(g['faqs'])}</div></section>
-{f'<section class="prose"><h2>Related reviews</h2><ul>{rel_html}</ul></section>' if rel_html else ''}
+{f'<section class="prose"><h2>More on this topic</h2><ul>{rel_html}</ul></section>' if rel_html else ''}
 {f'<section class="prose"><h2>Sources</h2><ul class="small">{src}</ul></section>' if src else ''}
 {_author_box()}
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span>{toc}</nav></div></div>
@@ -395,6 +394,8 @@ def guides_index():
         for cs in m.group(1).split(","):
             name = next((c[1] for c in CATS if c[0] == cs), cs)
             rel.append((f"/tools/{cs}/", f"Best {_catname(name)}"))
+            # sibling articles in the same topic cluster first, then comparisons and alternatives
+            rel += [(gu, gt) for gu, gt, _c, _d, gcats, _k in GUIDES if cs in gcats and gu != url][:4]
             rel += [(u, t) for u, t, _ in CLUSTER.get(cs, [])][:3]
         PAGES[url]["body"] = b.replace(m.group(0), "".join(f'<li><a href="{u}">{t}</a></li>' for u, t in rel))
     by = {}
@@ -500,6 +501,10 @@ def review_pages(cats):
         url = REVIEW_URL[name]
         date = max(page_dates(f"/tools/{c['slug']}/", c["date"], c["date"])[1] for c, _, _ in entries)
         dd = depth.get(name) or {}
+        # Reviews only go into the index once they carry plan-level detail of their own (data/review_depth.json);
+        # until then they mostly repeat the shortlist card, so they stay noindex (still linked and crawlable).
+        if not dd.get("plans"):
+            NOINDEX.add(url)
         if dd.get("checked"):
             date = max(date, dd["checked"])
         s0 = cat_score(cat, k)
