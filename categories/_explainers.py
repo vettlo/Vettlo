@@ -217,4 +217,12 @@ EXPLAIN = {
                      ("Verification and analytics", "Page owners, review reminders and reports on stale or unread content."),
                      ("Integrations", "Slack answers, Jira or project links, and imports from other wikis and Google Docs.")],
     },
+    "best-product-analytics-tools": {
+        "what": "Product analytics tools record what users do inside a website or app as events, such as sign-ups, clicks, feature use and purchases, and turn them into funnels, retention curves, user paths and cohorts. Product, growth and engineering teams use them to see where users drop off, which features drive retention and how releases change behavior. Many now bundle session replay, feature flags and A/B testing on the same event data.",
+        "features": [("Funnels and conversion", "See how many users complete each step of a flow and where they drop off."),
+                     ("Retention and cohorts", "Track whether users come back over days or weeks, and group them by behavior or properties."),
+                     ("Event tracking or autocapture", "SDKs that send custom events, or automatic capture of clicks and page views to define events later."),
+                     ("Session replay, flags and experiments", "Watch individual sessions, roll out features gradually and measure A/B tests on the same data."),
+                     ("Data governance and warehouse sync", "Tracking plans, permissions, SSO, and connectors that send data to or from a data warehouse.")],
+    },
 }

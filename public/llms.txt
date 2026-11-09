@@ -50,6 +50,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best LastPass Alternatives](https://vettlo.com/tools/best-lastpass-alternatives/): Five password managers with cheaper SSO, provisioning or a stronger track record.
 - [Best Payroll Software](https://vettlo.com/tools/best-payroll-software/): Seven payroll services compared on tax filing, multi-state pay and real per-person cost.
 - [Best Gusto Alternatives](https://vettlo.com/tools/best-gusto-alternatives/): Five payroll services with multi-state pay included or lower per-person fees.
+- [Best Product Analytics Tools](https://vettlo.com/tools/best-product-analytics-tools/): Seven product analytics tools compared on free events, replays and real cost.
+- [Best Mixpanel Alternatives](https://vettlo.com/tools/best-mixpanel-alternatives/): Five tools that cost less at volume or bundle replay and experiments.
 - [Best Project Management Software](https://vettlo.com/tools/best-project-management-software/): Six tools compared on planning views, automation and real per-seat price.
 - [Best Asana Alternatives](https://vettlo.com/tools/best-asana-alternatives/): Five tools for teams outgrowing Asana's free plan or pricing.
 - [Best monday.com Alternatives](https://vettlo.com/tools/best-monday-alternatives/): Five tools for teams hitting monday.com's seat minimum, automation caps or Enterprise-only portfolios.
@@ -90,6 +92,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Klaviyo vs Mailchimp](https://vettlo.com/compare/klaviyo-vs-mailchimp/): Klaviyo and Mailchimp compared on price, features and fit.
 - [GitHub Actions vs GitLab](https://vettlo.com/compare/github-actions-vs-gitlab/): GitHub Actions and GitLab compared on price, features and fit.
 - [Notion vs Slab](https://vettlo.com/compare/notion-vs-slab/): Notion and Slab compared on price, features and fit.
+- [Mixpanel vs PostHog](https://vettlo.com/compare/mixpanel-vs-posthog/): Mixpanel and PostHog compared on price, features and fit.
 - [Best free CRM tools](https://vettlo.com/tools/best-free-crm-software/): Best free CRM tools, from our scored shortlist.
 - [Best accounting tools for small business](https://vettlo.com/tools/best-accounting-software-for-small-business/): Best accounting tools for small business, from our scored shortlist.
 - [Best applicant tracking systems for small business](https://vettlo.com/tools/best-applicant-tracking-systems-for-small-business/): Best applicant tracking systems for small business, from our scored shortlist.
@@ -121,6 +124,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best marketing automation tools for small business](https://vettlo.com/tools/best-marketing-automation-software-for-small-business/): Best marketing automation tools for small business, from our scored shortlist.
 - [Best password managers for small business](https://vettlo.com/tools/best-password-managers-for-small-business/): Best password managers for small business, from our scored shortlist.
 - [Best payroll tools for small business](https://vettlo.com/tools/best-payroll-software-for-small-business/): Best payroll tools for small business, from our scored shortlist.
+- [Best free product analytics tools](https://vettlo.com/tools/best-free-product-analytics-tools/): Best free product analytics tools, from our scored shortlist.
+- [Best product analytics tools for small business](https://vettlo.com/tools/best-product-analytics-tools-for-small-business/): Best product analytics tools for small business, from our scored shortlist.
 - [Best free project management tools](https://vettlo.com/tools/best-free-project-management-software/): Best free project management tools, from our scored shortlist.
 - [Best project management tools for small business](https://vettlo.com/tools/best-project-management-software-for-small-business/): Best project management tools for small business, from our scored shortlist.
 - [Best sales engagement platforms for small business](https://vettlo.com/tools/best-sales-engagement-software-for-small-business/): Best sales engagement platforms for small business, from our scored shortlist.
@@ -258,6 +263,13 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Square Payroll Review](https://vettlo.com/tools/square-payroll-review/): Square Payroll's pricing, pros, cons and score, from our payroll tools ranking.
 - [Patriot Payroll Review](https://vettlo.com/tools/patriot-payroll-review/): Patriot Payroll's pricing, pros, cons and score, from our payroll tools ranking.
 - [QuickBooks Payroll Review](https://vettlo.com/tools/quickbooks-payroll-review/): QuickBooks Payroll's pricing, pros, cons and score, from our payroll tools ranking.
+- [Mixpanel Review](https://vettlo.com/tools/mixpanel-review/): Mixpanel's pricing, pros, cons and score, from our product analytics tools ranking.
+- [PostHog Review](https://vettlo.com/tools/posthog-review/): PostHog's pricing, pros, cons and score, from our product analytics tools ranking.
+- [Amplitude Review](https://vettlo.com/tools/amplitude-review/): Amplitude's pricing, pros, cons and score, from our product analytics tools ranking.
+- [Statsig Review](https://vettlo.com/tools/statsig-review/): Statsig's pricing, pros, cons and score, from our product analytics tools ranking.
+- [Heap Review](https://vettlo.com/tools/heap-review/): Heap's pricing, pros, cons and score, from our product analytics tools ranking.
+- [LogRocket Review](https://vettlo.com/tools/logrocket-review/): LogRocket's pricing, pros, cons and score, from our product analytics tools ranking.
+- [Pendo Review](https://vettlo.com/tools/pendo-review/): Pendo's pricing, pros, cons and score, from our product analytics tools ranking.
 - [Asana Review](https://vettlo.com/tools/asana-review/): Asana's pricing, pros, cons and score, from our project management tools ranking.
 - [ClickUp Review](https://vettlo.com/tools/clickup-review/): ClickUp's pricing, pros, cons and score, from our project management tools ranking.
 - [monday.com Review](https://vettlo.com/tools/monday-review/): monday.com's pricing, pros, cons and score, from our project management tools ranking.

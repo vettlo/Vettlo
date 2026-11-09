@@ -211,7 +211,7 @@ DEPTS = [
         ("best-feature-flag-tools", "Feature Flag Tools", "Rollouts, toggles and experiments", False)]),
     ("Data & analytics", "Reporting, pipelines and insight", [
         ("best-business-intelligence-tools", "Business Intelligence Tools", "Dashboards and self-serve reporting", True),
-        ("best-product-analytics-tools", "Product Analytics Tools", "Funnels, retention and events", False),
+        ("best-product-analytics-tools", "Product Analytics Tools", "Funnels, retention and events", True),
         ("best-web-analytics-tools", "Web Analytics Tools", "Traffic, conversions and attribution", False),
         ("best-etl-tools", "ETL Tools", "Data pipelines and syncs", False),
         ("best-data-warehouse-software", "Data Warehouses", "Storage and SQL at scale", False),
@@ -302,10 +302,10 @@ page("/", "Vettlo: Independent Business Software Reviews",
 <div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
 <p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
 <div class="bench">
+<article><div class="meta"><span>Shortlist</span><span>Nov 9, 2026</span></div><h3><a href="/tools/best-product-analytics-tools/">Best product analytics tools</a></h3><p class="muted small">Seven product analytics tools compared on free events, replays and SSO, from 2M free events on Amplitude and Statsig to about $324 a month for 10M events on PostHog.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 9, 2026</span></div><h3><a href="/tools/best-knowledge-base-software/">Best knowledge base software</a></h3><p class="muted small">Seven internal wikis compared on AI answers, SSO and upkeep, from Nuclino at $6 a user to Slab's SAML SSO at $12.50 and Outline at $79 a month for 100 people.</p></article>
 <article><div class="meta"><span>Shortlist</span><span>Nov 8, 2026</span></div><h3><a href="/tools/best-ci-cd-tools/">Best CI/CD tools</a></h3><p class="muted small">Seven CI/CD tools compared on free minutes, runners and real cost, from 50 free build minutes on Bitbucket to 2,000 on GitHub and unlimited on self-hosted Jenkins.</p></article>
 <article><div class="meta"><span>Comparison</span><span>Nov 8, 2026</span></div><h3><a href="/compare/klaviyo-vs-mailchimp/">Klaviyo vs Mailchimp</a></h3><p class="muted small">$20 vs $13 a month at 500 contacts, flows on Klaviyo's free plan against 4-step flows on Mailchimp Essentials, plus seats and support.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 7, 2026</span></div><h3><a href="/tools/best-team-chat-apps/">Best team chat apps</a></h3><p class="muted small">Seven chat apps compared on free-plan history, calls and SSO, from Pumble at $2.49 a seat with unlimited free history to Slack Pro at $7.25.</p></article>
 
 </div>
 </div></section>
