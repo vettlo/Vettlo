@@ -902,5 +902,120 @@
       "The CAKE.com Bundle is only available for workspaces on global servers.",
       "The plans page doesn't state trial terms; Clockify covers its free trial in a separate help article."
     ]
+  },
+  "1Password": {
+    "checked": "2026-11-10",
+    "source": ["1Password Business & Teams pricing", "https://1password.com/pricing/business"],
+    "plans": [
+      ["Teams Starter Pack", "$24.95/mo flat, billed annually ($299.40 a year); also €21.95 or CA$29.95 a month", "10 team members and 5 guests, item sharing, security alerts, role-based permissions and developer tools; up to 10 extra seats at $4.99 each"],
+      ["Business", "$8.99/user/mo, billed annually ($107.88 per user a year)", "Everything in Teams Starter Pack plus Okta, Microsoft Entra ID, OneLogin and Duo integrations, Watchtower alerts, role-based vault sharing and 20 guests"],
+      ["Enterprise", "Contact sales for a quote", "Everything in Business plus a dedicated account manager, onboarding and a customer success manager"]
+    ],
+    "first_plan": [
+      ["Item sharing with people who don't use 1Password, with expiring links", "Teams Starter Pack"],
+      ["Developer tools (SSH keys, Git commit signing, CLI, SDKs)", "Teams Starter Pack"],
+      ["Role-based permissions", "Teams Starter Pack"],
+      ["Security alerts", "Teams Starter Pack"],
+      ["Guest accounts", "Teams Starter Pack (5)"],
+      ["Okta, Entra ID, OneLogin and Duo integrations", "Business"],
+      ["Watchtower alerts", "Business"],
+      ["Role-based vault sharing", "Business"],
+      ["20 guest accounts", "Business"],
+      ["Dedicated account manager and tailored onboarding", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Teams Starter Pack", "Business"],
+      "rows": [
+        ["Members included", "10", "Billed per user (1-user minimum)"],
+        ["Maximum members", "20 (with 10 add-on seats)", "No maximum stated"],
+        ["Add-on seats", "Up to 10 at $4.99/seat/mo, billed annually", "Not applicable (per-user pricing)"],
+        ["Guest accounts", "5", "20"],
+        ["Annual cost for 10 people", "$299.40", "$1,078.80"],
+        ["Free trial", "14 days", "14 days"]
+      ]
+    },
+    "notes": [
+      "Both self-serve plans have a 14-day free trial with no credit card required; Teams Starter Pack trials are capped at 10 members.",
+      "Prices are shown billed annually; the pricing page doesn't list monthly-billing rates.",
+      "1Password's billing policy says personalized training and a dedicated customer success manager are for organizations with 101 or more users.",
+      "Business is also sold through AWS Marketplace; nonprofit discounts are available."
+    ]
+  },
+  "Keeper": {
+    "checked": "2026-11-10",
+    "source": ["Choosing the Right Keeper Plan for Your Business (Keeper, updated Jul 15, 2026)", "https://www.keepersecurity.com/blog/2023/04/06/choosing-the-right-keeper-plan-for-your-business/"],
+    "plans": [
+      ["Business Starter", "From $2/user/mo, billed annually", "For teams of 5 to 10 users: unlimited devices and password storage, admin console, credential sharing and autofill, shared team folders, basic 2FA"],
+      ["Business", "From $4/user/mo, billed annually; minimum 5 users", "Adds an advanced organizational structure, delegated administration, a centralized risk dashboard, passkey biometric login and a free Keeper Family plan for each user"],
+      ["Enterprise", "From $6/user/mo, billed annually (pricing page: request a quote)", "Adds SAML 2.0 SSO, SCIM provisioning, Active Directory and LDAP sync, Entra ID, Okta and Ping integrations, advanced MFA with Duo and RSA, developer SDKs and REST API"],
+      ["KeeperPAM", "Custom pricing", "Privileged access management: passwords, secrets, remote access, session recording and zero-trust network access"]
+    ],
+    "first_plan": [
+      ["Centralized admin console", "Business Starter"],
+      ["Secure credential sharing and autofill", "Business Starter"],
+      ["Shared team folders", "Business Starter"],
+      ["Free Keeper Family plan for each user", "Business"],
+      ["Centralized risk dashboard", "Business"],
+      ["Advanced organizational structure", "Business"],
+      ["SAML 2.0 single sign-on", "Enterprise"],
+      ["SCIM provisioning", "Enterprise"],
+      ["Active Directory / LDAP sync", "Enterprise"],
+      ["Advanced MFA (Duo, RSA)", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Business Starter", "Business", "Enterprise"],
+      "rows": [
+        ["Users", "5 to 10", "Minimum 5", "No limit stated"],
+        ["Devices", "Unlimited", "Unlimited", "Unlimited"],
+        ["Password and passkey storage", "Unlimited", "Unlimited", "Unlimited"],
+        ["Annual cost for 10 users (from price)", "$240", "$480", "$720"]
+      ]
+    },
+    "notes": [
+      "Keeper's pricing page lists the plans and features but showed no price figures on Nov 10, 2026; the prices above are from Keeper's own plan guide, which states they are as of July 2026.",
+      "Keeper's earlier comparison pages (updated Jan 2, 2026) listed Business at $3.75 and Enterprise at $5, so prices have risen.",
+      "Free trials are offered for Business, Enterprise and KeeperPAM; the pricing page doesn't state the length.",
+      "Add-ons are priced separately: Advanced Reporting & Alerts, Compliance Reports, BreachWatch dark web monitoring, Secure File Storage, KeeperChat and Endpoint Privilege Manager."
+    ]
+  },
+  "OnPay": {
+    "checked": "2026-11-10",
+    "source": ["OnPay pricing", "https://onpay.com/payroll/software/costs-pricing/"],
+    "plans": [
+      ["Payroll Essentials", "$49/mo base + $6 per worker per month", "Unlimited pay runs in all 50 states, automatic federal, state and local tax filings, W-2s and 1099s, benefits administration, integrations and phone, email and chat support"],
+      ["Payroll + Time Tracking + HR (bundle)", "$70/mo base + $10 per worker", "Payroll with the HR and Time Tracking add-ons at a discount ($9 base + $2/worker less than separately)"],
+      ["Payroll + HR + Compliance + Live HR (bundle)", "$120/mo base + $7 per worker", "Payroll with HR tools, compliance resources and unlimited concierge HR support"],
+      ["Payroll + Time Tracking + HR + Compliance + Live HR (bundle)", "$130/mo base + $10 per worker", "Every OnPay add-on with payroll"]
+    ],
+    "first_plan": [
+      ["Multi-state payroll in all 50 states", "Payroll Essentials"],
+      ["Off-cycle payrolls and any pay schedule", "Payroll Essentials"],
+      ["Custom PTO accrual policies", "Payroll Essentials"],
+      ["Benefits administration (health, dental, vision, HSA, FSA)", "Payroll Essentials"],
+      ["Custom report designer (50+ fields)", "Payroll Essentials"],
+      ["Onboarding workflows, org charts and unlimited eSignature documents", "HR add-on"],
+      ["Time clocks, overtime and break rules, approvals", "Time Tracking add-on"],
+      ["Labor law alerts and handbook guidance", "Compliance Resources add-on"],
+      ["Concierge support from licensed HR experts", "Live HR Support add-on"]
+    ],
+    "limits": {
+      "cols": ["Base fee", "Per worker"],
+      "rows": [
+        ["Payroll Essentials", "$49/mo", "$6/mo"],
+        ["HR add-on", "$15/mo", "$2/mo"],
+        ["Time Tracking add-on", "$15/mo", "$4/mo"],
+        ["Compliance Resources add-on", "$10/mo", "None"],
+        ["Live HR Support add-on", "$65/mo", "None"],
+        ["Example: 1 worker, payroll only", "$55/mo total", "Included"],
+        ["Example: 10 workers, payroll only", "$109/mo total", "Included"]
+      ]
+    },
+    "notes": [
+      "OnPay advertises one month free; the pricing page doesn't state the terms.",
+      "There are no implementation or integration fees; account setup and data migration are free.",
+      "Contractors (1099 workers) are paid on the same plan and count toward the per-worker fee; there's no separate contractor-only plan.",
+      "Benefits cost only the plan premiums; workers' comp and 401(k) are integrated through partners.",
+      "Support runs by phone, email and live chat, 9am to 8pm on weekdays."
+    ]
   }
 }

@@ -65,14 +65,14 @@
     "note": "Re-verified prices, plans and trials on vendor pages (no price changes found) and refreshed G2 review counts (ratings unchanged). Reply.io's pricing page now shows Free, Starter, Professional, Ultimate and Reply Unlimited plans without per-user prices, so its listed prices are unchanged pending verification; Apollo.io prices were confirmed via Apollo's own plan guide."
   },
   "/tools/best-project-management-software/": {
-    "updated": "2026-10-30",
-    "checked": "2026-10-30",
-    "note": "Re-verified prices, plans and trials for all 7 tools on vendor pricing pages: ClickUp now lists a single plan layout (Core $9, Business $17 billed yearly; old $7 Unlimited plan gone) and Basecamp raised its flat plans (Freelancer $25 to $29; top plan now Pro Unlimited $199/mo annual); others unchanged. Refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-10",
+    "checked": "2026-11-10",
+    "note": "Re-verified prices, plans, seat limits and trials for all 7 tools on vendor pricing pages (no price changes) and refreshed G2 review counts (ratings unchanged)."
   },
   "/tools/best-asana-alternatives/": {
-    "updated": "2026-10-30",
-    "checked": "2026-10-30",
-    "note": "Re-verified prices, plans and trials for all 7 tools on vendor pricing pages: ClickUp now lists a single plan layout (Core $9, Business $17 billed yearly; old $7 Unlimited plan gone) and Basecamp raised its flat plans (Freelancer $25 to $29; top plan now Pro Unlimited $199/mo annual); others unchanged. Refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-10",
+    "checked": "2026-11-10",
+    "note": "Re-verified prices, plans, seat limits and trials for all 7 tools on vendor pricing pages (no price changes) and refreshed G2 review counts (ratings unchanged)."
   },
   "/tools/best-accounting-software/": {
     "updated": "2026-11-06",
@@ -115,9 +115,9 @@
     "note": "Re-verified ZoomInfo editions and quote-based pricing and refreshed G2 review counts; Apollo.io's live pricing page did not show prices, so its figures stay as last verified."
   },
   "/compare/asana-vs-monday/": {
-    "updated": "2026-11-03",
-    "checked": "2026-11-03",
-    "note": "Re-verified Asana and monday.com plan prices, seat minimums, automation limits, guest/viewer terms and trials on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-10",
+    "checked": "2026-11-10",
+    "note": "Re-verified Asana and monday.com plan prices, seat minimums, automation limits and trials on vendor pricing pages (no changes) and refreshed G2 review counts."
   },
   "/compare/zendesk-vs-freshdesk/": {
     "updated": "2026-11-03",
@@ -163,5 +163,30 @@
     "updated": "2026-11-07",
     "checked": "2026-11-07",
     "note": "Re-verified Mailchimp and Brevo entry prices, free plans, seats, send limits and automation limits on vendor pages; Brevo's extra Standard seat corrected to $9 a month, and G2 review counts refreshed."
+  },
+  "/tools/best-password-managers-for-business/": {
+    "updated": "2026-11-10",
+    "checked": "2026-11-10",
+    "note": "Re-verified prices, plans and trials for all 6 password managers on vendor pages: Keeper Business now from $4 a user (was $3.75) and Enterprise from $6, per Keeper's July 2026 plan guide; other prices unchanged (LastPass Business/Business Max and Dashlane prices not shown on their pricing pages, so unchanged). Refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-lastpass-alternatives/": {
+    "updated": "2026-11-10",
+    "checked": "2026-11-10",
+    "note": "Re-verified prices, plans and trials for all 6 password managers on vendor pages: Keeper Business now from $4 a user (was $3.75) and Enterprise from $6, per Keeper's July 2026 plan guide; other prices unchanged (LastPass Business/Business Max and Dashlane prices not shown on their pricing pages, so unchanged). Refreshed G2 review counts (ratings unchanged)."
+  },
+  "/compare/1password-vs-bitwarden/": {
+    "updated": "2026-11-10",
+    "checked": "2026-11-10",
+    "note": "Re-verified 1Password and Bitwarden plan prices, SSO/provisioning placement and trials on vendor pricing pages (no changes) and refreshed G2 review counts."
+  },
+  "/tools/best-monday-alternatives/": {
+    "updated": "2026-11-10",
+    "checked": "2026-11-10",
+    "note": "Re-verified prices, plans, seat limits and trials for all 7 tools on vendor pricing pages (no price changes) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/compare/clickup-vs-asana/": {
+    "updated": "2026-11-10",
+    "checked": "2026-11-10",
+    "note": "Re-verified ClickUp and Asana plan prices on vendor pricing pages (no changes) and refreshed G2 review counts."
   }
 }
