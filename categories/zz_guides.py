@@ -1003,3 +1003,158 @@ guide_page({
         ("Which marketing automation tool has lead scoring for the lowest price?", _mv_score or "See our marketing automation shortlist for which plan first includes lead scoring."),
     ],
 })
+
+
+# ---------- What is accounts payable? (AP process)
+# AP features by plan, read from the vendor pricing detail in data/review_depth.json (same data as the review pages).
+def _ap_plan_price(tool, plan):
+    """Regular monthly price of a plan as text, e.g. "$38/mo" or "$40/mo billed annually"; None if not listed."""
+    for p, s, _d in _ac_depth.get(tool, {}).get("plans", []):
+        if p == plan:
+            v = _money(s)
+            if v is None:
+                return None
+            return f"{_fmt(v)}/mo" + (" billed annually" if "billed annually" in s else "")
+    return None
+
+
+def _ap_first(tool, feature):
+    return next((p for f, p in _ac_depth.get(tool, {}).get("first_plan", []) if f == feature), None)
+
+
+def _ap_limit(tool, row, plan):
+    lim = _ac_depth.get(tool, {}).get("limits", {})
+    for r in lim.get("rows", []):
+        if r[0] == row and plan in lim.get("cols", []):
+            return r[1:][lim["cols"].index(plan)]
+    return None
+
+
+_ap_name = {k: _ac[k]["name"] for k in _ac_ranked}
+_ap_rows = []  # (tool link, AP feature, first plan, plan price)
+
+
+def _ap_add(k, feature, label=None, plan=None, extra=""):
+    tool = _ap_name.get(k)
+    if not tool or tool not in _ac_depth:
+        return
+    pl = plan or _ap_first(tool, feature)
+    if not pl:
+        return
+    pl = pl.split(" (")[0]
+    pr = _ap_plan_price(tool, pl)
+    if pr is None:
+        return
+    _ap_rows.append((_ac_rv(k), (label or feature) + extra, pl, pr))
+
+
+_ap_add("quickbooks", "Bill pay with free ACH")
+_ap_add("quickbooks", "1099 e-filing and bill approval workflows")
+_xb_early = _ap_limit("Xero", "Bills", "Early")
+_xb_grow = next((c for c in _ac_depth.get("Xero", {}).get("limits", {}).get("cols", []) if _ap_limit("Xero", "Bills", c) == "Unlimited"), None)
+_ap_add("xero", "Free ACH bill payments", extra=f" (Early caps bills at {_xb_early} a month)" if _xb_early else "")
+_ap_add("xero", "W-9 and 1099 management")
+if _xb_grow:
+    _ap_add("xero", "", label="Unlimited bills", plan=_xb_grow)
+_zb_std = _ap_limit("Zoho Books", "Bills and expenses per year", "Standard")
+_zb_free = _ap_limit("Zoho Books", "Bills and expenses per year", "Free")
+if _zb_std:
+    _ap_add("zohobooks", "", label=f"Bills and expenses: {_zb_std} a year" + (f" (Free plan: {_zb_free})" if _zb_free else ""), plan="Standard")
+_ap_add("zohobooks", "Sales and purchase approvals")
+_ap_add("zohobooks", "Vendor portal")
+_ap_table = "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td><td>{d}</td></tr>" for a, b, c, d in _ap_rows)
+_ap_qa = re.search(r"free up to a monthly allotment, then \$([\d.]+) per transaction", " ".join(_ac_depth.get("QuickBooks Online", {}).get("notes", [])))
+_ap_appr = [f"{_ac[k]['short']} {p.split(' (')[0]}" for k, f in (("quickbooks", "1099 e-filing and bill approval workflows"), ("zohobooks", "Sales and purchase approvals"))
+            if k in _ap_name and _ap_name[k] in _ac_depth and (p := _ap_first(_ap_name[k], f))]
+_ap_chk = lambda tool: _ac_depth.get(tool, {}).get("checked", "")
+_ap_checked = max((_ap_chk(_ap_name[k]) for k in ("quickbooks", "xero", "zohobooks") if k in _ap_name), default="")
+_ap_checked_h = (lambda d: f"{['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][int(d[5:7]) - 1]} {int(d[8:])}, {d[:4]}")(_ap_checked) if _ap_checked else ""
+
+# Early-payment discount maths (2/10 net 30): annualized cost of skipping the discount
+_ap_d, _ap_dd, _ap_net = 2, 10, 30
+_ap_apr = _ap_d / (100 - _ap_d) * 365 / (_ap_net - _ap_dd) * 100
+_ap_bill = 1200
+_ap_disc = _ap_bill * _ap_d / 100
+
+guide_page({
+    "slug": "accounts-payable-process", "crumb": "Accounts payable", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-10", "kicker": "Explainer",
+    "title": "What Is Accounts Payable? The AP Process, Step by Step",
+    "seo_title": "Accounts Payable: What It Is and the AP Process | Vettlo",
+    "desc": "Accounts payable explained: what AP is, the six-step process from vendor invoice to payment, three-way matching, net 30 terms and the controls that matter.",
+    "card": "What AP is, the six steps from invoice to payment, matching, terms and controls.",
+    "answer": ("Accounts payable (AP) is the money a business owes its suppliers for goods and services it has received but not yet paid for, recorded as a current liability on the balance sheet. "
+               "The AP process turns each vendor invoice into a payment in six steps: set up the vendor, capture the invoice, match it to the order and delivery, approve it, pay it by the due date, and record and reconcile the payment."),
+    "sections": [
+        ("what", "What is accounts payable?", f"""<p>Accounts payable is the total of unpaid bills from vendors: the office lease invoice, the supplier who shipped inventory on net 30 terms, the contractor who sent an invoice last week. Each bill is a short-term debt, so AP sits under <b>current liabilities</b> on the balance sheet, and it shrinks as you pay. In most small businesses AP lives in the bills or purchases module of the accounting software; our <a href="{_ac_cat}">comparison of the best accounting software</a> ranks {len(_ac_ranked)} tools, and this guide covers the process itself.</p>
+<p>Three terms get mixed up with AP:</p>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>What it is</th><th>Where it shows up</th></tr></thead><tbody>
+<tr><td>Accounts payable</td><td>Money you owe vendors for things already received</td><td>Current liability</td></tr>
+<tr><td>Accounts receivable</td><td>Money customers owe you for invoices you sent</td><td>Current asset</td></tr>
+<tr><td>Accrued expenses</td><td>Costs incurred but not yet billed, such as wages earned since the last payday</td><td>Current liability, usually separate from AP</td></tr>
+<tr><td>Expense reimbursements</td><td>Money owed to employees for out-of-pocket business spend</td><td>Often run through an expense tool, not vendor AP</td></tr>
+</tbody></table></div>
+<p>Employee receipts and company cards are their own workflow; our <a href="/tools/best-expense-management-software/">expense management software shortlist</a> covers the tools built for that.</p><h3>How is accounts payable recorded?</h3>
+<p>Under accrual accounting, a bill hits AP when you receive it, not when you pay it. That's two journal entries per bill. Using a {_fmt(_ap_bill)} supplier invoice as an example:</p>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Debit</th><th>Credit</th><th>Effect on AP</th></tr></thead><tbody>
+<tr><td>Bill received and entered</td><td>Expense or inventory {_fmt(_ap_bill)}</td><td>Accounts payable {_fmt(_ap_bill)}</td><td>Up {_fmt(_ap_bill)}</td></tr>
+<tr><td>Bill paid</td><td>Accounts payable {_fmt(_ap_bill)}</td><td>Cash {_fmt(_ap_bill)}</td><td>Down {_fmt(_ap_bill)}</td></tr>
+</tbody></table></div>
+<p>So accounts payable is a credit balance: entering a bill credits it, paying a bill debits it. Accounting software makes both entries for you when you enter a bill and later mark it paid.</p>
+<p>A business keeping its books on the cash method records the expense only when it pays, so there is no AP balance in the ledger. It still needs a list of unpaid bills to know what's due, which is why most tools keep a bills list either way.</p>"""),
+        ("steps", "What are the steps in the accounts payable process?", f"""<p>The AP process has six steps, from adding a vendor to closing out the payment. Small teams often do all six with one or two people; larger ones split them so no single person can both add a vendor and pay it.</p>
+<ol>
+<li><b>Set up the vendor.</b> Record the legal name, address, payment details and terms, and collect a Form W-9 from contractors and other vendors you may need to report, so you have their taxpayer ID. Under the IRS instructions for tax years beginning after 2025, you report nonemployee compensation of $2,000 or more on Form 1099-NEC (up from $600), and payments to corporations generally aren't reported, with exceptions such as attorneys' fees. Forms are due January 31.</li>
+<li><b>Capture the invoice.</b> Get every bill into one place: a dedicated AP email inbox, uploads, or receipt scanning in the accounting tool. Enter the vendor, invoice number, date, due date, amount and the account or item it belongs to.</li>
+<li><b>Match and verify.</b> Check the invoice against what you ordered and what arrived (see three-way matching below), and check the invoice number against bills already entered to catch duplicates.</li>
+<li><b>Approve.</b> The person who ordered or owns the budget confirms the bill is valid. Set a rule for who approves what, for example any bill above a set amount needs a second approver.</li>
+<li><b>Schedule and pay.</b> Pay by the due date, or by the discount date if the vendor offers one, by ACH, check or card. Batching payments once or twice a week keeps it manageable.</li>
+<li><b>Record and reconcile.</b> Mark the bill paid so AP drops, match the payment to the bank statement, and keep the invoice with proof of payment. At month end, the unpaid bills report should agree with the AP balance on the balance sheet.</li>
+</ol>
+<p class="small muted">This summarizes IRS reporting rules and isn't tax advice; check the current IRS instructions or ask your accountant about your vendors.</p>"""),
+        ("matching", "What is three-way matching?", f"""<p>Three-way matching means paying an invoice only when it agrees with two other documents: the purchase order (what you agreed to buy) and the receiving record (what actually arrived). It stops you paying for goods that were never delivered, or at a price you never agreed.</p>
+<div class="table-wrap"><table><thead><tr><th>Document</th><th>Who creates it</th><th>What you compare</th></tr></thead><tbody>
+<tr><td>Purchase order</td><td>Your business, when ordering</td><td>Item, quantity, agreed unit price, terms</td></tr>
+<tr><td>Receiving record (packing slip or goods received note)</td><td>Whoever accepts the delivery</td><td>Quantity actually received, condition</td></tr>
+<tr><td>Vendor invoice</td><td>The supplier</td><td>Quantity billed, price, total, due date</td></tr>
+</tbody></table></div>
+<p><b>Two-way matching</b> compares only the purchase order and the invoice. It suits services and subscriptions, where there's no delivery to count. Many small businesses don't issue purchase orders at all; for them the practical version is checking each bill against the contract or quote and confirming with whoever ordered it that the work was done.</p>
+<p>When the documents don't agree, don't pay the difference: hold the bill, ask the vendor for a corrected invoice or a credit note, and pay the amount you can match.</p>"""),
+        ("terms", "How do net 30 and 2/10 net 30 payment terms work?", f"""<p>Payment terms say how many days you have to pay after the invoice date. <b>Net 30</b> means the full amount is due in 30 days. <b>2/10 net 30</b> means you can take {_ap_d}% off if you pay within {_ap_dd} days; otherwise the full amount is due in {_ap_net}.</p>
+<div class="table-wrap"><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Due on receipt</td><td>Pay as soon as you get the invoice</td></tr>
+<tr><td>Net 15 / net 30 / net 60</td><td>Full amount due 15, 30 or 60 days after the invoice date</td></tr>
+<tr><td>{_ap_d}/{_ap_dd} net {_ap_net}</td><td>{_ap_d}% discount if paid within {_ap_dd} days, full amount due in {_ap_net}</td></tr>
+<tr><td>EOM</td><td>Counted from the end of the month the invoice was issued</td></tr>
+</tbody></table></div>
+<p>Early-payment discounts are worth more than they look. On a {_fmt(_ap_bill)} bill, {_ap_d}/{_ap_dd} net {_ap_net} saves {_fmt(_ap_disc)} for paying {_ap_net - _ap_dd} days early. Skipping it is like borrowing {_fmt(_ap_bill - _ap_disc)} for {_ap_net - _ap_dd} days at {_ap_d}/{100 - _ap_d}, which works out to about {_ap_apr:.0f}% a year ({_ap_d}/{100 - _ap_d} × 365/{_ap_net - _ap_dd}). If you have the cash, taking the discount usually beats holding it.</p>
+<p>Without a discount, paying on the due date rather than early keeps cash in the business longer. Finance teams track this as <b>days payable outstanding</b> (DPO): average accounts payable ÷ cost of goods sold × the days in the period. A higher DPO means you take longer to pay; a sudden rise can also mean bills are getting stuck in approval.</p>"""),
+        ("controls", "How do you prevent duplicate payments and invoice fraud?", f"""<p>Two things go wrong in AP: paying the same bill twice, and paying a fake or altered one. These controls address both:</p>
+<ul>
+<li><b>Separate duties.</b> The person who adds or edits a vendor shouldn't also approve and release its payments. In a two-person business, have the owner approve payments the bookkeeper prepares.</li>
+<li><b>Verify bank detail changes.</b> When a vendor asks to change where you send money, confirm by calling a phone number you already have on file, not one in the request.</li>
+<li><b>Block duplicates.</b> Enter invoice numbers exactly and let the software warn on a repeat vendor and number.</li>
+<li><b>Pay only real vendors.</b> The FTC's May 2026 alert to small businesses advises checking all invoices closely, having clear procedures for approving purchases and invoices from vendors you actually work with, and knowing who you're dealing with.</li>
+<li><b>Keep the paper trail.</b> The IRS says supporting documents should identify the payee, the amount paid, proof of payment, the date incurred and a description showing it was a business expense; invoices and canceled checks or bank transfer records together do that. Keep them at least until the period of limitations for the return runs out, generally 3 years from the date you filed.</li>
+</ul>"""),
+        ("software", "Which accounting plans include bill pay and approvals?", f"""<p>Entry plans usually let you enter and pay bills; approval workflows and higher bill volumes start further up the plan ladder. Where AP features first appear on the three tools whose plan details we track, at regular prices:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>AP feature</th><th>First plan</th><th>Plan price</th></tr></thead><tbody>{_ap_table}</tbody></table></div>
+<p class="small muted">From each vendor's US pricing page, checked {_ap_checked_h}.{f" QuickBooks' free standard ACH bill payments cover a monthly allotment, then cost {_fmt(float(_ap_qa.group(1)))} each." if _ap_qa else ""}</p>
+<p>If more than one person needs to sign off on bills, price the first plan with approvals ({_ac_and(_ap_appr)}), not the entry plan. Our <a href="/guides/accounting-software-cost/">accounting software cost guide</a> prices every plan and team size, and <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> compares the two most common choices plan by plan. For tool-level detail, read the reviews of {_ac_and([_ac_rv(k) for k in ("quickbooks", "xero", "zohobooks") if k in _ap_name])}.</p>"""),
+    ],
+    "faqs": [
+        ("Is accounts payable an asset or a liability?", "Accounts payable is a liability. It's money the business owes vendors, usually within weeks, so it's listed under current liabilities on the balance sheet."),
+        ("Is accounts payable a debit or a credit?", "Accounts payable normally carries a credit balance. Entering a vendor bill credits AP and debits an expense or inventory account; paying the bill debits AP and credits cash."),
+        ("What is the difference between accounts payable and accounts receivable?", "Accounts payable is what you owe suppliers for goods and services you received. Accounts receivable is what customers owe you for invoices you sent. AP is a liability; AR is an asset."),
+        ("Do I need to send a 1099 to every vendor?", "No. For tax years beginning after 2025, the IRS instructions require Form 1099-NEC for nonemployee compensation of $2,000 or more, and payments to corporations generally aren't reported, with exceptions such as attorneys' fees. Collect a W-9 when you set up the vendor so you can tell. This isn't tax advice."),
+    ],
+    "sources": [
+        ("IRS: Instructions for Forms 1099-MISC and 1099-NEC", "https://www.irs.gov/instructions/i1099mec"),
+        ("IRS: What kind of records should I keep", "https://www.irs.gov/businesses/small-businesses-self-employed/what-kind-of-records-should-i-keep"),
+        ("IRS: Topic no. 305, Recordkeeping", "https://www.irs.gov/taxtopics/tc305"),
+        ("FTC: Run a small business? Pay your bills, not scammers (May 2026)", "https://consumer.ftc.gov/consumer-alerts/2026/05/run-small-business-pay-your-bills-not-scammers"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+        ("Xero US pricing plans", "https://www.xero.com/us/pricing-plans/"),
+        ("Zoho Books pricing (US)", "https://www.zoho.com/us/books/pricing/"),
+    ],
+})
