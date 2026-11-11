@@ -1017,5 +1017,131 @@
       "Benefits cost only the plan premiums; workers' comp and 401(k) are integrated through partners.",
       "Support runs by phone, email and live chat, 9am to 8pm on weekdays."
     ]
+  },
+  "ClickUp": {
+    "checked": "2026-11-11",
+    "source": ["ClickUp Pricing and Plans", "https://clickup.com/pricing"],
+    "plans": [
+      ["Free Forever", "$0, no credit card required", "60 MB storage, unlimited free members, 5 Spaces, 100 automation actions a month, 500 AI credits per Workspace"],
+      ["Core", "$9/user/mo billed yearly (shown against a $12 regular price)", "Unlimited storage, unlimited Gantt charts, time tracking, custom fields, unlimited forms, 1,000 automation actions a month, 1,000 AI credits per user a month"],
+      ["Business", "$17/user/mo billed yearly (shown against $25)", "Workload view, advanced dashboards, timesheets, advanced automations, Google SSO, 10,000 automation actions a month, 1,500 AI credits per user a month"],
+      ["Enterprise", "Custom pricing (contact sales)", "SAML/Okta/Microsoft SSO and SCIM, custom roles, white labeling, HIPAA support with BAA, audit trails, data residency, 1M automation actions a month"],
+      ["Max", "$100/user/mo billed yearly (shown against $120)", "10,000 AI credits per user a month, maximum premium AI models, no daily MCP call cap, 1,000 email integration accounts"]
+    ],
+    "first_plan": [
+      ["Unlimited Gantt charts", "Core"],
+      ["Native time tracking", "Core"],
+      ["Custom fields", "Core"],
+      ["Guests with limited or view-only permissions", "Core"],
+      ["Goals", "Core"],
+      ["Workload view", "Business"],
+      ["Timesheets", "Business"],
+      ["Advanced automations (webhooks, email, SMS, integrations)", "Business"],
+      ["Google SSO", "Business"],
+      ["SAML, Okta and Microsoft SSO with SCIM", "Enterprise"],
+      ["Custom roles and permissions", "Enterprise"],
+      ["White labeling", "Enterprise"],
+      ["HIPAA support (with BAA)", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free Forever", "Core", "Business", "Enterprise"],
+      "rows": [
+        ["File storage", "60 MB", "Unlimited", "Unlimited", "Unlimited"],
+        ["Automation actions a month (per Workspace)", "100", "1,000", "10,000", "1M"],
+        ["Active automation rules", "5", "Unlimited", "Unlimited", "Unlimited"],
+        ["Folders per Space", "100", "200", "400", "Unlimited"],
+        ["Lists per Space", "40", "200", "400", "1,500"],
+        ["Whiteboards", "3", "10", "No cap listed", "No cap listed"],
+        ["Teams (user groups)", "2", "3", "10", "No cap listed"],
+        ["AI credits", "500 per Workspace", "1,000 per user a month", "1,500 per user a month", "3,000 per user a month"],
+        ["MCP calls a day", "100", "300", "1,000", "25,000"],
+        ["API calls a minute", "100", "100", "100", "10,000"]
+      ]
+    },
+    "notes": [
+      "Yearly billing saves up to 33%; the pricing page did not show monthly-billing prices on Nov 11, 2026.",
+      "Dashboards are a trial on Free and Core and included from Business; sprint points start on Business.",
+      "Advanced time tracking is a trial below Enterprise; timesheet approvals are listed on Enterprise.",
+      "Extra AI credits cost $10 per 10,000 credits, with an optional auto top-up."
+    ]
+  },
+  "Freshdesk": {
+    "checked": "2026-11-11",
+    "source": ["Freshdesk pricing", "https://www.freshworks.com/freshdesk/pricing/"],
+    "plans": [
+      ["Growth", "$19/agent/mo billed annually", "Ticketing and shared inbox, threads and tasks, customer portal and knowledge base, out-of-the-box reports, roles and permissions, first 500 Freddy AI Agent sessions"],
+      ["Pro", "$55/agent/mo billed annually", "Everything in Growth plus multiple SLA policies, intelligent routing, multilingual help desk, custom dashboards and reporting, external collaborators"],
+      ["Enterprise", "$89/agent/mo billed annually", "Everything in Pro plus skill-based routing, Freddy AI Insights, sandbox, audit logs, allowed domains and IP whitelisting"]
+    ],
+    "first_plan": [
+      ["Customer portal and knowledge base", "Growth"],
+      ["Freddy AI Agent (first 500 sessions)", "Growth"],
+      ["Multiple SLA policies", "Pro"],
+      ["Intelligent routing", "Pro"],
+      ["Multilingual help desk", "Pro"],
+      ["Custom dashboards and reporting", "Pro"],
+      ["External collaborators", "Pro"],
+      ["Freddy AI Copilot add-on ($29/agent/mo)", "Pro"],
+      ["Skill-based routing", "Enterprise"],
+      ["Freddy AI Insights", "Enterprise"],
+      ["Sandbox and audit logs", "Enterprise"],
+      ["IP whitelisting", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Growth", "Pro", "Enterprise"],
+      "rows": [
+        ["Price per agent a month (annual)", "$19", "$55", "$89"],
+        ["Freddy AI Agent sessions included", "500", "500", "500"],
+        ["Day pass for occasional agents", "$2", "$7", "$12"],
+        ["Freddy AI Copilot", "Not listed", "$29/agent/mo add-on", "$29/agent/mo add-on"]
+      ]
+    },
+    "notes": [
+      "Signing up gives 14 days of the Enterprise plan; to continue you pick a plan and pay by card, otherwise the account is suspended.",
+      "The pricing page shows annual prices and a 'Save 20% Annually' toggle; it did not show monthly prices on Nov 11, 2026.",
+      "Extra Freddy AI Agent sessions cost $49 per 100 on every plan.",
+      "Other add-ons: connector app tasks $80 per 5,000; MCP actions $15 per 1,000.",
+      "Upgrades take effect immediately; downgrades and cancellations apply at the end of the term, with no cancellation fee listed."
+    ]
+  },
+  "Zoho Desk": {
+    "checked": "2026-11-11",
+    "source": ["Zoho Desk Pricing & Editions", "https://www.zoho.com/desk/pricing.html"],
+    "plans": [
+      ["Free", "$0", "3 user licenses, email ticketing"],
+      ["Express", "$7/user/mo billed annually or $9 billed monthly", "Up to 5 users; email, social (Instagram, Facebook, X) and web-form channels, workflows, multi-level escalations, AI agents with up to 30M free tokens a month"],
+      ["Standard", "$14/user/mo", "Live chat, WhatsApp and other messaging apps, answer bot, community forum, knowledge base, ASAP self-service widget, happiness ratings, custom reports and dashboards"],
+      ["Professional", "$23/user/mo", "Telephony, Zia AI, Blueprints, multiple departments, round-robin assignment, multilingual help center (40+ languages), parent-child tickets, webhooks; unlimited users"],
+      ["Enterprise", "$40/user/mo", "Live chat via Zoho SalesIQ, guided conversations, skill-based assignment, multi-level IVR, multi-brand help center, custom modules, sandbox; 50 free light users"]
+    ],
+    "first_plan": [
+      ["Social media ticketing (Instagram, Facebook, X)", "Express"],
+      ["Workflows and multi-level escalations", "Express"],
+      ["Live chat and WhatsApp messaging", "Standard"],
+      ["Knowledge base", "Standard"],
+      ["Custom reports and dashboards", "Standard"],
+      ["Telephony", "Professional"],
+      ["Zia AI", "Professional"],
+      ["Blueprints (process automation)", "Professional"],
+      ["Multilingual help center (40+ languages)", "Professional"],
+      ["Skill-based assignment", "Enterprise"],
+      ["Multi-brand help center", "Enterprise"],
+      ["Sandbox", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Express", "Professional", "Enterprise"],
+      "rows": [
+        ["Users", "3", "Up to 5", "Unlimited", "Unlimited"],
+        ["Free light users", "None listed", "None listed", "Not included (paid add-on)", "50"],
+        ["Help center languages", "Not listed", "Not listed", "40+", "40+"],
+        ["Departments", "Not listed", "Not listed", "Multiple", "Multiple"]
+      ]
+    },
+    "notes": [
+      "Every paid plan has a 15-day free trial with no credit card; you can switch plans during it, and the account drops to Free afterwards unless you buy.",
+      "Zoho says yearly billing saves up to 34%. Express is $7 a user a month billed annually or $9 monthly (Express page). Standard, Professional and Enterprise USD prices ($14, $23, $40) are from Zoho's Zendesk comparison page, which doesn't label the billing cycle; the pricing page showed us prices in INR (annual: ₹420, ₹800, ₹1,400, ₹2,400).",
+      "Light users are a paid add-on on Professional and Enterprise (₹345 a month on the INR page; Enterprise includes 50 free).",
+      "Nonprofit and educational institutions may get special pricing; local taxes are added."
+    ]
   }
 }

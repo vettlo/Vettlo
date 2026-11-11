@@ -18,7 +18,7 @@ EM = {
             "name": "MailerLite", "short": "MailerLite", "url": "https://www.mailerlite.com/",
             "bf": "Best for small businesses that want automation at a low price",
             "price": "$10.80/mo", "price_note": "Comfort, 500 subscribers, billed yearly ($12 monthly); $17.10 at 1,000", "trial": "Free plan (250 subscribers); 14-day trial", "trial_short": "Free plan + 14-day trial",
-            "g2": ("4.6", "1,114", "https://www.g2.com/products/mailerlite/reviews"),
+            "g2": ("4.6", "1,115", "https://www.g2.com/products/mailerlite/reviews"),
             "scores": [4, 4, 3.5, 4, 5, 5],
             "what": "MailerLite is an email marketing tool with an automation builder, landing pages, websites and signup forms. Comfort includes 50 automations and 3 seats; Power ($22.50 billed yearly at 500 subscribers) adds unlimited emails, automations and seats, multiple automation triggers and 24/7 live chat support.",
             "who": "Small businesses, creators and lean marketing teams that want newsletters and automations without a steep learning curve.",

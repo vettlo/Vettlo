@@ -188,5 +188,20 @@
     "updated": "2026-11-10",
     "checked": "2026-11-10",
     "note": "Re-verified ClickUp and Asana plan prices on vendor pricing pages (no changes) and refreshed G2 review counts."
+  },
+  "/tools/best-marketing-automation-software/": {
+    "updated": "2026-11-11",
+    "checked": "2026-11-11",
+    "note": "Re-verified all 6 platforms on vendor pricing pages: Keap's pricing page now shows $320/mo, or $3,195 a year on annual billing (was $249/mo billed annually, $299 monthly); other prices unchanged. Refreshed G2: Account Engagement 4.0 to 4.1; review counts updated."
+  },
+  "/tools/best-hubspot-marketing-hub-alternatives/": {
+    "updated": "2026-11-11",
+    "checked": "2026-11-11",
+    "note": "Re-verified HubSpot Marketing Hub, ActiveCampaign, Brevo, Account Engagement and Customer.io prices on vendor pages (unchanged) and refreshed G2 ratings and review counts."
+  },
+  "/compare/mailerlite-vs-mailchimp/": {
+    "updated": "2026-11-11",
+    "checked": "2026-11-11",
+    "note": "Re-verified plans, send limits, seats, automation limits and free plans on MailerLite's and Mailchimp's pricing pages, and the 10,000-contact prices ($129 MailerLite Power, $200 Mailchimp Standard); no changes. G2 review counts refreshed."
   }
 }
