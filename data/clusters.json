@@ -50,7 +50,7 @@
      "title": "Cash vs Accrual Accounting: Which Method Should Your Business Use?",
      "intent": "cash vs accrual accounting",
      "angle": "Define both with a worked example, IRS rules on who may use cash (cite IRS Pub 538 fetched today), and which ranked tools support each/switching reports.",
-     "status": "todo",
+     "status": "done",
      "url": "/guides/cash-vs-accrual-accounting/",
      "target_keyword": "cash vs accrual accounting",
      "bing_3m": 995,
@@ -59,7 +59,8 @@
      "google_us_range": "1K-10K",
      "google_us_est": 10000,
      "kd": 76,
-     "priority": 2400
+     "priority": 2400,
+     "date": "2026-11-11"
     },
     {
      "slug": "bank-reconciliation",

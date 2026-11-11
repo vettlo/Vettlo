@@ -1158,3 +1158,123 @@ guide_page({
         ("Zoho Books pricing (US)", "https://www.zoho.com/us/books/pricing/"),
     ],
 })
+
+
+# ---------- Cash vs accrual accounting
+# Hypothetical one-month example (December), computed here so the two totals always agree with the rows.
+_ca_tx = [  # (date, what happened, cash-basis income, cash-basis expense, accrual income, accrual expense)
+    ("Dec 1", "Pay December rent", 0, 1000, 0, 1000),
+    ("Dec 5", "Cash sale, paid on the spot", 2000, 0, 2000, 0),
+    ("Dec 10", "Invoice a client for December work, due in 30 days", 0, 0, 8000, 0),
+    ("Dec 18", "Receive a supplier bill for December materials, due in 21 days", 0, 0, 0, 1500),
+    ("Dec 22", "Client pays an invoice for work done in November", 3000, 0, 0, 0),
+]
+_ca_ci = sum(r[2] for r in _ca_tx)
+_ca_ce = sum(r[3] for r in _ca_tx)
+_ca_ai = sum(r[4] for r in _ca_tx)
+_ca_ae = sum(r[5] for r in _ca_tx)
+_ca_cp, _ca_ap = _ca_ci - _ca_ce, _ca_ai - _ca_ae
+_ca_cell = lambda v: _fmt(v) if v else "—"
+_ca_rows = "".join(f"<tr><td>{d}</td><td>{w}</td><td>{_ca_cell(ci)}</td><td>{_ca_cell(ce)}</td><td>{_ca_cell(ai)}</td><td>{_ca_cell(ae)}</td></tr>" for d, w, ci, ce, ai, ae in _ca_tx)
+_ca_rows += f"<tr><td></td><td><b>December totals</b></td><td><b>{_fmt(_ca_ci)}</b></td><td><b>{_fmt(_ca_ce)}</b></td><td><b>{_fmt(_ca_ai)}</b></td><td><b>{_fmt(_ca_ae)}</b></td></tr>"
+_ca_rows += f"<tr><td></td><td><b>December profit</b></td><td colspan=\"2\"><b>{_fmt(_ca_cp)}</b></td><td colspan=\"2\"><b>{_fmt(_ca_ap)}</b></td></tr>"
+_ca_inv = next(r[4] for r in _ca_tx if r[0] == "Dec 10")
+_ca_bill = next(r[5] for r in _ca_tx if r[0] == "Dec 18")
+# IRS gross receipts test (section 448(c)), from IRS sources fetched 2026-11-11
+_ca_gr = {2025: 31, 2026: 32}  # $ millions: Form 8990 instructions (2025), Rev. Proc. 2025-32 sec. 4.30 (2026)
+
+# How each ranked tool handles report basis, from each vendor's help docs (checked 2026-11-11).
+_ca_tool = {
+    "quickbooks": ("Set a company default in Settings > Account and settings > Advanced > Accounting", "Yes: choose Cash or Accrual on any standard report, or under Customize"),
+    "xero": ("Xero says it supports both cash and accrual reporting", "Yes: Xero says you can run reports on a cash or accrual basis and switch views any time"),
+    "zohobooks": ("Report Basis field under Reports > Configure Report Layout (used for printing and PDFs)", "Yes, through Customize Report > Report Basis, on plans that include report customization"),
+    "freshbooks": ("No single setting: the updated Profit and Loss report is accrual only (Billed)", "Partly: the legacy Profit and Loss report offers Billed (accrual) or Collected (cash)"),
+    "wave": ("Every report starts on accrual by default", "Yes on the profit and loss, balance sheet, sales tax, trial balance and account transactions reports; the cash flow report has no accrual option"),
+}
+_ca_trs = "".join(f"<tr><td>{_ac_rv(k)}</td><td>{a}</td><td>{b}</td></tr>" for k, (a, b) in _ca_tool.items() if k in _ac_ranked)
+_ca_names = _ac_and([_ac[k]["short"] for k in _ca_tool if k in _ac_ranked])
+
+guide_page({
+    "slug": "cash-vs-accrual-accounting", "crumb": "Cash vs accrual accounting", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-11", "kicker": "Explainer",
+    "title": "Cash vs Accrual Accounting: Which Method Should Your Business Use?",
+    "seo_title": "Cash vs Accrual Accounting: Differences and IRS Rules | Vettlo",
+    "desc": f"Cash vs accrual accounting explained with a worked example, the IRS rules on who may use the cash method (${_ca_gr[2026]}M test for 2026) and how to switch.",
+    "card": "Both methods side by side, a worked example, IRS limits and how to switch.",
+    "answer": ("In cash vs accrual accounting, the difference is timing: cash accounting records income when money arrives and expenses when you pay them; accrual accounting records income when you earn it and expenses when you incur them, whether or not cash has moved. "
+               "Most small businesses may choose either for taxes: the IRS bars only C corporations, partnerships with a C corporation partner and tax shelters from the cash method, "
+               f"and the first two keep it if their average annual gross receipts for the prior 3 years are ${_ca_gr[2026]} million or less (tax years beginning in 2026). "
+               "Cash is simpler and tracks your bank balance; accrual shows what you're owed and what you owe, so it gives the truer picture of profit."),
+    "sections": [
+        ("difference", "What is the difference between cash and accrual accounting?", f"""<p>The difference between cash vs accrual accounting is timing: the same sale or bill lands in a different month, and sometimes a different tax year, depending on the method. Under the <b>cash method</b> you generally report income in the year you receive it and deduct expenses in the year you pay them. Under the <b>accrual method</b> you report income in the year you earn it and deduct expenses in the year you incur them, as IRS Publication 538 puts it.</p>
+<p>The small-business tools in our <a href="{_ac_cat}">ranking of the best accounting software</a> can show reports on either basis (details below), so the software rarely decides this for you; the tax rules and how your business gets paid do. How the two compare:</p>
+<div class="table-wrap"><table><thead><tr><th></th><th>Cash method</th><th>Accrual method</th></tr></thead><tbody>
+<tr><td>Income is recorded</td><td>When the customer's payment arrives</td><td>When you deliver the work or goods and bill for it</td></tr>
+<tr><td>Expenses are recorded</td><td>When you pay the bill</td><td>When you receive the goods or service, even if unpaid</td></tr>
+<tr><td>Unpaid customer invoices</td><td>Not in income until paid</td><td>In income and in accounts receivable</td></tr>
+<tr><td>Unpaid supplier bills</td><td>Not an expense until paid</td><td>An expense and a liability in accounts payable</td></tr>
+<tr><td>Profit follows</td><td>Money in and out of the bank</td><td>The work done in the period</td></tr>
+<tr><td>Effort to keep</td><td>Lower: the bank statement drives most entries</td><td>Higher: invoices, bills and adjustments must be tracked</td></tr>
+</tbody></table></div>
+<p>Under the cash method, money can count as received before you withdraw it: the IRS treats income as <b>constructively received</b> when it's credited to your account or made available to you without restriction. And under either method, unpaid bills still have to be tracked so you pay them on time; our <a href="/guides/accounts-payable-process/">guide to the accounts payable process</a> covers that workflow.</p>"""),
+        ("example", "Cash vs accrual: a worked example", f"""<p>The same five December transactions give two different profits. This is a hypothetical service business, used only to show the mechanics:</p>
+<div class="table-wrap"><table><thead><tr><th>Date</th><th>Transaction</th><th>Cash income</th><th>Cash expense</th><th>Accrual income</th><th>Accrual expense</th></tr></thead><tbody>{_ca_rows}</tbody></table></div>
+<p>Cash basis shows {_fmt(_ca_cp)} of December profit; accrual shows {_fmt(_ca_ap)}. The gap comes from three items:</p>
+<ul><li>The {_fmt(_ca_inv)} December invoice is income in December under accrual, but under cash it waits until the client pays in January, which is also the next tax year.</li>
+<li>The {_fmt(_ca_bill)} supplier bill is a December expense under accrual and a January expense under cash.</li>
+<li>The {_fmt(3000)} payment for November's work is December income under cash, but under accrual it was already counted in November, so in December it only clears accounts receivable.</li></ul>
+<p>That's why cash basis can make a month look weak right after a busy one, and strong right after a slow one: it reports when money moved, not when the work happened. Accrual lines up revenue with the costs of earning it.</p>"""),
+        ("irs", "Who can use the cash method under IRS rules?", f"""<p>Most small businesses can use the cash method for federal taxes. IRS Publication 538 lists three kinds of taxpayers that generally can't:</p>
+<ul><li>A corporation other than an S corporation (a C corporation).</li>
+<li>A partnership with a C corporation as a partner.</li>
+<li>A tax shelter, as defined in section 448(d)(3) of the tax code.</li></ul>
+<p>The first two can still use cash if they pass the <b>gross receipts test</b>: add the gross receipts for the 3 prior tax years and divide by 3. The limit is adjusted for inflation each year:</p>
+<div class="table-wrap"><table><thead><tr><th>Tax years beginning in</th><th>Average annual gross receipts limit</th><th>IRS source</th></tr></thead><tbody>
+{''.join(f"<tr><td>{y}</td><td>${m} million</td><td>{s}</td></tr>" for (y, m), s in zip(_ca_gr.items(), ("Instructions for Form 8990", "Rev. Proc. 2025-32, section 4.30")))}
+</tbody></table></div>
+<p>A tax shelter can't use the test, and a qualified personal service corporation can use cash if it meets the function and ownership tests. Gross receipts for a short tax year are annualized.</p>
+<h3>What about inventory?</h3>
+<p>Businesses that sell products often assume they must use accrual. Under Publication 538, a <b>small business taxpayer</b> (one that passes the same gross receipts test and isn't a tax shelter) can choose not to keep an inventory, so stock alone doesn't force accrual for tax purposes.</p>
+<h3>Can you mix the two methods?</h3>
+<p>Yes, within limits. The IRS lets you use a combination of cash, accrual and special methods if it clearly reflects income and you use it consistently, but if you use the cash method for income you must also use it for expenses.</p>
+<p class="small muted">This summarizes federal IRS guidance and isn't tax advice. State rules and your own facts can differ; check with your accountant or tax preparer.</p>"""),
+        ("choose", "Which method should your business use?", f"""<p>Choose cash if you're small, mostly paid on the spot and want books that match your bank balance; choose accrual if you invoice on terms, carry stock, or need to show lenders or investors what you're owed and owe. The table is a starting point for that conversation with your accountant:</p>
+<div class="table-wrap"><table><thead><tr><th>If your business…</th><th>Usually fits</th><th>Why</th></tr></thead><tbody>
+<tr><td>Is a sole proprietor or freelancer paid at the time of sale</td><td>Cash</td><td>Little gap between earning and getting paid, and simpler records</td></tr>
+<tr><td>Sends invoices on net 30 or longer terms</td><td>Accrual</td><td>Cash basis hides sales you've made but not collected</td></tr>
+<tr><td>Is a C corporation over the gross receipts limit</td><td>Accrual (required)</td><td>The IRS bars the cash method above the limit</td></tr>
+<tr><td>Wants a bank loan, investors or to sell the company</td><td>Accrual</td><td>Statements show receivables, payables and profit by period</td></tr>
+<tr><td>Has big swings between when it bills and when it's paid</td><td>Accrual for management reports</td><td>Profit by month reflects the work, not the payment dates</td></tr>
+<tr><td>Wants to time income at year end</td><td>Cash</td><td>Income counts when received, though constructive receipt still applies</td></tr>
+</tbody></table></div>
+<p>Because accounting software can show both bases from the same transactions, you can look at accrual reports to run the business even if you file taxes on the cash method. If you're also comparing tools, our <a href="/guides/accounting-software-cost/">accounting software cost guide</a> shows what each plan costs at regular prices.</p>"""),
+        ("switch", "How do you change from cash to accrual accounting?", f"""<p>For taxes, you pick a method on your first return without IRS approval; after that, switching between cash and accrual generally needs IRS approval, requested on Form 3115. In your software, flipping a report's basis is a separate thing: it changes how reports display, not your tax method.</p>
+<ol>
+<li><b>Confirm you need or want to change.</b> Growing past the gross receipts limit as a C corporation is the common forced switch; a lender asking for accrual statements is a common voluntary one.</li>
+<li><b>Talk to your tax preparer about timing.</b> The IRS says you must file a current Form 3115 to request a change in an overall accounting method, and some changes qualify for automatic consent while others use the non-automatic procedure.</li>
+<li><b>Bring receivables and payables up to date.</b> Accrual needs every open customer invoice and unpaid supplier bill entered with the right dates, plus any prepaid or accrued items your accountant adjusts.</li>
+<li><b>Change the reporting basis in your accounting software,</b> or run both side by side for a few months to see the difference (see the next section).</li>
+<li><b>Stay consistent.</b> QuickBooks' own help notes that the IRS requires the same method from year to year and approval before you change it.</li>
+</ol>
+<p class="small muted">Not tax advice: the steps above describe the general IRS process from Publication 538.</p>"""),
+        ("software", "How do accounting tools handle cash and accrual reports?", f"""<p>{_ca_names} all keep one set of transactions and let you view reports on a cash or accrual basis, but where you switch, and which reports support it, differs. From each vendor's help pages, checked {hdate("2026-11-11")}:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Default or company setting</th><th>Switch basis per report?</th></tr></thead><tbody>{_ca_trs}</tbody></table></div>
+<p>If you need cash-basis reports every month, check that the reports you send your accountant support it on the plan you'd buy. For the full scoring of each tool, see the reviews of {_ac_and([_ac_rv(k) for k in _ca_tool if k in _ac_ranked])}, or the plan-by-plan <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero comparison</a>.</p>"""),
+    ],
+    "faqs": [
+        ("Is cash or accrual accounting better for a small business?", "Neither is better for everyone. Cash is simpler and matches your bank account, which suits freelancers and businesses paid at the time of sale. Accrual shows what customers owe and what you owe, which suits businesses that invoice on terms, carry inventory or need statements for lenders."),
+        ("What is the gross receipts limit for the cash method in 2026?", f"For tax years beginning in 2026, a C corporation or a partnership with a C corporation partner can use the cash method if its average annual gross receipts for the 3 prior tax years are ${_ca_gr[2026]} million or less (Rev. Proc. 2025-32). For 2025 the limit was ${_ca_gr[2025]} million. Tax shelters can't use the cash method at any size."),
+        ("Can an LLC use cash basis accounting?", "Usually, yes. The IRS limits apply to C corporations, partnerships with a C corporation partner and tax shelters. An LLC taxed as a sole proprietorship, an S corporation or a partnership without C corporation partners isn't on that list. This isn't tax advice; confirm with your tax preparer."),
+        ("Does QuickBooks use cash or accrual accounting?", "Both. In QuickBooks Online you set the company's default method under Settings > Account and settings > Advanced > Accounting, and you can run any standard report on a cash or accrual basis without changing your transactions."),
+    ],
+    "sources": [
+        ("IRS: Publication 538, Accounting Periods and Methods", "https://www.irs.gov/publications/p538"),
+        ("IRS: Rev. Proc. 2025-32 (2026 inflation adjustments, section 4.30)", "https://www.irs.gov/pub/irs-drop/rp-25-32.pdf"),
+        ("IRS: Instructions for Form 8990 (gross receipts test for 2025)", "https://www.irs.gov/instructions/i8990"),
+        ("QuickBooks: Choose between cash and accrual accounting methods in QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-us/help-article/product-preferences/choose-cash-accrual-accounting-methods-reports/L64yocn6B_US_en_US"),
+        ("Xero: Cash vs accrual accounting", "https://www.xero.com/us/guides/cash-vs-accrual-accounting/"),
+        ("Zoho Books help: Manage reports", "https://www.zoho.com/us/books/help/reports/manage-reports.html"),
+        ("FreshBooks support: What is a Profit and Loss report?", "https://support.freshbooks.com/hc/en-us/articles/219089507-What-is-a-Profit-and-Loss-report"),
+        ("Wave support: Accrual vs. cash-basis reporting", "https://support.waveapps.com/hc/en-us/articles/360041245892-Accrual-vs-cash-basis-reporting"),
+    ],
+})

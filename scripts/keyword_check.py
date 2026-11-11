@@ -61,6 +61,8 @@ def build_map():
 
     sm = open(os.path.join(ROOT, "public", "sitemap.xml")).read()
     urls = re.findall(r"<loc>https://vettlo\.com(/[^<]*)</loc>", sm)
+    # a brand shared by several reviewed products (Zoho Books, Zoho Desk) owns no brand-only pricing keyword
+    brands = [m.group(1).split("-")[0] for u in urls if (m := re.fullmatch(r"/tools/(.+)-review/", u))]
     for u in urls:
         m = re.fullmatch(r"/tools/best-(.+)-alternatives/", u)
         if m:
@@ -81,7 +83,7 @@ def build_map():
             t = m.group(1).replace("-", " ")
             own(f"{t} review", u); own(f"{t} pricing", u)
             first = t.split()[0]  # "hubspot sales hub" also owns "hubspot sales hub pricing"; brand-only pricing too
-            if first != t:
+            if first != t and brands.count(first) == 1:
                 own(f"{first} pricing", u)
             continue
     plan = json.load(open(os.path.join(ROOT, "data", "clusters.json")))
