@@ -65,10 +65,10 @@
     {
      "slug": "bank-reconciliation",
      "type": "how-to",
-     "title": "How to Reconcile Bank Accounts in Accounting Software",
+     "title": "Bank Reconciliation: How to Reconcile a Bank Statement, Step by Step",
      "intent": "how to do bank reconciliation",
      "angle": "Step-by-step process, common mismatches and fixes, how bank feeds and rules automate it; name which ranked tools include bank feeds on the entry plan from data.",
-     "status": "todo",
+     "status": "done",
      "url": "/guides/bank-reconciliation/",
      "target_keyword": "bank reconciliation",
      "bing_3m": 6359,
@@ -77,7 +77,8 @@
      "google_us_range": "1K-10K",
      "google_us_est": 10000,
      "kd": 87,
-     "priority": 1300
+     "priority": 1300,
+     "date": "2026-11-12"
     },
     {
      "slug": "move-from-quickbooks-desktop",

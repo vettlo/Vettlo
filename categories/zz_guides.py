@@ -1278,3 +1278,125 @@ guide_page({
         ("Wave support: Accrual vs. cash-basis reporting", "https://support.waveapps.com/hc/en-us/articles/360041245892-Accrual-vs-cash-basis-reporting"),
     ],
 })
+
+
+# ---------- Bank reconciliation (how-to)
+# Worked example: a hypothetical business, computed here so the arithmetic always balances.
+_br_stmt = 8450.00                       # bank statement ending balance, Mar 31
+_br_dit = [("Mar 31", "Customer deposit made after the bank's cutoff", 1200.00)]
+_br_oc = [("Check #1043", "Office rent", 650.00), ("Check #1045", "Supplier payment", 310.00)]
+_br_fee, _br_int, _br_nsf = 25.00, 3.40, 480.00
+_br_right, _br_wrong = 92.00, 29.00     # a $92 payment keyed into the books as $29 (transposed digits)
+_br_err = _br_right - _br_wrong
+_br_adj_bank = _br_stmt + sum(a for *_x, a in _br_dit) - sum(a for *_x, a in _br_oc)
+_br_book = round(_br_adj_bank + _br_fee - _br_int + _br_nsf + _br_err, 2)  # book balance before adjustments
+_br_adj_book = round(_br_book - _br_fee + _br_int - _br_nsf - _br_err, 2)
+assert abs(_br_adj_bank - _br_adj_book) < 0.005
+_br_f = lambda x: f"${x:,.2f}"
+_br_rows = (f"<tr><td>Ending balance per bank statement</td><td>{_br_f(_br_stmt)}</td><td>Balance per books (general ledger)</td><td>{_br_f(_br_book)}</td></tr>"
+            f"<tr><td>+ Deposit in transit</td><td>{_br_f(_br_dit[0][2])}</td><td>+ Interest earned, not yet recorded</td><td>{_br_f(_br_int)}</td></tr>"
+            f"<tr><td>− Outstanding check #1043</td><td>{_br_f(_br_oc[0][2])}</td><td>− Bank service fee, not yet recorded</td><td>{_br_f(_br_fee)}</td></tr>"
+            f"<tr><td>− Outstanding check #1045</td><td>{_br_f(_br_oc[1][2])}</td><td>− Customer check returned NSF</td><td>{_br_f(_br_nsf)}</td></tr>"
+            f"<tr><td></td><td></td><td>− Payment recorded as {_br_f(_br_wrong)} instead of {_br_f(_br_right)}</td><td>{_br_f(_br_err)}</td></tr>"
+            f"<tr><td><b>Adjusted bank balance</b></td><td><b>{_br_f(_br_adj_bank)}</b></td><td><b>Adjusted book balance</b></td><td><b>{_br_f(_br_adj_book)}</b></td></tr>")
+
+# How each ranked tool reconciles, from vendor help and pricing pages (checked 2026-11-12); plan prices from data.
+_br_plan = lambda tool, plan: (f"{plan.split(' (')[0]} ({p})" if (p := _ap_plan_price(tool, plan.split(' (')[0])) else plan.split(' (')[0])
+_br_xauto = _ap_first("Xero", "Auto-reconcile") or ""
+_br_xadd = re.search(r"\$([\d.]+)/mo", _br_xauto)
+_br_zfeed = _ap_first("Zoho Books", "Bank feeds")
+_br_fbplus = re.search(r"Plus \(\$(\d+)\)", _ac.get("freshbooks", {}).get("what", ""))
+_br_tool = {
+    "quickbooks": ("Reconcile tool: enter the statement's ending balance and date, tick cleared items until the difference is $0.00; transactions already matched in the bank feed arrive pre-ticked",
+                   f"Bank connection included from {_br_plan('QuickBooks Online', 'Simple Start')}; the pricing page lists “Reconciles your books” from Plus"),
+    "xero": ("Reconcile statement lines from the bank feed as they arrive, using suggested matches, bank rules and cash coding",
+             f"Bank reconciliation on {_br_plan('Xero', 'Early')}; auto-reconcile on {_br_plan('Xero', _br_xauto)}"
+             + (f", or as a {_fmt(float(_br_xadd.group(1)))}/mo add-on on Early" if _br_xadd else "")),
+    "zohobooks": ("Reconcile Account: enter start date, end date and closing balance, select cleared transactions until the difference is zero; reconciliations can be undone",
+                  f"Bank feeds from {_br_plan('Zoho Books', _br_zfeed)}" if _br_zfeed else "See the review for plan details"),
+    "freshbooks": ("Match each bank transaction to a FreshBooks entry (with suggested Likely Matches), or Mark As transfer, owner's equity or refund; needs a connected bank and an opening balance",
+                   "Bank Reconciliation on Plus" + (f" (${_br_fbplus.group(1)}/mo)" if _br_fbplus else "") + ", Premium and Select, not Lite"),
+    "wave": ("Reconciliation page (web only): create a period with the statement's end date and closing balance, mark each matching transaction until the difference is zero",
+             f"Automatic bank imports are part of Pro ({_ac['wave']['price']}), not the free Starter plan" if "wave" in _ac else ""),
+}
+_br_trs = "".join(f"<tr><td>{_ac_rv(k)}</td><td>{a}</td><td>{b}</td></tr>" for k, (a, b) in _br_tool.items() if k in _ac_ranked)
+
+guide_page({
+    "slug": "bank-reconciliation", "crumb": "Bank reconciliation", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-12", "kicker": "How-to",
+    "title": "Bank Reconciliation: How to Reconcile a Bank Statement, Step by Step",
+    "seo_title": "Bank Reconciliation: Steps, Example and Fixes | Vettlo",
+    "desc": "Bank reconciliation explained: the 7 steps, a worked example with deposits in transit and outstanding checks, why balances don't match, and how to fix it.",
+    "card": "The 7 steps, a worked example, common mismatches and how software automates it.",
+    "answer": ("A bank reconciliation compares your bank statement with your own books for the same period and explains every difference until the two adjusted balances agree. "
+               "You adjust the bank side for timing items the bank hasn't processed yet (deposits in transit, outstanding checks) and the book side for items only the bank knows about (fees, interest, returned checks) or your own errors. "
+               "Do it at least monthly, as soon as each statement arrives."),
+    "sections": [
+        ("what", "What is a bank reconciliation?", f"""<p>Bank reconciliation is the monthly check that the cash balance in your accounting records matches what the bank says you have, once you account for items that one side has recorded and the other hasn't. The result is a short schedule, the <b>bank reconciliation statement</b>, that starts from both balances and ends at the same adjusted number.</p>
+<p>Most tools in our <a href="{_ac_cat}">comparison of the best accounting software</a> include a reconciliation screen, and bank feeds do much of the matching. But the software can only match what's there: you still decide what each unmatched line is, which is what this guide covers.</p>
+<p>The two balances rarely agree on their own, for three kinds of reasons:</p>
+<ul><li><b>Timing:</b> you've recorded a deposit or written a check that hasn't reached the bank yet.</li>
+<li><b>Bank-only items:</b> the bank charged a fee, paid interest or returned a customer's check, and you haven't entered it.</li>
+<li><b>Errors:</b> a transaction was entered twice, skipped or keyed with the wrong amount, usually in the books, occasionally at the bank.</li></ul>
+<p>Reconciling catches all three before they reach your financial statements or tax return, and it's one of the simplest ways to spot unauthorized withdrawals early.</p>"""),
+        ("steps", "How do you do a bank reconciliation? 7 steps", f"""<p>Work from the bank statement and the cash account in your general ledger for the same dates. The steps are the same on paper, in a spreadsheet or in software:</p>
+<ol>
+<li><b>Get the statement and the ledger for the same period.</b> Note the statement's ending balance and date, and check that this period's opening balance equals last month's reconciled closing balance.</li>
+<li><b>Tick off matching deposits.</b> Compare each deposit on the statement with deposits in your books. Anything in the books but not on the statement is a <b>deposit in transit</b>.</li>
+<li><b>Tick off matching withdrawals.</b> Do the same for checks, card payments and transfers. Checks you've written that haven't cleared are <b>outstanding checks</b>.</li>
+<li><b>Adjust the bank balance.</b> Statement ending balance + deposits in transit − outstanding checks ± bank errors = adjusted bank balance.</li>
+<li><b>Find items only the bank has recorded.</b> Service fees, interest, returned (NSF) checks and automatic debits you didn't enter.</li>
+<li><b>Adjust the book balance.</b> Book balance + interest and other credits − fees, returned checks and other charges ± your own errors = adjusted book balance. Record each of these as a journal entry or transaction in your books.</li>
+<li><b>Compare, then document.</b> The two adjusted balances should be equal. Save the reconciliation report with the statement, and note any item you couldn't explain so you can follow it up.</li>
+</ol>
+<p>Only the book-side adjustments go into your ledger. Bank-side items are timing differences that clear on their own when the bank catches up, so you just carry them to next month's reconciliation.</p>"""),
+        ("example", "Bank reconciliation example", f"""<p>Here's a full reconciliation for March. The business and figures are hypothetical, chosen to show each kind of reconciling item once:</p>
+<div class="table-wrap"><table><thead><tr><th>Bank side</th><th>Amount</th><th>Book side</th><th>Amount</th></tr></thead><tbody>{_br_rows}</tbody></table></div>
+<p>Both sides end at {_br_f(_br_adj_bank)}, so the account is reconciled. What each line means:</p>
+<ul><li>The {_br_f(_br_dit[0][2])} deposit went to the bank after its cutoff on March 31; it will appear on April's statement.</li>
+<li>Checks #1043 and #1045 ({_br_f(sum(a for *_x, a in _br_oc))} together) were mailed but not yet cashed.</li>
+<li>The {_br_f(_br_fee)} fee and {_br_f(_br_int)} of interest appear only on the statement, so they're entered in the books now.</li>
+<li>The {_br_f(_br_nsf)} customer check bounced; the deposit is reversed in the books and the customer owes you again.</li>
+<li>A {_br_f(_br_right)} payment was recorded as {_br_f(_br_wrong)}, overstating the book balance by {_br_f(_br_err)}.</li></ul>
+<p>That last difference, {_br_f(_br_err)}, divides evenly by 9 ({_br_f(_br_err)} ÷ 9 = {_br_f(_br_err / 9)}). When an unexplained difference is a multiple of 9, look for two swapped digits first.</p>"""),
+        ("mismatch", "Why doesn't my bank reconciliation balance?", f"""<p>If the adjusted balances still differ, the cause is almost always one of a handful of problems. Check them in this order:</p>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Off from the first line</td><td>Opening balance doesn't match last month's reconciled ending balance</td><td>Find the edited, deleted or back-dated transaction in a reconciled period and correct it</td></tr>
+<tr><td>Difference equals one transaction</td><td>An item was left unticked or entered in the books twice</td><td>Search the ledger for that exact amount</td></tr>
+<tr><td>Difference is twice one transaction</td><td>A deposit recorded as a withdrawal, or the reverse</td><td>Reverse the sign on that transaction</td></tr>
+<tr><td>Difference divisible by 9</td><td>Transposed digits (92 entered as 29)</td><td>Compare amounts digit by digit</td></tr>
+<tr><td>Bank feed shows a line twice</td><td>Duplicate import, often after reconnecting the bank</td><td>Delete the duplicate rather than matching it</td></tr>
+<tr><td>Wrong ending date or balance</td><td>Statement figures keyed incorrectly</td><td>Re-enter both from the statement</td></tr>
+<tr><td>Old outstanding check never clears</td><td>Lost, voided or stale check</td><td>Confirm with the payee, then void and reissue or record per your accountant's advice</td></tr>
+</tbody></table></div>
+<p>Avoid forcing a reconciliation with a plug entry. QuickBooks lets you finish with a difference and posts an adjusting entry for it, but Intuit's own help says it's usually best to resolve differences instead and to talk to your accountant first. Unpaid supplier bills don't belong here at all until they're paid; our <a href="/guides/accounts-payable-process/">accounts payable process guide</a> covers how those are tracked.</p>"""),
+        ("software", "How does accounting software automate bank reconciliation?", f"""<p>Accounting software automates the matching, not the judgment. A <b>bank feed</b> imports transactions from your connected bank account; the software suggests a match against invoices, bills and payments you've already entered, and <b>bank rules</b> categorize repeat items such as a monthly subscription. You confirm or correct each suggestion, then run the reconciliation against the statement balance. Here's how the tools we rank do it, from each vendor's help and pricing pages, checked {hdate("2026-11-12")}:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>How reconciliation works</th><th>Plan notes</th></tr></thead><tbody>{_br_trs}</tbody></table></div>
+<p>Two things to check before you buy. First, whether the entry plan includes the bank feed at all: Wave Starter and FreshBooks Lite don't include the automated workflow above. Second, whether your bank connects, which our shortlist's buying checklist also flags. For what each plan costs over a year, see the <a href="/guides/accounting-software-cost/">accounting software cost guide</a>; for two tools head to head, the <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> and <a href="/compare/xero-vs-zohobooks/">Xero vs Zoho Books</a> comparisons.</p>
+<p>A practical habit: match the feed weekly so the month-end reconciliation is a final check against the statement rather than a month of catch-up.</p>"""),
+        ("controls", "How often should you reconcile, and who should do it?", f"""<p>Reconcile every bank and credit card account at least monthly, soon after the statement closes, and have someone other than the person who handles cash review it. The Washington State Auditor's Office publishes best practices for the public entities it audits that apply just as well to a small business:</p>
+<ul><li><b>Monthly at minimum,</b> with transactions recorded as they happen from source records, not keyed in from the bank statement at month end.</li>
+<li><b>Separate duties:</b> the person reconciling shouldn't handle deposits, pay bills, run payroll, authorize transfers or sign on the account.</li>
+<li><b>Documented review:</b> a supervisor reviews against the original statement or view-only online access, and signs and dates the review.</li>
+<li><b>Deadlines for open items:</b> set a short window, such as two weeks, to research discrepancies. The auditor notes that many banks limit error corrections to 60 days after the transaction date, so old unexplained items can become unrecoverable.</li>
+<li><b>Keep the evidence:</b> the statement, the reconciliation schedule and support for each reconciling item.</li></ul>
+<p>In a very small business where one person does everything, the owner reviewing the statement and the reconciliation report each month is the practical version of that control. If you report on the cash basis, the reconciled bank balance also anchors your income figures; see <a href="/guides/cash-vs-accrual-accounting/">cash vs accrual accounting</a> for how the method changes what you record.</p>
+<p class="small muted">This is general bookkeeping guidance, not accounting or legal advice. Your accountant may set different review steps for your business.</p>"""),
+    ],
+    "faqs": [
+        ("What are the two sides of a bank reconciliation?", "The bank side starts from the statement's ending balance and adjusts for deposits in transit, outstanding checks and bank errors. The book side starts from your ledger balance and adjusts for fees, interest, returned checks and your own errors. The reconciliation is done when both adjusted balances are equal."),
+        ("Do outstanding checks go on the bank side or the book side?", "The bank side. You've already recorded the check in your books; the bank just hasn't paid it yet, so you subtract it from the statement balance. No journal entry is needed, and it should clear on a later statement."),
+        ("Do I need to reconcile if my accounting software has a bank feed?", "Yes. A bank feed imports and matches transactions, but it doesn't confirm that your ledger balance equals the statement balance. Duplicate imports, deleted transactions and entries made outside the feed only show up when you reconcile against the statement's ending balance."),
+        ("How long does a bank reconciliation take?", "It depends on volume and how current your books are. An account with a bank feed that's matched weekly is usually a short final check at month end; an account several months behind can take hours because each month has to be reconciled in order, starting from the last reconciled balance."),
+    ],
+    "sources": [
+        ("QuickBooks: Reconcile an account in QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-us/banking-topics/reconcile-accounts-in-quickbooks-online/00/186470"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+        ("Xero: Bank reconciliation (US)", "https://www.xero.com/us/features-and-tools/accounting-software/bank-reconciliation/"),
+        ("Zoho Books help: Reconciliation", "https://www.zoho.com/en-sg/books/help/banking/reconciliation.md"),
+        ("FreshBooks support: How do I reconcile simple transactions in bank reconciliation?", "https://support.freshbooks.com/hc/en-us/articles/360039682172"),
+        ("Wave support: Reconcile your books", "https://support.waveapps.com/hc/en-us/articles/38599574877332"),
+        ("Wave support: Import transactions automatically by connecting a bank account", "https://support.waveapps.com/hc/en-us/articles/208624076"),
+        ("Washington State Auditor's Office: Best Practices for Bank Reconciliations (PDF)", "https://sao.wa.gov/sites/default/files/2023-05/Best-Practices-for-Bank-Reconciliations.pdf"),
+    ],
+})

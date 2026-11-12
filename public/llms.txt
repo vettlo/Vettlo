@@ -274,6 +274,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Marketing Automation vs Email Marketing: What's the Difference?](https://vettlo.com/guides/marketing-automation-vs-email-marketing/): What each category does, where they overlap and what each costs.
 - [What Is Accounts Payable? The AP Process, Step by Step](https://vettlo.com/guides/accounts-payable-process/): What AP is, the six steps from invoice to payment, matching, terms and controls.
 - [Cash vs Accrual Accounting: Which Method Should Your Business Use?](https://vettlo.com/guides/cash-vs-accrual-accounting/): Both methods side by side, a worked example, IRS limits and how to switch.
+- [Bank Reconciliation: How to Reconcile a Bank Statement, Step by Step](https://vettlo.com/guides/bank-reconciliation/): The 7 steps, a worked example, common mismatches and how software automates it.
 - [All guides](https://vettlo.com/guides/)
 
 ## Trust
