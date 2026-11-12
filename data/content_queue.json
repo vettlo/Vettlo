@@ -225,7 +225,9 @@
    "type": "compare",
    "slug": "xero-vs-zohobooks",
    "category": "best-accounting-software",
-   "status": "todo"
+   "status": "done",
+   "date": "2026-11-12",
+   "url": "/compare/xero-vs-zohobooks/"
   },
   {
    "type": "category",
@@ -279,6 +281,13 @@
    "type": "compare",
    "slug": "lemlist-vs-instantly",
    "category": "best-sales-engagement-software",
+   "status": "todo"
+  },
+  {
+   "type": "compare",
+   "slug": "freshbooks-vs-quickbooks",
+   "category": "best-accounting-software",
+   "note": "'freshbooks vs quickbooks' 1K-10K US monthly searches (keywords.json); both tools in the accounting pillar",
    "status": "todo"
   }
  ],

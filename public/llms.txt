@@ -92,6 +92,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [GitHub Actions vs GitLab](https://vettlo.com/compare/github-actions-vs-gitlab/): GitHub Actions and GitLab compared on price, features and fit.
 - [Notion vs Slab](https://vettlo.com/compare/notion-vs-slab/): Notion and Slab compared on price, features and fit.
 - [Mixpanel vs PostHog](https://vettlo.com/compare/mixpanel-vs-posthog/): Mixpanel and PostHog compared on price, features and fit.
+- [Xero vs Zoho Books](https://vettlo.com/compare/xero-vs-zohobooks/): Xero and Zoho Books compared on price, features and fit.
 - [Salesforce Sales Cloud Review](https://vettlo.com/tools/salesforce-sales-cloud-review/): Salesforce Sales Cloud's pricing, pros, cons and score, from our CRM tools ranking.
 - [HubSpot Sales Hub Review](https://vettlo.com/tools/hubspot-sales-hub-review/): HubSpot Sales Hub's pricing, pros, cons and score, from our CRM tools ranking.
 - [Pipedrive Review](https://vettlo.com/tools/pipedrive-review/): Pipedrive's pricing, pros, cons and score, from our CRM tools ranking.
