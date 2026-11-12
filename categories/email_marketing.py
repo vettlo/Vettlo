@@ -36,7 +36,7 @@ EM = {
             "what": "Klaviyo is a B2C marketing platform built on customer profiles that combine store, email and SMS data. Paid email plans are priced by active profiles, with 10 email sends per profile per month, and SMS, reviews and other products are billed on top.",
             "who": "Online stores on Shopify, WooCommerce and similar platforms that want flows driven by purchase and browsing data.",
             "why": "Its segmentation and automated flows use real-time store data, and paid plans include predictive analytics and generative AI for segments, content and flows.",
-            "pros": ["Segments and flows built on real-time ecommerce data", "Predictive analytics on paid plans", "350+ integrations"],
+            "pros": ["Segments and flows built on real-time ecommerce data", "Predictive analytics on paid plans", "400+ apps and integrations"],
             "cons": ["Price rises quickly with active profiles", "Email support on the free plan only for the first 60 days", "More than a B2B newsletter needs"],
             "skip": "You're a B2B company sending newsletters and lead nurture emails.",
         },

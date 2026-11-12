@@ -1143,5 +1143,125 @@
       "Light users are a paid add-on on Professional and Enterprise (₹345 a month on the INR page; Enterprise includes 50 free).",
       "Nonprofit and educational institutions may get special pricing; local taxes are added."
     ]
+  },
+  "PandaDoc": {
+    "checked": "2026-11-12",
+    "source": ["PandaDoc pricing", "https://www.pandadoc.com/pricing/"],
+    "plans": [
+      ["Free", "$0, no credit card required", "5 documents a month (shared across the app, API and automations), up to 5 templates, e-signatures, limited API"],
+      ["Starter", "$19 per seat per month, billed annually", "Unlimited documents created in the app, unlimited e-signatures, document editor, up to 5 templates"],
+      ["Business", "$49 per seat per month, billed annually", "Unlimited templates, pricing tables, CRM integrations, payments, approval workflows, custom branding, content library, up to 3 Rooms"],
+      ["Enterprise", "Custom quote, per seat or per document", "Smart content, custom user roles, US/EU data residency, unlimited Rooms and team workspaces, SSO"]
+    ],
+    "first_plan": [
+      ["Unlimited e-signatures", "Starter"],
+      ["Document editor", "Starter"],
+      ["Unlimited templates", "Business"],
+      ["Pricing tables", "Business"],
+      ["CRM integrations", "Business"],
+      ["Payment collection", "Business"],
+      ["Approval workflows", "Business"],
+      ["Custom branding and content library", "Business"],
+      ["Bulk send and web forms (with usage credits)", "Business"],
+      ["Smart content and custom user roles", "Enterprise"],
+      ["US/EU data residency", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Starter", "Business", "Enterprise"],
+      "rows": [
+        ["Documents created in the app", "5 a month (shared limit)", "Unlimited", "Unlimited", "Unlimited"],
+        ["Documents via API and automations", "Within the 5 a month", "Usage credits", "Usage credits", "Custom"],
+        ["Templates", "Up to 5", "Up to 5", "Unlimited", "Unlimited"],
+        ["Rooms", "None", "None", "Up to 3", "Unlimited"],
+        ["Team workspaces", "None", "None", "Optional", "Unlimited"],
+        ["SSO", "No", "No", "Optional", "Included"]
+      ]
+    },
+    "notes": [
+      "Paid plans come with a 14-day free trial; you're charged only if you continue after it ends.",
+      "PandaDoc says annual billing saves up to 46%; the pricing page shows annual per-seat prices only.",
+      "API documents, bulk send and web forms draw on usage credit packs; when credits run out, API document creation pauses, and overage without a per-unit price on the order form is up to $5 per document. Unused documents don't roll over.",
+      "The Salesforce integration is a paid add-on, and premium support and email whitelabeling are optional; the page doesn't list their prices.",
+      "CPQ, workflow automation and notary are Enterprise options that need usage credits or paid add-ons."
+    ]
+  },
+  "Ramp": {
+    "checked": "2026-11-12",
+    "source": ["Ramp pricing and plans", "https://ramp.com/pricing"],
+    "plans": [
+      ["Free", "$0 per user per month", "Unlimited corporate cards, expenses by SMS or Slack, travel booking, automatic receipt matching, bill pay by ACH, card, check or wire, AR invoicing, QuickBooks Online and Xero sync, AI reporting"],
+      ["Plus", "$15 per user per month plus a platform fee based on team size; 20% off with annual billing", "AI expense reviews, auto-locking cards, AI approval recommendations, batch payments, NetSuite and Sage Intacct sync, multi-entity support, custom user roles, audit log, 24/7 phone support"],
+      ["Enterprise", "Custom, billed annually", "Workday and Oracle Fusion Cloud sync, local currency cards in 30+ countries, locally funded reimbursements, dedicated account and customer success managers, implementation services"]
+    ],
+    "first_plan": [
+      ["Unlimited virtual and physical cards", "Free"],
+      ["Automatic receipt collection and matching", "Free"],
+      ["Configurable bill approval workflows", "Free"],
+      ["QuickBooks Online and Xero integrations", "Free"],
+      ["Reimbursement limits and weekly batched reimbursements", "Plus"],
+      ["AI expense reviews and auto-lock cards", "Plus"],
+      ["NetSuite and Sage Intacct integrations", "Plus"],
+      ["Multi-entity support", "Plus"],
+      ["Custom user roles and audit log", "Plus"],
+      ["Local currency card issuing (30+ countries)", "Enterprise"],
+      ["Workday and Oracle Fusion Cloud integrations", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Plus", "Enterprise"],
+      "rows": [
+        ["Price per user", "$0", "$15/mo + platform fee", "Custom"],
+        ["Cards", "Unlimited", "Unlimited", "Unlimited"],
+        ["Accounting integrations", "QuickBooks Online, Xero", "Adds NetSuite, Sage Intacct and more", "Adds Workday, Oracle Fusion Cloud and more"],
+        ["Travel policies", "Company-wide", "Custom by role, department and location", "Custom by role, department and location"],
+        ["Support", "24/7 chat", "24/7 phone", "Priority 24/7 global, dedicated managers"],
+        ["Local currency card issuing", "No", "No", "30+ countries"]
+      ]
+    },
+    "notes": [
+      "Plus has a free 30-day trial; no trial is listed for Enterprise.",
+      "The Plus platform fee depends on team size and isn't published on the pricing page.",
+      "Procurement (intake, purchase orders, three-way match) is an add-on to Plus or Enterprise, and an Accounts Receivable add-on is needed for revenue recognition schedules and recurring billing; neither price is listed.",
+      "1099 filing costs $0.65 per IRS filing on every plan; state filing is free.",
+      "Plus can be paid by ACH or with rewards earned on Ramp card spend, and plans can be changed at any time in the dashboard."
+    ]
+  },
+  "Klaviyo": {
+    "checked": "2026-11-12",
+    "source": ["Klaviyo pricing", "https://www.klaviyo.com/pricing"],
+    "plans": [
+      ["Free", "$0", "Up to 250 active profiles and 500 emails a month, $5 of mobile messages a month, Reviews for 50 orders a month, email support for the first 60 days"],
+      ["Email", "$20 a month at 500 active profiles", "5,000 emails a month, with SMS/MMS, Composer, Customer Agent and Helpdesk available as add-ons"],
+      ["Marketing", "$25 a month at 500 active profiles ($1 first month offer for eligible accounts)", "Everything in Email, plus Social and Customer Hub for 500 profiles and Reviews with no order limit"],
+      ["Custom", "Talk to sales", "Over 150,000 active profiles, volume pricing, custom analytics and attribution, data warehouse sync, enterprise security"]
+    ],
+    "first_plan": [
+      ["Email flows and segmentation", "Free"],
+      ["Mobile app marketing", "Free"],
+      ["A/B testing", "Email"],
+      ["Social for 500 profiles", "Marketing"],
+      ["Customer Hub for 500 profiles", "Marketing"],
+      ["Reviews with no order limit", "Marketing"],
+      ["Dedicated customer success manager and SLA", "Custom"],
+      ["SSO and multi-account billing", "Custom"],
+      ["Data warehouse sync", "Custom"]
+    ],
+    "limits": {
+      "cols": ["Free", "Email", "Marketing"],
+      "rows": [
+        ["Active profiles", "250", "500 (entry tier)", "500 (entry tier)"],
+        ["Emails a month", "500", "5,000", "5,000"],
+        ["Mobile messages included", "$5 a month", "$5 a month", "Not stated"],
+        ["Reviews", "50 orders a month", "50 orders a month", "No order limit"],
+        ["Social and Customer Hub", "250 profiles", "250 profiles", "500 profiles"],
+        ["Customer Agent", "10 resolutions a month", "10 resolutions a month", "Add-on"],
+        ["Helpdesk", "10 tickets a month", "10 tickets a month", "Add-on"]
+      ]
+    },
+    "notes": [
+      "Billing is based on active profiles: contacts you can market to. Unsubscribed and suppressed contacts don't count, and an account that goes over its tier moves to a matching plan at the next billing cycle.",
+      "Each profile tier includes a monthly email send capacity; with flexible sending on, a busy month can borrow the next tier's sends at the current plan's unit rate.",
+      "SMS, MMS, WhatsApp and RCS are billed separately as a committed monthly spend that burns down by message type and country; per-message prices aren't listed.",
+      "The pricing slider runs from 500 to 150,000+ active profiles; Klaviyo lists 400+ apps and integrations across its catalog."
+    ]
   }
 }

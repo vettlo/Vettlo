@@ -1,4 +1,4 @@
-# Accounting software. Published Oct 26, 2026; prices and G2 ratings re-checked Oct 31, 2026.
+# Accounting software. Published Oct 26, 2026; prices and G2 ratings re-checked Nov 12, 2026.
 ACC = {
     "slug": "best-accounting-software",
     "plural": "Accounting Software",
@@ -12,13 +12,13 @@ ACC = {
     ],
     "criteria": [("Core bookkeeping & reconciliation", 25), ("Invoicing & payments", 15), ("Bills & expenses", 15),
                  ("Reporting & room to grow", 15), ("Ease of use", 15), ("Price & value", 15)],
-    "price_footnote": "Prices are the regular US price of the cheapest paid plan on each vendor's pricing page on Oct 31, 2026, not the introductory discount. QuickBooks, Xero and FreshBooks advertise limited-time promotions for new customers. Sage Intacct is priced by quote.",
+    "price_footnote": "Prices are the regular US price of the cheapest paid plan on each vendor's pricing page on Nov 12, 2026, not the introductory discount. QuickBooks, Xero and FreshBooks advertise limited-time promotions for new customers. Sage Intacct is priced by quote.",
     "tools": {
         "quickbooks": {
             "name": "QuickBooks Online", "short": "QuickBooks", "url": "https://quickbooks.intuit.com/",
             "bf": "Best overall for US small businesses",
             "price": "$38/mo", "price_note": "Simple Start, 1 user, regular price; Essentials $85 (3 users), Plus $140 (5 users)", "trial": "30-day trial; intro discount for new customers", "trial_short": "30-day trial",
-            "g2": ("4.0", "3,904", "https://www.g2.com/products/quickbooks-online/reviews"),
+            "g2": ("4.0", "3,909", "https://www.g2.com/products/quickbooks-online/reviews"),
             "scores": [5, 4.5, 4.5, 4.5, 4, 3],
             "what": "QuickBooks Online is one of the most widely used small business accounting tools in the US. Simple Start covers one user with bookkeeping, invoicing and automated bill pay; Plus adds inventory tracking and project profitability for up to 5 users, and Advanced supports 25 users with bill approval workflows.",
             "who": "US small businesses that want a tool their accountant or bookkeeper is likely to know already.",
@@ -32,7 +32,7 @@ ACC = {
             "name": "Xero", "short": "Xero", "url": "https://www.xero.com/",
             "bf": "Best for teams that want unlimited users",
             "price": "$27/mo", "price_note": "Early (20 invoices, 5 bills a month), regular price; Growing $59 unlimited", "trial": "Intro discount for new customers", "trial_short": "Intro offer",
-            "g2": ("4.4", "1,854", "https://www.g2.com/products/xero/reviews"),
+            "g2": ("4.4", "1,857", "https://www.g2.com/products/xero/reviews"),
             "scores": [4.5, 4.5, 4.5, 4, 4, 4],
             "what": "Xero is cloud accounting with no per-user license fees. Early caps you at 20 invoices and 5 bills a month; Growing ($59) removes those caps and adds auto-reconcile; Established ($97) adds multi-currency, projects and expense claims.",
             "who": "Small businesses with several people in the books, and businesses outside the US, where Xero is widely used.",
@@ -45,7 +45,7 @@ ACC = {
             "name": "Zoho Books", "short": "Zoho Books", "url": "https://www.zoho.com/books/",
             "bf": "Best value, with a free plan",
             "price": "$15/mo", "price_note": "Standard, 3 users, billed annually ($20 monthly)", "trial": "Free plan (under $50K revenue); 14-day trial", "trial_short": "Free plan + 14-day trial",
-            "g2": ("4.4", "330", "https://www.g2.com/products/zoho-books/reviews"),
+            "g2": ("4.4", "331", "https://www.g2.com/products/zoho-books/reviews"),
             "scores": [4.5, 4.5, 4, 4, 3.5, 5],
             "what": "Zoho Books is accounting software priced per organization. The free plan covers businesses under $50K in annual revenue; Standard adds bank feeds and sales tax tracking, and Professional ($40 billed annually) adds inventory, multi-currency and project profitability.",
             "who": "Small businesses that want full double-entry accounting at a low price, especially those already using Zoho apps.",
@@ -58,7 +58,7 @@ ACC = {
             "name": "Sage Intacct", "short": "Sage Intacct", "url": "https://www.sage.com/en-us/sage-business-cloud/intacct/",
             "bf": "Best for mid-sized companies outgrowing QuickBooks",
             "price": "Pricing on request", "price_note": "Priced by modules and company profile", "trial": "Product tour and demos", "trial_short": "Demo only",
-            "g2": ("4.3", "4,524", "https://www.g2.com/products/sage-intacct/reviews"),
+            "g2": ("4.3", "4,544", "https://www.g2.com/products/sage-intacct/reviews"),
             "scores": [5, 4, 4.5, 5, 3, 2],
             "what": "Sage Intacct is cloud financial management for mid-sized companies, sold by module and priced by quote.",
             "who": "Finance teams with multiple entities, a controller and audit or reporting requirements that small business tools can't meet.",
@@ -71,7 +71,7 @@ ACC = {
             "name": "FreshBooks", "short": "FreshBooks", "url": "https://www.freshbooks.com/",
             "bf": "Best for freelancers and service businesses",
             "price": "$23/mo", "price_note": "Lite, 5 billable clients, regular price; team members $11 each", "trial": "30-day trial, no card needed", "trial_short": "30-day trial",
-            "g2": ("4.5", "981", "https://www.g2.com/products/freshbooks/reviews"),
+            "g2": ("4.5", "982", "https://www.g2.com/products/freshbooks/reviews"),
             "scores": [3.5, 5, 4, 3, 5, 3.5],
             "what": "FreshBooks is invoicing-first accounting for service businesses. Lite covers 5 billable clients, Plus ($43) 50 clients with proposals and retainers, and Premium ($70) unlimited clients with project profitability.",
             "who": "Freelancers, consultants and agencies that bill clients for time and projects.",
