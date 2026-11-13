@@ -1263,5 +1263,116 @@
       "SMS, MMS, WhatsApp and RCS are billed separately as a committed monthly spend that burns down by message type and country; per-message prices aren't listed.",
       "The pricing slider runs from 500 to 150,000+ active profiles; Klaviyo lists 400+ apps and integrations across its catalog."
     ]
+  },
+  "signNow": {
+    "checked": "2026-11-13",
+    "source": ["signNow plans and pricing", "https://www.signnow.com/features/signnow-plans-and-pricing"],
+    "plans": [
+      ["Business", "$8 per user/month billed annually, or $20 billed monthly", "Core e-signing with custom branding, advanced fields and team document sharing"],
+      ["Business Premium", "$15 per user/month billed annually, or $30 billed monthly", "The second per-user tier; the page doesn't itemize what it adds over Business"],
+      ["Enterprise", "$30 per user/month billed annually, or $50 billed monthly", "The top per-user tier, with enterprise options; the 100-invite yearly cap per user still applies"],
+      ["Site License", "$1.50 per signature invite", "Priced per invite sent rather than per user"]
+    ],
+    "first_plan": [
+      ["Custom branding", "Business"],
+      ["Advanced fields", "Business"],
+      ["Team document sharing", "Business"],
+      ["Templates, signing links and signer roles", "Listed for the platform, plan not specified"],
+      ["Conditional fields and a charge request field to collect payment at signing", "Listed for the platform, plan not specified"],
+      ["Bulk Send", "Listed on mid and higher tiers"],
+      ["API", "Higher tiers or add-on; API offer starts with 250 free signature invites"]
+    ],
+    "limits": {
+      "cols": ["Business", "Business Premium", "Enterprise", "Site License"],
+      "rows": [
+        ["Annual price per user per month", "$8", "$15", "$30", "$1.50 per invite"],
+        ["Monthly price per user per month", "$20", "$30", "$50", "$1.50 per invite"],
+        ["Signature invites (envelopes) per user per year", "100", "100", "100", "Paid per invite"],
+        ["Unique documents per envelope", "130", "130", "130", "130"],
+        ["Upload size, desktop / mobile app", "50 MB / 15 MB", "50 MB / 15 MB", "50 MB / 15 MB", "50 MB / 15 MB"]
+      ]
+    },
+    "notes": [
+      "Free 7-day trial, no credit card required.",
+      "Every per-user plan, Enterprise included, is limited to 100 signature invites per user per year; Site License pricing is $1.50 per invite instead.",
+      "Annual billing cuts the Business price from $20 to $8 per user per month, a 60% saving.",
+      "Special pricing is offered for non-profits and educational institutions; the page gives no figures.",
+      "Mobile apps work offline, and two-factor authentication is available."
+    ]
+  },
+  "Factorial": {
+    "checked": "2026-11-13",
+    "source": ["Factorial pricing", "https://factorial.com/pricing-plans"],
+    "plans": [
+      ["Factorial Core", "From $8 per user per month (US dollars)", "Included in every plan: employee directory, onboarding and offboarding, payslip distribution, bulk document sending, legal e-signature, custom notifications and fillable PDFs"],
+      ["Tailored plan (Core + modules)", "Pricing on request (tailored quote)", "A specialist builds the plan from the modules you choose; module prices aren't published"]
+    ],
+    "first_plan": [
+      ["Employee directory, onboarding and offboarding", "Factorial Core"],
+      ["Legal e-signature and bulk document sending", "Factorial Core"],
+      ["Unlimited time-off policies and custom absence types", "Time Off module"],
+      ["Geolocation and QR time tracking, overtime compensation", "Time Tracking module"],
+      ["Automated, bulk and rotating shifts", "Shift Management module"],
+      ["360 reviews and competency tracking", "Performance module"],
+      ["Multi-job posting and AI CV parsing", "Recruitment module"],
+      ["eNPS, team pulse and climate surveys", "Engagement module"],
+      ["Expense OCR and multi-step approvals", "Expenses module"],
+      ["Device management (zero-touch provisioning, remote lock and wipe)", "Multi-OS MDM module"]
+    ],
+    "limits": {
+      "cols": ["Factorial Core", "Optional modules"],
+      "rows": [
+        ["Published price", "From $8 per user per month", "Not published (quote)"],
+        ["Number of modules", "Included in all plans", "14 listed: Time Off, Time Tracking, Performance, Shift Management, Recruitment, Engagement, Project Management, Expenses, Training, Procurement, SaaS Management, IT Inventory, Multi-OS MDM, EDR & Cybersecurity"],
+        ["Employee or user limits", "Not stated", "Not stated"]
+      ]
+    },
+    "notes": [
+      "The pricing page shows one figure: Factorial starts at $8 per month, per user. Every other price comes from a tailored quote.",
+      "The page no longer shows named Starter, Business and Enterprise plans; plans are built from Core plus the modules you select.",
+      "Beyond HR, modules cover IT (SaaS management, IT inventory, device management, endpoint security), procurement and project time and expenses.",
+      "Billing cycle, minimums and trial terms aren't stated on the pricing page."
+    ]
+  },
+  "Zoho People": {
+    "checked": "2026-11-13",
+    "source": ["Zoho People pricing and edition comparison", "https://www.zoho.com/people/pricing-comparison.html"],
+    "plans": [
+      ["Free", "$0", "Up to 5 users and 1 administrator: employee database, time-off management and vacation planning, document management, 250 MB storage"],
+      ["Essential HR", "From $3 per user per month (Zoho's US starting price; edition prices didn't render in the page text)", "Onboarding and offboarding, HR reports, Zia AI bot, workflows and API access; 5-user minimum"],
+      ["Professional", "Per user; price not shown in the page text", "Adds attendance management, timesheets and roster management, with geo-fencing; 5-user minimum"],
+      ["Premium", "Per user; price not shown in the page text", "Adds performance appraisals and 360 feedback, compensation, employee engagement and custom reports; 5-user minimum"],
+      ["Enterprise", "Per user; price not shown in the page text", "Adds HR help desk with case management, learning management and a sandbox; 5-user minimum"]
+    ],
+    "first_plan": [
+      ["Custom time-off policies and approvals", "Free"],
+      ["Webhooks", "Free"],
+      ["Onboarding and offboarding", "Essential HR"],
+      ["Multi-level approvals, blueprints and custom functions", "Essential HR"],
+      ["API access", "Essential HR"],
+      ["Attendance (web, mobile, facial recognition) and geo-fencing", "Professional"],
+      ["Timesheets with project and client mapping", "Professional"],
+      ["Performance appraisals and 360 feedback", "Premium"],
+      ["Compensation management", "Premium"],
+      ["Learning management and HR help desk", "Enterprise (add-ons on lower editions)"]
+    ],
+    "limits": {
+      "cols": ["Free", "Essential HR", "Professional", "Premium", "Enterprise"],
+      "rows": [
+        ["Users", "Up to 5", "5-user minimum", "5-user minimum", "5-user minimum", "5-user minimum"],
+        ["Administrators", "1", "Unlimited", "Unlimited", "Unlimited", "Unlimited"],
+        ["Default storage", "250 MB", "1 GB per 100 users", "2 GB per 100 users", "3 GB per 100 users", "5 GB per 100 users"],
+        ["API calls per day", "None", "5,000", "10,000", "15,000", "25,000"],
+        ["New forms", "None", "1 per 10 users", "2 per 10 users", "3 per 10 users", "5 per 10 users"],
+        ["Mail merges per month", "1,000", "1,000", "1,000", "1,000", "1,000"]
+      ]
+    },
+    "notes": [
+      "30-day free trial with every feature of the chosen plan; afterwards the account moves to the Free plan. No forced contracts.",
+      "Yearly billing saves more than 20% over monthly.",
+      "Extra storage is sold in 5 GB blocks and extra forms in blocks of 10; above 500 users, Zoho asks for a price quote.",
+      "Advanced analytics needs a Zoho Analytics subscription; Premium support costs 20% of the license fee.",
+      "Zoho also sells People Plus, a separate bundle with Essential HR, Workforce, Talent and Enterprise editions."
+    ]
   }
 }

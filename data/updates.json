@@ -203,5 +203,30 @@
     "updated": "2026-11-11",
     "checked": "2026-11-11",
     "note": "Re-verified plans, send limits, seats, automation limits and free plans on MailerLite's and Mailchimp's pricing pages, and the 10,000-contact prices ($129 MailerLite Power, $200 Mailchimp Standard); no changes. G2 review counts refreshed."
+  },
+  "/tools/best-video-conferencing-software/": {
+    "updated": "2026-11-13",
+    "checked": "2026-11-13",
+    "note": "Re-verified Zoom, Microsoft Teams, Google Workspace, Webex and Whereby prices and limits on vendor pages (unchanged; Google now shows a new-customer intro offer, noted in the footnote; Zoho Meeting's prices didn't render, so its $1 starting price is unchanged and unconfirmed) and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-zoom-alternatives/": {
+    "updated": "2026-11-13",
+    "checked": "2026-11-13",
+    "note": "Re-verified prices and limits for Zoom and its alternatives on vendor pages (unchanged; Zoho Meeting's prices didn't render and stay as of Nov 1) and refreshed G2 review counts."
+  },
+  "/compare/hubspot-vs-activecampaign/": {
+    "updated": "2026-11-13",
+    "checked": "2026-11-13",
+    "note": "Re-verified HubSpot Marketing Hub prices, seats, contacts, onboarding fees and limits and ActiveCampaign plan prices, users and features on vendor pages: no changes. HubSpot's comparison table no longer shows an A/B testing row, so that line is unchanged and unconfirmed."
+  },
+  "/tools/best-hris-software/": {
+    "updated": "2026-11-13",
+    "checked": "2026-11-01",
+    "note": "Factorial's pricing page no longer lists Starter, Business and Enterprise plans: it now shows a starting price of $8 per user per month for Factorial Core plus modules in a tailored quote. Factorial's text updated; other tools not re-checked."
+  },
+  "/tools/best-bamboohr-alternatives/": {
+    "updated": "2026-11-13",
+    "checked": "2026-11-01",
+    "note": "Updated Factorial's pick to its new pricing (from $8 per user, Core plus quoted modules; named plans removed). Other tools not re-checked."
   }
 }
