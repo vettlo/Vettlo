@@ -556,11 +556,13 @@ def review_pages(cats):
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Short answer</a><a href="#overview">Overview</a><a href="#pros-cons">Pros and cons</a><a href="#pricing">Pricing</a>{'<a href="#plans">Plans</a><a href="#which-plan">Which plan</a>' if dd.get("plans") else ""}<a href="#score">Score</a><a href="#compare">Compared</a><a href="#faq">FAQ</a></nav></div></div>
 {newsletter()}"""
         ld = _ld(h1, url, date, crumbs, [], faqs)
-        ld.append({"@context": "https://schema.org", "@type": "Review", "name": h1, "url": DOMAIN + url,
-                   "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
-                   "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
-                   "reviewRating": {"@type": "Rating", "ratingValue": s0, "bestRating": 100, "worstRating": 0},
-                   "itemReviewed": _software_ld(name, t)})
+        item = _software_ld(name, t)
+        item["@context"] = "https://schema.org"
+        item["review"] = {"@type": "Review", "name": h1, "url": DOMAIN + url,
+                          "author": {"@type": "Organization", "name": "Vettlo Editorial Team", "url": DOMAIN + "/team/"},
+                          "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
+                          "reviewRating": {"@type": "Rating", "ratingValue": s0, "bestRating": 100, "worstRating": 0}}
+        ld.append(item)
         page(url, f"{name} Review ({YEAR}): Pricing, Pros & Cons | Vettlo",
              f"{name} review: {s0}/100 in our {_noun(cat)} ranking. {_price_sentence(t)} Pros, cons, who it's for and the best alternatives."[:300],
              body, cur="/reviews/", ptype="article", jsonld=ld)
@@ -731,9 +733,13 @@ def _software_ld(name, t):
     operating system; we add the price only when the vendor publishes one (free plan = 0)."""
     ld = {"@type": "SoftwareApplication", "name": name, "applicationCategory": "BusinessApplication",
           "operatingSystem": "Web", "url": t["url"]}
+    # Quote-only tools have no price to publish; Google's Software App feature requires offers, so they're
+    # marked up as a Product, which is valid with a review alone.
     m = re.match(r"(?:From )?\$([\d,]+(?:\.\d+)?)", t.get("price", ""))
     if m:
         ld["offers"] = {"@type": "Offer", "price": m.group(1).replace(",", ""), "priceCurrency": "USD"}
     elif re.match(r"free plan", t.get("trial", ""), re.I) or t.get("price", "").lower().startswith("free"):
         ld["offers"] = {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+    if "offers" not in ld:
+        ld = {"@type": "Product", "name": name, "url": t["url"], "category": "Business software"}
     return ld

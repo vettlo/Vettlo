@@ -134,7 +134,8 @@ def answer_box(lead, items):
 
 
 ORG = {"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo", "url": DOMAIN,
-       "logo": DOMAIN + "/assets/logo.svg", "description": "Independent reviews of business software, scored on published criteria."}
+       "logo": DOMAIN + "/assets/logo.svg", "description": "Independent reviews of business software, scored on published criteria.",
+       "contactPoint": {"@type": "ContactPoint", "contactType": "editorial", "url": DOMAIN + "/contact/", "availableLanguage": "English"}}
 
 DEPTS = [
     ("Sales", "Pipeline, prospecting and calling", [
@@ -1003,7 +1004,7 @@ page("/how-we-make-money/", "How We Make Money (Affiliate Disclosure) | Vettlo",
 
 # ---------- EDITORIAL STANDARDS
 page("/editorial-standards/", "Editorial Standards | Vettlo",
-     "The standards Vettlo writers and editors follow: independence, accuracy, corrections and use of AI.",
+     "The standards behind every Vettlo review: editorial independence from partners, how we check facts and prices, how we correct errors and how we use AI.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Standards</span><h1>Editorial standards</h1>
 <p>The rules every Vettlo writer and editor follows.</p></div>
 <div class="page-body prose">
@@ -1101,7 +1102,7 @@ if(r.ok){f.reset();o.textContent='Thanks, we\\'ll get back to you by email.';}el
 
 # ---------- TEAM
 page("/team/", "Vettlo Editorial Team",
-     "Who writes Vettlo's software reviews and how the editorial team works.",
+     "Who writes Vettlo's business software reviews, how the editorial team researches and scores tools, and how to reach the editors with corrections.",
      f"""<div class="wrap"><div class="page-head" style="grid-template-columns:auto minmax(0,1fr);align-items:center;gap:1.25rem"><div class="avatar team-mark" style="width:88px;height:88px">{LOGO}</div>
 <div style="display:grid;gap:.4rem"><span class="eyebrow">Editorial team</span><h1>Vettlo Editorial Team</h1><p class="small muted">Independent business software reviews</p></div></div>
 <div class="page-body prose">
@@ -1129,8 +1130,8 @@ page("/write-for-us/", "Write for Vettlo",
 </div></div>""")
 
 # ---------- CONTACT
-page("/contact/", "Contact Vettlo",
-     "Contact Vettlo to suggest a tool, report an error, pitch a story or ask about advertising.",
+page("/contact/", "Contact Vettlo: Suggest a Tool, Report an Error or Advertise",
+     "Contact the Vettlo editors to suggest a tool for review, report an error or outdated price, pitch a story, or ask about advertising on Vettlo.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Contact</span><h1>Get in touch</h1>
 <p>Suggest a tool for review, report an error, pitch a story or ask about advertising.</p></div>
 <div class="page-body"><form class="form" id="c-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
@@ -1147,7 +1148,7 @@ if(r.ok){f.reset();o.textContent='Thanks, your message was sent. We\\'ll reply b
 </div></div>""")
 
 # ---------- PRIVACY / TERMS
-page("/privacy/", "Privacy Policy | Vettlo", "How Vettlo handles information when you visit the site.",
+page("/privacy/", "Privacy Policy | Vettlo", "How Vettlo handles information when you visit the site: analytics, cookies, newsletter sign-ups, contact forms and your choices about your data.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Privacy Policy</h1><p class="small mono">Last updated {UPDATED_H}</p></div>
 <div class="page-body prose">
 <p>This policy explains what information Vettlo handles when you visit vettlo.com.</p>
@@ -1163,7 +1164,7 @@ page("/privacy/", "Privacy Policy | Vettlo", "How Vettlo handles information whe
 <p>We'll post any changes on this page and update the date above.</p>
 </div></div>""")
 
-page("/terms/", "Terms of Use | Vettlo", "Terms for using vettlo.com.",
+page("/terms/", "Terms of Use | Vettlo", "The terms for using vettlo.com: how you may use our reviews and content, links to vendor sites, disclaimers and limits of liability.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Terms of Use</h1><p class="small mono">Last updated {UPDATED_H}</p></div>
 <div class="page-body prose">
 <p>By using vettlo.com you agree to these terms.</p>
@@ -1188,10 +1189,19 @@ page("/404/", "Page Not Found | Vettlo", "This page doesn't exist.",
 
 
 # ------------------------------------------------------------------ render
+# Static explainer pages that read as articles get Article schema too (Ahrefs flagged them).
+for _pth in ("/how-we-make-money/", "/editorial-standards/"):
+    if _pth in PAGES:
+        PAGES[_pth]["jsonld"] = PAGES[_pth]["jsonld"] + [{"@context": "https://schema.org", "@type": "Article",
+            "headline": PAGES[_pth]["title"].split(" | ")[0], "url": DOMAIN + _pth, "mainEntityOfPage": DOMAIN + _pth,
+            "author": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
+            "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN, "logo": {"@type": "ImageObject", "url": DOMAIN + "/assets/logo.svg"}}}]
+        PAGES[_pth]["ptype"] = "article"
 def head_block(path, p, css_href):
     canon = DOMAIN + path
     ld = "".join(f'<script type="application/ld+json">{json.dumps(j, ensure_ascii=False)}</script>' for j in p["jsonld"])
-    robots = ('<meta name="robots" content="noindex, nofollow">' if (path in NO_SITEMAP or PRELAUNCH_NOINDEX)
+    robots = ('<meta name="robots" content="noindex, nofollow">' if (path in NO_SITEMAP - {"/vendors/login/"} or PRELAUNCH_NOINDEX)
+              else '<meta name="robots" content="noindex, follow">' if path == "/vendors/login/"
               else '<meta name="robots" content="noindex, follow">' if path in NOINDEX
               else '<meta name="robots" content="index, follow, max-image-preview:large">')
     return (f'<title>{p["title"]}</title><meta name="description" content="{p["desc"]}">{robots}'
@@ -1256,7 +1266,7 @@ def reviews_page():
     body += "</div></div>" + newsletter()
     items = [{"@type": "ListItem", "position": i + 1, "url": DOMAIN + u, "name": t} for i, (u, t, b, k) in enumerate(allp)]
     page("/reviews/", "All Software Reviews | Vettlo",
-         "Every Vettlo shortlist, alternatives guide and comparison of business software, in one place.",
+         "Every Vettlo shortlist, alternatives guide and head-to-head comparison of business software in one place, grouped by team, from CRM to payroll.",
          body, cur="/reviews/", jsonld=[{"@context": "https://schema.org", "@type": "CollectionPage", "name": "All reviews", "url": DOMAIN + "/reviews/",
                                           "mainEntity": {"@type": "ItemList", "itemListElement": items}}])
 
