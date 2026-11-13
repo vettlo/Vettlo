@@ -168,7 +168,7 @@
    "priority": 13980
   },
   "accounts receivable": {
-   "pillar": null,
+   "pillar": "accounting",
    "bing_3m": null,
    "bing_us_3m": null,
    "google_us_range": "10K-100K",
@@ -1258,7 +1258,7 @@
    "priority": 400
   },
   "chart of accounts": {
-   "pillar": null,
+   "pillar": "accounting",
    "bing_3m": null,
    "bing_us_3m": null,
    "google_us_range": "1K-10K",
@@ -1401,7 +1401,10 @@
    "google_us_est": 320,
    "ads_competition": "low",
    "top_bid_try": 980,
-   "priority": 128
+   "priority": 176,
+   "kd": 45,
+   "kd_source": "websearch estimate",
+   "serp_note": "Checked 2026-11-13: Intuit (US/UK help), CPA firm blogs (Bonadio, Withum, SDO CPA), vendor blogs (Method, MyWorks, inFlow), AlternativeTo, plus spam Google Sites/HackMD pages. Few answer clearly that Desktop is not fully discontinued."
   },
   "xero vs zoho books": {
    "pillar": "accounting",

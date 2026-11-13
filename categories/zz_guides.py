@@ -1400,3 +1400,95 @@ guide_page({
         ("Washington State Auditor's Office: Best Practices for Bank Reconciliations (PDF)", "https://sao.wa.gov/sites/default/files/2023-05/Best-Practices-for-Bank-Reconciliations.pdf"),
     ],
 })
+
+
+# ---------- QuickBooks Desktop discontinued (explainer + migration)
+# Desktop facts from Intuit help pages fetched 2026-11-13; QuickBooks Online plans, prices and user limits from data.
+_qd_lad = _ac_lad.get("quickbooks", [])
+_qd_first = dict((f, p) for f, p in _ac_depth.get(_ac["quickbooks"]["name"], {}).get("first_plan", []))
+_qd_inv = _qd_first.get("Inventory tracking")
+_qd_rows = "".join(f"<tr><td>{plan}</td><td>{_fmt(reg)}/mo</td><td>{us or 'Not stated'}</td><td>{_fmt(reg * 12)}</td></tr>" for plan, reg, mo, pr, us in _qd_lad)
+_qd_lo = _qd_lad[0] if _qd_lad else None
+_qd_hi = _qd_lad[-1] if _qd_lad else None
+
+guide_page({
+    "slug": "quickbooks-desktop-discontinued", "crumb": "QuickBooks Desktop discontinued", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-13", "kicker": "Migration guide",
+    "title": "Is QuickBooks Desktop Being Discontinued? What Changed and What to Do",
+    "seo_title": "QuickBooks Desktop Discontinued? Dates and Your Options | Vettlo",
+    "desc": "QuickBooks Desktop discontinued? Not fully. What Intuit stopped selling in the US in 2024, what ends when a version sunsets, and how to move your data.",
+    "card": "What Intuit actually stopped, what ends when a version sunsets, and how to move off Desktop.",
+    "answer": ("QuickBooks Desktop isn't fully discontinued, but Intuit stopped selling new US subscriptions to Desktop Pro Plus, Premier Plus, Mac Plus and Enhanced Payroll after September 30, 2024. "
+               "Existing subscribers can still renew and keep getting updates and support, and QuickBooks Desktop Enterprise is still sold. "
+               "Separately, each Desktop version year is retired on its own date: QuickBooks Desktop 2023 lost payroll, online banking, live support and security updates after May 31, 2026."),
+    "sections": [
+        ("status", "Is QuickBooks Desktop discontinued?", f"""<p>No, not as a whole. "QuickBooks Desktop discontinued" usually refers to Intuit's 2024 decision to stop selling most Desktop editions to <b>new</b> customers in the United States. Intuit says the change applies to the US only and doesn't affect existing subscribers, who keep security updates, product updates and support.</p>
+<p>If you're weighing a move to the cloud, our <a href="{_ac_cat}">ranking of the best accounting software</a> compares the alternatives on regular price and plan limits. This guide covers what changed, what it means for a Desktop file you already have, and how the move works. Here's the status of each edition, from Intuit's help pages checked {hdate("2026-11-13")}:</p>
+<div class="table-wrap"><table><thead><tr><th>Edition</th><th>New US subscribers</th><th>Existing subscribers</th></tr></thead><tbody>
+<tr><td>QuickBooks Desktop Pro Plus</td><td>Not sold after Sept. 30, 2024</td><td>Can keep renewing</td></tr>
+<tr><td>QuickBooks Desktop Premier Plus</td><td>Not sold after Sept. 30, 2024</td><td>Can keep renewing</td></tr>
+<tr><td>QuickBooks Desktop Mac Plus</td><td>Not sold after Sept. 30, 2024</td><td>Can keep renewing</td></tr>
+<tr><td>QuickBooks Desktop Enhanced Payroll</td><td>Not sold after Sept. 30, 2024</td><td>Can keep renewing</td></tr>
+<tr><td>QuickBooks Desktop Enterprise</td><td>Still sold (Silver, Gold, Platinum and Diamond)</td><td>Can keep renewing</td></tr>
+<tr><td>Lifetime or perpetual Pro, Premier and Mac licenses</td><td>No longer offered</td><td>Subject to the version sunset below</td></tr>
+</tbody></table></div>
+<p>Intuit marks renewal availability as subject to change without notice. It also warns that sellers offering new Desktop Plus subscriptions or non-subscription Pro, Premier or Mac licenses may be selling fake software, and asks customers to report them on 1-800-4-INTUIT.</p>"""),
+        ("sunset", "What happens when a QuickBooks Desktop version is discontinued?", f"""<p>When a version year reaches its discontinuation date, the software loses every connected service Intuit runs for it. This is a separate, recurring event from the 2024 stop-sell: it applies to each version year, whether you bought a license or a subscription.</p>
+<p>The most recent example is QuickBooks Desktop 2023 (Pro Plus, Premier Plus, Enterprise Solutions 23.0 and the Accountant editions). Intuit's service discontinuation notice says that after May 31, 2026 these stop working with the 2023 software:</p>
+<ul><li><b>Payroll:</b> Desktop Assisted, Basic, Standard and Enhanced Payroll, and QuickBooks Workforce.</li>
+<li><b>Payments:</b> credit card and check processing, Merchant Service Deposit reconciliation and e-invoicing.</li>
+<li><b>Online banking and backup:</b> transaction downloads, online payments and transfers, and Online Backup.</li>
+<li><b>Live technical support.</b></li>
+<li><b>Connected features:</b> Accountant Copy Transfer, Contributed Reports, multi-currency, email from the product and Shipping Manager.</li>
+<li><b>Critical security updates,</b> which stopped June 1, 2026.</li></ul>
+<p>Intuit says it notifies customers in advance before an older version is discontinued, but its notice doesn't give a fixed support period or a date for later versions. If you subscribe to Desktop Plus or Enterprise, moving to the newest version year is included at no extra cost, so the practical fix for a sunset is usually to upgrade inside the subscription. A one-time license holder has no upgrade path now that perpetual licenses aren't sold.</p>"""),
+        ("data", "What happens to your data if you cancel QuickBooks Desktop Plus?", f"""<p>You keep read-only access for 12 months after the subscription ends, which is your window to export what you need. According to Intuit's Desktop FAQ:</p>
+<ol>
+<li><b>The cancellation takes effect at your next renewal date,</b> and you can use the product normally until then.</li>
+<li><b>After it expires, you get 12 months of view-only access.</b> You can open the file and export data, but you can't edit it.</li>
+<li><b>View-only access needs a recent version:</b> Desktop Plus for Windows 2023 R3 or newer, or Mac Plus 2024 or newer. Update before you cancel.</li>
+<li><b>Support, Data Recovery, Intuit Data Protect and editing end</b> with the subscription.</li>
+<li><b>Desktop Payroll and Desktop Payments aren't canceled automatically.</b> Cancel or move them separately so you aren't billed for services you no longer use.</li>
+</ol>
+<p>Before cancelling, keep a local backup (.QBB) of the company file and export the reports your accountant will want for past tax years, such as the general ledger, trial balance and payroll summaries. If you upgrade from Plus to Enterprise instead, Intuit says you can request a prorated refund for the Plus subscription.</p>"""),
+        ("options", "What are your options if you're on QuickBooks Desktop?", f"""<p>You have four realistic paths: renew Desktop Plus, move up to Desktop Enterprise, convert to QuickBooks Online, or switch to a different cloud accounting tool. Which one fits depends mostly on whether you rely on Desktop-only workflows and how much history you need to keep editable.</p>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>When it fits</th><th>What to check</th></tr></thead><tbody>
+<tr><td>Keep renewing Desktop Plus</td><td>The software works for you and you already subscribe</td><td>Upgrade to each new version year before the old one sunsets; renewal terms can change</td></tr>
+<tr><td>Upgrade to Desktop Enterprise</td><td>You need to stay on Desktop and want a product Intuit still sells to new customers</td><td>Price is higher; Intuit says data stays on the same platform with the same interface</td></tr>
+<tr><td>Convert to QuickBooks Online</td><td>You want the cloud and want Intuit's own migration tool</td><td>Not everything migrates; plan size depends on users and features such as inventory</td></tr>
+<tr><td>Switch to another cloud tool</td><td>QuickBooks Online's regular price or user limits don't suit you</td><td>How the vendor imports a Desktop file, and how much history you can bring</td></tr>
+</tbody></table></div>
+<p>If you convert to QuickBooks Online, the plan is chosen mainly by user count. Regular US prices from Intuit's pricing page, as in our {_ac_rv("quickbooks")} review:</p>
+<div class="table-wrap"><table><thead><tr><th>QuickBooks Online plan</th><th>Regular price</th><th>Users</th><th>Per year</th></tr></thead><tbody>{_qd_rows}</tbody></table></div>
+<p class="small muted">Regular prices, not the introductory discount for new customers. Accountant users are extra to the user counts shown.{f" Inventory tracking starts on {_qd_inv}." if _qd_inv else ""}</p>
+<p>If QuickBooks Online doesn't fit, our <a href="/tools/best-quickbooks-alternatives/">QuickBooks alternatives shortlist</a> covers what each competitor gains and gives up, and the <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero comparison</a> goes deeper on the most common switch. For a full-year budget across vendors, see <a href="/guides/accounting-software-cost/">how much accounting software costs</a>.</p>"""),
+        ("migrate", "How do you move from QuickBooks Desktop to QuickBooks Online?", f"""<p>Intuit's migration takes three stages: prepare the Desktop file, run the migration tool, then compare reports in both systems. You have 90 days from signing up for QuickBooks Online to import your Desktop data (180 days if your accountant does it), so convert early in the subscription. The steps, from Intuit's US help article updated {hdate("2026-11-05")}:</p>
+<ol>
+<li><b>Update QuickBooks Desktop</b> to the latest release, and make sure you're an admin on both the Desktop file and the QuickBooks Online account, set up in the same country.</li>
+<li><b>Check the file's size.</b> Press F2 or Ctrl+1 to open Product Information and find Total Targets. If the file is over Intuit's limit, condense it, or choose the option that brings over lists and current balances without full transaction history.</li>
+<li><b>Verify and rebuild the data,</b> and keep a local copy of the company file.</li>
+<li><b>Close out banking.</b> Reconcile bank and credit card accounts and clear the bank feed queue, because bank feeds don't move. Our <a href="/guides/bank-reconciliation/">bank reconciliation guide</a> walks through the steps.</li>
+<li><b>Save a Sales Tax Liability report</b> so you can confirm sales tax balances after the move.</li>
+<li><b>Plan payroll.</b> Payroll data moves to QuickBooks Workforce; finish the migration at least 7 business days before your next payroll date.</li>
+<li><b>Run the migration</b> with the tool inside QuickBooks Desktop for Windows, the browser-based tool (upload a .QBW, .QBM or .QBB file), or the export from QuickBooks Desktop for Mac 2020 or newer.</li>
+<li><b>Choose carefully if the Online company already has data.</b> Replacing it can't be undone; use a new QuickBooks Online company if you want to keep what's there.</li>
+<li><b>Compare the results.</b> After the "Your company is now online" email, run the profit and loss and balance sheet for the same dates in both systems and investigate any difference.</li>
+</ol>
+<p>Intuit says some data won't migrate and keeps a separate list of what doesn't carry over, so check it against the features you use most before you commit. Keep the Desktop file (and, if you cancel, its 12 months of view-only access) as the record of your pre-migration history.</p>
+<p class="small muted">This is general guidance, not accounting or tax advice. Ask your accountant which historical reports to keep for your tax filings.</p>"""),
+    ],
+    "faqs": [
+        ("Can I still buy QuickBooks Desktop?", "New US customers can buy QuickBooks Desktop Enterprise, which Intuit sells in Silver, Gold, Platinum and Diamond tiers. Desktop Pro Plus, Premier Plus, Mac Plus and Enhanced Payroll haven't been sold to new US subscribers since September 30, 2024, and Intuit no longer offers lifetime or perpetual Pro, Premier or Mac licenses."),
+        ("Is QuickBooks Desktop Enterprise being discontinued?", "No. Intuit's help pages say Enterprise wasn't affected by the 2024 stop-sell and can still be bought or renewed by phone or online. Like every Desktop product, each Enterprise version year still has its own service discontinuation date, as Enterprise Solutions 23.0 did on May 31, 2026."),
+        ("Will QuickBooks Desktop 2023 still open after support ended?", "Intuit's notice lists what stopped after May 31, 2026, including payroll, payments, online banking, live support and critical security updates from June 1, 2026. It doesn't say the software stops opening, but running accounting software without security updates or bank downloads is a risk; subscribers can upgrade to a newer version at no extra cost."),
+        ("How long do I have to move Desktop data into QuickBooks Online?", "Intuit gives you 90 days from when you sign up for QuickBooks Online to import a Desktop company file, or 180 days if an accountant does the import. If the QuickBooks Online company already has data, importing replaces it and can't be undone."),
+    ],
+    "sources": [
+        ("QuickBooks: Can't buy QuickBooks Desktop as a new US subscriber", "https://quickbooks.intuit.com/learn-support/en-us/help-article/new-subscriptions/us-quickbooks-desktop-sold-july-2024/L5lkQNq7L_US_en_US"),
+        ("QuickBooks: Common QuickBooks Desktop questions", "https://quickbooks.intuit.com/learn-support/en-us/help-article/new-subscriptions/common-quickbooks-desktop-questions/L6qndvmPy_US_en_US"),
+        ("QuickBooks blog: QuickBooks Desktop stop-sell", "https://quickbooks.intuit.com/r/whats-new/quickbooks-desktop-stop-sell/"),
+        ("QuickBooks: QuickBooks Desktop 2023 service discontinuation policy", "https://quickbooks.intuit.com/learn-support/en-us/help-articles/quickbooks-desktop-service-discontinuation-disco-policy-and/00/262471"),
+        ("QuickBooks: Move your QuickBooks Desktop company file to QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-us/help-article/import-export-data-files/move-quickbooks-desktop-file-quickbooks-online/L6af3Z0Fb_US_en_US"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+    ],
+})
