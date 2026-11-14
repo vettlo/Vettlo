@@ -175,7 +175,10 @@
    "google_us_est": 31600,
    "ads_competition": "low",
    "top_bid_try": 1731,
-   "priority": 12640
+   "priority": 4740,
+   "kd": 85,
+   "kd_source": "websearch estimate",
+   "serp_note": "Checked 2026-11-14: Wikipedia, NetSuite, Cornell LII, SAP, Ramp, Sage, BlackLine, QuickBooks, Xero, Stripe, AccountingTools, Patriot. Mostly definitions; few show a computed aging report, DSO example or a dated collection schedule."
   },
   "flsa": {
    "pillar": null,

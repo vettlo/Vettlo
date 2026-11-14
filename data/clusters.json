@@ -104,15 +104,17 @@
      "title": "What Is Accounts Receivable? How to Manage AR and Get Paid Faster",
      "intent": "Understand accounts receivable and run collections (invoicing, terms, aging, follow-up, bad debt) in a small business",
      "angle": "Counterpart to the AP guide: AR aging table with a computed example, DSO formula, collection steps; which ranked tools include invoice reminders and online payments on which plan (from data). Don't repeat the AP or cash-vs-accrual guides.",
-     "status": "todo",
+     "status": "done",
      "url": "/guides/accounts-receivable/",
      "target_keyword": "accounts receivable",
      "bing_3m": null,
      "bing_us_3m": null,
      "google_us_range": "10K-100K",
      "google_us_est": 31600,
-     "kd": null,
-     "priority": 12640
+     "kd": 85,
+     "priority": 4740,
+     "date": "2026-11-14",
+     "kd_source": "websearch estimate"
     },
     {
      "slug": "chart-of-accounts",

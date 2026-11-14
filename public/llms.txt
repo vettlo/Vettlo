@@ -276,6 +276,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Cash vs Accrual Accounting: Which Method Should Your Business Use?](https://vettlo.com/guides/cash-vs-accrual-accounting/): Both methods side by side, a worked example, IRS limits and how to switch.
 - [Bank Reconciliation: How to Reconcile a Bank Statement, Step by Step](https://vettlo.com/guides/bank-reconciliation/): The 7 steps, a worked example, common mismatches and how software automates it.
 - [Is QuickBooks Desktop Being Discontinued? What Changed and What to Do](https://vettlo.com/guides/quickbooks-desktop-discontinued/): What Intuit actually stopped, what ends when a version sunsets, and how to move off Desktop.
+- [What Is Accounts Receivable? How to Manage AR and Get Paid Faster](https://vettlo.com/guides/accounts-receivable/): What AR is, an aging report and DSO worked out, and how to collect late invoices.
 - [All guides](https://vettlo.com/guides/)
 
 ## Trust

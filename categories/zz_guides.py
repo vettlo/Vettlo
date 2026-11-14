@@ -1492,3 +1492,166 @@ guide_page({
         ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
     ],
 })
+
+
+# ---------- What is accounts receivable? (AR, aging, DSO, collections)
+# Hypothetical AR book for one small service business, as of Nov 30, 2026. Days past due, buckets and DSO are computed here.
+import datetime as _ar_dt
+_ar_asof = _ar_dt.date(2026, 11, 30)
+_ar_inv = [  # (invoice, customer, amount, due date)
+    ("INV-1048", "Customer A", 2400, _ar_dt.date(2026, 12, 10)),
+    ("INV-1041", "Customer B", 1800, _ar_dt.date(2026, 11, 15)),
+    ("INV-1033", "Customer C", 3200, _ar_dt.date(2026, 10, 20)),
+    ("INV-1027", "Customer D", 950, _ar_dt.date(2026, 9, 25)),
+    ("INV-1009", "Customer E", 600, _ar_dt.date(2026, 7, 31)),
+]
+_ar_buckets = ["Current", "1-30 days", "31-60 days", "61-90 days", "Over 90 days"]
+
+
+def _ar_bucket(days):
+    return 0 if days <= 0 else 1 if days <= 30 else 2 if days <= 60 else 3 if days <= 90 else 4
+
+
+_ar_tot = sum(a for _i, _c, a, _d in _ar_inv)
+_ar_by = [0] * 5
+_ar_rows = ""
+for _i, _c, _a, _d in _ar_inv:
+    _late = (_ar_asof - _d).days
+    _b = _ar_bucket(_late)
+    _ar_by[_b] += _a
+    _ar_rows += f"<tr><td>{_c}</td><td>{_d.strftime('%b')} {_d.day}</td><td>{max(_late, 0) or '—'}</td>" + "".join(f"<td>{_fmt(_a) if j == _b else ''}</td>" for j in range(5)) + "</tr>"
+_ar_rows += "<tr><td><b>Total</b></td><td></td><td></td>" + "".join(f"<td><b>{_fmt(v) if v else '—'}</b></td>" for v in _ar_by) + "</tr>"
+_ar_rows += "<tr><td><b>Share of AR</b></td><td></td><td></td>" + "".join(f"<td>{v / _ar_tot * 100:.0f}%</td>" for v in _ar_by) + "</tr>"
+_ar_over60 = _ar_by[3] + _ar_by[4]
+_ar_over60_pct = _ar_over60 / _ar_tot * 100
+_ar_pastdue = _ar_tot - _ar_by[0]
+
+# DSO and AR turnover for the quarter ending on the aging date (hypothetical figures)
+_ar_begin, _ar_end, _ar_sales, _ar_terms = 7450, _ar_tot, 18000, 30
+_ar_days = (_ar_asof - _ar_dt.date(2026, 9, 1)).days + 1
+_ar_avg = (_ar_begin + _ar_end) / 2
+_ar_dso = _ar_avg / _ar_sales * _ar_days
+_ar_turn = _ar_sales / _ar_avg
+
+# Invoicing on each ranked tool's entry plans, from the category data and data/review_depth.json
+_ar_src_date = (re.search(r"on (\w+ \d+, \d{4})", ACC["price_footnote"]) or [None, ""])[1]
+_xe = None
+_ar_soft = []  # (tool link, plan, regular price, invoicing notes)
+if "quickbooks" in _ap_name and _ap_name["quickbooks"] in _ac_depth:
+    _q = _ac_depth[_ap_name["quickbooks"]]["plans"][0]
+    if "invoicing and payments" in _q[2] and (_qp := _ap_plan_price(_ap_name["quickbooks"], _q[0])):
+        _ar_soft.append((_ac_rv("quickbooks"), _q[0], _qp, f"Invoicing and online payments; {_q[2].split(';')[0]}"))
+if "xero" in _ap_name and _ap_name["xero"] in _ac_depth:
+    _xe = _ap_limit("Xero", "Invoices (approve and send)", "Early")
+    _xpay = _ap_first("Xero", "Online invoice payments")
+    _xg = next((c for c in _ac_depth["Xero"]["limits"]["cols"] if _ap_limit("Xero", "Invoices (approve and send)", c) == "Unlimited"), None)
+    if _xe and (_xp := _ap_plan_price("Xero", "Early")):
+        _ar_soft.append((_ac_rv("xero"), "Early", _xp, f"{_xe} invoices a month" + ("; online invoice payments included" if _xpay and _xpay.startswith("Early") else "")))
+    if _xg and (_xgp := _ap_plan_price("Xero", _xg)):
+        _ar_soft.append((_ac_rv("xero"), _xg, _xgp, "Unlimited invoices"))
+if "zohobooks" in _ap_name and _ap_name["zohobooks"] in _ac_depth:
+    for _zp in ("Free", "Standard"):
+        _zl = _ap_limit("Zoho Books", "Invoices per year", _zp)
+        _zd = next((d for p, _s, d in _ac_depth["Zoho Books"]["plans"] if p == _zp), "")
+        _zprice = "Free" if _zp == "Free" else _ap_plan_price("Zoho Books", _zp)
+        if _zl and _zprice:
+            _zcap = re.search(r"revenue under \$[\d,.]+K?", _zd)
+            _ar_soft.append((_ac_rv("zohobooks"), _zp, _zprice, f"{_zl} invoices a year" + (f"; only for {_zcap.group(0)}" if _zcap else "")))
+if "freshbooks" in _ac:
+    _fb = _ac["freshbooks"]
+    _fbc = re.search(r"(\d+) billable clients", _fb["price_note"])
+    if _fbc and _money(_fb["price"]):
+        _ar_soft.append((_ac_rv("freshbooks"), "Lite", _fb["price"], f"Invoices up to {_fbc.group(1)} billable clients"))
+if "wave" in _ac:
+    _wv = _ac["wave"]
+    if re.search(r"free invoicing", _wv["what"], re.I):
+        _ar_soft.append((_ac_rv("wave"), "Starter", "Free", "Invoicing; card processing fees when customers pay online"))
+    if "payment reminders" in _wv["what"] and _money(_wv["price"]):
+        _ar_soft.append((_ac_rv("wave"), "Pro", _wv["price"], "Adds payment reminders"))
+_ar_soft_rows = "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td><td>{d}</td></tr>" for a, b, c, d in _ar_soft)
+
+guide_page({
+    "slug": "accounts-receivable", "crumb": "Accounts receivable", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-14", "kicker": "How-to",
+    "title": "What Is Accounts Receivable? How to Manage AR and Get Paid Faster",
+    "seo_title": "Accounts Receivable: What It Is and How to Manage It | Vettlo",
+    "desc": "Accounts receivable explained: how AR is recorded, how to read an aging report, how to calculate DSO, and a follow-up schedule to collect late invoices.",
+    "card": "What AR is, an aging report and DSO worked out, and how to collect late invoices.",
+    "answer": ("Accounts receivable (AR) is the money customers owe a business for goods or services it has already delivered and invoiced, recorded as a current asset on the balance sheet. "
+               "Managing AR means invoicing promptly with clear terms, applying each payment to its invoice, reviewing an aging report every month, and following up on a fixed schedule so overdue invoices don't drift past 90 days."),
+    "sections": [
+        ("what", "What is accounts receivable?", f"""<p>Accounts receivable is the running total of invoices your customers haven't paid yet. When you finish a job or ship an order and send an invoice with net 30 terms, that amount sits in accounts receivable until the customer pays. In most small businesses AR is the invoicing or sales module of the accounting software; our <a href="{_ac_cat}">ranking of the best accounting software</a> compares {len(_ac_ranked)} tools, while this guide covers how to run receivables day to day.</p>
+<p>AR is a <b>current asset</b> because you expect to turn it into cash within a year, usually within weeks. Its mirror image is the bills you owe suppliers, covered in our <a href="/guides/accounts-payable-process/">accounts payable process guide</a>.</p>
+<h3>How is accounts receivable recorded?</h3>
+<p>Under accrual accounting each invoice creates two journal entries: one when you bill and one when the customer pays. With a {_fmt(_ar_inv[2][2])} invoice as the example:</p>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Debit</th><th>Credit</th><th>Effect on AR</th></tr></thead><tbody>
+<tr><td>Invoice sent</td><td>Accounts receivable {_fmt(_ar_inv[2][2])}</td><td>Sales revenue {_fmt(_ar_inv[2][2])}</td><td>Up {_fmt(_ar_inv[2][2])}</td></tr>
+<tr><td>Customer pays</td><td>Cash {_fmt(_ar_inv[2][2])}</td><td>Accounts receivable {_fmt(_ar_inv[2][2])}</td><td>Down {_fmt(_ar_inv[2][2])}</td></tr>
+</tbody></table></div>
+<p>So AR carries a debit balance. Revenue is earned when you invoice; the payment only swaps one asset (AR) for another (cash). A business on the cash method doesn't book revenue until the money arrives, so it has no AR balance in its ledger, though it still needs an open-invoices list to chase payments. Our <a href="/guides/cash-vs-accrual-accounting/">cash vs accrual accounting guide</a> explains which method fits your business.</p>"""),
+        ("process", "What are the steps in the accounts receivable process?", f"""<p>The AR process runs from agreeing terms with a customer to closing out the payment. Seven steps cover it:</p>
+<ol>
+<li><b>Agree credit terms before the work starts.</b> Put the payment term (due on receipt, net 15, net 30), any late fee and accepted payment methods in the quote or contract. For a new customer with a large order, consider a deposit.</li>
+<li><b>Invoice as soon as the work is delivered.</b> Every day you wait to send the invoice is a day added to when you get paid. Include the invoice number, date, due date, a line-by-line description, the purchase order number if the customer uses one, and where to pay.</li>
+<li><b>Make paying easy.</b> An online payment link on the invoice (card or ACH) removes the check-in-the-mail step. Card payments carry processing fees, so decide whether you absorb them.</li>
+<li><b>Apply each payment to its invoice.</b> Record who paid, the amount and the invoice it settles. Partial payments and lump sums covering several invoices are where AR records drift out of date.</li>
+<li><b>Match deposits to the bank.</b> Check that recorded payments actually landed in the bank account; our <a href="/guides/bank-reconciliation/">bank reconciliation guide</a> walks through that monthly check.</li>
+<li><b>Follow up on a fixed schedule.</b> Send reminders before and after the due date, then escalate (see the collection schedule below).</li>
+<li><b>Review the aging report monthly.</b> Look at what's past due, who owes it and how long it's been outstanding, and decide what to chase, renegotiate or write off.</li>
+</ol>"""),
+        ("aging", "What is an accounts receivable aging report?", f"""<p>An AR aging report lists every unpaid invoice and sorts it into buckets by how many days it is past its due date. It shows at a glance how much of your receivables is current and how much is getting old, and older invoices are less likely to be collected.</p>
+<p>Here's a hypothetical aging report for a small service business on {_ar_asof.strftime('%B')} {_ar_asof.day}, {_ar_asof.year}, with five open invoices:</p>
+<div class="table-wrap"><table><thead><tr><th>Customer</th><th>Due</th><th>Days late</th>{"".join(f"<th>{b}</th>" for b in _ar_buckets)}</tr></thead><tbody>{_ar_rows}</tbody></table></div>
+<p>Total receivables are {_fmt(_ar_tot)}, of which {_fmt(_ar_pastdue)} is past due. The number to act on is the {_fmt(_ar_over60)} ({_ar_over60_pct:.0f}%) more than 60 days late. How to read it:</p>
+<ul>
+<li><b>Current and 1-30 days:</b> routine. A reminder usually settles these.</li>
+<li><b>31-60 days:</b> call the customer. Ask whether the invoice was received, whether anything is disputed, and when it will be paid.</li>
+<li><b>61-90 days and over:</b> pause new work on credit for that customer, agree a payment plan in writing, and decide whether to send it to a collection agency.</li>
+</ul>
+<p>Accounting software builds this report from your open invoices; it's usually called "A/R aging summary" or "aged receivables." Run it on the same day each month so the buckets compare.</p>"""),
+        ("dso", "How do you calculate days sales outstanding (DSO)?", f"""<p>Days sales outstanding (DSO) is the average number of days it takes to collect payment after a credit sale. The formula is average accounts receivable ÷ credit sales for the period × the number of days in the period.</p>
+<p>Continuing the example for the quarter from September 1 to {_ar_asof.strftime('%B')} {_ar_asof.day} ({_ar_days} days):</p>
+<div class="table-wrap"><table><thead><tr><th>Figure</th><th>Value</th></tr></thead><tbody>
+<tr><td>AR at the start of the quarter</td><td>{_fmt(_ar_begin)}</td></tr>
+<tr><td>AR at the end of the quarter (aging report total)</td><td>{_fmt(_ar_end)}</td></tr>
+<tr><td>Average AR</td><td>{_fmt(_ar_avg)}</td></tr>
+<tr><td>Credit sales in the quarter</td><td>{_fmt(_ar_sales)}</td></tr>
+<tr><td><b>DSO</b> ({_fmt(_ar_avg)} ÷ {_fmt(_ar_sales)} × {_ar_days})</td><td><b>{_ar_dso:.0f} days</b></td></tr>
+<tr><td>AR turnover ({_fmt(_ar_sales)} ÷ {_fmt(_ar_avg)})</td><td>{_ar_turn:.1f} times in the quarter</td></tr>
+</tbody></table></div>
+<p>The business invoices on net {_ar_terms} terms, so a DSO of {_ar_dso:.0f} days means customers pay about {_ar_dso - _ar_terms:.0f} days late on average. Use only credit sales, not cash sales, or DSO looks better than it is. Track DSO every month: a rising number warns you about cash flow before the bank balance does.</p>
+<p>AR turnover is the same information the other way round: how many times average receivables were collected in the period. Higher turnover means faster collection.</p>"""),
+        ("collect", "How do you collect overdue invoices?", f"""<p>Collect overdue invoices with a written schedule that starts before the due date and escalates in steps, so every customer is treated the same and nothing waits for someone to remember. A schedule for net {_ar_terms} terms:</p>
+<div class="table-wrap"><table><thead><tr><th>When</th><th>Action</th></tr></thead><tbody>
+<tr><td>3-5 days before due</td><td>Friendly reminder with the invoice attached and the payment link</td></tr>
+<tr><td>Due date</td><td>Reminder that payment is due today</td></tr>
+<tr><td>7 days late</td><td>Second reminder; ask whether anything is holding the invoice up</td></tr>
+<tr><td>15-30 days late</td><td>Phone call to the person who approves payment; agree a pay date and confirm it by email</td></tr>
+<tr><td>45-60 days late</td><td>Formal letter; apply the late fee if your terms include one; stop new work on credit</td></tr>
+<tr><td>90+ days late</td><td>Final notice, then a collection agency, small claims court or write-off</td></tr>
+</tbody></table></div>
+<p>Accounting software with scheduled payment reminders can send the first three automatically; check which plan includes them before you rely on it.</p>
+<h3>What happens when an invoice can't be collected?</h3>
+<p>An invoice you won't collect becomes a <b>bad debt</b>. Many businesses that report on the accrual basis estimate likely losses ahead of time with an <b>allowance for doubtful accounts</b>, a contra-asset that reduces AR on the balance sheet; others use the direct write-off method and remove the invoice when it's clearly uncollectible. Your accountant will say which your books need.</p>
+<p>For taxes, the IRS treats credit sales to customers as a business bad debt that you can deduct when it becomes partly or totally worthless, but only if the amount was included in your income in the current or a prior year. That's why cash-method businesses generally can't deduct unpaid invoices: the income was never reported. Sole proprietors claim it on Schedule C (Form 1040).</p>
+<p class="small muted">This summarizes IRS Topic 453 and isn't tax advice; ask your accountant before writing off a receivable.</p>"""),
+        ("software", "Which accounting plans include invoicing and payment reminders?", f"""<p>For the {len({r[0] for r in _ar_soft})} tools in our ranking with published prices, the entry plans differ in how many invoices or clients they allow and whether customers can pay online. What each entry plan includes for receivables, at regular prices:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Plan</th><th>Regular price</th><th>Invoicing on this plan</th></tr></thead><tbody>{_ar_soft_rows}</tbody></table></div>
+<p class="small muted">Regular US prices from each vendor's pricing page{f", checked {_ar_src_date}" if _ar_src_date else ""}; QuickBooks, Xero and Zoho Books plan details checked {_ap_checked_h}. Introductory discounts aren't shown.</p>
+<p>The invoice cap matters most: {f"Xero Early's {_xe}-invoice monthly limit" if _xe else "a monthly invoice limit"} is easy to hit for a business that bills many small jobs. Our <a href="/guides/accounting-software-cost/">accounting software cost guide</a> prices every plan by team size, and <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> and <a href="/compare/xero-vs-zohobooks/">Xero vs Zoho Books</a> compare the most common choices plan by plan.</p>"""),
+    ],
+    "faqs": [
+        ("Is accounts receivable an asset?", "Yes. Accounts receivable is a current asset on the balance sheet because the business expects to collect it in cash within a year. Uncollectible amounts are reduced through an allowance for doubtful accounts or written off."),
+        ("Is accounts receivable a debit or a credit?", "Accounts receivable normally carries a debit balance. Sending an invoice debits AR and credits revenue; when the customer pays, cash is debited and AR is credited."),
+        ("What is a good days sales outstanding (DSO)?", f"Compare DSO with your own payment terms. On net {_ar_terms} terms, a DSO close to {_ar_terms} days means customers pay roughly on time; a DSO well above it means invoices are paid late on average, and a rising trend is an early warning for cash flow."),
+        ("Can I write off unpaid invoices on my taxes?", "Only if the income was reported. The IRS lets businesses deduct a business bad debt, including credit sales to customers, when it becomes partly or totally worthless and the amount was included in income in the current or a prior year. Cash-method businesses generally can't deduct unpaid invoices. This isn't tax advice."),
+    ],
+    "sources": [
+        ("IRS: Topic no. 453, Bad debt deduction", "https://www.irs.gov/taxtopics/tc453"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+        ("Xero US pricing plans", "https://www.xero.com/us/pricing-plans/"),
+        ("Zoho Books pricing (US)", "https://www.zoho.com/us/books/pricing/"),
+        ("FreshBooks", _ac["freshbooks"]["url"] if "freshbooks" in _ac else "https://www.freshbooks.com/"),
+        ("Wave", _ac["wave"]["url"] if "wave" in _ac else "https://www.waveapps.com/"),
+    ],
+})
