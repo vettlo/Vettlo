@@ -1374,5 +1374,135 @@
       "Advanced analytics needs a Zoho Analytics subscription; Premium support costs 20% of the license fee.",
       "Zoho also sells People Plus, a separate bundle with Essential HR, Workforce, Talent and Enterprise editions."
     ]
+  },
+  "Expensify": {
+    "checked": "2026-11-14",
+    "source": ["Understand Expensify Pricing (Expensify Help)", "https://help.expensify.com/articles/new-expensify/billing-and-subscriptions/explore-plans-subscriptions-and-pricing/Understand-Expensify-Pricing"],
+    "plans": [
+      ["Submit (free)", "$0", "For an individual whose company hasn't adopted Expensify: unlimited SmartScan receipt scanning, receipts by email, mileage tracking in miles or kilometers, manual expenses and CSV export (web)"],
+      ["Collect", "$5 per unique member/month, pay-per-use only (no annual commitment)", "Unlimited SmartScans and distance tracking, a simple approval workflow, Expensify Cards with Smart Limits, bill pay and invoicing, third-party card feeds, next-day ACH and global reimbursement, QuickBooks Online and Xero sync, Gusto and Zenefits sync, Expensify Travel and Expensify Chat"],
+      ["Control (Annual)", "$18 per member included in your subscription size/month, plus $36 per active member above it; as low as $9 with the Expensify Card", "Multi-step approvals, custom expense rules and automation, NetSuite and Sage Intacct (ERP) integrations, HR and payroll integrations, multiple corporate card connections and SAML/SSO"],
+      ["Control (Pay-per-use)", "$36 per active member/month; as low as $18 with the Expensify Card", "The same Control features without a 12-month commitment"]
+    ],
+    "first_plan": [
+      ["Unlimited SmartScan receipt scanning", "Submit (free)"],
+      ["Mileage tracking", "Submit (free)"],
+      ["Categories, tags and automatic reimbursement", "Collect"],
+      ["Expense approvals (simple workflow)", "Collect"],
+      ["QuickBooks Online and Xero sync", "Collect"],
+      ["Expensify Card with Smart Limits", "Collect"],
+      ["Bill pay, invoicing and Expensify Travel", "Collect"],
+      ["Multi-step approvals", "Control"],
+      ["Custom expense rules and automation", "Control"],
+      ["NetSuite and Sage Intacct integrations", "Control"],
+      ["SAML/SSO", "Control"]
+    ],
+    "limits": {
+      "cols": ["Submit (free)", "Collect", "Control"],
+      "rows": [
+        ["Price per member (USD)", "$0", "$5/mo", "$18/mo annual or $36/mo pay-per-use"],
+        ["Price in GBP / EUR", "Free", "£5 / €5", "£14 / €16 annual; £28 / €32 pay-per-use"],
+        ["Price in AUD / NZD", "Free", "AU$8 / NZ$9", "AU$30 / NZ$32 annual; AU$60 / NZ$64 pay-per-use"],
+        ["Subscription types", "None", "Pay-per-use only", "Annual or pay-per-use"],
+        ["Expensify Card discount", "Card not available", "None listed", "Up to 50%, by share of approved spend on the card"],
+        ["Approval workflow", "Submit to an approver", "Simple, single approver", "Multi-step"],
+        ["Accounting integrations", "CSV export only", "QuickBooks Online, Xero", "Adds NetSuite, Sage Intacct"],
+        ["Corporate card connections", "None", "Third-party card feeds", "Multiple corporate card connections"]
+      ]
+    },
+    "notes": [
+      "Control's annual subscription is a 12-month commitment billed for every member in your subscription size each month, active or not; active members above that size are billed at the $36 pay-per-use rate.",
+      "The Expensify Card discount applies to Control on annual billing and rises with the share of approved USD expenses paid on the card in the billing month, up to 50%.",
+      "Organizations whose first workspace was created before April 1, 2025 keep legacy Collect pricing: $5 per member in the subscription size plus $10 per active member above it on annual, or $10 pay-per-use.",
+      "Regional prices are fixed amounts, not USD conversions, and exclude taxes.",
+      "Expensify's help pages don't list a free trial length; the free Submit workspace covers individual scanning and submitting. Collect features are from Expensify's own Collect plan announcement."
+    ]
+  },
+  "Rippling": {
+    "checked": "2026-11-14",
+    "source": ["Rippling pricing", "https://www.rippling.com/pricing"],
+    "plans": [
+      ["HRIS (core platform)", "From $8 per employee/month plus a monthly base fee; the pricing page doesn't state the fee", "Centralized employee records and org charts, document storage and e-signatures, onboarding workflows, time-off tracking and approvals, compliance alerts, an employee self-service portal and basic reporting"],
+      ["Payroll (US)", "$8 per employee/month billed annually or $10 billed monthly, per Rippling's payroll review; exact price by quote", "Federal, state and local tax calculation, filing and remittance with an accuracy guarantee, unlimited off-cycle runs, W-2 and 1099 management, garnishments and stipends; can't be bought without the core platform"],
+      ["Global Payroll and Employer of Record", "Pricing on request", "Pay employees and contractors in 185+ countries and 50+ currencies in the same workflow as US payroll"],
+      ["Other HCM products: Recruiting, Benefits Administration, Time & Attendance", "Pricing on request", "Added to the same employee record; most products are priced per employee per month"],
+      ["IT: Identity & Access, Device Management, Inventory Management", "Pricing on request", "Identity, device and inventory management products on the same platform as the HR record"],
+      ["Finance: Expense management, Corporate Cards, Bill Pay, Travel", "Pricing on request", "Spend products on the same platform and employee data"]
+    ],
+    "first_plan": [
+      ["Employee records with unlimited custom fields", "HRIS (core platform)"],
+      ["Unlimited PTO policy types", "HRIS (core platform)"],
+      ["Document storage and e-signatures", "HRIS (core platform)"],
+      ["Employee self-service portal", "HRIS (core platform)"],
+      ["Tax filing and remittance with accuracy guarantee", "Payroll (US)"],
+      ["Unlimited off-cycle payroll runs", "Payroll (US)"],
+      ["Contractor payments in 185+ countries", "Global Payroll and Employer of Record"],
+      ["Scheduling", "Separate scheduling module"],
+      ["Identity & access and device management", "IT products"],
+      ["HR Help Desk with dedicated support specialists", "HR Help Desk add-on"]
+    ],
+    "limits": {
+      "cols": ["HRIS (core platform)", "Payroll (US)", "Global Payroll and EOR"],
+      "rows": [
+        ["Published price", "From $8/employee/mo + base fee", "$8/employee/mo annual, $10 monthly", "Quote"],
+        ["Bought on its own", "Yes (required base)", "No, add-on to the core platform", "Quote with the core platform"],
+        ["Custom profile fields", "Unlimited", "Not applicable", "Not applicable"],
+        ["PTO policy types", "Unlimited", "Not applicable", "Not applicable"],
+        ["Coverage", "Company-wide employee record", "50 US states", "185+ countries, 50+ currencies"],
+        ["Off-cycle runs", "Not applicable", "Unlimited, free", "Free where Rippling runs payroll natively; $50 per employee per run in some EOR and partner countries"],
+        ["Integrations", "650+ apps, shared across products", "650+ apps", "650+ apps"]
+      ]
+    },
+    "notes": [
+      "The pricing page publishes only one figure: plans start at $8 per employee per month with a monthly base fee. Every other price comes from a custom quote based on headcount and the products you pick.",
+      "The US payroll price ($8 annual, $10 monthly) and the off-cycle fee are from Rippling's payroll review on rippling.com, updated Jun 17, 2026; the HRIS features are from its HRIS review, updated Aug 31, 2026.",
+      "Eligible US venture-backed startups can get free access for 6 months, subject to Rippling confirming funding status and stage.",
+      "No free trial is listed; the page offers a demo. Rippling says you can switch providers at any time, including mid-year, and it imports year-to-date payroll data.",
+      "Rippling says most straightforward implementations finish in 2 to 4 weeks with an assigned implementation specialist; no implementation fee is stated.",
+      "Partner pricing is available for brokers and accountants by call."
+    ]
+  },
+  "Toggl Track": {
+    "checked": "2026-11-14",
+    "source": ["Toggl pricing", "https://toggl.com/pricing"],
+    "plans": [
+      ["Free", "$0, up to 3 users", "Manual and real-time timers, Google and Outlook calendar integrations, tasks, boards, task estimates and personal reports"],
+      ["Starter", "$9 per user/month billed annually or $12 monthly", "Billable rates, project estimates, timeline, tags and milestones, PTO, public holidays and flexible hours, and team-level reports"],
+      ["Premium", "$16 per user/month billed annually or $24 monthly", "Project member rates, labor costs, profitability reports, fixed-fee projects, project dashboards, timesheet approvals, Jira and Asana integrations and single sign-on"],
+      ["Enterprise", "Contact sales", "Custom access levels, multiple workspaces under one organization, priority support, personalized onboarding and a dedicated customer success manager"],
+      ["Add-ons", "Time Off Management $2 per user/month; Capacity Management $5 per user/month billed annually ($6 monthly)", "Time-off approvals, accruals and policies; full capacity management beyond Starter's team-level capacity signals"]
+    ],
+    "first_plan": [
+      ["Real-time timer and calendar integrations", "Free"],
+      ["Task estimates and boards", "Free"],
+      ["Billable rates", "Starter"],
+      ["Project estimates", "Starter"],
+      ["Team-level reports", "Starter"],
+      ["Timesheet approvals", "Premium"],
+      ["Labor costs and profitability reports", "Premium"],
+      ["Fixed-fee projects", "Premium"],
+      ["Jira and Asana integrations", "Premium"],
+      ["Single sign-on (SSO)", "Premium"],
+      ["Multiple workspaces under one organization", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Starter", "Premium", "Enterprise"],
+      "rows": [
+        ["Users", "Up to 3", "No limit stated", "No limit stated", "No limit stated"],
+        ["Price per user, annual billing", "$0", "$9/mo", "$16/mo", "Quote"],
+        ["Price per user, monthly billing", "$0", "$12/mo", "$24/mo", "Quote"],
+        ["Reports", "Personal", "Adds team-level", "Adds profitability and project dashboards", "Same as Premium"],
+        ["Rates", "None", "Billable rates", "Adds project member rates and labor costs", "Same as Premium"],
+        ["Workspaces", "1", "1", "1", "Multiple under one organization"],
+        ["Support", "Standard", "Standard", "Standard", "Priority support and a dedicated customer success manager"]
+      ]
+    },
+    "notes": [
+      "Starter and Premium come with a 30-day trial, and add-ons have their own 30-day trial; Free is free forever.",
+      "Annual billing saves up to 33% against monthly prices, per the pricing page.",
+      "Time off on Starter covers PTO logging; approvals, accruals and policies need the $2 Time Off Management add-on.",
+      "Toggl's help-center article on payment plans lists Premium from $18 per license a month; the pricing page shows $16 billed annually and $24 monthly, which we use.",
+      "Data exports (CSV, XLSX, PDF), the audit log and the API are listed on the pricing page without a plan."
+    ]
   }
 }

@@ -145,14 +145,14 @@
     "note": "Re-verified Outreach Amplify tiers and Salesloft pricing page (both still quote-only, packaging unchanged) and refreshed G2 review counts."
   },
   "/tools/best-payroll-software/": {
-    "updated": "2026-11-07",
+    "updated": "2026-11-14",
     "checked": "2026-11-07",
-    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged)."
+    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged). Nov 14: Rippling's pricing page no longer shows the $40 base-fee figure (it says only \"with a monthly base fee\"), so Rippling's text no longer cites $40."
   },
   "/tools/best-gusto-alternatives/": {
-    "updated": "2026-11-07",
+    "updated": "2026-11-14",
     "checked": "2026-11-07",
-    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged)."
+    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged). Nov 14: Rippling's pricing page no longer shows the $40 base-fee figure (it says only \"with a monthly base fee\"), so Rippling's text no longer cites $40."
   },
   "/compare/gusto-vs-quickbooks-payroll/": {
     "updated": "2026-11-07",
@@ -220,13 +220,18 @@
     "note": "Re-verified HubSpot Marketing Hub prices, seats, contacts, onboarding fees and limits and ActiveCampaign plan prices, users and features on vendor pages: no changes. HubSpot's comparison table no longer shows an A/B testing row, so that line is unchanged and unconfirmed."
   },
   "/tools/best-hris-software/": {
-    "updated": "2026-11-13",
-    "checked": "2026-11-01",
-    "note": "Factorial's pricing page no longer lists Starter, Business and Enterprise plans: it now shows a starting price of $8 per user per month for Factorial Core plus modules in a tailored quote. Factorial's text updated; other tools not re-checked."
+    "updated": "2026-11-14",
+    "checked": "2026-11-14",
+    "note": "Re-verified prices and plans for all 6 HRIS tools on vendor pages (no list-price changes; Rippling's page now says plans start at $8 per employee with a monthly base fee, without stating the fee; Zoho People's plan prices still don't render) and refreshed G2 (Zoho People 4.5 → 4.4; review counts updated)."
   },
   "/tools/best-bamboohr-alternatives/": {
-    "updated": "2026-11-13",
-    "checked": "2026-11-01",
-    "note": "Updated Factorial's pick to its new pricing (from $8 per user, Core plus quoted modules; named plans removed). Other tools not re-checked."
+    "updated": "2026-11-14",
+    "checked": "2026-11-14",
+    "note": "Re-verified prices and plans for all 6 HRIS tools on vendor pages (no list-price changes; Rippling's page now says plans start at $8 per employee with a monthly base fee, without stating the fee; Zoho People's plan prices still don't render) and refreshed G2 (Zoho People 4.5 → 4.4; review counts updated)."
+  },
+  "/compare/bamboohr-vs-rippling/": {
+    "updated": "2026-11-14",
+    "checked": "2026-11-14",
+    "note": "Re-verified BambooHR plan prices, job openings, add-ons and terms and Rippling's starting price on vendor pages: no price changes; Rippling's page now says plans also carry a monthly base fee it doesn't state, so the entry-price row and footnote mention it."
   }
 }
