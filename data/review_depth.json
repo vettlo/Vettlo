@@ -1504,5 +1504,119 @@
       "Toggl's help-center article on payment plans lists Premium from $18 per license a month; the pricing page shows $16 billed annually and $24 monthly, which we use.",
       "Data exports (CSV, XLSX, PDF), the audit log and the API are listed on the pricing page without a plan."
     ]
+  },
+  "Outreach": {
+    "checked": "2026-11-15",
+    "source": ["Outreach pricing", "https://www.outreach.ai/pricing"],
+    "plans": [
+      ["Amplify Essentials", "Pricing on request (per user, plus AI credits)", "AI-powered intelligence and coaching: Omni, Research and Deal agents, AI Coach Cards, live coaching, AI summaries, deal health and alerts, Outreach Voice dialer, real-time transcription, sentiment analysis, meeting scheduling, account planning, deal and pipeline management; 10,000 AI credits"],
+      ["Amplify Core", "Pricing on request (per user, plus AI credits)", "AI-powered sales execution: Omni, Research, Revenue and Personalization agents, AI Assist for accounts, emails and calls, data enrichment, multi-channel sequences, reporting, Outreach Voice dialer, call insights and analytics, Plus support; 25,000 AI credits"],
+      ["Amplify Plus", "Pricing on request (per user, plus AI credits)", "Everything in Essentials and Core, plus advanced agents (Meeting Prep, AI Topics, Deal Health, Outreach MCP), full conversation intelligence with playlists and integrations, team performance and win/loss outcomes; 50,000 AI credits"],
+      ["Amplify Pro", "Pricing on request (per user, plus AI credits)", "Everything in Plus, plus AI forecast projection, scenario planner, forecast rollups and trends, territory management, multi-currency, parallel forecasts and advanced managed services; 100,000 AI credits"]
+    ],
+    "first_plan": [
+      ["Live coaching and AI Coach Cards", "Amplify Essentials"],
+      ["Outreach Voice dialer with real-time transcription", "Amplify Essentials"],
+      ["Deal health, alerts and pipeline management", "Amplify Essentials"],
+      ["Multi-channel sequences", "Amplify Core"],
+      ["Revenue and Personalization agents", "Amplify Core"],
+      ["Data enrichment", "Amplify Core"],
+      ["Outreach MCP and Meeting Prep agent", "Amplify Plus"],
+      ["Full conversation intelligence (playlists, integrations)", "Amplify Plus"],
+      ["Win/loss outcomes and team performance", "Amplify Plus"],
+      ["AI forecast projection, scenario planner and territory management", "Amplify Pro"]
+    ],
+    "limits": {
+      "cols": ["Amplify Essentials", "Amplify Core", "Amplify Plus", "Amplify Pro"],
+      "rows": [
+        ["AI credits", "10,000", "25,000", "50,000", "100,000"],
+        ["API calls", "Not shown", "250,000", "500,000", "1,000,000"],
+        ["Custom objects", "Not shown", "5", "10", "20"],
+        ["Knowledge storage", "Not shown", "500 MB", "750 MB", "1,500 MB"]
+      ]
+    },
+    "notes": [
+      "Every package shows \"Request pricing\": Outreach prices per user with no platform fee, and support is included; seat-based access is combined with consumption-based AI credits.",
+      "Extra AI credit packs can be bought at any time. Credits used beyond what was purchased are billed monthly in arrears at a pay-as-you-go rate of $1.40 per credit (subject to change), per Outreach's pay-as-you-go terms page.",
+      "Outreach Voice subscription plans are per user per month: Standard includes 1,000 minutes per user a month and Premium is unlimited (reasonable usage); a Global Minutes package is $300 a month per org for 10,000 shared minutes to 50 countries outside the US and Canada, with extra 1,000-minute blocks at $40.",
+      "Add-ons listed without prices: data sharing, connectors, additional instances and listener licenses. The pricing page lists no free trial."
+    ]
+  },
+  "Lusha": {
+    "checked": "2026-11-15",
+    "source": ["Lusha pricing and FAQ", "https://www.lusha.com/pricing/"],
+    "plans": [
+      ["Free", "$0", "40 credits a month, 1 seat, Workspace, Chrome extension, native HubSpot and Salesforce integrations, MCP and the Claude and ChatGPT connectors; API with strict rate limits. A permanent plan, not a trial"],
+      ["Starter", "Self-serve, monthly or annual; price set by a credit slider (not shown in page text)", "1 seat; API access with strict rate limits, MCP and connectors"],
+      ["Pro", "Self-serve, monthly or annual; price set by a credit slider (not shown in page text)", "2 seats, up to 10; adds full API access and Data Waterfall in Workspace, API and MCP"],
+      ["Premium", "Self-serve, monthly or annual; price set by a credit slider (not shown in page text)", "5 seats, up to 25; Data Waterfall and full API access"],
+      ["Scale", "Custom annual agreement", "Custom seats and credits per contract, per-user credit limits, an account manager; for teams over 25 seats"]
+    ],
+    "first_plan": [
+      ["Chrome extension and Workspace", "Free"],
+      ["Native HubSpot and Salesforce integrations", "Free"],
+      ["MCP server and Claude/ChatGPT connectors", "Free"],
+      ["Full API access (no strict rate limits)", "Pro"],
+      ["Data Waterfall enrichment", "Pro"],
+      ["More than 1 seat", "Pro"],
+      ["5 included seats", "Premium"],
+      ["Per-user credit limits", "Scale"],
+      ["Account manager", "Scale"]
+    ],
+    "limits": {
+      "cols": ["Free", "Starter", "Pro", "Premium", "Scale"],
+      "rows": [
+        ["Seats", "1", "1", "2 (up to 10)", "5 (up to 25)", "Custom"],
+        ["Credits", "40 a month", "Set by slider", "Set by slider", "Set by slider", "Custom"],
+        ["API access", "Strict rate limits", "Strict rate limits", "Full", "Full", "Full"],
+        ["Data Waterfall", "No", "No", "Yes", "Yes", "Yes"]
+      ]
+    },
+    "notes": [
+      "Credit costs are the same on every plan: a verified email is 1 credit, a phone number 5, company information 1, a CRM export 1 per record written, and an API request 1 credit per up to 25 results plus the data revealed. Data Waterfall matches cost 2 credits per email and 8 per phone, charged only on a confirmed match.",
+      "Monthly plans roll unused credits over up to twice the plan's monthly limit; annual plans issue all credits up front and reset unused credits at the end of the year. Extra credits can be bought at any time.",
+      "Plans auto-renew at the price in effect at renewal; cancel at least 14 days before renewal. Seats on Pro and Premium can be added but not reduced, and monthly plans can be frozen for one or two months up to twice a year.",
+      "Lusha's pricing page renders Starter, Pro and Premium prices in an interactive slider, so they don't appear in its page text; checking and lookups with no match cost no credits."
+    ]
+  },
+  "Slack": {
+    "checked": "2026-11-15",
+    "source": ["Slack pricing", "https://slack.com/pricing"],
+    "plans": [
+      ["Free", "$0", "90 days of message history (data deleted after 1 year), 10 app integrations, 1:1 huddles, 1:1 Slack Connect, 1 workspace"],
+      ["Pro", "$7.25/user/mo billed annually or $8.75 monthly", "Unlimited message history and apps, group huddles, Slack Connect with up to 250 organizations, canvases, lists, Workflow Builder, AI thread, channel and huddle summaries, OAuth with Google, Standard Success Plan"],
+      ["Business+", "$15/user/mo billed annually or $18 monthly", "Adds SAML SSO, SCIM, exports of all workspace messages, data residency, daily recaps, file summaries, translations, AI search, workflow generation, CRM features and Premier support"],
+      ["Enterprise+", "Contact sales", "Adds unlimited workspaces, enterprise search, unlimited Slackbot, Multi-SAML, audit logs, native DLP, legal holds, HIPAA support, EMM integration and single-user exports"]
+    ],
+    "first_plan": [
+      ["Unlimited message history", "Pro"],
+      ["Unlimited app integrations", "Pro"],
+      ["Group huddles", "Pro"],
+      ["Canvases, lists and Workflow Builder", "Pro"],
+      ["AI thread, channel and huddle summaries", "Pro"],
+      ["SAML-based SSO and SCIM", "Business+"],
+      ["Export of all workspace messages", "Business+"],
+      ["AI search, daily recaps and translations", "Business+"],
+      ["Enterprise search and unlimited Slackbot", "Enterprise+"],
+      ["Native DLP, legal holds and HIPAA support", "Enterprise+"]
+    ],
+    "limits": {
+      "cols": ["Free", "Pro", "Business+", "Enterprise+"],
+      "rows": [
+        ["Message history", "90 days", "Unlimited", "Unlimited", "Unlimited"],
+        ["App integrations", "10", "Unlimited", "Unlimited", "Unlimited"],
+        ["Huddles", "1:1 only", "Group", "Group", "Group"],
+        ["Slack Connect", "1:1 only", "Up to 250 orgs", "Up to 250 orgs", "Up to 250 orgs"],
+        ["Workspaces", "1", "1", "1", "Unlimited"],
+        ["Slackbot", "Consumption-based", "Consumption-based", "15 messages per user a week", "Unlimited"],
+        ["SSO", "Not listed", "OAuth with Google", "SAML", "Multi-SAML"]
+      ]
+    },
+    "notes": [
+      "New teams get 50% off Pro or Business+ monthly billing for the first 3 months ($4.38 and $9 per user) if they buy online within 7 days of creating the team; the offer isn't available on annual plans or Enterprise+.",
+      "Members with no activity for 28 days aren't billed, and unused time is returned as a prorated credit; new members are prorated for the rest of the billing period.",
+      "Annual plans may qualify for invoicing by ACH or wire; all plans accept credit cards.",
+      "Paid add-ons include the Signature Success Plan (all paid plans), the Premier Success Plan on Pro (included on Business+ and Enterprise+), Enterprise Key Management and Frontline teams on Enterprise+, and Flex Credits to raise Slackbot limits on Business+ invoice plans."
+    ]
   }
 }
