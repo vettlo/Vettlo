@@ -1655,3 +1655,131 @@ guide_page({
         ("Wave", _ac["wave"]["url"] if "wave" in _ac else "https://www.waveapps.com/"),
     ],
 })
+
+
+# ---------- Chart of accounts (what it is, numbering, sample chart, software defaults)
+# Sample chart is a hypothetical service business. Schedule C line labels from the 2025 Schedule C (Form 1040) PDF,
+# QuickBooks/Xero/Zoho Books behavior from vendor help pages, all fetched 2026-11-15. Plan prices and class limits from data.
+_ca_types = [  # (type, range, statement, normal balance, what it holds)
+    ("Assets", "1000-1999", "Balance sheet", "Debit", "What the business owns or is owed: bank accounts, receivables, equipment"),
+    ("Liabilities", "2000-2999", "Balance sheet", "Credit", "What it owes: bills, credit cards, sales tax collected, loans"),
+    ("Equity", "3000-3999", "Balance sheet", "Credit", "The owner's stake: money put in, draws taken out, profit kept"),
+    ("Revenue", "4000-4999", "Profit and loss", "Credit", "Income from selling goods or services"),
+    ("Expenses", "5000-6999", "Profit and loss", "Debit", "Costs of running the business, from contractors to rent"),
+]
+_ca_chart = [  # (number, account, type, 2025 Schedule C line or "")
+    (1000, "Business checking", "Assets", ""), (1010, "Business savings", "Assets", ""),
+    (1100, "Accounts receivable", "Assets", ""), (1200, "Prepaid expenses", "Assets", ""),
+    (1500, "Computer equipment", "Assets", ""), (1510, "Accumulated depreciation (contra-asset)", "Assets", ""),
+    (2000, "Accounts payable", "Liabilities", ""), (2100, "Business credit card", "Liabilities", ""),
+    (2200, "Sales tax payable", "Liabilities", ""), (2300, "Payroll liabilities", "Liabilities", ""),
+    (2700, "Equipment loan", "Liabilities", ""),
+    (3000, "Owner's contributions", "Equity", ""), (3100, "Owner's draws (contra-equity)", "Equity", ""),
+    (3900, "Retained earnings", "Equity", ""),
+    (4000, "Consulting revenue", "Revenue", "1 Gross receipts or sales"), (4100, "Project fees", "Revenue", "1 Gross receipts or sales"),
+    (4900, "Refunds and allowances given", "Revenue", "2 Returns and allowances"),
+    (5000, "Subcontractors", "Expenses", "11 Contract labor"),
+    (6000, "Advertising and marketing", "Expenses", "8 Advertising"),
+    (6050, "Vehicle expenses", "Expenses", "9 Car and truck expenses"),
+    (6100, "Business insurance", "Expenses", "15 Insurance (other than health)"),
+    (6150, "Accounting and legal fees", "Expenses", "17 Legal and professional services"),
+    (6200, "Office supplies and software", "Expenses", "18 Office expense"),
+    (6250, "Office rent", "Expenses", "20b Rent or lease: other business property"),
+    (6300, "Repairs and maintenance", "Expenses", "21 Repairs and maintenance"),
+    (6350, "Business licenses and taxes", "Expenses", "23 Taxes and licenses"),
+    (6400, "Travel", "Expenses", "24a Travel"),
+    (6450, "Business meals", "Expenses", "24b Deductible meals"),
+    (6500, "Utilities and phone", "Expenses", "25 Utilities"),
+    (6600, "Wages", "Expenses", "26 Wages (less employment credits)"),
+    (6650, "Depreciation expense", "Expenses", "13 Depreciation and section 179"),
+    (6900, "Bank fees and other expenses", "Expenses", "27b Other expenses"),
+]
+_ca_rows = "".join(f"<tr><td>{n}</td><td>{a}</td><td>{t}</td><td>{s or '—'}</td></tr>" for n, a, t, s in _ca_chart)
+_ca_n = len(_ca_chart)
+_ca_cnt = {t: sum(1 for _n, _a, tt, _s in _ca_chart if tt == t) for t, *_r in _ca_types}
+_ca_sched = len({s.split(" ")[0] for _n, _a, t, s in _ca_chart if s and t == "Expenses"})
+_ca_type_rows = "".join(f"<tr><td><b>{t}</b></td><td>{r}</td><td>{st}</td><td>{nb}</td><td>{w}</td></tr>" for t, r, st, nb, w in _ca_types)
+_ca_qb = _ap_name.get("quickbooks", "QuickBooks Online")
+_ca_qb_adv = _ap_plan_price(_ca_qb, "Advanced")
+_ca_qb_plus = _ap_plan_price(_ca_qb, "Plus")
+_ca_qb_cls = _ap_limit(_ca_qb, "Classes and locations", "Plus")
+_ca_has = lambda k: k in _ac_ranked
+_ca_soft_rows = ""
+if _ca_has("quickbooks"):
+    _ca_soft_rows += (f"<tr><td>{_ac_rv('quickbooks')}</td><td>Built for your business entity when you create the company</td>"
+                      f"<td>Account type plus a detail type; account numbers optional</td>"
+                      f"<td>250 active accounts on Simple Start, Essentials and Plus; unlimited on Advanced{f' ({_ca_qb_adv})' if _ca_qb_adv else ''}</td>"
+                      "<td>Make unused accounts inactive; inactive accounts don't count toward the limit</td>"
+                      "<td>Spreadsheet import (opening balances added afterward)</td></tr>")
+if _ca_has("xero"):
+    _ca_soft_rows += (f"<tr><td>{_ac_rv('xero')}</td><td>Default chart for your industry or business type</td>"
+                      "<td>Xero's guide suggests 1000-5999 number ranges by type; tracking categories for departments and projects</td><td>No account cap listed</td>"
+                      "<td>Archive accounts that have transactions instead of deleting them</td><td>Not stated in the Xero guide we checked</td></tr>")
+if _ca_has("zohobooks"):
+    _ca_soft_rows += (f"<tr><td>{_ac_rv('zohobooks')}</td><td>Set of default accounts grouped under assets, liability, equity, income and expense</td>"
+                      "<td>Unique account code of up to 50 characters</td><td>No account cap listed</td>"
+                      "<td>System default accounts can't be deleted or made inactive; accounts with transactions can't be deleted</td>"
+                      "<td>CSV, TSV or XLS file up to 10 MB</td></tr>")
+
+guide_page({
+    "slug": "chart-of-accounts", "crumb": "Chart of accounts", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-15", "kicker": "Reference",
+    "title": "Chart of Accounts: What It Is, How to Set One Up, and an Example",
+    "seo_title": "Chart of Accounts: Example, Numbering and Setup | Vettlo",
+    "desc": f"A chart of accounts explained: the five account types, a numbering scheme, a {_ca_n}-account small business example mapped to Schedule C, and setup steps.",
+    "card": f"The five account types, a numbering scheme and a {_ca_n}-account sample chart for a small business.",
+    "answer": ("A chart of accounts is the numbered list of every account a business records transactions in, grouped into five types: assets, liabilities, equity, revenue and expenses. "
+               "The first three feed the balance sheet and the last two feed the profit and loss statement, so the way you set up the chart decides what your financial reports and tax totals can show."),
+    "sections": [
+        ("what", "What is a chart of accounts?", f"""<p>A chart of accounts is the index of your books. Every invoice, bill, bank deposit and card charge is posted to one or more accounts on it, and the general ledger keeps the running balance of each. If the chart has a "Software subscriptions" account, your reports can tell you what you spent on software; if it doesn't, that spending disappears into a broader line.</p>
+<p>Accounting software creates a starter chart for you when you open a company file, and most of what you do afterward is trimming and extending it. Our <a href="{_ac_cat}">comparison of the best accounting software</a> ranks {len(_ac_ranked)} tools on price and features; this guide covers the chart itself, which works the same way in any of them.</p>
+<p>Two everyday accounts show how it connects to the rest of your books: accounts receivable (money customers owe you, see our <a href="/guides/accounts-receivable/">accounts receivable guide</a>) and accounts payable (bills you owe, see the <a href="/guides/accounts-payable-process/">accounts payable process</a>). Both are single lines on the chart that summarize many open invoices.</p>"""),
+        ("types", "What are the five types of accounts?", f"""<p>Every account belongs to one of five types, and the type decides which financial statement it appears on and whether a debit increases or decreases it. Contra accounts, such as accumulated depreciation or owner's draws, sit inside a type but run the opposite way.</p>
+<div class="table-wrap"><table><thead><tr><th>Type</th><th>Common number range</th><th>Statement</th><th>Normal balance</th><th>What it holds</th></tr></thead><tbody>{_ca_type_rows}</tbody></table></div>
+<p>Balance sheet accounts carry their balances from year to year. Revenue and expense accounts start over each fiscal year: at year-end their net result (profit or loss) moves into equity, usually into retained earnings. That's why the chart is always listed in the same order: balance sheet accounts first, then the profit and loss accounts.</p>
+<p>Some businesses add a cost of goods sold group (often 5000-5999) between revenue and operating expenses, so gross profit shows separately. It's still an expense type.</p>"""),
+        ("numbering", "How should you number a chart of accounts?", f"""<p>Give each type its own block of numbers, leave wide gaps between accounts, and number in the order accounts appear on the statements. A four-digit scheme is enough for most small businesses.</p>
+<ol>
+<li><b>Use the first digit for the type.</b> 1 for assets, 2 for liabilities, 3 for equity, 4 for revenue, 5 and 6 for expenses. Xero's own guide suggests the same 1000-5999 pattern.</li>
+<li><b>Leave gaps of 10, 50 or 100.</b> If checking is 1000 and savings is 1010, a second bank account can be 1020 without renumbering anything.</li>
+<li><b>Order within each block by liquidity or size.</b> Cash before receivables before equipment; short-term debts (2000s) before long-term loans (2700s).</li>
+<li><b>Use subaccounts for detail you only sometimes need.</b> "Vehicle expenses" with fuel and insurance subaccounts keeps the profit and loss short while the detail stays one click away.</li>
+<li><b>Don't create accounts for departments, projects or locations.</b> Use the software's tags for that: classes and locations in QuickBooks{f' (from the Plus plan, {_ca_qb_cls} combined)' if _ca_qb_cls else ''}, tracking categories in Xero. Otherwise every expense account gets copied once per department.</li>
+</ol>
+<p>Account numbers are optional in most cloud software, but they make the chart easier to scan, keep reports in a stable order and make it obvious when someone has created an account in the wrong group.</p>"""),
+        ("example", "What does a small business chart of accounts look like?", f"""<p>Here's a sample chart of accounts for a hypothetical consulting business with one employee, some subcontractors and an office lease: {_ca_n} accounts in total ({", ".join(f"{v} {k.lower()}" for k, v in _ca_cnt.items())}). For a sole proprietor, the last column shows which line of the 2025 Schedule C (Form 1040) each income and expense account rolls up to.</p>
+<div class="table-wrap"><table><thead><tr><th>No.</th><th>Account</th><th>Type</th><th>2025 Schedule C line</th></tr></thead><tbody>{_ca_rows}</tbody></table></div>
+<p>The expense accounts cover {_ca_sched} different Schedule C lines, so the year-end tax totals come straight off the profit and loss report instead of being re-sorted from receipts. Partnerships and corporations file different returns with their own line items, and your preparer may place a few accounts differently (bank fees, for example, often go under other expenses). Balance sheet accounts don't map to Schedule C.</p>
+<p>A business that sells products would add inventory (an asset, around 1300) and cost of goods sold accounts (5000s), which feed line 4 and Part III of Schedule C.</p>
+<p class="small muted">Hypothetical example for illustration. Schedule C line labels from the IRS 2025 form. This isn't tax advice.</p>"""),
+        ("setup", "How do you set up a chart of accounts?", f"""<p>Start from the default chart your accounting software creates, then cut it down and add only the accounts your reports and tax return need. Seven steps:</p>
+<ol>
+<li><b>Pick your entity and industry during setup.</b> QuickBooks Online builds the starting chart from your business entity, and Xero from your industry or business type, so a wrong answer here means more cleanup later.</li>
+<li><b>List the reports you need.</b> Your tax return's expense lines, what your lender or investors ask for, and the two or three costs you want to watch every month.</li>
+<li><b>Make inactive or archive the defaults you won't use.</b> An empty account list is easier to post to correctly. In QuickBooks, inactive accounts don't count toward the plan's account limit; Zoho Books keeps its system default accounts active.</li>
+<li><b>Add your own accounts and numbers.</b> Choose the type carefully: in QuickBooks the account type and detail type decide where the account shows up on the statements.</li>
+<li><b>Enter opening balances</b> for bank, credit card, loan and equity accounts as of your start date. Bank and card accounts connected to bank feeds bring in their own transactions.</li>
+<li><b>Map bank rules and products to accounts</b> so routine transactions land in the right place without manual sorting.</li>
+<li><b>Limit who can create accounts.</b> Xero recommends keeping it to one or two people; a chart that anyone can extend fills up with near-duplicates such as "Software" and "Subscriptions."</li>
+</ol>
+<p>Review the chart once a year, before the year-end close. Merging or renaming accounts is easiest before a new fiscal year starts.</p>"""),
+        ("software", "How do QuickBooks, Xero and Zoho Books handle the chart of accounts?", f"""<p>All three create a default chart for you and let you add, rename and number accounts; they differ in limits, in what you can remove and in how you bring in a chart you already have.</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Default chart</th><th>Structure</th><th>Account limit</th><th>Removing accounts</th><th>Import</th></tr></thead><tbody>{_ca_soft_rows}</tbody></table></div>
+<p class="small muted">From each vendor's help pages, checked Nov 15, 2026. QuickBooks limits from Intuit's usage limits page (updated Aug 5, 2026); plan prices are regular US monthly prices from our pricing data.</p>
+<p>The 250-account cap rarely binds a small business, but a company that keeps a separate account per property, store or client can hit it on QuickBooks Plus{f' ({_ca_qb_plus})' if _ca_qb_plus else ''}; classes, locations or subaccounts are the cheaper fix than upgrading. For a plan-by-plan look at the most common pairings, see <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> and <a href="/compare/xero-vs-zohobooks/">Xero vs Zoho Books</a>, and for what each plan costs over a year, our <a href="/guides/accounting-software-cost/">accounting software cost guide</a>.</p>"""),
+    ],
+    "faqs": [
+        ("How many accounts should a small business chart of accounts have?", f"There's no required number. Use enough accounts to read your profit and loss and fill in your tax return, and no more; the sample chart above has {_ca_n}. QuickBooks Online caps active accounts at 250 on its Simple Start, Essentials and Plus plans, with no cap on Advanced."),
+        ("What is the difference between a chart of accounts and a general ledger?", "The chart of accounts is the list of accounts and their numbers and types. The general ledger is the record of every transaction posted to those accounts and each account's balance. The chart is the structure; the ledger is the data."),
+        ("Can you change a chart of accounts after you start using it?", "Yes. You can add, rename and renumber accounts at any time. For accounts that already have transactions, make them inactive or archive them instead of deleting them so past reports stay intact; Zoho Books doesn't let you delete an account linked to transactions or any system default account."),
+        ("What order does a chart of accounts follow?", "Balance sheet accounts come first (assets, liabilities, equity), then profit and loss accounts (revenue, then expenses). It's the same order the accounts appear on the financial statements, and the numbering usually follows it: 1000s for assets through 5000s and 6000s for expenses."),
+    ],
+    "sources": [
+        ("IRS: 2025 Schedule C (Form 1040), Profit or Loss From Business", "https://www.irs.gov/pub/irs-prior/f1040sc--2025.pdf"),
+        ("QuickBooks: Create a new account in your chart of accounts", "https://quickbooks.intuit.com/learn-support/en-us/help-articles/create-a-new-account-in-your-chart-of-accounts/00/348702"),
+        ("QuickBooks: Learn about usage limits in QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-us/help-article/intuit-subscriptions/learn-usage-limits-quickbooks-online/L6THMltE4_US_en_US"),
+        ("Xero: What is a chart of accounts?", "https://www.xero.com/glossary/chart-of-accounts/"),
+        ("Zoho Books help: Chart of accounts", "https://www.zoho.com/books/help/accountant/chart-of-accounts.html"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+    ],
+})
