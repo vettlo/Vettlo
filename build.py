@@ -1552,6 +1552,8 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Editorial team]({DOMAIN}/team/)
 """)
     (site / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY)
+    # Yandex Webmaster ownership verification (file method)
+    (site / "yandex_5f475d4efe20ffdc.html").write_text('<html>\n    <head>\n        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\n    </head>\n    <body>Verification: 5f475d4efe20ffdc</body>\n</html>\n')
     (site / "_redirects").write_text("/author/editor/ /team/ 301\n/author/editor /team/ 301\n/topics/ /reviews/ 301\n/topics /reviews/ 301\n")
     (site / "_headers").write_text("/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n" + ("  X-Robots-Tag: noindex, nofollow\n" if PRELAUNCH_NOINDEX else ""))
     pub = ROOT / "public"
