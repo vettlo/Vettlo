@@ -238,5 +238,20 @@
     "updated": "2026-11-15",
     "checked": "2026-11-15",
     "note": "Re-verified Zoom Workplace Pro and Business prices, participants, meeting length, storage and AI features on zoom.us/pricing and Microsoft's Teams business plan prices on its comparison page (unchanged; Teams' free plan isn't listed there, so its limits are as last verified Nov 13), and refreshed G2 review counts (ratings unchanged)."
+  },
+  "/tools/best-issue-tracking-software/": {
+    "updated": "2026-11-16",
+    "checked": "2026-11-16",
+    "note": "Re-verified prices, plans, free-plan limits and trials for all 7 issue trackers on vendor pages: no price changes (Jira's pricing page now shows prices only via a calculator, so Jira stays as last verified Nov 2; YouTrack confirmed via JetBrains' price announcement). Shortcut's metrics dashboard is on Team, not Business, so its text is corrected. Refreshed G2 review counts (ratings unchanged; Jira 8,044 to 8,077)."
+  },
+  "/tools/best-jira-alternatives/": {
+    "updated": "2026-11-16",
+    "checked": "2026-11-16",
+    "note": "Re-verified prices, plans, free-plan limits and trials for all 7 issue trackers on vendor pages: no price changes (Jira's pricing page now shows prices only via a calculator, so Jira stays as last verified Nov 2; YouTrack confirmed via JetBrains' price announcement). Shortcut's metrics dashboard is on Team, not Business, so its text is corrected. Refreshed G2 review counts (ratings unchanged; Jira 8,044 to 8,077)."
+  },
+  "/compare/jira-vs-linear/": {
+    "updated": "2026-11-16",
+    "checked": "2026-11-16",
+    "note": "Re-verified Linear's Free, Basic and Business prices and limits on linear.app/pricing (unchanged) and refreshed G2 review counts; Jira's pricing page now shows prices only via a calculator, so its list prices are as last verified Nov 2."
   }
 }

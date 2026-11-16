@@ -1618,5 +1618,102 @@
       "Annual plans may qualify for invoicing by ACH or wire; all plans accept credit cards.",
       "Paid add-ons include the Signature Success Plan (all paid plans), the Premier Success Plan on Pro (included on Business+ and Enterprise+), Enterprise Key Management and Frontline teams on Enterprise+, and Flex Credits to raise Slackbot limits on Business+ invoice plans."
     ]
+  },
+  "Linear": {
+    "checked": "2026-11-16",
+    "source": ["Linear pricing", "https://linear.app/pricing"],
+    "plans": [
+      ["Free", "$0", "Unlimited members, 2 teams, 250 issues, 10MB file uploads; agent platform, Linear Agent and Loops included"],
+      ["Basic", "$10/user/mo billed yearly", "5 teams, unlimited issues and file uploads, admin roles"],
+      ["Business", "$16/user/mo billed yearly", "Unlimited teams, private teams and guests, Insights, Linear Asks, triage rules, issue SLAs, Zendesk and Intercom integrations, Code Intelligence and Triage Intelligence"],
+      ["Enterprise", "Custom, billed yearly only", "Dashboards, SAML, SCIM provisioning, audit log, IP restrictions, sub-initiatives, uptime SLA, priority support and an account manager"]
+    ],
+    "first_plan": [
+      ["Unlimited issues", "Basic"],
+      ["Admin roles", "Basic"],
+      ["Insights (analytics)", "Business"],
+      ["Linear Asks (requests from Slack and email)", "Business"],
+      ["Guest accounts and private teams", "Business"],
+      ["Triage rules", "Business"],
+      ["Issue SLAs", "Business"],
+      ["Zendesk and Intercom integrations", "Business"],
+      ["Dashboards", "Enterprise"],
+      ["SAML and SCIM provisioning", "Enterprise"],
+      ["Audit log and IP restrictions", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Basic", "Business", "Enterprise"],
+      "rows": [
+        ["Teams", "2", "5", "Unlimited", "Unlimited"],
+        ["Issues", "250", "Unlimited", "Unlimited", "Unlimited"],
+        ["File upload size", "10MB", "Unlimited", "Unlimited", "Unlimited"],
+        ["Members", "Unlimited", "Unlimited", "Unlimited", "Unlimited"],
+        ["API rate limits", "Standard", "Standard", "2x standard", "5x standard"],
+        ["Sub-team levels", "—", "—", "1", "5"],
+        ["Release pipelines", "—", "—", "15", "Unlimited"]
+      ]
+    },
+    "notes": ["Prices on the pricing page are for yearly billing; Linear's billing docs say monthly and yearly options are both available, except Enterprise, which is yearly only.", "Plans are billed per unsuspended user; on yearly plans, added users are charged pro-rata and suspended users credited, with no refunds for mid-subscription cancellations.", "If a paid plan is cancelled, workspaces over 250 issues can't create new issues.", "Cloud coding agent and Loops use AI credits; the pricing page doesn't list credit amounts.", "Discounts: 75% off Basic and Business for eligible non-profits and university staff, a free year for student-led programs, and up to 6 months of Business free through Linear's Startup Program partners."]
+  },
+  "Everhour": {
+    "checked": "2026-11-16",
+    "source": ["Everhour pricing", "https://everhour.com/pricing"],
+    "plans": [
+      ["Free", "$0", "Up to 5 seats; time tracking, projects and tasks, reports and data export; no integrations"],
+      ["Team", "$8.50/seat/mo billed yearly, minimum 5 seats", "All features, unlimited seats, native integrations, billing, budgeting and invoicing, SSO and advanced permissions"],
+      ["Custom", "Contact sales, minimum 50 seats", "All features, volume discounts, personalized demos, priority support with faster response, a dedicated manager"]
+    ],
+    "first_plan": [
+      ["Time tracking, projects and tasks", "Free"],
+      ["Reports and data export", "Free"],
+      ["Native integrations (e.g. Asana, Jira)", "Team"],
+      ["Billing and budgets", "Team"],
+      ["Invoicing", "Team"],
+      ["SSO and advanced permissions", "Team"],
+      ["Volume discounts", "Custom"],
+      ["Dedicated manager and priority support", "Custom"]
+    ],
+    "limits": {
+      "cols": ["Free", "Team", "Custom"],
+      "rows": [
+        ["Seats", "Up to 5", "Minimum 5, unlimited", "Minimum 50"],
+        ["Integrations", "None", "Native integrations", "Native integrations"],
+        ["Billing", "—", "Yearly (saves 15% vs monthly)", "Contact sales"]
+      ]
+    },
+    "notes": ["The 14-day trial is a fully functional account with all features and needs no credit card; Everhour sends a reminder a few days before it ends.", "If you connect an integration during the trial, keeping it needs a paid plan; moving to Free afterwards means contacting support.", "Team bills at least 5 seats even for 2 or 3 users (at $8.50, $510 a year); removing a user frees the seat for someone else rather than lowering the count.", "Annual billing saves 15%, unused months aren't refunded, and payment is by credit or debit card only, charged in US dollars.", "The pricing page doesn't show Team's monthly-billing price."]
+  },
+  "Intercom": {
+    "checked": "2026-11-16",
+    "source": ["Intercom pricing", "https://www.intercom.com/pricing"],
+    "plans": [
+      ["Essential", "$19/seat/mo for new customers (35% off $29)", "Shared inbox, ticketing, public help center, Messenger; Fin AI Agent from $0.99 per outcome"],
+      ["Advanced", "$85/seat/mo", "Workflows automation builder, round-robin assignment, multiple team inboxes, private multilingual help center, 20 Lite seats"],
+      ["Expert", "$132/seat/mo", "SLAs, SSO and identity management, HIPAA support, multibrand Messenger and help center, 50 Lite seats"],
+      ["Fin AI Agent (standalone)", "From $0.99 per Fin outcome", "Works without Intercom seats, on top of an existing help desk (minimum commitments apply)"]
+    ],
+    "first_plan": [
+      ["Shared inbox", "Essential"],
+      ["Ticketing system", "Essential"],
+      ["Public help center", "Essential"],
+      ["Fin AI Agent", "Essential"],
+      ["Workflows automation builder", "Advanced"],
+      ["Round-robin assignment", "Advanced"],
+      ["Multiple team inboxes", "Advanced"],
+      ["Private, multilingual help center", "Advanced"],
+      ["SLAs", "Expert"],
+      ["SSO and HIPAA support", "Expert"],
+      ["Multibrand Messenger and help center", "Expert"]
+    ],
+    "limits": {
+      "cols": ["Essential", "Advanced", "Expert"],
+      "rows": [
+        ["Seat price", "$19 (new customers; $29 list)", "$85", "$132"],
+        ["Included Lite seats", "None", "20", "50"],
+        ["Fin AI Agent", "From $0.99 per outcome", "From $0.99 per outcome", "From $0.99 per outcome"],
+        ["Monthly billing available", "Yes", "Yes", "Annual only"]
+      ]
+    },
+    "notes": ["Self-serve trials last 14 days with no credit card and include Fin AI Agent and the Pro, Copilot and Proactive Support Plus add-ons (Intercom pricing FAQs).", "Fin is charged once per conversation outcome (resolution, procedure handoff, qualification or disqualification); handoffs customers ask for and escalations Fin can't handle aren't charged, and a monthly outcome limit can cap spend.", "Add-ons: Copilot $29 per agent a month (10 Copilot conversations per agent a month free, not available to Lite seats), Proactive Support Plus $99 a month with 500 messages, Pro from $100 a month.", "Live chat, support email, in-app chats, banners and tooltips are unlimited on all plans; email campaigns, SMS, WhatsApp and phone are pay-as-you-go.", "Intercom's FAQ says Essential starts at $29 a seat on annual billing; the $19 price is a new-customer discount shown on the pricing page."]
   }
 }
