@@ -1203,8 +1203,8 @@ def head_block(path, p, css_href):
     return (f'<title>{p["title"]}</title><meta name="description" content="{p["desc"]}">{robots}'
             f'<link rel="canonical" href="{canon}"><meta property="og:type" content="{p["ptype"]}"><meta property="og:site_name" content="Vettlo">'
             f'<meta property="og:title" content="{p["title"]}"><meta property="og:description" content="{p["desc"]}"><meta property="og:url" content="{canon}">'
-            f'<meta property="og:image" content="{DOMAIN}/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
-            f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{DOMAIN}/assets/og.png"><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192"><link rel="icon" href="/assets/logo.svg?v=2" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">'
+            f'<meta property="og:image" content="{DOMAIN}{p.get("og") or "/assets/og.png"}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+            f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{DOMAIN}{p.get("og") or "/assets/og.png"}"><link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192"><link rel="icon" href="/assets/logo.svg?v=2" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">'
             f'{FONTS}<link rel="stylesheet" href="{css_href}">{ld}')
 
 
@@ -1647,6 +1647,12 @@ def build():
         for fn, svg in BADGE_FILES.items():
             (d / "badges" / fn).write_text(svg)
         shutil.copy(ROOT / "src" / "og.png", d / "assets" / "og.png")
+        (d / "assets" / "covers").mkdir(exist_ok=True)
+        for _slug, _svg in COVERS.items():
+            (d / "assets" / "covers" / f"{_slug}.svg").write_text(_svg)
+        if (ROOT / "src" / "covers").exists():
+            for _png in (ROOT / "src" / "covers").glob("*.png"):
+                shutil.copy(_png, d / "assets" / "covers" / _png.name)
         for fn in ("favicon.ico", "apple-touch-icon.png", "icon-192.png"):
             shutil.copy(ROOT / "src" / fn, d / fn)
         # web app manifest: gives browsers and search engines a clear, crawlable site icon and name

@@ -355,6 +355,56 @@ def _fmt(x):
     return f"${x:,.0f}" if x == int(x) else f"${x:,.2f}"
 
 
+GUIDE_KIND_ICONS = {"Explainer": '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M9 8h7M9 11.5h5"/>',
+    "Pricing guide": '<path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8.5" cy="8.5" r="1.6"/>',
+    "How-to": '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',
+    "Reference": '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/>',
+    "Buying guide": '<path d="M4 5h2l2 10h10l2-7H7"/><circle cx="10" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/>',
+    "Migration guide": '<path d="M4 8h13l-3-3M20 16H7l3 3"/>'}
+
+
+COVERS = {}  # slug -> SVG cover (1200x630), written to /assets/covers/<slug>.svg by build.py
+
+
+def _wrap(text, width):
+    lines, cur = [], ""
+    for w in text.split():
+        if len(cur) + len(w) + (1 if cur else 0) <= width:
+            cur = f"{cur} {w}".strip()
+        else:
+            lines.append(cur); cur = w
+    return lines + ([cur] if cur else [])
+
+
+def guide_cover(g):
+    """Brand-free cover: light green field, type pill, title, team line and the team's line icon. No logos or company names."""
+    esc = lambda t: html.escape(t, quote=True)
+    size, width = 62, 22
+    lines = _wrap(g["title"], width)
+    if len(lines) > 4:
+        size, width = 52, 27
+        lines = _wrap(g["title"], width)
+    lines = lines[:5]
+    lh = int(size * 1.14)
+    y0 = 300 - (len(lines) - 1) * lh // 2
+    tspans = "".join(f'<tspan x="80" y="{y0 + i * lh}">{esc(l)}</tspan>' for i, l in enumerate(lines))
+    icon = GUIDE_KIND_ICONS.get(g.get("kicker", ""), GUIDE_KIND_ICONS["Reference"])
+    kicker = esc(g.get("kicker", "Guide"))
+    kw = 26 + len(kicker) * 13
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="{esc(g['title'])}">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eef9f3"/><stop offset="1" stop-color="#d4f1e3"/></linearGradient></defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<circle cx="1010" cy="300" r="270" fill="none" stroke="#00865e" stroke-opacity=".10" stroke-width="2"/>
+<circle cx="1010" cy="300" r="200" fill="none" stroke="#00865e" stroke-opacity=".14" stroke-width="2"/>
+<rect x="890" y="180" width="240" height="240" rx="56" fill="#00865e"/>
+<g transform="translate(940 230) scale(5.8)" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">{icon}</g>
+<rect x="80" y="70" width="{kw}" height="44" rx="22" fill="#00865e"/>
+<text x="{80 + kw / 2}" y="99" text-anchor="middle" font-family="Geist, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600" fill="#ffffff">{kicker}</text>
+<text font-family="Geist, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="{size}" font-weight="700" letter-spacing="-1.5" fill="#0c1a14">{tspans}</text>
+<text x="80" y="560" font-family="Geist, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="600" fill="#006f4e">{esc(g['dept'])} · vettlo.com</text>
+</svg>"""
+
+
 def guide_page(g):
     """g: slug, title, seo_title, desc, dept, cats, date, kicker, answer, sections [(id, h2, html)], faqs, sources [(title, url)]."""
     url = f"/guides/{g['slug']}/"
@@ -367,6 +417,7 @@ def guide_page(g):
     body = f"""<div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/guides/">Guides</a> / <a href="/guides/#{dslug}">{dname}</a> / {g['crumb']}</nav>
 <header class="article-head"><span class="eyebrow">{g.get('kicker', 'Guide')} · {dname}</span><h1>{g['title']}</h1>{byline(url, g['date'], g['date'])}</header>
+<figure class="g-cover"><img src="/assets/covers/{g['slug']}.svg" width="1200" height="630" alt="" fetchpriority="high"></figure>
 <div class="layout"><div class="main-col">
 <section class="answer" id="answer" aria-label="Short answer"><h2>Short answer</h2><p>{g['answer']}</p></section>
 {secs}
@@ -377,7 +428,13 @@ def guide_page(g):
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span>{toc}</nav></div></div>
 {newsletter()}"""
     crumbs = [("/", "Home"), ("/guides/", "Guides"), (url, g["crumb"])]
-    page(url, g["seo_title"], g["desc"], body, cur="/guides/", ptype="article", jsonld=_ld(g["title"], url, g["date"], crumbs, [], g["faqs"]))
+    COVERS[g["slug"]] = guide_cover(g)
+    ld = _ld(g["title"], url, g["date"], crumbs, [], g["faqs"])
+    png = os.path.exists(os.path.join(str(ROOT), "src", "covers", g["slug"] + ".png"))
+    ld[0]["image"] = f"{DOMAIN}/assets/covers/{g['slug']}.{'png' if png else 'svg'}"
+    page(url, g["seo_title"], g["desc"], body, cur="/guides/", ptype="article", jsonld=ld)
+    if png:
+        PAGES[url]["og"] = f"/assets/covers/{g['slug']}.png"
     GUIDES.append((url, g["title"], g["card"], dname, g.get("cats", []), g.get("kicker", "Guide")))
 
 
@@ -408,19 +465,16 @@ def guides_index():
         by.setdefault(d, []).append((url, t, card, k))
     icons = globals().get("TEAM_ICONS", {})
     kinds = sorted({k for *_x, k in GUIDES})
-    kind_ic = {"Explainer": '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M9 8h7M9 11.5h5"/>',
-               "Pricing guide": '<path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8.5" cy="8.5" r="1.6"/>',
-               "How-to": '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',
-               "Reference": '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/>',
-               "Buying guide": '<path d="M4 5h2l2 10h10l2-7H7"/><circle cx="10" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/>',
-               "Migration guide": '<path d="M4 8h13l-3-3M20 16H7l3 3"/>'}
-    mosaic = "".join(f'<div class="mz-tile" style="--d:{n}"><svg viewBox="0 0 24 24" aria-hidden="true">{kind_ic.get(k, kind_ic["Reference"])}</svg><span>{k}</span></div>'
+    mosaic = "".join(f'<div class="mz-tile" style="--d:{n}"><svg viewBox="0 0 24 24" aria-hidden="true">{GUIDE_KIND_ICONS.get(k, GUIDE_KIND_ICONS["Reference"])}</svg><span>{k}</span></div>'
                      for n, k in enumerate(["Explainer", "Pricing guide", "How-to", "Reference", "Buying guide", "Migration guide"]))
     teams = [d for d, _, _ in DEPTS if d in by]
+    latest = [u for u, *_r in GUIDES][-3:][::-1]
+    stack = "".join(f'<a class="cs-item" href="{u}" style="--i:{i}" tabindex="-1"><img src="/assets/covers/{u.strip("/").split("/")[-1]}.svg" width="1200" height="630" alt=""></a>' for i, u in enumerate(latest))
     tcards = '<button type="button" class="gt-card is-on" data-team=""><span class="gt-name">All guides</span><span class="gt-n">' + str(len(GUIDES)) + ' guides</span></button>' + "".join(
         f'<button type="button" class="gt-card" data-team="{DEPT_SLUG[d]}"><span class="tc-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{icons.get(d, "")}</svg></span>'
         f'<span class="gt-name">{d}</span><span class="gt-n">{len(by[d])} {"guide" if len(by[d]) == 1 else "guides"}</span></button>' for d in teams)
     gcards = "".join(f'<a class="g-card" href="{u}" data-team="{DEPT_SLUG[d]}" data-q="{html.escape((t + " " + c + " " + k + " " + d).lower())}">'
+                     f'<img class="g-thumb" src="/assets/covers/{u.strip("/").split("/")[-1]}.svg" width="1200" height="630" alt="" loading="lazy" decoding="async">'
                      f'<span class="g-kind">{k}</span><b>{t}</b><span class="g-desc">{c}</span><span class="g-team">{d}</span></a>'
                      for d in teams for u, t, c, k in by[d])
     body = f"""<section class="cats-hero"><div class="wrap cats-hero-grid"><div>
@@ -428,7 +482,7 @@ def guides_index():
 <p class="lede">Explainers, pricing breakdowns and how-tos, written from the same research behind our shortlists. Every price comes from the vendor's own pricing page.</p>
 <div class="cats-stats"><span><b>{len(GUIDES)}</b> guides</span><span><b>{len(teams)}</b> teams covered</span><span><b>100%</b> prices from the source</span></div>
 <div class="cats-find"><label class="sr-only" for="gf-q">Search guides</label><input id="gf-q" type="search" placeholder="Search guides, e.g. payroll cost, CRM, bank reconciliation" autocomplete="off"></div>
-</div><div class="mosaic mosaic-6" aria-hidden="true">{mosaic}</div></div></section>
+</div><div class="cover-stack" aria-hidden="true">{stack}</div></div></section>
 <div class="wrap guides-body">
 <div class="gt-grid" role="group" aria-label="Guides by team">{tcards}</div>
 <div class="g-grid">{gcards}</div>
