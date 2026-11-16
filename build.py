@@ -1393,7 +1393,7 @@ def categories_page(picks, n_tools):
 <p class="lede">Shortlists for the software teams buy, grouped by the team that buys it. Each one ranks tools on published, weighted criteria with prices checked on the vendor's own page.</p>
 <div class="cats-stats"><span><b>{n_cats}</b> categories</span><span><b>{n_tools}</b> tools scored</span><span><b>6</b> weighted criteria each</span></div>
 <div class="cats-find"><label class="sr-only" for="cf-q">Filter categories</label><input id="cf-q" type="search" placeholder="Filter categories, e.g. payroll, chat, contracts" autocomplete="off">
-<div class="cf-chips" role="group" aria-label="Filter by team">{chips}</div></div>
+</div>
 </div><div class="mosaic" aria-label="Popular categories">{tiles_v}</div></div></section>
 <div class="wrap cats-body">{"".join(secs)}
 <p class="cats-empty" hidden>No category matches that yet. <a href="/contact/">Tell us what you're looking for</a> and we'll add it to the research queue.</p>

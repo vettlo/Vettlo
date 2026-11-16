@@ -754,11 +754,10 @@ details.breakdown .criteria { margin-top: .9rem; }
 .cats-cta p { color: var(--ink-2); margin-top: .3rem; }
 /* Categories hero: icon mosaic on the right (brand-free line icons in CTA green) */
 .cats-hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
-.mosaic { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; width: 100%; max-width: 29rem; justify-self: end; transform: rotate(-4deg); }
+.mosaic { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; width: 100%; max-width: 29rem; justify-self: end; }
 .mz-tile { aspect-ratio: 1; display: grid; place-content: center; justify-items: center; gap: .5rem; background: var(--card); border: 1px solid rgba(0,134,94,.15); border-radius: 18px;
   box-shadow: 0 1px 2px rgba(12,26,20,.04), 0 14px 30px -14px rgba(0,134,94,.35); color: var(--brand-2); text-decoration: none;
   animation: mzfloat 6s ease-in-out infinite; animation-delay: calc(var(--d) * -.7s); transition: border-color .15s, transform .15s; }
-.mz-tile:nth-child(3n+2) { translate: 0 1.1rem; }
 .mz-tile:hover { border-color: var(--brand); text-decoration: none; }
 .mz-tile svg { width: 2.1rem; height: 2.1rem; fill: none; stroke: var(--brand); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .mz-tile span { font-size: .78rem; font-weight: 600; color: var(--ink-2); }
