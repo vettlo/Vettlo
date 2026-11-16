@@ -1375,13 +1375,26 @@ def categories_page(picks, n_tools):
                          f'<span class="ct-name">{n}</span><span class="ct-sub">{sb}</span><span class="ct-meta">{meta} <span aria-hidden="true">→</span></span></a>')
         secs.append(f'<section class="cat-sec" id="{slug}" data-team="{slug}"><div class="cat-sec-head"><h2>{html.escape(name)}</h2>'
                     f'<a href="/{slug}/">{html.escape(sub)}</a></div><div class="cat-grid">{"".join(tiles)}</div></section>')
-    return f"""<section class="cats-hero"><div class="wrap">
+    icons = [  # (label, shortlist slug, svg path data) — simple line icons, no brands
+        ("CRM", "best-crm-software", '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5"/><path d="M16 6.5h4.5M16 10h4.5M17.5 13.5h3"/>'),
+        ("Payroll", "best-payroll-software", '<rect x="3" y="6" width="18" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v5M17.5 9.5v5"/>'),
+        ("Email", "best-email-marketing-software", '<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7l8 6 8-6"/>'),
+        ("Projects", "best-project-management-software", '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15l1.6 1.6 2.9-2.9M14.5 9.5H17M14.5 15.5H17"/>'),
+        ("Passwords", "best-password-managers-for-business", '<rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.2" r="1.3"/>'),
+        ("Analytics", "best-product-analytics-tools", '<path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>'),
+        ("Help desk", "best-help-desk-software", '<path d="M4.5 13v-1a7.5 7.5 0 0 1 15 0v1"/><rect x="3.5" y="13" width="4" height="6" rx="1.5"/><rect x="16.5" y="13" width="4" height="6" rx="1.5"/>'),
+        ("E-signature", "best-e-signature-software", '<path d="M4 17c2.5 0 3-6 5.5-6s1.5 5 4 5 2.5-3 4.5-3"/><path d="M4 20.5h16"/><path d="M15 4.5l3.5 3.5L11 15.5l-4 .5.5-4z"/>'),
+        ("Time tracking", "best-time-tracking-software", '<circle cx="12" cy="13" r="7.5"/><path d="M12 9.5V13l2.5 2M10 3h4M18.5 6.5l1.2-1.2"/>'),
+    ]
+    tiles_v = "".join(f'<a class="mz-tile" href="/tools/{sl}/" style="--d:{i}" title="{lb}"><svg viewBox="0 0 24 24" aria-hidden="true">{d}</svg><span>{lb}</span></a>'
+                      for i, (lb, sl, d) in enumerate(icons) if f"/tools/{sl}/" in PAGES)
+    return f"""<section class="cats-hero"><div class="wrap cats-hero-grid"><div>
 <h1>Every category we review</h1>
 <p class="lede">Shortlists for the software teams buy, grouped by the team that buys it. Each one ranks tools on published, weighted criteria with prices checked on the vendor's own page.</p>
 <div class="cats-stats"><span><b>{n_cats}</b> categories</span><span><b>{n_tools}</b> tools scored</span><span><b>6</b> weighted criteria each</span></div>
 <div class="cats-find"><label class="sr-only" for="cf-q">Filter categories</label><input id="cf-q" type="search" placeholder="Filter categories, e.g. payroll, chat, contracts" autocomplete="off">
 <div class="cf-chips" role="group" aria-label="Filter by team">{chips}</div></div>
-</div></section>
+</div><div class="mosaic" aria-label="Popular categories">{tiles_v}</div></div></section>
 <div class="wrap cats-body">{"".join(secs)}
 <p class="cats-empty" hidden>No category matches that yet. <a href="/contact/">Tell us what you're looking for</a> and we'll add it to the research queue.</p>
 <div class="cats-cta"><div><h2>Missing a category your team buys?</h2><p>Tell us what you're evaluating and we'll add it to the research queue.</p></div><a class="btn" href="/contact/">Suggest a category</a></div>
