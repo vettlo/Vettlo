@@ -468,8 +468,16 @@ def guides_index():
     mosaic = "".join(f'<div class="mz-tile" style="--d:{n}"><svg viewBox="0 0 24 24" aria-hidden="true">{GUIDE_KIND_ICONS.get(k, GUIDE_KIND_ICONS["Reference"])}</svg><span>{k}</span></div>'
                      for n, k in enumerate(["Explainer", "Pricing guide", "How-to", "Reference", "Buying guide", "Migration guide"]))
     teams = [d for d, _, _ in DEPTS if d in by]
-    latest = [u for u, *_r in GUIDES][-3:][::-1]
-    stack = "".join(f'<a class="cs-item" href="{u}" style="--i:{i}" tabindex="-1"><img src="/assets/covers/{u.strip("/").split("/")[-1]}.svg" width="1200" height="630" alt=""></a>' for i, u in enumerate(latest))
+    # hero: the real questions our latest guides answer, as chat bubbles
+    qs, seen = [], set()
+    for u, t, _c, d, *_r in reversed(GUIDES):  # newest question per team, so the bubbles span teams
+        q = t.split("?")[0] + "?" if "?" in t else ""
+        if q and len(q) <= 48 and d not in seen:
+            qs.append((u, q)); seen.add(d)
+        if len(qs) == 4:
+            break
+    ok = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>'
+    stack = "".join(f'<a class="qb" href="{u}" style="--i:{i}"><span class="qb-text">{html.escape(q)}</span><span class="qb-ok">{ok}</span></a>' for i, (u, q) in enumerate(qs))
     tcards = '<button type="button" class="gt-card is-on" data-team=""><span class="gt-name">All guides</span><span class="gt-n">' + str(len(GUIDES)) + ' guides</span></button>' + "".join(
         f'<button type="button" class="gt-card" data-team="{DEPT_SLUG[d]}"><span class="tc-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{icons.get(d, "")}</svg></span>'
         f'<span class="gt-name">{d}</span><span class="gt-n">{len(by[d])} {"guide" if len(by[d]) == 1 else "guides"}</span></button>' for d in teams)
@@ -482,7 +490,7 @@ def guides_index():
 <p class="lede">Explainers, pricing breakdowns and how-tos, written from the same research behind our shortlists. Every price comes from the vendor's own pricing page.</p>
 <div class="cats-stats"><span><b>{len(GUIDES)}</b> guides</span><span><b>{len(teams)}</b> teams covered</span><span><b>100%</b> prices from the source</span></div>
 <div class="cats-find"><label class="sr-only" for="gf-q">Search guides</label><input id="gf-q" type="search" placeholder="Search guides, e.g. payroll cost, CRM, bank reconciliation" autocomplete="off"></div>
-</div><div class="cover-stack" aria-hidden="true">{stack}</div></div></section>
+</div><div class="q-bubbles" aria-label="Questions our guides answer">{stack}</div></div></section>
 <div class="wrap guides-body">
 <div class="gt-grid" role="group" aria-label="Guides by team">{tcards}</div>
 <div class="g-grid">{gcards}</div>

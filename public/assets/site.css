@@ -842,3 +842,18 @@ details.breakdown .criteria { margin-top: .9rem; }
 .cs-item img { display: block; width: 100%; height: auto; }
 .cs-item:hover { transform: translateY(-4px); }
 @media (max-width: 900px) { .cover-stack { display: none; } }
+/* Guides hero: questions our guides answer, as chat bubbles */
+.q-bubbles { display: grid; gap: 1rem; justify-self: end; width: 100%; max-width: 27rem; }
+.qb { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.1rem 1rem 1.25rem;
+  background: var(--card); border: 1px solid rgba(0,134,94,.15); border-radius: 20px 20px 20px 6px; color: var(--ink); font-weight: 600; font-size: 1.02rem; line-height: 1.35;
+  box-shadow: 0 1px 2px rgba(12,26,20,.04), 0 16px 32px -18px rgba(0,134,94,.4); width: 88%;
+  animation: qbin .6s cubic-bezier(.2,.8,.2,1) both, mzfloat 7s ease-in-out infinite; animation-delay: calc(var(--i) * .15s), calc(var(--i) * -1.4s); }
+.qb:nth-child(even) { justify-self: end; border-radius: 20px 20px 6px 20px; }
+.qb:hover { border-color: var(--brand); text-decoration: none; }
+.qb-ok { flex: none; width: 1.9rem; height: 1.9rem; border-radius: 999px; background: var(--brand); display: grid; place-items: center; }
+.qb-ok svg { width: 1rem; height: 1rem; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.qb:nth-child(2) { background: var(--brand); border-color: var(--brand); color: #fff; }
+.qb:nth-child(2) .qb-ok { background: #fff; } .qb:nth-child(2) .qb-ok svg { stroke: var(--brand); }
+@keyframes qbin { from { opacity: 0; translate: 0 10px; } }
+@media (max-width: 900px) { .q-bubbles { display: none; } }
+@media (prefers-reduced-motion: reduce) { .qb { animation: none; } }
