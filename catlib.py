@@ -139,7 +139,7 @@ def category_page(cat):
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span>{toc}</nav></div></div>
 {newsletter()}"""
     crumbs = [("/", "Home"), dept_crumb_ld(cat["slug"]), (url, cat["crumb"])]
-    page(url, f"{n} Best {cat['plural']} ({YEAR}) | Vettlo", cat["desc"], body, cur="/best-tools/", ptype="article",
+    page(url, fit_title(f"{n} Best {cat['plural']} ({YEAR}): Compared & Scored | Vettlo", f"{n} Best {cat['plural']} ({YEAR}): Compared | Vettlo", f"{n} Best {cat['plural']} ({YEAR}) | Vettlo"), cat["desc"], body, cur="/best-tools/", ptype="article",
          jsonld=_ld(h1, url, cat["date"], crumbs, [(k, tools[k]["name"]) for k in ranked], cat["faqs"]))
 
 
@@ -184,8 +184,11 @@ def alternatives_page(cat, target, slug, lede, reasons, picks, faqs, related):
 {newsletter()}"""
     crumbs = [("/", "Home"), dept_crumb_ld(cat["slug"]), (f"/tools/{cat['slug']}/", cat["crumb"]), (url, f"{tname} alternatives")]
     CLUSTER.setdefault(cat["slug"], []).append((url, f"Best {tname} alternatives", "Alternatives"))
-    page(url, f"{n} Best {tname} Alternatives ({YEAR}) | Vettlo",
-         f"The best {tname} alternatives compared on price, free plans, features and fit, with what you gain and give up with each.",
+    _d = [f"The best {tname} alternatives in {YEAR}, compared on price, free plans, features and fit, with what you gain and what you give up when you leave {tname}.",
+          f"The best {tname} alternatives in {YEAR}, compared on price, free plans, features and fit, with what you gain and give up with each one.",
+          f"The best {tname} alternatives compared on price, free plans, features and fit, with what you gain and give up with each."]
+    page(url, fit_title(f"{n} Best {tname} Alternatives ({YEAR}): Pricing Compared | Vettlo", f"{n} Best {tname} Alternatives ({YEAR}): Compared | Vettlo", f"{n} Best {tname} Alternatives ({YEAR}) | Vettlo"),
+         next(d for d in _d if len(d) <= 158 or d is _d[-1]),
          body, cur="/best-tools/", ptype="article", jsonld=_ld(h1, url, cat["date"], crumbs, [(k, tools[k]["name"]) for k, _, _, _ in picks], faqs))
 
 
@@ -565,7 +568,7 @@ def review_pages(cats):
                           "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN},
                           "reviewRating": {"@type": "Rating", "ratingValue": s0, "bestRating": 100, "worstRating": 0}}
         ld.append(item)
-        page(url, f"{name} Review ({YEAR}): Pricing, Pros & Cons | Vettlo",
+        page(url, fit_title(f"{name} Review ({YEAR}): Pricing, Pros & Cons | Vettlo", f"{name} Review ({YEAR}): Pricing | Vettlo"),
              f"{name} review: {s0}/100 in our {_noun(cat)} ranking. {_price_sentence(t)} Pros, cons, who it's for and the best alternatives."[:300],
              body, cur="/reviews/", ptype="article", jsonld=ld)
         CATEGORY_PAGES.append((url, f"{name} Review", f"{name}'s pricing, pros, cons and score, from our {_noun(cat)} ranking.", "Review"))

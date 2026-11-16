@@ -115,7 +115,17 @@ def newsletter():
 PAGES = {}
 
 
+def fit_title(*options, limit=62):
+    """First option that fits Google's title width (about 60 characters); the last one is the fallback."""
+    for t in options:
+        if len(t) <= limit:
+            return t
+    return options[-1]
+
+
 def page(path, title, desc, body, cur=None, jsonld=None, ptype="website"):
+    if len(title) > 62 and title.endswith(" | Vettlo"):  # Google shows the site name anyway; keep the words that matter
+        title = title[: -len(" | Vettlo")]
     if len(desc) > 158:  # keep meta descriptions inside Google's snippet width
         cut = desc[:155].rsplit(" ", 1)[0].rstrip(",;:")
         desc = cut + "…"
@@ -316,8 +326,8 @@ page("/", "Vettlo: Independent Business Software Reviews and Comparisons",
 """, cur="/", jsonld=[ORG, {"@context": "https://schema.org", "@type": "WebSite", "name": "Vettlo", "url": DOMAIN}])
 
 # ---------- TOOLS HUB
-page("/best-tools/", "Best Business Software by Category | Vettlo",
-     "Every software category Vettlo reviews, grouped by team: sales, marketing, projects, support, HR, finance and IT.",
+page("/best-tools/", "Best Business Software by Category (2026) | Vettlo",
+     "Every software category Vettlo reviews, grouped by the team that buys it: sales, marketing, projects, support, HR, finance, IT, engineering and data.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Categories</span><h1>Every category we review</h1>
 <p>Grouped by the team that buys it. Reviewed categories link to their shortlist; the rest are in research and publish as soon as pricing and data are verified.</p></div>
 <div class="page-body">{stack_grid()}
@@ -940,8 +950,8 @@ for _f in sorted((ROOT / "categories").glob("*.py")):
     exec(open(_f).read())
 
 # ---------- METHODOLOGY
-page("/methodology/", "Our Software Review Methodology | Vettlo",
-     "How Vettlo selects, tests and scores business software, and how we keep scores independent of advertising.",
+page("/methodology/", "How We Score Software: Our Review Methodology | Vettlo",
+     "How Vettlo selects, tests and scores business software: weighted criteria per category, prices checked at the source, and how scores stay independent of ads.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">How we vet</span><h1>Our review methodology</h1>
 <p>Choosing business software is expensive to get wrong. Here is exactly how we build a shortlist, so you can judge it yourself.</p>
 <p class="small mono">Last updated {UPDATED_H}</p></div>
@@ -970,7 +980,7 @@ page("/methodology/", "Our Software Review Methodology | Vettlo",
 
 # ---------- MONEY
 page("/how-we-make-money/", "How We Make Money (Affiliate Disclosure) | Vettlo",
-     "Vettlo's affiliate and advertising disclosure: how commissions and partner payments work and what they can affect.",
+     "Vettlo's affiliate and advertising disclosure: how commissions and partner payments work, what they can affect, and what they never change, like our scores.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Disclosure</span><h1>How we make money</h1>
 <p>Vettlo is free to read. Here is every way we earn revenue, what partner payments can affect, and what money can never buy.</p>
 <p class="small mono">Last updated {UPDATED_H}</p></div>
@@ -991,7 +1001,7 @@ page("/how-we-make-money/", "How We Make Money (Affiliate Disclosure) | Vettlo",
 </div></div>""")
 
 # ---------- EDITORIAL STANDARDS
-page("/editorial-standards/", "Editorial Standards | Vettlo",
+page("/editorial-standards/", "Editorial Standards: Independence, Accuracy, AI | Vettlo",
      "The standards behind every Vettlo review: editorial independence from partners, how we check facts and prices, how we correct errors and how we use AI.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Standards</span><h1>Editorial standards</h1>
 <p>The rules every Vettlo writer and editor follows.</p></div>
@@ -1062,8 +1072,8 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
      "description": "Vettlo is an independent publication that tests and scores business software for every team.", "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}}])
 
 # ---------- ADVERTISE
-page("/advertise/", "Advertise with Vettlo",
-     "Reach software buyers while they evaluate tools. Annual plans on category pages, newsletter sponsorships and sponsored guides.",
+page("/advertise/", "Advertise With Us: Reach Business Software Buyers | Vettlo",
+     "Reach software buyers while they compare tools. Annual plans on category pages, newsletter sponsorships and sponsored guides, with clear disclosure.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Reach buyers while they're choosing software</h1>
 <p>Our readers arrive with a buying question. Put your product in front of them, next to reviews buyers trust.</p></div>
 <div class="page-body" style="display:grid;gap:2.5rem">
@@ -1089,7 +1099,7 @@ if(r.ok){f.reset();o.textContent='Thanks, we\\'ll get back to you by email.';}el
 </div></div></div>""")
 
 # ---------- TEAM
-page("/team/", "Vettlo Editorial Team",
+page("/team/", "Editorial Team: Who Researches and Writes Our Reviews | Vettlo",
      "Who writes Vettlo's business software reviews, how the editorial team researches and scores tools, and how to reach the editors with corrections.",
      f"""<div class="wrap"><div class="page-head" style="grid-template-columns:auto minmax(0,1fr);align-items:center;gap:1.25rem"><div class="avatar team-mark" style="width:88px;height:88px">{LOGO}</div>
 <div style="display:grid;gap:.4rem"><span class="eyebrow">Editorial team</span><h1>Vettlo Editorial Team</h1><p class="small muted">Independent business software reviews</p></div></div>
@@ -1107,8 +1117,8 @@ page("/team/", "Vettlo Editorial Team",
 </div></div>""", jsonld=[{"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo Editorial Team", "parentOrganization": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}}])
 
 # ---------- WRITE FOR US
-page("/write-for-us/", "Write for Vettlo",
-     "Pitch Vettlo if you've chosen, rolled out or run business software and want to write about the tools that work.",
+page("/write-for-us/", "Write for Us: Contribute Business Software Guides | Vettlo",
+     "Pitch Vettlo if you've chosen, rolled out or run business software and want to write practical, sourced guides about the tools that work for teams.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Contributors</span><h1>Write for Vettlo</h1>
 <p>We publish practitioners: people who have chosen, rolled out or run the software their team depends on.</p></div>
 <div class="page-body prose">
@@ -1136,7 +1146,7 @@ if(r.ok){f.reset();o.textContent='Thanks, your message was sent. We\\'ll reply b
 </div></div>""")
 
 # ---------- PRIVACY / TERMS
-page("/privacy/", "Privacy Policy | Vettlo", "How Vettlo handles information when you visit the site: analytics, cookies, newsletter sign-ups, contact forms and your choices about your data.",
+page("/privacy/", "Privacy Policy: Cookies, Analytics and Your Data | Vettlo", "How Vettlo handles information when you visit the site: analytics, cookies, newsletter sign-ups, contact forms and your choices about your data.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Privacy Policy</h1><p class="small mono">Last updated {UPDATED_H}</p></div>
 <div class="page-body prose">
 <p>This policy explains what information Vettlo handles when you visit vettlo.com.</p>
@@ -1152,7 +1162,7 @@ page("/privacy/", "Privacy Policy | Vettlo", "How Vettlo handles information whe
 <p>We'll post any changes on this page and update the date above.</p>
 </div></div>""")
 
-page("/terms/", "Terms of Use | Vettlo", "The terms for using vettlo.com: how you may use our reviews and content, links to vendor sites, disclaimers and limits of liability.",
+page("/terms/", "Terms of Use: Using Our Reviews, Content and Site | Vettlo", "The terms for using vettlo.com: how you may use our reviews and content, links to vendor sites, disclaimers and limits of liability.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Terms of Use</h1><p class="small mono">Last updated {UPDATED_H}</p></div>
 <div class="page-body prose">
 <p>By using vettlo.com you agree to these terms.</p>
@@ -1255,7 +1265,7 @@ def reviews_page():
             body += f'<h2 id="{k.lower()}" style="margin:2rem 0 .3rem">{h}</h2><p class="muted small" style="margin:0 0 1rem">{sub}</p><div class="cards3">{cards}</div>'
     body += "</div></div>" + newsletter()
     items = [{"@type": "ListItem", "position": i + 1, "url": DOMAIN + u, "name": t} for i, (u, t, b, k) in enumerate(allp)]
-    page("/reviews/", "All Software Reviews | Vettlo",
+    page("/reviews/", "All Software Reviews, Shortlists and Comparisons | Vettlo",
          "Every Vettlo shortlist, alternatives guide and head-to-head comparison of business software in one place, grouped by team, from CRM to payroll.",
          body, cur="/reviews/", jsonld=[{"@context": "https://schema.org", "@type": "CollectionPage", "name": "All reviews", "url": DOMAIN + "/reviews/",
                                           "mainEntity": {"@type": "ItemList", "itemListElement": items}}])
@@ -1301,8 +1311,8 @@ def badges_page():
 <li>If a product drops off a shortlist at a re-check, its badge should come down.</li>
 <li>Badges are never a condition of being reviewed, and showing one doesn't affect rankings.</li></ul>
 </div></div>"""
-    page("/badges/", "Vettlo Badges for Ranked Software | Vettlo",
-         "How software vendors ranked on a Vettlo shortlist can get a free Top pick or Shortlisted badge for their website.",
+    page("/badges/", "Badges for Software Ranked on Our Shortlists | Vettlo",
+         "How software vendors ranked on a Vettlo shortlist can get a free Top pick or Shortlisted badge for their website, with the embed code and usage rules.",
          body, cur=None)
 
 
@@ -1506,7 +1516,7 @@ def dept_hubs():
                   {"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"},
                   {"@type": "ListItem", "position": 2, "name": "Categories", "item": DOMAIN + "/best-tools/"},
                   {"@type": "ListItem", "position": 3, "name": dname, "item": DOMAIN + hub}]}]
-        page(hub, f"Best {title} ({YEAR}) | Vettlo",
+        page(hub, fit_title(f"Best {title} ({YEAR}): Shortlists by Category | Vettlo", f"Best {title} ({YEAR}): Top Picks | Vettlo", f"Best {title} ({YEAR}) | Vettlo"),
              f"The best {label.lower()} by category, with our top-ranked tool in each, scored on published criteria and checked against vendor pricing pages.",
              body, cur="/best-tools/", jsonld=ld)
         # "More in this department" block on each category page in the department

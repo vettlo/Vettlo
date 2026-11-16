@@ -5,7 +5,7 @@ PWM = {
     "crumb": "Password Managers",
     "choose_title": "a business password manager",
     "date": "2026-10-30", "date_h": "Oct 30, 2026", "checked": "Oct 30, 2026",
-    "desc": "Six business password managers compared on SSO, admin policies and sharing, with real cost for 10 users: $239 to $1,079 a year.",
+    "desc": "Six business password managers compared on SSO, admin policies and sharing, with real cost for 10 users: $239 to $1,079 a year, from vendor pages.",
     "intro": [
         "A business password manager stores every employee's logins in an encrypted vault, lets teams share credentials without pasting them into chat, and gives IT an admin console to enforce policies and remove access when someone leaves. Every tool here prices per user per month, billed annually, so the real comparison is which plan first includes the features IT asks for: single sign-on (SSO), automatic provisioning from your identity provider (SCIM), security policies and free personal accounts for staff.",
         "We scored six password managers on six weighted criteria. For 10 users, published list prices run from $238.80 a year (Proton Pass Essentials) to $1,078.80 (1Password Business). SSO starts at $4.99 per user on Proton Pass and $6 on Bitwarden, while Keeper puts it on Enterprise, which it quotes.",

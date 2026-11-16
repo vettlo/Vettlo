@@ -74,7 +74,7 @@ guide_page({
     "date": "2026-11-01", "kicker": "Pricing guide",
     "title": f"How Much Does Help Desk Software Cost in {YEAR}?",
     "seo_title": f"How Much Does Help Desk Software Cost? ({YEAR} Prices) | Vettlo",
-    "desc": "Help desk software prices per agent, what a 10-agent team pays a year, and how AI resolution fees and plan tiers change the bill.",
+    "desc": "Help desk software prices per agent, what a 10-agent team pays a year, and how AI resolution fees and plan tiers change the bill, from vendor pages.",
     "card": "Per-agent prices, a 10-agent yearly example and how AI fees add up.",
     "answer": (f"Entry plans for the help desks we rank start between {_fmt(_hd_lo[0])} and {_fmt(_hd_hi[0])} per agent per month in US dollars, "
                "and Zoho Desk lists euro prices. The entry plan is rarely the full bill: live chat, knowledge bases and SLAs often sit on higher tiers, "

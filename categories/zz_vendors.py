@@ -60,7 +60,7 @@ page("/vendors/admin/", "Admin: Vettlo Vendor Portal", "Vettlo vendor portal adm
      """<div class="wrap pt-app" id="pt-root" data-portal="admin"><div class="pt-top"><div><span class="kicker">Vendor portal</span><h1>Admin</h1></div><div class="pt-topnav"><a href="/vendors/app/">Vendor view</a></div></div>
 <div id="pt-view" class="pt-view"><p class="muted">Loading…</p></div><div id="pt-toast" class="pt-toast"></div></div>""" + _PSCRIPT)
 
-page("/advertiser-terms/", "Advertiser Terms | Vettlo",
+page("/advertiser-terms/", "Advertiser Terms: Listings, Plans and Billing | Vettlo",
      "The terms for listing and promoting software on Vettlo through the vendor portal: listings, annual plans, billing and editorial review.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Advertiser terms</h1>
 <p class="small mono">Draft · last updated Nov 2, 2026</p></div><div class="page-body prose">
