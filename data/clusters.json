@@ -139,7 +139,7 @@
      "title": "What Is a General Ledger? How It Works, With an Example",
      "intent": "Understand what a general ledger is, how transactions post to it and how it feeds the trial balance and financial statements",
      "angle": "Ledger vs journal vs chart of accounts (one sentence + link to /guides/chart-of-accounts/), a computed posting example and trial balance, GL reports in ranked tools. Don't repeat the chart-of-accounts guide.",
-     "status": "todo",
+     "status": "done",
      "url": "/guides/general-ledger/",
      "target_keyword": "general ledger",
      "bing_3m": null,
@@ -147,7 +147,8 @@
      "google_us_range": "10K-100K",
      "google_us_est": 31600,
      "kd": 76,
-     "priority": 7584
+     "priority": 7584,
+     "date": "2026-11-16"
     },
     {
      "slug": "double-entry-bookkeeping",

@@ -279,6 +279,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Is QuickBooks Desktop Being Discontinued? What Changed and What to Do](https://vettlo.com/guides/quickbooks-desktop-discontinued/): What Intuit actually stopped, what ends when a version sunsets, and how to move off Desktop.
 - [What Is Accounts Receivable? How to Manage AR and Get Paid Faster](https://vettlo.com/guides/accounts-receivable/): What AR is, an aging report and DSO worked out, and how to collect late invoices.
 - [Chart of Accounts: What It Is, How to Set One Up, and an Example](https://vettlo.com/guides/chart-of-accounts/): The five account types, a numbering scheme and a 32-account sample chart for a small business.
+- [What Is a General Ledger? How It Works, With an Example](https://vettlo.com/guides/general-ledger/): How entries post to the general ledger, a worked 6-transaction example and the trial balance it produces.
 - [All guides](https://vettlo.com/guides/)
 
 ## Trust

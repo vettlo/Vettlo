@@ -1783,3 +1783,149 @@ guide_page({
         ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
     ],
 })
+
+
+# ---------- What is a general ledger? (posting flow, computed example, trial balance, GL reports)
+# Example business is hypothetical; account numbers follow the sample chart in the chart-of-accounts guide.
+# IRS Pub 583 wording and record-retention periods fetched 2026-11-16; QuickBooks, Zoho Books and Xero report details
+# from vendor pages fetched the same day. Plan prices from data/review_depth.json.
+_gl_acct = {  # number: (name, type, normal balance)
+    1000: ("Business checking", "Asset", "Dr"), 1100: ("Accounts receivable", "Asset", "Dr"),
+    2100: ("Business credit card", "Liability", "Cr"), 3000: ("Owner's contributions", "Equity", "Cr"),
+    4000: ("Consulting revenue", "Revenue", "Cr"), 5000: ("Subcontractors", "Expense", "Dr"),
+    6200: ("Office supplies and software", "Expense", "Dr"), 6250: ("Office rent", "Expense", "Dr"),
+}
+_gl_tx = [  # (date, description, debit account, credit account, amount)
+    ("Oct&nbsp;1", "Owner deposits starting capital", 1000, 3000, 10000),
+    ("Oct&nbsp;3", "Pay October office rent", 6250, 1000, 1500),
+    ("Oct&nbsp;8", "Design software charged to card", 6200, 2100, 300),
+    ("Oct&nbsp;15", "Invoice client for brand project", 1100, 4000, 4800),
+    ("Oct&nbsp;22", "Client pays part of the invoice", 1000, 1100, 3000),
+    ("Oct&nbsp;29", "Pay freelance illustrator", 5000, 1000, 1200),
+]
+_gl_an = lambda n: f"{n} {_gl_acct[n][0]}"
+_gl_j_rows = "".join(f"<tr><td>{d}</td><td>{desc}</td><td>{_gl_an(dr)}</td><td>{_gl_an(cr)}</td><td>{_fmt(a)}</td></tr>" for d, desc, dr, cr, a in _gl_tx)
+_gl_dr = {n: sum(a for _d, _s, dr, _c, a in _gl_tx if dr == n) for n in _gl_acct}
+_gl_cr = {n: sum(a for _d, _s, _r, cr, a in _gl_tx if cr == n) for n in _gl_acct}
+_gl_bal = {n: (_gl_dr[n] - _gl_cr[n]) if _gl_acct[n][2] == "Dr" else (_gl_cr[n] - _gl_dr[n]) for n in _gl_acct}
+# Cash account as it appears in the ledger, with a running balance
+_gl_cash_rows, _gl_run = "", 0
+for d, desc, dr, cr, a in _gl_tx:
+    if 1000 not in (dr, cr):
+        continue
+    _gl_run += a if dr == 1000 else -a
+    _gl_cash_rows += (f"<tr><td>{d}</td><td>{desc}</td><td>{_gl_an(cr if dr == 1000 else dr)}</td>"
+                      f"<td>{_fmt(a) if dr == 1000 else ''}</td><td>{_fmt(a) if cr == 1000 else ''}</td><td>{_fmt(_gl_run)}</td></tr>")
+assert _gl_run == _gl_bal[1000]
+_gl_cash_n = sum(1 for t in _gl_tx if 1000 in (t[2], t[3]))
+_gl_tb_dr = sum(_gl_bal[n] for n in _gl_acct if _gl_acct[n][2] == "Dr")
+_gl_tb_cr = sum(_gl_bal[n] for n in _gl_acct if _gl_acct[n][2] == "Cr")
+assert _gl_tb_dr == _gl_tb_cr
+_gl_tb_rows = "".join(f"<tr><td>{_gl_an(n)}</td><td>{_gl_acct[n][1]}</td><td>{_fmt(_gl_bal[n]) if _gl_acct[n][2] == 'Dr' else ''}</td>"
+                      f"<td>{_fmt(_gl_bal[n]) if _gl_acct[n][2] == 'Cr' else ''}</td></tr>" for n in sorted(_gl_acct))
+_gl_rev = sum(_gl_bal[n] for n in _gl_acct if _gl_acct[n][1] == "Revenue")
+_gl_exp = sum(_gl_bal[n] for n in _gl_acct if _gl_acct[n][1] == "Expense")
+_gl_ni = _gl_rev - _gl_exp
+_gl_assets = sum(_gl_bal[n] for n in _gl_acct if _gl_acct[n][1] == "Asset")
+_gl_liab = sum(_gl_bal[n] for n in _gl_acct if _gl_acct[n][1] == "Liability")
+_gl_eq = sum(_gl_bal[n] for n in _gl_acct if _gl_acct[n][1] == "Equity")
+assert _gl_assets == _gl_liab + _gl_eq + _gl_ni
+_gl_qb = _ap_name.get("quickbooks", "QuickBooks Online")
+_gl_qb_adv = _ap_plan_price(_gl_qb, "Advanced")
+_gl_qb_ss = _ap_plan_price(_gl_qb, "Simple Start")
+_gl_soft_rows = ""
+if "quickbooks" in _ac_ranked:
+    _gl_soft_rows += (f"<tr><td>{_ac_rv('quickbooks')}</td><td>General Ledger</td><td>Reports &gt; Standard reports, search by name</td>"
+                      "<td>Add Debit and Credit columns and a Cleared column for reconciliation status; filter by account</td>"
+                      f"<td>Custom Report Builder only on Advanced{f' ({_gl_qb_adv})' if _gl_qb_adv else ''}</td></tr>")
+if "zohobooks" in _ac_ranked:
+    _gl_soft_rows += (f"<tr><td>{_ac_rv('zohobooks')}</td><td>General Ledger and Detailed General Ledger</td><td>Reports &gt; Accountant</td>"
+                      "<td>Detailed version: opening and closing balance for every account and a row for every transaction</td>"
+                      "<td>Large exports run in the background, with download links under Check Status</td></tr>")
+if "xero" in _ac_ranked:
+    _gl_soft_rows += (f"<tr><td>{_ac_rv('xero')}</td><td>General journal report, detailed or overview</td><td>Reports section</td>"
+                      "<td>Xero's US guide describes a detailed report and an overview of journal activity</td>"
+                      "<td>Report names differ from QuickBooks; ask your accountant which one they want</td></tr>")
+
+guide_page({
+    "slug": "general-ledger", "crumb": "General ledger", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-16", "kicker": "Explainer",
+    "title": "What Is a General Ledger? How It Works, With an Example",
+    "seo_title": "General Ledger: What It Is and How It Works | Vettlo",
+    "desc": f"What a general ledger is, how journal entries post to it, a {len(_gl_tx)}-transaction example with a trial balance, and where to find GL reports in your software.",
+    "card": f"How entries post to the general ledger, a worked {len(_gl_tx)}-transaction example and the trial balance it produces.",
+    "answer": ("A general ledger (GL) is the complete record of a business's transactions, sorted by account, showing every debit, credit and running balance for each account on the chart of accounts. "
+               "Transactions are first recorded as journal entries, then posted to the ledger; the ledger's account balances produce the trial balance, which in turn becomes the balance sheet and the profit and loss statement."),
+    "sections": [
+        ("what", "What is a general ledger?", f"""<p>The general ledger is where your books actually live. Each account, from the business checking account to office rent, gets its own page in the ledger listing every transaction that touched it, in date order, with a running balance. Add up the ledger and you have the numbers behind every financial report.</p>
+<p>In practice, the general ledger is the core of any accounting software: invoices, bills, bank-feed matches and manual entries all end up posted there. Our <a href="{_ac_cat}">ranking of the best accounting software</a> compares {len(_ac_ranked)} tools on price and features; this guide explains what the ledger does, which works the same way in every one of them.</p>
+<p>Three terms get mixed up:</p>
+<ul>
+<li><b>Chart of accounts:</b> the list of accounts and their numbers. It's the ledger's table of contents; see our <a href="/guides/chart-of-accounts/">chart of accounts guide</a> for how to set one up.</li>
+<li><b>Journal:</b> the chronological record of each transaction as it happens. IRS Publication 583 describes it as the book where "you record each business transaction shown on your supporting documents."</li>
+<li><b>Ledger:</b> the same transactions regrouped by account. Publication 583 calls it the book "that contains the totals from all of your journals."</li>
+</ul>"""),
+        ("posting", "How do transactions get into the general ledger?", f"""<p>Every transaction moves through the same path: a source document becomes a journal entry, the entry is posted to two or more ledger accounts, and the ledger's balances roll up into reports.</p>
+<ol>
+<li><b>Source document.</b> An invoice you send, a bill you receive, a receipt or a bank transaction.</li>
+<li><b>Journal entry.</b> The transaction is recorded with a date, a description, and at least one debit and one credit of equal total. That rule is double-entry bookkeeping, which Publication 583 calls "self-balancing."</li>
+<li><b>Posting.</b> Each line of the entry is copied to its account in the general ledger, and that account's balance is updated.</li>
+<li><b>Trial balance.</b> At the end of the period, every account's balance is listed; total debits must equal total credits.</li>
+<li><b>Adjusting entries and close.</b> Accruals, depreciation and corrections are posted, then the period is closed.</li>
+<li><b>Financial statements.</b> Asset, liability and equity balances form the balance sheet; revenue and expense balances form the profit and loss statement.</li>
+</ol>
+<p>In accounting software, steps 2 and 3 happen together: saving an invoice writes the journal entry and posts it in one go. You rarely type journal entries yourself except for adjustments.</p>
+<h3>What are subledgers?</h3>
+<p>Busy accounts keep their detail in a subledger and post only totals to the general ledger. Accounts receivable is the usual example: the subledger tracks what each customer owes, invoice by invoice, while the GL holds one AR balance. Accounts payable works the same way for suppliers. Our guides to <a href="/guides/accounts-receivable/">accounts receivable</a> and the <a href="/guides/accounts-payable-process/">accounts payable process</a> cover running those day to day. The subledger total and the GL control account should always match.</p>"""),
+        ("example", "What does a general ledger look like? A worked example", f"""<p>Here are {len(_gl_tx)} October transactions for a hypothetical one-person design studio, first as journal entries and then as they appear in one ledger account. Account numbers follow the sample chart in our chart of accounts guide.</p>
+<div class="table-wrap"><table><thead><tr><th>Date</th><th>Transaction</th><th>Debit</th><th>Credit</th><th>Amount</th></tr></thead><tbody>{_gl_j_rows}</tbody></table></div>
+<p>Each row touches two accounts. The ledger regroups them: the checking account's ledger page picks up the {_gl_cash_n} rows that moved cash, with the other account shown for reference.</p>
+<p><b>General ledger: {_gl_an(1000)}, October</b></p>
+<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Offsetting account</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead><tbody>{_gl_cash_rows}</tbody></table></div>
+<p>The ending balance of {_fmt(_gl_bal[1000])} is what the books say is in the bank. Comparing it with the bank statement is the monthly check our <a href="/guides/bank-reconciliation/">bank reconciliation guide</a> walks through. The credit card charge and the invoice don't appear here at all: they live on the ledger pages for the card, accounts receivable and revenue.</p>
+<p class="small muted">Hypothetical example for illustration; amounts are not from a real business.</p>"""),
+        ("trial", "How does the general ledger produce a trial balance?", f"""<p>A trial balance lists every general ledger account's ending balance in a debit or credit column, and the two columns must total the same. In the example, both come to {_fmt(_gl_tb_dr)}:</p>
+<div class="table-wrap"><table><thead><tr><th>Account</th><th>Type</th><th>Debit</th><th>Credit</th></tr></thead><tbody>{_gl_tb_rows}
+<tr><td><b>Total</b></td><td></td><td><b>{_fmt(_gl_tb_dr)}</b></td><td><b>{_fmt(_gl_tb_cr)}</b></td></tr></tbody></table></div>
+<p>From the same balances, October's profit and loss shows revenue of {_fmt(_gl_rev)} less expenses of {_fmt(_gl_exp)}, a profit of {_fmt(_gl_ni)}. The balance sheet shows assets of {_fmt(_gl_assets)} against liabilities of {_fmt(_gl_liab)} and equity of {_fmt(_gl_eq + _gl_ni)} (the owner's {_fmt(_gl_eq)} plus the month's profit), so assets equal liabilities plus equity.</p>
+<h3>What a balanced trial balance doesn't prove</h3>
+<p>Matching totals only show that every entry had equal debits and credits. These errors still balance:</p>
+<ul>
+<li>A transaction never entered at all.</li>
+<li>A posting to the wrong account of the right side, such as software booked to rent.</li>
+<li>The same wrong amount on both sides, such as {_fmt(_gl_tx[1][4])} typed as {_fmt(_gl_tx[1][4] * 10)}.</li>
+<li>A transaction entered twice.</li>
+</ul>
+<p>That's why bank reconciliations and a review of the ledger detail for odd items are part of every month-end close, not just the trial balance.</p>"""),
+        ("software", "How do you run a general ledger report in accounting software?", f"""<p>Every accounting tool has a general ledger report that lists transactions by account for a date range; the names and options differ. What the three most common tools in our ranking offer:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Report</th><th>Where</th><th>What it shows</th><th>Notes</th></tr></thead><tbody>{_gl_soft_rows}</tbody></table></div>
+<p class="small muted">From vendor help pages and guides checked Nov 16, 2026 (QuickBooks article updated Aug 3, 2026). Prices are regular US monthly prices from our pricing data.</p>
+<p>The general ledger report is available on entry plans{f", including QuickBooks Simple Start at {_gl_qb_ss}" if _gl_qb_ss else ""}; what you pay more for is customization and the transaction volume around it. For plan-by-plan differences see <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> and <a href="/compare/xero-vs-zohobooks/">Xero vs Zoho Books</a>, and for annual totals our <a href="/guides/accounting-software-cost/">accounting software cost guide</a>.</p>
+<p>Your accountant will usually ask for the general ledger and the trial balance at year-end. Export both for the full fiscal year, and run them on the same accounting basis (cash or accrual) you file on; our <a href="/guides/cash-vs-accrual-accounting/">cash vs accrual accounting guide</a> explains the difference.</p>"""),
+        ("retention", "How long should you keep general ledger records?", """<p>The IRS doesn't set a separate rule for the ledger; it falls under the general recordkeeping periods, which run from when you file the return the records support. From the IRS's "How long should I keep records?" page:</p>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Keep records for</th></tr></thead><tbody>
+<tr><td>Most returns</td><td>3 years</td></tr>
+<tr><td>You file a claim for credit or refund after filing</td><td>3 years from filing or 2 years from paying the tax, whichever is later</td></tr>
+<tr><td>You don't report income that is more than 25% of the gross income shown on the return</td><td>6 years</td></tr>
+<tr><td>You claim a loss from worthless securities or a bad debt deduction</td><td>7 years</td></tr>
+<tr><td>Employment tax records</td><td>At least 4 years after the tax is due or paid, whichever is later</td></tr>
+<tr><td>You don't file a return, or file a fraudulent one</td><td>Indefinitely</td></tr>
+</tbody></table></div>
+<p>If you keep books in software, Publication 583 says a computerized system must be able to produce legible records that reconcile with your books and return. Before you cancel a subscription or switch tools, export the general ledger and trial balance for every open year, since access to old data can end with the plan. Lenders, insurers and buyers of a business may ask for records longer than the IRS does.</p>
+<p class="small muted">Summarizes IRS guidance and isn't tax or legal advice.</p>"""),
+    ],
+    "faqs": [
+        ("What is the difference between a general ledger and a general journal?", "The general journal records transactions in date order as they happen, each with its debits and credits. The general ledger takes the same entries and groups them by account, with a running balance for each. The journal shows what happened when; the ledger shows where each account stands."),
+        ("Is a general ledger the same as a trial balance?", "No. The general ledger holds every transaction for every account. The trial balance is a one-page summary that lists only each account's ending balance in debit and credit columns, to check that the two totals match before preparing financial statements."),
+        ("Does a small business need a general ledger?", "A business using double-entry bookkeeping has one by definition, and every mainstream accounting app keeps one automatically. IRS Publication 583 also allows a single-entry system based on the income statement, which can work for a very small, simple business, but it doesn't produce a balance sheet."),
+        ("What are the five types of general ledger accounts?", "Assets, liabilities, equity, revenue and expenses. Asset and expense accounts normally carry debit balances; liability, equity and revenue accounts normally carry credit balances. The first three feed the balance sheet and the last two the profit and loss statement."),
+    ],
+    "sources": [
+        ("IRS: Publication 583, Starting a Business and Keeping Records", "https://www.irs.gov/publications/p583"),
+        ("IRS: How long should I keep records?", "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records"),
+        ("QuickBooks: Run a report that shows debits and credits for each transaction", "https://quickbooks.intuit.com/learn-support/en-us/help-article/profit-loss-reports/create-report-shows-debits-credits-transaction/L1zvqNX0e_US_en_US"),
+        ("Zoho Books: Detailed General Ledger", "https://www.zoho.com/books/kb/reports/detailed-general-ledger.html"),
+        ("Xero: General ledger accounting guide (US)", "https://www.xero.com/us/guides/general-ledger-accounting/"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+    ],
+})
