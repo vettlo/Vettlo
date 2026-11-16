@@ -766,3 +766,15 @@ details.breakdown .criteria { margin-top: .9rem; }
 @keyframes mzfloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 @media (max-width: 900px) { .cats-hero-grid { grid-template-columns: 1fr; } .mosaic { display: none; } }
 @media (prefers-reduced-motion: reduce) { .mz-tile { animation: none; } }
+/* Categories page: one card per team; the team's shortlists live on its hub page */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: 1rem; padding-block: 1rem; }
+.team-card { display: flex; flex-direction: column; gap: .45rem; padding: 1.35rem; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); color: var(--ink); transition: border-color .15s, box-shadow .15s, transform .15s; }
+.team-card[hidden] { display: none; }
+.team-card:hover { border-color: var(--brand); box-shadow: 0 10px 26px rgba(0,134,94,.12); transform: translateY(-2px); text-decoration: none; }
+.tc-ic { width: 2.9rem; height: 2.9rem; border-radius: 12px; display: grid; place-items: center; background: var(--brand-tint); margin-bottom: .35rem; }
+.tc-ic svg { width: 1.55rem; height: 1.55rem; fill: none; stroke: var(--brand); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.team-card:hover .tc-ic { background: var(--brand); } .team-card:hover .tc-ic svg { stroke: #fff; }
+.tc-name { font-weight: 650; font-size: 1.15rem; letter-spacing: -0.01em; }
+.tc-sub { color: var(--ink-2); font-size: .9rem; line-height: 1.45; }
+.tc-meta { margin-top: auto; padding-top: .6rem; font-size: .87rem; color: var(--ink-3); }
+.tc-meta b { color: var(--brand); font-weight: 650; }

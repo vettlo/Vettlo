@@ -1365,16 +1365,29 @@ def categories_page(picks, n_tools):
     n_cats = sum(len(g[3]) for g in groups)
     chips = '<button type="button" class="cf-chip is-on" data-team="">All teams</button>' + "".join(
         f'<button type="button" class="cf-chip" data-team="{slug}">{html.escape(name)}</button>' for name, _, slug, _ in groups)
-    secs = []
+    team_icons = {
+        "Sales": '<path d="M4 19V9M10 19V5M16 19v-7M3 19.5h18"/><path d="M14 6l3-2.5L20 6"/>',
+        "Marketing": '<path d="M4 10v4l3 .5 2 5h2.5l-1.5-4.6L19 18V6L7 9.5z"/>',
+        "Projects & operations": '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15l1.6 1.6 2.9-2.9M14.5 9.5H17M14.5 15.5H17"/>',
+        "Customer support": '<path d="M4.5 13v-1a7.5 7.5 0 0 1 15 0v1"/><rect x="3.5" y="13" width="4" height="6" rx="1.5"/><rect x="16.5" y="13" width="4" height="6" rx="1.5"/>',
+        "HR & people": '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.7-3 2.8-4.8 5.5-4.8s4.8 1.8 5.5 4.8"/><circle cx="17" cy="9.5" r="2.3"/><path d="M15.5 14.4c2.4-.3 4.3 1.2 5 4.1"/>',
+        "Finance": '<rect x="3" y="6" width="18" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v5M17.5 9.5v5"/>',
+        "IT & security": '<path d="M12 3.5l7 2.8v5.2c0 4.4-3 7.8-7 9-4-1.2-7-4.6-7-9V6.3z"/><path d="M9 12l2.2 2.2L15.5 10"/>',
+        "Engineering & DevOps": '<path d="M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4M13.5 5.5l-3 13"/>',
+        "Data & analytics": '<path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+        "Collaboration": '<path d="M4 6.5h11a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2z"/><path d="M19 9.5h1a2 2 0 0 1 2 2v4.5a2 2 0 0 1-2 2v2.5l-3-2.5h-4"/>',
+        "Legal & compliance": '<path d="M12 4v16M7 20h10M5 7h14"/><path d="M5 7l-2.5 6a2.8 2.8 0 0 0 5 0zM19 7l-2.5 6a2.8 2.8 0 0 0 5 0z"/>',
+    }
+    cards = []
     for name, sub, slug, live in groups:
-        tiles = []
-        for sl, n, sb in live:
-            cnt = picks.get(sl, {}).get("n")
-            meta = f'{cnt} tools compared' if cnt else "Shortlist"
-            tiles.append(f'<a class="cat-tile" href="/tools/{sl}/" data-q="{html.escape((n + " " + sb + " " + name).lower())}">'
-                         f'<span class="ct-name">{n}</span><span class="ct-sub">{sb}</span><span class="ct-meta">{meta} <span aria-hidden="true">→</span></span></a>')
-        secs.append(f'<section class="cat-sec" id="{slug}" data-team="{slug}"><div class="cat-sec-head"><h2>{html.escape(name)}</h2>'
-                    f'<a href="/{slug}/">{html.escape(sub)}</a></div><div class="cat-grid">{"".join(tiles)}</div></section>')
+        names = [n for _, n, _ in live]
+        tools_n = sum(picks.get(sl, {}).get("n", 0) for sl, _, _ in live)
+        q = html.escape((name + " " + sub + " " + " ".join(n + " " + sb for _, n, sb in live)).lower())
+        preview = ", ".join(names[:3]) + (f" and {len(names) - 3} more" if len(names) > 3 else "")
+        cards.append(f'<a class="team-card" href="/{slug}/" data-q="{q}"><span class="tc-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{team_icons.get(name, "")}</svg></span>'
+                     f'<span class="tc-name">{html.escape(name)}</span><span class="tc-sub">{html.escape(preview)}</span>'
+                     f'<span class="tc-meta"><b>{len(live)}</b> {"category" if len(live) == 1 else "categories"} · <b>{tools_n}</b> tools <span aria-hidden="true">→</span></span></a>')
+    secs = ['<div class="team-grid">' + "".join(cards) + "</div>"]
     icons = [  # (label, shortlist slug, svg path data) — simple line icons, no brands
         ("CRM", "best-crm-software", '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5"/><path d="M16 6.5h4.5M16 10h4.5M17.5 13.5h3"/>'),
         ("Payroll", "best-payroll-software", '<rect x="3" y="6" width="18" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v5M17.5 9.5v5"/>'),
@@ -1390,19 +1403,17 @@ def categories_page(picks, n_tools):
                       for i, (lb, sl, d) in enumerate(icons) if f"/tools/{sl}/" in PAGES)
     return f"""<section class="cats-hero"><div class="wrap cats-hero-grid"><div>
 <h1>Every category we review</h1>
-<p class="lede">Shortlists for the software teams buy, grouped by the team that buys it. Each one ranks tools on published, weighted criteria with prices checked on the vendor's own page.</p>
+<p class="lede">Pick your team to see its software shortlists. Each one ranks tools on published, weighted criteria with prices checked on the vendor's own page.</p>
 <div class="cats-stats"><span><b>{n_cats}</b> categories</span><span><b>{n_tools}</b> tools scored</span><span><b>6</b> weighted criteria each</span></div>
-<div class="cats-find"><label class="sr-only" for="cf-q">Filter categories</label><input id="cf-q" type="search" placeholder="Filter categories, e.g. payroll, chat, contracts" autocomplete="off">
+<div class="cats-find"><label class="sr-only" for="cf-q">Filter categories</label><input id="cf-q" type="search" placeholder="Find a category, e.g. payroll, chat, contracts" autocomplete="off">
 </div>
 </div><div class="mosaic" aria-label="Popular categories">{tiles_v}</div></div></section>
 <div class="wrap cats-body">{"".join(secs)}
 <p class="cats-empty" hidden>No category matches that yet. <a href="/contact/">Tell us what you're looking for</a> and we'll add it to the research queue.</p>
 <div class="cats-cta"><div><h2>Missing a category your team buys?</h2><p>Tell us what you're evaluating and we'll add it to the research queue.</p></div><a class="btn" href="/contact/">Suggest a category</a></div>
 </div>
-<script>(function(){{var q=document.getElementById("cf-q"),team="",chips=[].slice.call(document.querySelectorAll(".cf-chip")),secs=[].slice.call(document.querySelectorAll(".cat-sec")),empty=document.querySelector(".cats-empty");
-function run(){{var t=q.value.trim().toLowerCase(),any=false;secs.forEach(function(s){{var show=0;if(team&&s.dataset.team!==team){{s.hidden=true;return}}
-[].forEach.call(s.querySelectorAll(".cat-tile"),function(a){{var ok=!t||a.dataset.q.indexOf(t)>-1;a.hidden=!ok;if(ok)show++}});s.hidden=!show;if(show)any=true}});empty.hidden=any}}
-q.addEventListener("input",run);chips.forEach(function(c){{c.addEventListener("click",function(){{team=c.dataset.team;chips.forEach(function(x){{x.classList.toggle("is-on",x===c)}});run()}})}});}})();</script>"""
+<script>(function(){{var q=document.getElementById("cf-q"),cards=[].slice.call(document.querySelectorAll(".team-card")),empty=document.querySelector(".cats-empty");
+q.addEventListener("input",function(){{var t=q.value.trim().toLowerCase(),n=0;cards.forEach(function(c){{var ok=!t||c.dataset.q.indexOf(t)>-1;c.hidden=!ok;if(ok)n++}});empty.hidden=n>0}});}})();</script>"""
 
 
 def home_sections():
