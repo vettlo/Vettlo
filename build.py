@@ -328,11 +328,7 @@ page("/", "Vettlo: Independent Business Software Reviews and Comparisons",
 # ---------- TOOLS HUB
 page("/best-tools/", "Best Business Software by Category (2026) | Vettlo",
      "Every software category Vettlo reviews, grouped by the team that buys it: sales, marketing, projects, support, HR, finance, IT, engineering and data.",
-     f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Categories</span><h1>Every category we review</h1>
-<p>Grouped by the team that buys it. Reviewed categories link to their shortlist; the rest are in research and publish as soon as pricing and data are verified.</p></div>
-<div class="page-body">{stack_grid()}
-<p class="muted small" style="margin-top:2rem">Missing a category your team buys? <a href="/contact/">Tell us</a> and we'll add it. Looking for a specific article? See <a href="/reviews/">all reviews</a>.</p>
-</div></div>
+     f"""<!--CATSPAGE-->
 {newsletter()}""", cur="/best-tools/")
 
 
@@ -1359,6 +1355,43 @@ def _fav(domain, size=40):
     return (f'<img class="tlogo" src="https://www.google.com/s2/favicons?domain={domain}&amp;sz=64" alt="" width="{size}" height="{size}" loading="lazy" decoding="async">')
 
 
+def categories_page(picks, n_tools):
+    """/best-tools/: published categories only, grouped by team, with search and team filters."""
+    groups = []
+    for name, sub, cs in DEPTS:
+        live = [(sl, n, sb) for sl, n, sb, lv in cs if lv and f"/tools/{sl}/" in PAGES]
+        if live:
+            groups.append((name, sub, DEPT_SLUG[name], live))
+    n_cats = sum(len(g[3]) for g in groups)
+    chips = '<button type="button" class="cf-chip is-on" data-team="">All teams</button>' + "".join(
+        f'<button type="button" class="cf-chip" data-team="{slug}">{html.escape(name)}</button>' for name, _, slug, _ in groups)
+    secs = []
+    for name, sub, slug, live in groups:
+        tiles = []
+        for sl, n, sb in live:
+            cnt = picks.get(sl, {}).get("n")
+            meta = f'{cnt} tools compared' if cnt else "Shortlist"
+            tiles.append(f'<a class="cat-tile" href="/tools/{sl}/" data-q="{html.escape((n + " " + sb + " " + name).lower())}">'
+                         f'<span class="ct-name">{n}</span><span class="ct-sub">{sb}</span><span class="ct-meta">{meta} <span aria-hidden="true">→</span></span></a>')
+        secs.append(f'<section class="cat-sec" id="{slug}" data-team="{slug}"><div class="cat-sec-head"><h2>{html.escape(name)}</h2>'
+                    f'<a href="/{slug}/">{html.escape(sub)}</a></div><div class="cat-grid">{"".join(tiles)}</div></section>')
+    return f"""<section class="cats-hero"><div class="wrap">
+<h1>Every category we review</h1>
+<p class="lede">Shortlists for the software teams buy, grouped by the team that buys it. Each one ranks tools on published, weighted criteria with prices checked on the vendor's own page.</p>
+<div class="cats-stats"><span><b>{n_cats}</b> categories</span><span><b>{n_tools}</b> tools scored</span><span><b>6</b> weighted criteria each</span></div>
+<div class="cats-find"><label class="sr-only" for="cf-q">Filter categories</label><input id="cf-q" type="search" placeholder="Filter categories, e.g. payroll, chat, contracts" autocomplete="off">
+<div class="cf-chips" role="group" aria-label="Filter by team">{chips}</div></div>
+</div></section>
+<div class="wrap cats-body">{"".join(secs)}
+<p class="cats-empty" hidden>No category matches that yet. <a href="/contact/">Tell us what you're looking for</a> and we'll add it to the research queue.</p>
+<div class="cats-cta"><div><h2>Missing a category your team buys?</h2><p>Tell us what you're evaluating and we'll add it to the research queue.</p></div><a class="btn" href="/contact/">Suggest a category</a></div>
+</div>
+<script>(function(){{var q=document.getElementById("cf-q"),team="",chips=[].slice.call(document.querySelectorAll(".cf-chip")),secs=[].slice.call(document.querySelectorAll(".cat-sec")),empty=document.querySelector(".cats-empty");
+function run(){{var t=q.value.trim().toLowerCase(),any=false;secs.forEach(function(s){{var show=0;if(team&&s.dataset.team!==team){{s.hidden=true;return}}
+[].forEach.call(s.querySelectorAll(".cat-tile"),function(a){{var ok=!t||a.dataset.q.indexOf(t)>-1;a.hidden=!ok;if(ok)show++}});s.hidden=!show;if(show)any=true}});empty.hidden=any}}
+q.addEventListener("input",run);chips.forEach(function(c){{c.addEventListener("click",function(){{team=c.dataset.team;chips.forEach(function(x){{x.classList.toggle("is-on",x===c)}});run()}})}});}})();</script>"""
+
+
 def home_sections():
     """Home page blocks built from live data: search index, top picks per category, comparisons, trust numbers."""
     picks = dict(TOPPICKS)
@@ -1424,6 +1457,7 @@ var w=t.split(/\\s+/),r=D.filter(function(d){{var s=d[0].toLowerCase();return w.
 r.sort(function(a,b){{var o={{Shortlist:0,Comparison:1,Review:2,Guide:3}};return o[a[2]]-o[b[2]]}});
 L.innerHTML=r.slice(0,8).map(function(d){{return '<a role="option" href="'+d[1]+'"><span>'+esc(d[0])+'</span><small>'+d[2]+'</small></a>'}}).join("")||'<p class="hs-none">No match. Try a category like CRM or payroll.</p>';L.hidden=false}});
 document.addEventListener("click",function(e){{if(!e.target.closest(".home-search"))L.hidden=true}});}})();</script>''')
+    PAGES["/best-tools/"]["body"] = PAGES["/best-tools/"]["body"].replace("<!--CATSPAGE-->", categories_page(picks, n_tools))
     b = PAGES["/"]["body"]
     for k, v in (("HOMESEARCH", search), ("HOMETOP", top), ("HOMECOMPARE", compare), ("HOMETRUST", trust)):
         b = b.replace(f"<!--{k}-->", v)
