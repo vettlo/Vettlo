@@ -1307,19 +1307,30 @@ def badges_page():
 
 
 def scoreboard():
-    crit = [("Core features", 25, 92), ("Automation", 20, 84), ("Reporting", 15, 88), ("Integrations", 15, 80), ("Ease of use", 10, 90), ("Price &amp; value", 15, 76)]
+    """Hero visual: a brand-free collage of three cards that show how Vettlo works (score, price check, cost)."""
+    best = max([v[2] for v in SCOREBOARD] + [score(t["id"]) for t in TOOLS[:1]])
+    try:
+        upd = json.load(open(ROOT / "data" / "updates.json"))
+        last = max(v.get("checked", "") for v in upd.values())
+        last_h = _dt.date.fromisoformat(last).strftime("%b %-d, %Y")
+    except Exception:
+        last_h = ""
+    crit = [("Core features", 25, 92), ("Automation", 20, 84), ("Reporting", 15, 88), ("Price &amp; value", 15, 76)]
     rows = "".join(f'<li><span class="nm">{n}</span><span class="wt">{w}%</span><span class="tr"><i style="--v:{v}%"></i></span></li>' for n, w, v in crit)
-    ticks = "".join(f'<line x1="70" y1="6" x2="70" y2="12" transform="rotate({a} 70 70)"/>' for a in range(0, 360, 15))
-    checks = "".join(f'<li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>{t}</li>' for t in
-                     ("Prices verified at the source", "Criteria published on every review", "Re-checked every 90 days"))
-    board = f"""<aside class="panel" aria-label="How the Vettlo Score works"><div class="panel-glow" aria-hidden="true"></div>
-<div class="panel-head"><span class="panel-title"><b>The Vettlo Score</b><span>How every tool is rated</span></span><span class="panel-chip"><i></i>Live methodology</span></div>
-<div class="panel-body"><div class="gauge" aria-hidden="true"><svg viewBox="0 0 140 140"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#006f4e"/><stop offset="1" stop-color="#00a874"/></linearGradient></defs>
-<g class="ticks">{ticks}</g><circle class="g-track" cx="70" cy="70" r="52"/><circle class="g-arc" cx="70" cy="70" r="52" pathLength="100"/></svg>
-<div class="g-val"><b>/100</b><span>Weighted</span></div></div>
-<ul class="wts">{rows}</ul></div>
-<ul class="panel-foot">{checks}</ul>
-<a class="panel-link" href="/methodology/">How scoring works <span aria-hidden="true">→</span></a></aside>"""
+    ok = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>'
+    board = f"""<div class="collage" aria-label="How Vettlo rates software: a weighted score, prices checked at the source, and year-one costs compared">
+<div class="cc cc-score"><div class="cc-head"><b>Vettlo Score</b><span class="cc-chip"><i></i>Weighted</span></div>
+<div class="cc-score-body"><div class="ring" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="r-track" cx="60" cy="60" r="50"/><circle class="r-arc" cx="60" cy="60" r="50" pathLength="100" style="--s:{best}"/></svg><div class="r-val"><b>{best}</b><span>/100</span></div></div>
+<ul class="wts">{rows}</ul></div></div>
+<div class="cc cc-price"><span class="cc-badge">{ok}Price verified</span>
+<div class="sk"><i style="width:62%"></i><i style="width:40%"></i></div>
+<div class="cc-line"><span>Entry plan</span><b>$<i class="skn"></i>/user/mo</b></div>
+<div class="cc-line"><span>Source</span><b>Vendor pricing page</b></div>
+<p class="cc-foot">{"Latest check: " + last_h if last_h else "Checked at the source"}</p></div>
+<div class="cc cc-cost"><b class="cc-t">Year-one cost, 10 users</b>
+<div class="bars" aria-hidden="true"><span style="--h:78%"><em>A</em></span><span style="--h:52%"><em>B</em></span><span style="--h:64%"><em>C</em></span></div></div>
+<span class="cc-pill">{ok}6 weighted criteria</span>
+</div>"""
     PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--SCOREBOARD-->", board)
     home_sections()
 
