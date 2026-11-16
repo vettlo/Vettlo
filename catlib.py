@@ -82,6 +82,7 @@ def category_page(cat):
     PRICEROWS[cat["slug"]] = dict(noun=_noun(cat), plural=cat["plural"], others=cat.get("others", []), rows=[(tools[k]["name"], tools[k]["price"], tools[k]["price_note"], tools[k]["trial"], f"#{k}") for k in ranked])
     BADGES.extend((cat["crumb"], cat["slug"], k, tools[k]["name"], i) for i, k in enumerate(ranked, 1))
     SCOREBOARD.append((cat["crumb"], tools[ranked[0]]["name"], cat_score(cat, ranked[0]), f"/tools/{cat['slug']}/", len(tools)))
+    TOPPICKS[cat["slug"]] = dict(plural=cat["plural"], n=len(ranked), top=[(tools[k]["name"], tools[k]["url"], cat_score(cat, k), tools[k]["price"]) for k in ranked[:3]])
     url = f"/tools/{cat['slug']}/"
     n = len(ranked)
     h1 = f"{n} Best {cat['plural']} in {YEAR}"
@@ -192,6 +193,7 @@ CATEGORY_PAGES = []  # (url, title, blurb, kind) collected for hubs and llms.txt
 BADGES = []  # (category, slug, tool id, tool name, rank) for /badges/
 CLUSTER = {}  # category slug -> [(url, title, kind)] supporting pages (alternatives, comparisons)
 SCOREBOARD = []  # (category, top tool, score, url, tools scored) for the home scoreboard
+TOPPICKS = {}  # slug -> top 3 tools with score and entry price, for the home page cards
 
 
 COMPARES = {}  # category slug -> [(url, title)] for links from the category page

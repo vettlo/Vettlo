@@ -283,46 +283,34 @@ def stack_grid(limit=None):
 
 
 # ---------- HOME
-page("/", "Vettlo: Independent Business Software Reviews",
-     "Independent reviews of business software, from CRM and project management to payroll, help desk and security, scored on published criteria.",
+page("/", "Vettlo: Independent Business Software Reviews and Comparisons",
+     "Independent reviews of business software, from CRM and accounting to payroll, help desk and security, scored on published criteria with verified prices.",
      f"""
-<section class="hero"><div class="wrap">
+<section class="hero hero-home"><div class="wrap">
 <div>
-<h1>Business software, scored in the open.</h1>
-<p class="lede">Independent shortlists of the software companies run on, from CRM and project management to payroll, help desk and security. Every score is broken down by published criteria, every price is checked against the vendor's own page, and we tell you when partners pay us.</p>
-<div class="ctas"><a class="btn" href="/reviews/">Browse all reviews</a><a class="btn ghost" href="/methodology/">How we score</a></div>
+<h1>Find the right software for your team.</h1>
+<p class="lede">Independent shortlists, reviews and head-to-head comparisons of the software companies run on. Every score uses published criteria and every price is checked on the vendor's own page.</p>
+<!--HOMESEARCH-->
 </div>
 <!--SCOREBOARD-->
 </div></section>
 
-<section class="section band"><div class="wrap">
-<div class="section-head"><div><span class="eyebrow">Coverage</span><h2 style="margin-top:.4rem">Software for every team</h2>
-<p>One shortlist per category, grouped by the team that buys it. We publish new categories every week.</p></div>
+<section class="section picks-band"><div class="wrap">
+<div class="section-head"><div><h2>Top-rated in popular categories</h2>
+<p>The three highest-scoring tools in the categories readers compare most, with entry prices checked at the source.</p></div>
 <a class="btn ghost small" href="/best-tools/">All categories</a></div>
-{stack_grid(1)}
+<!--HOMETOP-->
 </div></section>
 
-<section class="section"><div class="wrap">
-<div class="section-head"><div><span class="eyebrow">Latest</span><h2 style="margin-top:.4rem">Recently published</h2>
-<p>New shortlists and comparisons, with prices checked on the date shown on each page.</p></div><a class="btn ghost small" href="/reviews/">All reviews</a></div>
-<div class="bench">
-<article><div class="meta"><span>Comparison</span><span>Nov 16, 2026</span></div><h3><a href="/compare/freshbooks-vs-quickbooks/">FreshBooks vs QuickBooks</a></h3><p class="muted small">$23 vs $38 entry plans, billable-client caps against user limits, and yearly costs from 1 to 10 people, where FreshBooks saves $2,052 at 10 users.</p></article>
-<article><div class="meta"><span>Comparison</span><span>Nov 12, 2026</span></div><h3><a href="/compare/xero-vs-zohobooks/">Xero vs Zoho Books</a></h3><p class="muted small">$27 vs $15 entry plans, no per-user fees against 3 to 10 users per plan, and multi-currency at $97 on Xero against $40 billed yearly on Zoho Books.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 9, 2026</span></div><h3><a href="/tools/best-product-analytics-tools/">Best product analytics tools</a></h3><p class="muted small">Seven product analytics tools compared on free events, replays and SSO, from 2M free events on Amplitude and Statsig to about $324 a month for 10M events on PostHog.</p></article>
-<article><div class="meta"><span>Shortlist</span><span>Nov 9, 2026</span></div><h3><a href="/tools/best-knowledge-base-software/">Best knowledge base software</a></h3><p class="muted small">Seven internal wikis compared on AI answers, SSO and upkeep, from Nuclino at $6 a user to Slab's SAML SSO at $12.50 and Outline at $79 a month for 100 people.</p></article>
-
-</div>
-</div></section>
-
-<!--HOMEGUIDES-->
 <section class="section band"><div class="wrap">
-<div class="section-head"><div><span class="eyebrow">Our rules</span><h2 style="margin-top:.4rem">Why buyers trust the shortlist</h2></div><a class="btn ghost small" href="/how-we-make-money/">How we make money</a></div>
-<div class="pledges">
-<div class="pledge"><span class="n">100%</span><h4>Prices checked at the source</h4><p class="muted small">Every price comes from the vendor's own pricing page, with the date we checked it shown on each review.</p></div>
-<div class="pledge"><span class="n">6</span><h4>Weighted criteria per category</h4><p class="muted small">Published on every review, so you can see why a tool placed where it did.</p></div>
-<div class="pledge"><span class="n">90</span><h4>Days between re-checks</h4><p class="muted small">Pricing and plan limits change fast. Every review shows its last verified date.</p></div>
-</div>
+<div class="section-head"><div><h2>Popular comparisons</h2>
+<p>Two tools side by side: real costs at your team size, plan limits and which one fits which kind of team.</p></div>
+<a class="btn ghost small" href="/reviews/#comparison">All comparisons</a></div>
+<!--HOMECOMPARE-->
 </div></section>
+
+<!--HOMETRUST-->
+<!--HOMEGUIDES-->
 
 {newsletter()}
 """, cur="/", jsonld=[ORG, {"@context": "https://schema.org", "@type": "WebSite", "name": "Vettlo", "url": DOMAIN}])
@@ -1264,7 +1252,7 @@ def reviews_page():
     for h, k, sub in groups:
         cards = "".join(f'<a class="card" href="{u}"><span class="label">{kk}</span><h3>{t}</h3><p class="muted small">{b}</p></a>' for u, t, b, kk in allp if kk == k)
         if cards:
-            body += f'<h2 style="margin:2rem 0 .3rem">{h}</h2><p class="muted small" style="margin:0 0 1rem">{sub}</p><div class="cards3">{cards}</div>'
+            body += f'<h2 id="{k.lower()}" style="margin:2rem 0 .3rem">{h}</h2><p class="muted small" style="margin:0 0 1rem">{sub}</p><div class="cards3">{cards}</div>'
     body += "</div></div>" + newsletter()
     items = [{"@type": "ListItem", "position": i + 1, "url": DOMAIN + u, "name": t} for i, (u, t, b, k) in enumerate(allp)]
     page("/reviews/", "All Software Reviews | Vettlo",
@@ -1326,13 +1314,99 @@ def scoreboard():
                      ("Prices verified at the source", "Criteria published on every review", "Re-checked every 90 days"))
     board = f"""<aside class="panel" aria-label="How the Vettlo Score works"><div class="panel-glow" aria-hidden="true"></div>
 <div class="panel-head"><span class="panel-title"><b>The Vettlo Score</b><span>How every tool is rated</span></span><span class="panel-chip"><i></i>Live methodology</span></div>
-<div class="panel-body"><div class="gauge" aria-hidden="true"><svg viewBox="0 0 140 140"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c98c"/><stop offset="1" stop-color="#9ff0cf"/></linearGradient></defs>
+<div class="panel-body"><div class="gauge" aria-hidden="true"><svg viewBox="0 0 140 140"><defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#006f4e"/><stop offset="1" stop-color="#00a874"/></linearGradient></defs>
 <g class="ticks">{ticks}</g><circle class="g-track" cx="70" cy="70" r="52"/><circle class="g-arc" cx="70" cy="70" r="52" pathLength="100"/></svg>
 <div class="g-val"><b>/100</b><span>Weighted</span></div></div>
 <ul class="wts">{rows}</ul></div>
 <ul class="panel-foot">{checks}</ul>
 <a class="panel-link" href="/methodology/">How scoring works <span aria-hidden="true">→</span></a></aside>"""
     PAGES["/"]["body"] = PAGES["/"]["body"].replace("<!--SCOREBOARD-->", board)
+    home_sections()
+
+
+HOME_CATS = ["best-crm-software", "best-accounting-software", "best-payroll-software", "best-project-management-software",
+             "best-help-desk-software", "best-email-marketing-software"]
+HOME_COMPARE = [("salesforce-vs-hubspot", "salesforce.com", "hubspot.com"), ("quickbooks-vs-xero", "quickbooks.intuit.com", "xero.com"),
+                ("asana-vs-monday", "asana.com", "monday.com"), ("zendesk-vs-freshdesk", "zendesk.com", "freshdesk.com"),
+                ("gusto-vs-quickbooks-payroll", "gusto.com", "quickbooks.intuit.com"), ("1password-vs-bitwarden", "1password.com", "bitwarden.com"),
+                ("klaviyo-vs-mailchimp", "klaviyo.com", "mailchimp.com"), ("freshbooks-vs-quickbooks", "freshbooks.com", "quickbooks.intuit.com")]
+HOME_CHIPS = [("CRM", "best-crm-software"), ("Accounting", "best-accounting-software"), ("Payroll", "best-payroll-software"),
+              ("Project management", "best-project-management-software"), ("Help desk", "best-help-desk-software"), ("Password managers", "best-password-managers-for-business")]
+
+
+def _fav(domain, size=40):
+    return (f'<img class="tlogo" src="https://www.google.com/s2/favicons?domain={domain}&amp;sz=64" alt="" width="{size}" height="{size}" loading="lazy" decoding="async">')
+
+
+def home_sections():
+    """Home page blocks built from live data: search index, top picks per category, comparisons, trust numbers."""
+    picks = dict(TOPPICKS)
+    picks["best-crm-software"] = dict(plural="CRM Software", n=len(TOOLS),
+                                      top=[(t["name"], URLS[t["id"]], score(t["id"]), PRICING[t["id"]]["price"]) for t in TOOLS[:3]])
+    host = lambda u: re.sub(r"^https?://(www\.)?", "", u).split("/")[0]
+    cards = []
+    for slug in HOME_CATS:
+        c = picks.get(slug)
+        if not c:
+            continue
+        (n1, u1, s1, p1), rest = c["top"][0], c["top"][1:]
+        others = "".join(f'<li>{_fav(host(u), 20)}<span class="nm">{n}</span><span class="sc">{sc}</span></li>' for n, u, sc, _ in rest)
+        cards.append(f'''<a class="pick-card" href="/tools/{slug}/"><span class="pc-cat">{html.escape(c["plural"])}</span>
+<div class="pc-top">{_fav(host(u1), 40)}<div><span class="pc-rank">Top pick</span><b>{n1}</b><span class="pc-price">From {html.escape(p1)}</span></div><span class="pc-score"><b>{s1}</b>/100</span></div>
+<ul class="pc-rest">{others}</ul><span class="pc-link">Compare all {c["n"]} <span aria-hidden="true">→</span></span></a>''')
+    top = '<div class="pick-grid">' + "".join(cards) + "</div>"
+
+    comps = []
+    for slug, da, db in HOME_COMPARE:
+        pg = PAGES.get(f"/compare/{slug}/")
+        if not pg:
+            continue
+        a_, b_ = pg["title"].split(" (")[0].split(" vs ", 1)
+        comps.append(f'<a class="vs-card" href="/compare/{slug}/"><span class="vs-logos">{_fav(da, 32)}{_fav(db, 32)}</span><span class="vs-name">{a_} <i>vs</i> {b_}</span></a>')
+    compare = '<div class="vs-grid">' + "".join(comps) + "</div>"
+
+    # trust band: counts come from the data, so they stay true as the site grows
+    n_cats = len(picks)
+    n_tools = sum(len(c["tools"]) for c in ALLCATS) + len(CONSIDERED)
+    chk = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>'
+    stats = [(f"{n_tools}", "tools scored", f"across {n_cats} categories, each on the same weighted criteria"),
+             ("100%", "prices from the source", "every price read from the vendor's own pricing page, with the date shown"),
+             ("6", "weighted criteria", "per category, published on every shortlist so you can check the math"),
+             ("90", "days, at most", "between price and plan re-checks on every review")]
+    rules = [("Scores aren't for sale", "Partners can pay for placement, never for a score or for what we write. Every review says so."),
+             ("Show the working", "Each tool's score breaks down criterion by criterion, so you can see why it placed where it did."),
+             ("Dated and re-checked", "Every page shows when its prices were last verified, and we correct errors in public.")]
+    trust = ('<section class="trust"><div class="wrap"><div class="trust-head"><div><h2>Why buyers trust the shortlist</h2>'
+             '<p>Software reviews are easy to fake. Here is what we do differently, in numbers you can check.</p></div>'
+             '<div class="trust-links"><a href="/methodology/">How we score</a><a href="/how-we-make-money/">How we make money</a></div></div>'
+             '<div class="trust-stats">' + "".join(f'<div class="ts"><span class="ts-n">{n}</span><span class="ts-l">{l}</span><span class="ts-d">{d}</span></div>' for n, l, d in stats) + '</div>'
+             '<div class="trust-rules">' + "".join(f'<div class="tr-item"><span class="tr-ic">{chk}</span><div><h3>{h}</h3><p>{t}</p></div></div>' for h, t in rules) + '</div>'
+             '</div></section>')
+
+    idx = []
+    for path, pg in PAGES.items():
+        if path in NOINDEX or path in NO_SITEMAP or not re.match(r"^/(tools|compare|guides)/.+", path):
+            continue
+        kind = "Comparison" if path.startswith("/compare/") else "Guide" if path.startswith("/guides/") else "Review" if path.endswith("-review/") else "Shortlist"
+        idx.append([pg["title"].split(" | ")[0], path, kind])
+    chips = "".join(f'<a href="/tools/{sl}/">{n}</a>' for n, sl in HOME_CHIPS)
+    search = (f'''<form class="home-search" role="search" action="/reviews/" onsubmit="var a=this.querySelector('.hs-list a');if(a){{location.href=a.href;return false}}">
+<label class="sr-only" for="hs-q">Search software, categories and comparisons</label>
+<input id="hs-q" type="search" placeholder="Search a tool or category, e.g. payroll, Asana, QuickBooks" autocomplete="off" aria-controls="hs-list">
+<button class="btn" type="submit">Search</button>
+<div class="hs-list" id="hs-list" role="listbox" hidden></div></form>
+<div class="home-chips"><span>Popular:</span>{chips}</div>
+<script>(function(){{var D={json.dumps(idx, ensure_ascii=False)};var q=document.getElementById("hs-q"),L=document.getElementById("hs-list");
+function esc(s){{return s.replace(/[&<>"]/g,function(c){{return {{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}}[c]}})}}
+q.addEventListener("input",function(){{var t=q.value.trim().toLowerCase();if(t.length<2){{L.hidden=true;L.innerHTML="";return}}
+var w=t.split(/\\s+/),r=D.filter(function(d){{var s=d[0].toLowerCase();return w.every(function(x){{return s.indexOf(x)>-1}})}});
+r.sort(function(a,b){{var o={{Shortlist:0,Comparison:1,Review:2,Guide:3}};return o[a[2]]-o[b[2]]}});
+L.innerHTML=r.slice(0,8).map(function(d){{return '<a role="option" href="'+d[1]+'"><span>'+esc(d[0])+'</span><small>'+d[2]+'</small></a>'}}).join("")||'<p class="hs-none">No match. Try a category like CRM or payroll.</p>';L.hidden=false}});
+document.addEventListener("click",function(e){{if(!e.target.closest(".home-search"))L.hidden=true}});}})();</script>''')
+    b = PAGES["/"]["body"]
+    for k, v in (("HOMESEARCH", search), ("HOMETOP", top), ("HOMECOMPARE", compare), ("HOMETRUST", trust)):
+        b = b.replace(f"<!--{k}-->", v)
+    PAGES["/"]["body"] = b
 
 
 import hashlib
