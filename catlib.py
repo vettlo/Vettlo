@@ -406,17 +406,39 @@ def guides_index():
     by = {}
     for url, t, card, d, cats, k in GUIDES:
         by.setdefault(d, []).append((url, t, card, k))
-    body = f'''<div class="wrap"><div class="page-head"><span class="eyebrow">Guides</span><h1>Software guides for every team</h1>
-<p>Explainers, pricing breakdowns and buying advice, written from the same research behind our shortlists. Every price comes from the vendor's own pricing page.</p></div>
-<div class="page-body">'''
-    chips = "".join(f'<a href="#{DEPT_SLUG[d]}">{d}</a>' for d, _, _ in DEPTS if d in by)
-    body += f'<nav class="chips" aria-label="Guides by team">{chips}</nav>'
-    for d, _, _ in DEPTS:
-        if d not in by:
-            continue
-        cards = "".join(f'<a href="{u}"><span class="label">{k}</span><b>{t}</b><span class="muted small">{c}</span></a>' for u, t, c, k in by[d])
-        body += f'<h2 class="dept-h" id="{DEPT_SLUG[d]}">{d}</h2><div class="guide-grid">{cards}</div>'
-    body += '<p class="muted small" style="margin-top:2rem">Looking for a ranked list instead? See <a href="/best-tools/">all categories</a>.</p></div></div>' + newsletter()
+    icons = globals().get("TEAM_ICONS", {})
+    kinds = sorted({k for *_x, k in GUIDES})
+    kind_ic = {"Explainer": '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M9 8h7M9 11.5h5"/>',
+               "Pricing guide": '<path d="M3.5 12.5V4.5a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8.5" cy="8.5" r="1.6"/>',
+               "How-to": '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',
+               "Reference": '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/>',
+               "Buying guide": '<path d="M4 5h2l2 10h10l2-7H7"/><circle cx="10" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/>',
+               "Migration guide": '<path d="M4 8h13l-3-3M20 16H7l3 3"/>'}
+    mosaic = "".join(f'<div class="mz-tile" style="--d:{n}"><svg viewBox="0 0 24 24" aria-hidden="true">{kind_ic.get(k, kind_ic["Reference"])}</svg><span>{k}</span></div>'
+                     for n, k in enumerate(["Explainer", "Pricing guide", "How-to", "Reference", "Buying guide", "Migration guide"]))
+    teams = [d for d, _, _ in DEPTS if d in by]
+    tcards = '<button type="button" class="gt-card is-on" data-team=""><span class="gt-name">All guides</span><span class="gt-n">' + str(len(GUIDES)) + ' guides</span></button>' + "".join(
+        f'<button type="button" class="gt-card" data-team="{DEPT_SLUG[d]}"><span class="tc-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{icons.get(d, "")}</svg></span>'
+        f'<span class="gt-name">{d}</span><span class="gt-n">{len(by[d])} {"guide" if len(by[d]) == 1 else "guides"}</span></button>' for d in teams)
+    gcards = "".join(f'<a class="g-card" href="{u}" data-team="{DEPT_SLUG[d]}" data-q="{html.escape((t + " " + c + " " + k + " " + d).lower())}">'
+                     f'<span class="g-kind">{k}</span><b>{t}</b><span class="g-desc">{c}</span><span class="g-team">{d}</span></a>'
+                     for d in teams for u, t, c, k in by[d])
+    body = f"""<section class="cats-hero"><div class="wrap cats-hero-grid"><div>
+<h1>Software guides for every team</h1>
+<p class="lede">Explainers, pricing breakdowns and how-tos, written from the same research behind our shortlists. Every price comes from the vendor's own pricing page.</p>
+<div class="cats-stats"><span><b>{len(GUIDES)}</b> guides</span><span><b>{len(teams)}</b> teams covered</span><span><b>100%</b> prices from the source</span></div>
+<div class="cats-find"><label class="sr-only" for="gf-q">Search guides</label><input id="gf-q" type="search" placeholder="Search guides, e.g. payroll cost, CRM, bank reconciliation" autocomplete="off"></div>
+</div><div class="mosaic mosaic-6" aria-hidden="true">{mosaic}</div></div></section>
+<div class="wrap guides-body">
+<div class="gt-grid" role="group" aria-label="Guides by team">{tcards}</div>
+<div class="g-grid">{gcards}</div>
+<p class="cats-empty" hidden>No guide matches that yet. <a href="/contact/">Suggest a topic</a> and we'll add it to the plan.</p>
+<div class="cats-cta"><div><h2>Looking for a ranked list instead?</h2><p>Every shortlist ranks tools on published criteria with verified prices.</p></div><a class="btn" href="/best-tools/">All categories</a></div>
+</div>
+<script>(function(){{var q=document.getElementById("gf-q"),team="",bs=[].slice.call(document.querySelectorAll(".gt-card")),cs=[].slice.call(document.querySelectorAll(".g-card")),e=document.querySelector(".cats-empty");
+function run(){{var t=q.value.trim().toLowerCase(),n=0;cs.forEach(function(c){{var ok=(!team||c.dataset.team===team)&&(!t||c.dataset.q.indexOf(t)>-1);c.hidden=!ok;if(ok)n++}});e.hidden=n>0}}
+q.addEventListener("input",run);bs.forEach(function(b){{b.addEventListener("click",function(){{team=b.dataset.team;bs.forEach(function(x){{x.classList.toggle("is-on",x===b)}});run()}})}});}})();</script>
+""" + newsletter()
     items = [{"@type": "ListItem", "position": i, "url": DOMAIN + u, "name": t} for i, (u, t, *_r) in enumerate(GUIDES, 1)]
     page("/guides/", "Business Software Guides: Explainers and Pricing | Vettlo",
          "Plain-English guides to business software: what each category does, what it really costs and how to choose, for sales, marketing, support, HR, finance and IT.",
