@@ -1204,6 +1204,8 @@ def head_block(path, p, css_href):
               else '<meta name="robots" content="noindex, follow">' if path == "/vendors/login/"
               else '<meta name="robots" content="noindex, follow">' if path in NOINDEX
               else '<meta name="robots" content="index, follow, max-image-preview:large">')
+    if path == "/":
+        robots += '<meta name="yandex-verification" content="5f475d4efe20ffdc">'
     return (f'<title>{p["title"]}</title><meta name="description" content="{p["desc"]}">{robots}'
             f'<link rel="canonical" href="{canon}"><meta property="og:type" content="{p["ptype"]}"><meta property="og:site_name" content="Vettlo">'
             f'<meta property="og:title" content="{p["title"]}"><meta property="og:description" content="{p["desc"]}"><meta property="og:url" content="{canon}">'
