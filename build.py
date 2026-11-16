@@ -1365,26 +1365,13 @@ def categories_page(picks, n_tools):
     n_cats = sum(len(g[3]) for g in groups)
     chips = '<button type="button" class="cf-chip is-on" data-team="">All teams</button>' + "".join(
         f'<button type="button" class="cf-chip" data-team="{slug}">{html.escape(name)}</button>' for name, _, slug, _ in groups)
-    team_icons = {
-        "Sales": '<path d="M4 19V9M10 19V5M16 19v-7M3 19.5h18"/><path d="M14 6l3-2.5L20 6"/>',
-        "Marketing": '<path d="M4 10v4l3 .5 2 5h2.5l-1.5-4.6L19 18V6L7 9.5z"/>',
-        "Projects & operations": '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15l1.6 1.6 2.9-2.9M14.5 9.5H17M14.5 15.5H17"/>',
-        "Customer support": '<path d="M4.5 13v-1a7.5 7.5 0 0 1 15 0v1"/><rect x="3.5" y="13" width="4" height="6" rx="1.5"/><rect x="16.5" y="13" width="4" height="6" rx="1.5"/>',
-        "HR & people": '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.7-3 2.8-4.8 5.5-4.8s4.8 1.8 5.5 4.8"/><circle cx="17" cy="9.5" r="2.3"/><path d="M15.5 14.4c2.4-.3 4.3 1.2 5 4.1"/>',
-        "Finance": '<rect x="3" y="6" width="18" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v5M17.5 9.5v5"/>',
-        "IT & security": '<path d="M12 3.5l7 2.8v5.2c0 4.4-3 7.8-7 9-4-1.2-7-4.6-7-9V6.3z"/><path d="M9 12l2.2 2.2L15.5 10"/>',
-        "Engineering & DevOps": '<path d="M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4M13.5 5.5l-3 13"/>',
-        "Data & analytics": '<path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
-        "Collaboration": '<path d="M4 6.5h11a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2z"/><path d="M19 9.5h1a2 2 0 0 1 2 2v4.5a2 2 0 0 1-2 2v2.5l-3-2.5h-4"/>',
-        "Legal & compliance": '<path d="M12 4v16M7 20h10M5 7h14"/><path d="M5 7l-2.5 6a2.8 2.8 0 0 0 5 0zM19 7l-2.5 6a2.8 2.8 0 0 0 5 0z"/>',
-    }
     cards = []
     for name, sub, slug, live in groups:
         names = [n for _, n, _ in live]
         tools_n = sum(picks.get(sl, {}).get("n", 0) for sl, _, _ in live)
         q = html.escape((name + " " + sub + " " + " ".join(n + " " + sb for _, n, sb in live)).lower())
         preview = ", ".join(names[:3]) + (f" and {len(names) - 3} more" if len(names) > 3 else "")
-        cards.append(f'<a class="team-card" href="/{slug}/" data-q="{q}"><span class="tc-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{team_icons.get(name, "")}</svg></span>'
+        cards.append(f'<a class="team-card" href="/{slug}/" data-q="{q}"><span class="tc-ic"><svg viewBox="0 0 24 24" aria-hidden="true">{TEAM_ICONS.get(name, "")}</svg></span>'
                      f'<span class="tc-name">{html.escape(name)}</span><span class="tc-sub">{html.escape(preview)}</span>'
                      f'<span class="tc-meta"><b>{len(live)}</b> {"category" if len(live) == 1 else "categories"} · <b>{tools_n}</b> tools <span aria-hidden="true">→</span></span></a>')
     secs = ['<div class="team-grid">' + "".join(cards) + "</div>"]
@@ -1526,6 +1513,21 @@ def _catname(name):
     return " ".join(w if (w.isupper() and len(w) > 1) or w in ("DevOps",) else w.lower() for w in name.split())
 
 
+TEAM_ICONS = {
+    "Sales": '<path d="M4 19V9M10 19V5M16 19v-7M3 19.5h18"/><path d="M14 6l3-2.5L20 6"/>',
+    "Marketing": '<path d="M4 10v4l3 .5 2 5h2.5l-1.5-4.6L19 18V6L7 9.5z"/>',
+    "Projects & operations": '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9l1.6 1.6L12.5 7.7M8 15l1.6 1.6 2.9-2.9M14.5 9.5H17M14.5 15.5H17"/>',
+    "Customer support": '<path d="M4.5 13v-1a7.5 7.5 0 0 1 15 0v1"/><rect x="3.5" y="13" width="4" height="6" rx="1.5"/><rect x="16.5" y="13" width="4" height="6" rx="1.5"/>',
+    "HR & people": '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.7-3 2.8-4.8 5.5-4.8s4.8 1.8 5.5 4.8"/><circle cx="17" cy="9.5" r="2.3"/><path d="M15.5 14.4c2.4-.3 4.3 1.2 5 4.1"/>',
+    "Finance": '<rect x="3" y="6" width="18" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v5M17.5 9.5v5"/>',
+    "IT & security": '<path d="M12 3.5l7 2.8v5.2c0 4.4-3 7.8-7 9-4-1.2-7-4.6-7-9V6.3z"/><path d="M9 12l2.2 2.2L15.5 10"/>',
+    "Engineering & DevOps": '<path d="M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4M13.5 5.5l-3 13"/>',
+    "Data & analytics": '<path d="M4 20V4M4 20h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+    "Collaboration": '<path d="M4 6.5h11a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2z"/><path d="M19 9.5h1a2 2 0 0 1 2 2v4.5a2 2 0 0 1-2 2v2.5l-3-2.5h-4"/>',
+    "Legal & compliance": '<path d="M12 4v16M7 20h10M5 7h14"/><path d="M5 7l-2.5 6a2.8 2.8 0 0 0 5 0zM19 7l-2.5 6a2.8 2.8 0 0 0 5 0z"/>',
+}
+
+
 def dept_hubs():
     top = {u: (n, v, cnt) for _, n, v, u, cnt in SCOREBOARD}
     top["/tools/best-crm-software/"] = (TOOLS[0]["name"], score(TOOLS[0]["id"]), len(CONSIDERED))
@@ -1542,30 +1544,40 @@ def dept_hubs():
         title = DEPT_TITLE[dname]
         label = (title[0] + title[1:].lower().replace("hr ", "HR ").replace("it ", "IT ").replace("devops", "DevOps")).replace("It & ", "IT & ")
         items, cards, faqs = [], [], []
+        n_tools = 0
+        host = lambda u: re.sub(r"^https?://(www\\.)?", "", u).split("/")[0]
         for slug, name, sub, _ in live:
             url = f"/tools/{slug}/"
             tn, tv, cnt = top[url]
+            n_tools += cnt
             items.append((tn, tv, f"our top pick for {_catname(name)}"))
-            sup = "".join(f'<li><a href="{u}">{t}</a></li>' for u, t, k in CLUSTER.get(slug, []))
-            cards.append(f'<article class="hub-cat"><h3><a href="{url}">Best {_catname(name)}</a></h3><p class="muted small">{sub}</p>'
-                         f'<p class="hub-top">Top pick: <b>{tn}</b> <span class="sc">{tv}<small>/100</small></span> <span class="muted small">of {cnt} scored</span></p>'
-                         + (f'<ul class="hub-sup">{sup}</ul>' if sup else '') + '</article>')
+            tp = TOPPICKS.get(slug) if slug != "best-crm-software" else dict(top=[(t["name"], URLS[t["id"]], score(t["id"]), PRICING[t["id"]]["price"]) for t in TOOLS[:3]])
+            head = rest = ""
+            if tp and tp.get("top"):
+                (n1, u1, s1, p1), others = tp["top"][0], tp["top"][1:]
+                head = (f'<div class="pc-top">{_fav(host(u1), 40)}<div><span class="pc-rank">Top pick</span><b>{n1}</b><span class="pc-price">From {html.escape(p1)}</span></div>'
+                        f'<span class="pc-score"><b>{s1}</b>/100</span></div>')
+                rest = '<ul class="pc-rest">' + "".join(f'<li>{_fav(host(u), 20)}<span class="nm">{n}</span><span class="sc">{sc}</span></li>' for n, u, sc, _ in others) + "</ul>"
+            sup = "".join(f'<a href="{u}">{t}</a>' for u, t, k in CLUSTER.get(slug, [])[:4])
+            cards.append(f'<article class="hub-card"><div class="hc-head"><h3><a href="{url}">Best {_catname(name)}</a></h3><p>{sub}</p></div>{head}{rest}'
+                         + (f'<div class="hc-more">{sup}</div>' if sup else '') + f'<a class="pc-link" href="{url}">Compare all {cnt} <span aria-hidden="true">→</span></a></article>')
             faqs.append((f"What is the best {_catname(name)}?" if name.endswith("Software") else f"What are the best {_catname(name)}?",
                          f"{tn} ranks first of the {cnt} {_catname(name)} we scored, at {tv}/100."))
-        soon = [c for c in cats if not c[3]]
-        soon_html = ("<section class=\"prose\"><h2>Coming next</h2><p>We're researching these categories and will publish them as soon as pricing and data are verified: "
-                     + ", ".join(_catname(c[1]) for c in soon) + ".</p></section>") if soon else ""
         faqs.append((f"How does Vettlo rank {label.lower()}?", f"Each of the {len([c for c in cats if c[3]])} categories on this page has its own weighted criteria, listed on its shortlist. Tools get a 0 to 5 rating per criterion, converted to a score out of 100. Vendors cannot pay for a score. Partner compensation may affect which products we include and where they appear. See our methodology page for details."))
         h1 = f"Best {title} in {YEAR}"
-        body = f"""<div class="wrap">
+        dl = dname.lower().replace('hr &', 'HR &').replace('it &', 'IT &').replace('devops', 'DevOps')
+        body = f"""<section class="cats-hero hub-hero"><div class="wrap">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/best-tools/">Categories</a> / {dname}</nav>
-<div class="page-head"><h1>{h1}</h1><p>{DEPT_INTRO[dname]}</p></div>
-<div class="layout"><div class="main-col">
-{answer_box(f"Our top picks across {len(live)} {dname.lower().replace('hr &', 'HR &').replace('it &', 'IT &').replace('devops', 'DevOps')} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
-<section><h2>{dname} software categories</h2><div class="hub-grid">{"".join(cards)}</div></section>
-{soon_html}
-<section id="faq"><h2>{label} FAQ</h2><div>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in faqs)}</div></section>
-</div><nav class="toc" aria-label="On this page"><span class="label">On this page</span><a href="#answer">Top picks</a><a href="#faq">FAQ</a></nav></div></div>
+<div class="hub-hero-grid"><div><h1>{h1}</h1><p class="lede">{DEPT_INTRO[dname]}</p>
+<div class="cats-stats"><span><b>{len(live)}</b> {"category" if len(live) == 1 else "categories"}</span><span><b>{n_tools}</b> tools scored</span><span><b>6</b> weighted criteria each</span></div></div>
+<div class="hub-emblem" aria-hidden="true"><svg viewBox="0 0 24 24">{TEAM_ICONS.get(dname, "")}</svg></div></div>
+</div></section>
+<div class="wrap hub-body">
+{answer_box(f"Our top picks across {len(live)} {dl} categor{'y' if len(live) == 1 else 'ies'}, from shortlists scored on published criteria:", items)}
+<section><h2>{dname} software categories</h2><div class="hub-cards">{"".join(cards)}</div></section>
+<section id="faq" class="hub-faq"><h2>{label} FAQ</h2><div>{"".join(f'<details class="faq"><summary>{q}</summary><p>{a}</p></details>' for q, a in faqs)}</div></section>
+<div class="cats-cta"><div><h2>Looking for another team's tools?</h2><p>Browse every team and category we review.</p></div><a class="btn" href="/best-tools/">All categories</a></div>
+</div>
 {newsletter()}"""
         ld = [{"@context": "https://schema.org", "@type": "CollectionPage", "name": h1, "url": DOMAIN + hub,
                "mainEntity": {"@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": i, "url": f"{DOMAIN}/tools/{c[0]}/", "name": f"Best {_catname(c[1])}"} for i, c in enumerate(live, 1)]}},
