@@ -67,7 +67,7 @@ STAMP = ('<svg class="stamp stamp-anim" viewBox="0 0 120 120" aria-hidden="true"
 DRAFT = ('<div class="draftbar"><div class="wrap"><strong>Draft preview.</strong> Dashed fields '
          '<span class="fill">like this</span> must be filled with verified information before launch.</div></div>')
 
-NAV = [("/reviews/", "All reviews"), ("/best-tools/", "Categories"), ("/guides/", "Guides"), ("/methodology/", "How we vet"), ("/about/", "About")]
+NAV = [("/best-tools/", "Categories"), ("/guides/", "Guides"), ("/methodology/", "How we vet"), ("/about/", "About")]
 
 
 def header(cur):
