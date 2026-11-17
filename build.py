@@ -1087,22 +1087,36 @@ page("/write-for-us/", "Write for Us: Contribute Business Software Guides | Vett
 </div></div>""")
 
 # ---------- CONTACT
-page("/contact/", "Contact Vettlo: Suggest a Tool, Report an Error or Advertise",
-     "Contact the Vettlo editors to suggest a tool for review, report an error or outdated price, pitch a story, or ask about advertising on Vettlo.",
-     """<div class="wrap"><div class="page-head"><span class="eyebrow">Contact</span><h1>Get in touch</h1>
-<p>Suggest a tool for review, report an error, pitch a story or ask about advertising.</p></div>
-<div class="page-body"><form class="form" id="c-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
-<label for="c-name">Name<input id="c-name" required autocomplete="name"></label>
-<label for="c-email">Email<input id="c-email" type="email" required autocomplete="email"></label>
-<label for="c-topic">Topic<select id="c-topic"><option>Suggest a tool</option><option>Report an error</option><option>Pitch a story</option><option>Advertising</option><option>Something else</option></select></label>
-<label for="c-msg">Message<textarea id="c-msg" rows="5" required></textarea></label>
-<button class="btn" type="submit">Send message</button><p class="form-msg" id="c-out" aria-live="polite"></p></form>
-<script>(function(){var t0=Date.now();var f=document.getElementById('c-form'),o=document.getElementById('c-out');
+page("/contact/", "Contact Vettlo: Suggest a Tool or Report an Error",
+     "Contact the Vettlo editors to suggest a tool for review, report an error or an outdated price, or pitch a story. Software vendors can reach us here too.",
+     """<section class="cats-hero contact-hero"><div class="wrap contact-grid">
+<div class="contact-intro"><span class="kicker">Contact</span><h1>Get in touch</h1>
+<p class="lede">Tell us about a tool we should review, a price that changed or anything we got wrong. Every message is read by our editors.</p>
+<div class="contact-topics" role="group" aria-label="What's it about?">
+<button type="button" class="ct" data-topic="Suggest a tool"><span class="ct-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7z"/></svg></span><b>Suggest a tool</b><small>A product we should review</small></button>
+<button type="button" class="ct" data-topic="Report an error"><span class="ct-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2 1 21h22L12 2Zm1 15h-2v2h2v-2Zm0-7h-2v5h2v-5Z"/></svg></span><b>Report an error</b><small>An outdated price or a wrong fact</small></button>
+<button type="button" class="ct" data-topic="Pitch a story"><span class="ct-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4 4h16v12H5.2L4 17.2V4Zm2 3v2h12V7H6Zm0 4v2h8v-2H6Z"/></svg></span><b>Pitch a story</b><small>An idea or data for a guide</small></button>
+<a class="ct" href="/vendors/"><span class="ct-ic"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4 7h16v12H4V7Zm5-3h6v3h-2V6h-2v1H9V4Z"/></svg></span><b>Software vendor?</b><small>Use the vendor portal →</small></a>
+</div></div>
+<form class="form contact-form" id="c-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<h2>Send us a message</h2>
+<div class="cf-row"><label for="c-name">Name<input id="c-name" required autocomplete="name"></label>
+<label for="c-email">Email<input id="c-email" type="email" required autocomplete="email"></label></div>
+<label for="c-topic">Topic<select id="c-topic"><option>Suggest a tool</option><option>Report an error</option><option>Pitch a story</option><option>Vendor question</option><option>Something else</option></select></label>
+<label for="c-msg">Message<textarea id="c-msg" rows="6" required placeholder="Links help: the tool's website, or the page and the price that changed."></textarea></label>
+<button class="btn" type="submit">Send message</button><p class="form-msg" id="c-out" aria-live="polite"></p>
+<p class="small muted">We reply by email. We use your details only to answer you; see our <a href="/privacy/">privacy policy</a>.</p></form>
+</div></section>
+<script>(function(){var t0=Date.now();var f=document.getElementById('c-form'),o=document.getElementById('c-out'),sel=document.getElementById('c-topic');
+function pick(t){for(var i=0;i<sel.options.length;i++){if(sel.options[i].text===t){sel.selectedIndex=i;}}
+document.querySelectorAll('.ct[data-topic]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-topic')===sel.value);});}
+document.querySelectorAll('.ct[data-topic]').forEach(function(b){b.addEventListener('click',function(){pick(b.getAttribute('data-topic'));document.getElementById('c-msg').focus();});});
+sel.addEventListener('change',function(){pick(sel.value);});
+var q=new URLSearchParams(location.search).get('topic');if(q){pick(q);}else{pick(sel.value);}
 f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button[type=submit]');b.disabled=true;o.textContent='Sending…';
-var d={form:'contact',elapsed:Date.now()-t0,website:f.querySelector('[name=website]').value,name:f.querySelector('#c-name').value,email:f.querySelector('#c-email').value,topic:f.querySelector('#c-topic').value,message:f.querySelector('#c-msg').value};
+var d={form:'contact',elapsed:Date.now()-t0,website:f.querySelector('[name=website]').value,name:f.querySelector('#c-name').value,email:f.querySelector('#c-email').value,topic:sel.value,message:f.querySelector('#c-msg').value};
 fetch('/api/form',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json().catch(function(){return {ok:false}})}).then(function(r){
-if(r.ok){f.reset();o.textContent='Thanks, your message was sent. We\\'ll reply by email.';}else{o.textContent=r.error||'Something went wrong. Please try again.';}b.disabled=false;}).catch(function(){o.textContent='Network error. Please try again.';b.disabled=false;});});})();</script>
-</div></div>""")
+if(r.ok){f.reset();pick(sel.value);o.textContent='Thanks, your message was sent. We\\'ll reply by email.';}else{o.textContent=r.error||'Something went wrong. Please try again.';}b.disabled=false;}).catch(function(){o.textContent='Network error. Please try again.';b.disabled=false;});});})();</script>""")
 
 # ---------- PRIVACY / TERMS
 page("/privacy/", "Privacy Policy: Cookies, Analytics and Your Data | Vettlo", "How Vettlo handles information when you visit the site: analytics, cookies, newsletter sign-ups, contact forms and your choices about your data.",

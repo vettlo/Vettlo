@@ -986,3 +986,25 @@ details.breakdown .criteria { margin-top: .9rem; }
 .flow3 li { z-index: 1; }
 .flow3 li:not(:last-child)::after { left: 2.95rem; bottom: -1.05rem; }
 .flow3 { max-width: 30rem; justify-self: end; width: 100%; }
+
+/* contact */
+.contact-hero { padding-bottom: 4.5rem; }
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 27rem); gap: 3.5rem; align-items: start; }
+.contact-intro h1 { margin-top: .4rem; }
+.contact-intro .lede { max-width: 32rem; }
+.contact-topics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin-top: 2rem; }
+.ct { display: grid; grid-template-columns: 2.6rem 1fr; grid-template-rows: auto auto; column-gap: .8rem; align-items: center; text-align: left; font: inherit; color: var(--ink); background: #fff; border: 1px solid #cfeadd; border-radius: 14px; padding: .9rem 1rem; cursor: pointer; transition: border-color .15s, box-shadow .15s, background .15s; }
+.ct:hover { border-color: #00865e; text-decoration: none; box-shadow: 0 8px 22px rgba(0,134,94,.1); }
+.ct.on { border-color: #00865e; background: #e3f6ee; box-shadow: inset 0 0 0 1px #00865e; }
+.ct-ic { grid-row: 1 / 3; width: 2.6rem; height: 2.6rem; border-radius: 10px; display: grid; place-items: center; background: #e3f6ee; color: #00865e; }
+.ct.on .ct-ic { background: #00865e; color: #fff; }
+.ct b { font-size: .98rem; }
+.ct small { color: var(--ink-3); font-size: .84rem; }
+.contact-form { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 1.8rem; box-shadow: 0 18px 40px rgba(12,26,20,.08); max-width: none; }
+.contact-form h2 { font-size: 1.25rem; margin: 0 0 .4rem; }
+.cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 2rem; } }
+@media (max-width: 520px) { .contact-topics, .cf-row { grid-template-columns: 1fr; } .contact-form { padding: 1.3rem; } }
+.contact-form label { min-width: 0; }
+.contact-form input, .contact-form select, .contact-form textarea { width: 100%; max-width: 100%; box-sizing: border-box; min-width: 0; }
+.contact-form .cf-row > label { display: grid; }
