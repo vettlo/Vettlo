@@ -325,9 +325,21 @@ def explainer_sections(slug, only_what=False):
         out += (f'<section id="pricing" class="prose"><h2>How much {pr["plural"].lower().replace("crm", "CRM").replace("b2b", "B2B").replace("hris", "HRIS").replace("itsm", "ITSM").replace("ci/cd", "CI/CD")} cost{"" if pr["plural"].endswith("s") and not pr["plural"].endswith("Software") else "s"}</h2><p>{" ".join(summary)}</p>'
                 f'<ul>{lis}</ul><p class="small muted">Entry prices from each vendor\'s pricing page, as shown in the comparison table above.</p></section>')
     if pr and pr.get("others"):
-        ol = "".join(f'<li><b>{n}</b>: {d}</li>' for n, d in pr["others"])
-        out += (f'<section id="others" class="prose"><h2>Other {pr["noun"]} to consider</h2>'
-                f'<p>These tools didn\'t make our ranked shortlist but are worth a look for specific needs. We haven\'t scored them.</p><ol start="{len(pr["rows"]) + 1}">{ol}</ol></section>')
+        # entries: (name, what it is) or, once verified on the vendor's own site,
+        # (name, what it is, entry price as shown, official pricing URL, "YYYY-MM-DD" checked)
+        oth = pr["others"]
+        intro = f'<p>These tools didn\'t make our ranked shortlist but are worth a look for specific needs. We haven\'t scored them.</p>'
+        if any(len(o) >= 5 for o in oth):
+            rows = "".join(
+                f'<tr><td><b>{o[0]}</b></td><td>{o[1]}</td><td>{o[2]}</td><td><a href="{o[3]}" target="_blank" rel="nofollow noopener">Pricing page</a> <span class="small muted">({hdate(o[4])})</span></td></tr>'
+                if len(o) >= 5 else f'<tr><td><b>{o[0]}</b></td><td>{o[1]}</td><td>Not yet checked</td><td></td></tr>'
+                for o in oth)
+            out += (f'<section id="others" class="prose"><h2>Other {pr["noun"]} to consider</h2>{intro}'
+                    f'<div class="table-wrap"><table><thead><tr><th>Tool</th><th>What it is</th><th>Entry price</th><th>Source (checked)</th></tr></thead><tbody>{rows}</tbody></table></div></section>')
+        else:
+            ol = "".join(f'<li><b>{o[0]}</b>: {o[1]}</li>' for o in oth)
+            out += (f'<section id="others" class="prose"><h2>Other {pr["noun"]} to consider</h2>{intro}'
+                    f'<ol start="{len(pr["rows"]) + 1}">{ol}</ol></section>')
     return out
 
 
