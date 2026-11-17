@@ -170,7 +170,7 @@ function isAdminEmail(env, email) {
 }
 
 async function requestLogin(request, env, data) {
-  if (await rateLimited(env, request, "login", 10, 3600)) return json({ ok: false, error: "Too many sign-in requests from your network. Try again in an hour." }, 429);
+  if (await rateLimited(env, request, "login", 20, 3600)) return json({ ok: false, error: "Too many sign-in requests from your network. Try again in an hour." }, 429);
   const email = oneLine(data.email, 200).toLowerCase();
   if (!isEmail(email)) return json({ ok: false, error: "Enter a valid work email." }, 400);
   if (clean(data.website_hp, 100)) return json({ ok: true }); // honeypot

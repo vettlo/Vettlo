@@ -51,7 +51,7 @@ async function handleForm(request, env) {
 
   // Spam checks: hidden honeypot field and a minimum time on the page. Bots get a quiet "ok".
   if (clean(data.website, 200) || Number(data.elapsed) < 3000) return json({ ok: true });
-  if (await rateLimited(env, request, "form", 5, 600)) return json({ ok: false, error: "Too many messages from your network. Please try again in a few minutes." }, 429);
+  if (await rateLimited(env, request, "form", 10, 600)) return json({ ok: false, error: "Too many messages from your network. Please try again in a few minutes." }, 429);
 
   const name = oneLine(data.name, 120);
   const email = oneLine(data.email, 200);
