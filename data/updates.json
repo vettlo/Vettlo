@@ -105,14 +105,14 @@
     "note": "Re-verified plans, limits and trials for all 6 tools on vendor pricing pages (no price changes: Brevo, Kit and Mailchimp starting prices confirmed, and Klaviyo's $20 Email plan at 500 profiles; MailerLite's and ActiveCampaign's tier prices aren't shown in page text, so they're unchanged and unconfirmed). Mailchimp's page now labels its prices as for the first 12 months, noted in the price note and footnote. Refreshed G2 review counts (ratings unchanged)."
   },
   "/compare/salesforce-vs-hubspot/": {
-    "updated": "2026-11-02",
-    "checked": "2026-11-02",
-    "note": "Re-verified Salesforce and HubSpot Sales Hub plan prices, onboarding fees, trial and add-on prices on vendor pages; refreshed G2 review counts."
+    "updated": "2026-11-17",
+    "checked": "2026-11-17",
+    "note": "Re-verified Salesforce's six editions ($0 Free Suite to $550 Max), 30-day trial and Agentforce for Sales ($125 add-on) and HubSpot Sales Hub's prices, onboarding fees, free-plan and workflow and sequence limits on vendor pricing pages (no changes); refreshed G2 review counts (Salesforce 27,587 to 27,592, HubSpot 14,383 to 14,397; ratings unchanged)."
   },
   "/compare/apollo-vs-zoominfo/": {
-    "updated": "2026-11-02",
-    "checked": "2026-11-02",
-    "note": "Re-verified ZoomInfo editions and quote-based pricing and refreshed G2 review counts; Apollo.io's live pricing page did not show prices, so its figures stay as last verified."
+    "updated": "2026-11-17",
+    "checked": "2026-11-17",
+    "note": "Re-verified ZoomInfo's sales editions (Professional, Copilot Advanced, Copilot Enterprise), quote-based pricing and features on zoominfo.com/pricing (no changes); Apollo.io's $49, $79 and $119 plan prices and 3-seat Organization minimum confirmed via Apollo's own plan guide (its pricing page couldn't be read). Refreshed G2 review counts (Apollo.io 9,859 to 9,863, ZoomInfo 9,228 to 9,240; ratings unchanged)."
   },
   "/compare/asana-vs-monday/": {
     "updated": "2026-11-10",

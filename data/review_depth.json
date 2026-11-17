@@ -1715,5 +1715,53 @@
       ]
     },
     "notes": ["Self-serve trials last 14 days with no credit card and include Fin AI Agent and the Pro, Copilot and Proactive Support Plus add-ons (Intercom pricing FAQs).", "Fin is charged once per conversation outcome (resolution, procedure handoff, qualification or disqualification); handoffs customers ask for and escalations Fin can't handle aren't charged, and a monthly outcome limit can cap spend.", "Add-ons: Copilot $29 per agent a month (10 Copilot conversations per agent a month free, not available to Lite seats), Proactive Support Plus $99 a month with 500 messages, Pro from $100 a month.", "Live chat, support email, in-app chats, banners and tooltips are unlimited on all plans; email campaigns, SMS, WhatsApp and phone are pay-as-you-go.", "Intercom's FAQ says Essential starts at $29 a seat on annual billing; the $19 price is a new-customer discount shown on the pricing page."]
+  },
+  "HubSpot Marketing Hub": {
+    "checked": "2026-11-17",
+    "source": ["HubSpot Marketing Hub pricing", "https://www.hubspot.com/pricing/marketing"],
+    "plans": [
+      ["Free", "$0", "Free for up to 2 users, no credit card required; 2,000 email sends a month, 10 reporting dashboards, basic SEO recommendations and 1 automated email action"],
+      ["Starter", "$7/mo per seat on the annual (Best Value) option, or $20/mo per seat", "1,000 marketing contacts, 500 HubSpot Credits a month, up to 10 automated email actions, HubSpot branding removed from email, 30 dashboards"],
+      ["Professional", "$800/mo on the annual (Best Value) option, or $890/mo; $3,000 one-time onboarding", "3 core seats, 2,000 marketing contacts, 3,000 HubSpot Credits a month, up to 300 workflows, up to 5 lead scores, up to 100 custom reports, 50 social accounts"],
+      ["Enterprise", "$3,600/mo; $7,000 one-time onboarding", "5 core seats, 10,000 marketing contacts, 5,000 HubSpot Credits a month, up to 1,000 workflows, up to 50 lead scores with AI recommendations, multi-touch revenue attribution, custom events"]
+    ],
+    "first_plan": [
+      ["Basic SEO recommendations", "Free"],
+      ["Remove HubSpot branding from email", "Starter"],
+      ["Ad conversion events (5)", "Starter"],
+      ["Omni-channel workflows (up to 300 for 10 teams)", "Professional"],
+      ["Lead scoring (up to 5 scores)", "Professional"],
+      ["Custom reports (up to 100)", "Professional"],
+      ["Campaign reporting (5,000 campaigns per account)", "Professional"],
+      ["Social media publishing (50 connected accounts)", "Professional"],
+      ["Advanced SEO recommendations, full site auditing and topics", "Professional"],
+      ["Multi-touch revenue attribution", "Enterprise"],
+      ["Predictive lead scoring with AI recommendations (up to 50 scores)", "Enterprise"],
+      ["Custom events (500 definitions, 30M completions a month)", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Starter", "Professional", "Enterprise"],
+      "rows": [
+        ["Marketing contacts included", "Not stated", "1,000", "2,000", "10,000"],
+        ["Seats included", "Up to 2 users", "Priced per seat", "3 core seats", "5 core seats"],
+        ["HubSpot Credits a month", "Not stated", "500", "3,000", "5,000"],
+        ["Email sends a month", "2,000", "5x contact tier", "10x contact tier", "20x contact tier"],
+        ["Automated email actions", "1", "Up to 10", "Unlimited", "Unlimited"],
+        ["Workflows", "Not listed", "Not listed", "Up to 300", "Up to 1,000"],
+        ["Lead scores", "None", "None", "Up to 5", "Up to 50"],
+        ["Custom reports", "None", "None", "Up to 100", "Up to 500"],
+        ["Reporting dashboards (50 reports each)", "10", "30", "75", "100"],
+        ["Ad audiences (list / retargeting)", "0 / 2", "2 / 2", "5 / 5", "15 / 15"],
+        ["Multi-touch attribution", "None", "None", "None", "10,000 logged interactions per contact"]
+      ]
+    },
+    "notes": [
+      "Extra core seats cost from $45 a month on Professional and from $75 a month on Enterprise.",
+      "Onboarding is a one-time fee: $3,000 on Professional and $7,000 on Enterprise; Starter needs none.",
+      "HubSpot Credits cost $0.010 each; included credits reset monthly and don't roll over.",
+      "The page shows a limited-time offer of up to 65% off Starter for new customers.",
+      "No Marketing Hub free trial is listed; the free plan is the way to try it.",
+      "The page shows two prices for Starter and Professional and labels the lower one Best Value next to annual billing; it doesn't label the higher one explicitly."
+    ]
   }
 }

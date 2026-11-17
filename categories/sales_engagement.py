@@ -18,7 +18,7 @@ SE = {
             "name": "Apollo.io", "short": "Apollo.io", "url": "https://www.apollo.io/",
             "bf": "Best for teams that want data and sequences in one tool",
             "price": "$49/seat/mo", "price_note": "Basic, billed annually", "trial": "Free plan; 14-day trial of paid plans", "trial_short": "Free plan + 14-day trial",
-            "g2": ("4.7", "9,859", "https://www.g2.com/products/apollo-io/reviews"),
+            "g2": ("4.7", "9,863", "https://www.g2.com/products/apollo-io/reviews"),
             "scores": [4, 4, 5, 4, 3.5, 4.5],
             "what": "Apollo.io combines a B2B contact database with email sequencing, a dialer and deal management. Its pricing page lists 240 million contacts and 30 million companies.",
             "who": "Startups and mid-market outbound teams that want prospect data and outreach in one place instead of buying them separately.",
