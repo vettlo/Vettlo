@@ -67,7 +67,7 @@ STAMP = ('<svg class="stamp stamp-anim" viewBox="0 0 120 120" aria-hidden="true"
 DRAFT = ('<div class="draftbar"><div class="wrap"><strong>Draft preview.</strong> Dashed fields '
          '<span class="fill">like this</span> must be filled with verified information before launch.</div></div>')
 
-NAV = [("/best-tools/", "Categories"), ("/guides/", "Guides"), ("/methodology/", "How we vet"), ("/about/", "About")]
+NAV = [("/best-tools/", "Categories"), ("/guides/", "Guides"), ("/about/", "About")]
 
 
 def header(cur):
@@ -965,31 +965,16 @@ for _f in sorted((ROOT / "categories").glob("*.py")):
 # ---------- METHODOLOGY
 page("/methodology/", "How We Score Software: Our Review Methodology | Vettlo",
      "How Vettlo selects, tests and scores business software: weighted criteria per category, prices checked at the source, and how scores stay independent of ads.",
-     f"""<div class="wrap"><div class="page-head"><span class="eyebrow">How we vet</span><h1>Our review methodology</h1>
-<p>Choosing business software is expensive to get wrong. Here is exactly how we build a shortlist, so you can judge it yourself.</p>
-<p class="small mono">Last updated {UPDATED_H}</p></div>
-<div class="page-body prose">
-<h2>1. Build the long list</h2>
-<p>For each category we start from every product a team could reasonably buy: vendor directories, review platforms (G2, Capterra, TrustRadius), practitioner communities and reader suggestions. A tool does not need any relationship with us to be considered.</p>
-<h2>2. Set criteria for the category</h2>
-<p>We write criteria specific to the job the software does. A dialer is judged on dialing modes and CRM sync; a CRM on pipeline management and reporting; a payroll tool on tax filing and compliance. Each criterion gets a published weight, shown on the review.</p>
-<h2>3. Test hands-on</h2>
-<p>We sign up for trials or free plans and run the workflows a real team would: setting up a project, importing contacts, building an automation, running a report. We also read each vendor's current pricing page, plan limits and documentation, and note exactly which plan a feature sits on and what's an add-on.</p>
-<h2>4. Check against real users</h2>
-<p>We compare our findings with patterns in verified user reviews and with practitioners in our network, looking for consistent strengths and complaints across company sizes.</p>
-<h2>5. Score and rank</h2>
-<p>Each tool gets a 0 to 5 rating per criterion. Weighted totals become a score out of 100. Tools below 70 are usually not included in the ranked list; we list them under <b>Also considered</b> with their score. Position follows score, adjusted only by editorial judgment we explain in the review. The exception: partner compensation may affect which products we include and where they appear, as disclosed on every review.</p>
-<h2>6. Re-check every 90 days</h2>
-<p>We re-verify pricing, plans and major features at least every 90 days and show the date on each review. Corrections are logged at the bottom of the page.</p>
-<h2>What vendors can and cannot do</h2>
-<ul><li>Vendors <b>can</b> correct factual errors, provide demo access and suggest their product for review.</li>
-<li>Vendors <b>can</b> become paying partners. Partner compensation may affect which products we include and where they appear in a list. It never changes a tool's score.</li>
-<li>Vendors <b>cannot</b> pay for a score, for the wording of a review or to remove criticism. See <a href="/how-we-make-money/">how we make money</a>.</li></ul>
-<h2>Who reviews</h2>
-<p>Reviews are researched, tested and written by the <a href="/team/">Vettlo Editorial Team</a>.</p>
-<h2>Change log</h2>
-<p class="small mono">{UPDATED_H}: First version published.</p>
-</div></div>""", cur="/methodology/")
+     f"""<section class="cats-hero meth-hero"><div class="wrap"><span class="kicker">How we vet</span><h1>Our review methodology</h1>
+<p class="lede">Choosing business software is expensive to get wrong. Here is exactly how we build a shortlist, so you can judge it yourself.</p>
+<div class="meth-chips"><span>6 steps</span><span>Weighted criteria per category</span><span>Prices checked at the source</span><span class="mono">Last updated {UPDATED_H}</span></div></div></section>
+<div class="wrap meth">
+<ol class="msteps"><li class="mstep"><span class="mstep-n">1</span><div><h2>Build the long list</h2><p>For each category we start from every product a team could reasonably buy: vendor directories, review platforms (G2, Capterra, TrustRadius), practitioner communities and reader suggestions. A tool does not need any relationship with us to be considered.</p></div></li><li class="mstep"><span class="mstep-n">2</span><div><h2>Set criteria for the category</h2><p>We write criteria specific to the job the software does. A dialer is judged on dialing modes and CRM sync; a CRM on pipeline management and reporting; a payroll tool on tax filing and compliance. Each criterion gets a published weight, shown on the review.</p></div></li><li class="mstep"><span class="mstep-n">3</span><div><h2>Test hands-on</h2><p>We sign up for trials or free plans and run the workflows a real team would: setting up a project, importing contacts, building an automation, running a report. We also read each vendor's current pricing page, plan limits and documentation, and note exactly which plan a feature sits on and what's an add-on.</p></div></li><li class="mstep"><span class="mstep-n">4</span><div><h2>Check against real users</h2><p>We compare our findings with patterns in verified user reviews and with practitioners in our network, looking for consistent strengths and complaints across company sizes.</p></div></li><li class="mstep"><span class="mstep-n">5</span><div><h2>Score and rank</h2><p>Each tool gets a 0 to 5 rating per criterion. Weighted totals become a score out of 100. Tools below 70 are usually not included in the ranked list; we list them under <b>Also considered</b> with their score. Position follows score, adjusted only by editorial judgment we explain in the review. The exception: partner compensation may affect which products we include and where they appear, as disclosed on every review.</p></div></li><li class="mstep"><span class="mstep-n">6</span><div><h2>Re-check every 90 days</h2><p>We re-verify pricing, plans and major features at least every 90 days and show the date on each review. Corrections are logged at the bottom of the page.</p></div></li></ol>
+<section class="meth-vendors"><h2>What vendors can and cannot do</h2><div class="mv2">
+<div class="mv-can"><h3>Vendors can</h3><ul><li>Vendors <b>can</b> correct factual errors, provide demo access and suggest their product for review.</li><li>Vendors <b>can</b> become paying partners. Partner compensation may affect which products we include and where they appear in a list. It never changes a tool's score.</li></ul></div>
+<div class="mv-cannot"><h3>Vendors cannot</h3><ul><li>Vendors <b>cannot</b> pay for a score, for the wording of a review or to remove criticism. See <a href="/how-we-make-money/">how we make money</a>.</li></ul></div></div></section>
+<section class="meth-foot"><div><h2>Who reviews</h2><p>Reviews are researched, tested and written by the <a href="/team/">Vettlo Editorial Team</a>.</p></div><div><h2>Change log</h2><p class="small mono">{UPDATED_H}: First version published.</p></div></section>
+</div>""", cur="/methodology/")
 
 # ---------- MONEY
 page("/how-we-make-money/", "How We Make Money (Affiliate Disclosure) | Vettlo",
