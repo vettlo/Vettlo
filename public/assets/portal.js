@@ -18,6 +18,7 @@
   async function initLogin() {
     const f = $("#pt-login"), msg = $("#pt-login-msg"), extra = $("#pt-signup");
     if (new URLSearchParams(location.search).get("expired")) msg.textContent = "That link has expired or was already used. Request a new one.";
+    if (new URLSearchParams(location.search).get("new")) { extra.hidden = false; f.dataset.signup = "1"; $("#pt-submit").textContent = "Create account and send link"; }
     $("#pt-new").addEventListener("click", (e) => { e.preventDefault(); extra.hidden = false; f.dataset.signup = "1"; $("#pt-submit").textContent = "Create account and send link"; });
     f.addEventListener("submit", async (e) => {
       e.preventDefault();
