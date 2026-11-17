@@ -123,6 +123,28 @@ def fit_title(*options, limit=62):
     return options[-1]
 
 
+# Security headers. Keep the CSP sources in sync with what pages load: Google Fonts, Google's favicon service for logos,
+# Cloudflare Web Analytics. Inline scripts and styles are used on some pages, hence 'unsafe-inline'.
+CSP = "; ".join([
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: https://www.google.com https://*.gstatic.com",
+    "connect-src 'self' https://cloudflareinsights.com",
+    "frame-ancestors 'none'", "base-uri 'self'", "form-action 'self'", "object-src 'none'", "upgrade-insecure-requests",
+])
+SECURITY_HEADERS = {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "X-Frame-Options": "DENY",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "Content-Security-Policy": CSP,
+}
+
+
 def page(path, title, desc, body, cur=None, jsonld=None, ptype="website"):
     if len(title) > 62 and title.endswith(" | Vettlo"):  # Google shows the site name anyway; keep the words that matter
         title = title[: -len(" | Vettlo")]
@@ -1743,7 +1765,10 @@ Scores are editorial only and based on published, weighted criteria per category
     # Yandex Webmaster ownership verification (file method)
     (site / "yandex_5f475d4efe20ffdc.html").write_text('<html>\n    <head>\n        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\n    </head>\n    <body>Verification: 5f475d4efe20ffdc</body>\n</html>\n')
     (site / "_redirects").write_text("/author/editor/ /team/ 301\n/author/editor /team/ 301\n/topics/ /reviews/ 301\n/topics /reviews/ 301\n")
-    (site / "_headers").write_text("/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n" + ("  X-Robots-Tag: noindex, nofollow\n" if PRELAUNCH_NOINDEX else ""))
+    (site / ".well-known").mkdir(exist_ok=True)
+    (site / ".well-known" / "security.txt").write_text("Contact: https://vettlo.com/contact/\nExpires: 2027-11-17T00:00:00.000Z\nPreferred-Languages: en, tr\nCanonical: https://vettlo.com/.well-known/security.txt\n")
+    # security headers for every static file (the Worker adds the same ones to the responses it builds itself)
+    (site / "_headers").write_text("/*\n" + "".join(f"  {k}: {v}\n" for k, v in SECURITY_HEADERS.items()) + ("  X-Robots-Tag: noindex, nofollow\n" if PRELAUNCH_NOINDEX else ""))
     pub = ROOT / "public"
     if pub.exists():
         shutil.rmtree(pub)

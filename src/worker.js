@@ -2,7 +2,22 @@
 // Mail goes through Cloudflare Email Routing's send_email binding to the verified
 // address stored in the FORM_TO variable (set in the Cloudflare dashboard, not in this repo).
 import { EmailMessage } from "cloudflare:email";
-import { handlePortalApi, handleGo, placeOnShortlist } from "./portal.js";
+import { handlePortalApi, handleGo, placeOnShortlist, rateLimited } from "./portal.js";
+
+// Same security headers as public/_headers, added to everything the Worker returns (API, redirects, shortlist pages).
+const SECURITY = {
+  "x-content-type-options": "nosniff",
+  "referrer-policy": "strict-origin-when-cross-origin",
+  "x-frame-options": "DENY",
+  "strict-transport-security": "max-age=31536000",
+  "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+  "cross-origin-opener-policy": "same-origin",
+};
+function secure(res) {
+  const r = new Response(res.body, res);
+  for (const [k, v] of Object.entries(SECURITY)) if (!r.headers.has(k)) r.headers.set(k, v);
+  return r;
+}
 
 const FROM = "forms@vettlo.com";
 const FIELDS = {
@@ -36,6 +51,7 @@ async function handleForm(request, env) {
 
   // Spam checks: hidden honeypot field and a minimum time on the page. Bots get a quiet "ok".
   if (clean(data.website, 200) || Number(data.elapsed) < 3000) return json({ ok: true });
+  if (await rateLimited(env, request, "form", 5, 600)) return json({ ok: false, error: "Too many messages from your network. Please try again in a few minutes." }, 429);
 
   const name = oneLine(data.name, 120);
   const email = oneLine(data.email, 200);
@@ -84,6 +100,12 @@ async function redirects(env, request) {
 
 export default {
   async fetch(request, env, ctx) {
+    return secure(await route(request, env, ctx));
+  },
+};
+
+async function route(request, env, ctx) {
+  {
     const url = new URL(request.url);
     if (url.pathname === "/api/form") {
       if (request.method !== "POST") return json({ ok: false, error: "Method not allowed." }, 405);
@@ -100,5 +122,5 @@ export default {
       try { return await placeOnShortlist(request, env, res, ctx); } catch (e) { return res; }
     }
     return res;
-  },
-};
+  }
+}

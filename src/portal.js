@@ -14,6 +14,7 @@ const clean = (v, max) => String(v ?? "").replace(/[\r\u0000]/g, "").trim().slic
 const oneLine = (v, max) => clean(v, max).replace(/\s*\n\s*/g, " ");
 const isEmail = (e) => /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(e);
 const isUrl = (u) => { try { const x = new URL(u); return x.protocol === "https:" || x.protocol === "http:"; } catch { return false; } };
+const isHttps = (u) => { try { return new URL(u).protocol === "https:"; } catch { return false; } };
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 async function sha256(s) {
@@ -54,6 +55,8 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS impressions (listing_id INTEGER NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (listing_id, day))`,
   `CREATE TABLE IF NOT EXISTS iyzico_refs (key TEXT PRIMARY KEY, ref TEXT NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS pay_forms (token TEXT PRIMARY KEY, invoice_id INTEGER NOT NULL, vendor_id INTEGER NOT NULL, html TEXT NOT NULL, created_at TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS hits (key TEXT NOT NULL, ts TEXT NOT NULL)`,
+  `CREATE INDEX IF NOT EXISTS hits_key_ts ON hits(key, ts)`,
   `CREATE TABLE IF NOT EXISTS ledger (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, amount_cents INTEGER NOT NULL, kind TEXT NOT NULL,
      status TEXT NOT NULL, note TEXT, provider_ref TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
 ];
@@ -89,6 +92,20 @@ async function migrateLegacyPlans(env) {
   await env.DB.batch([env.DB.prepare("UPDATE plan_waitlist SET plan = 'p1' WHERE plan = 'premium'"), env.DB.prepare("UPDATE plan_waitlist SET plan = 'p2' WHERE plan = 'pro'"),
     // plans bought before pages could be chosen are on their category's shortlist
     env.DB.prepare("UPDATE subs SET page = '/tools/' || category || '/' WHERE page IS NULL"), env.DB.prepare("UPDATE plan_waitlist SET page = '/tools/' || category || '/' WHERE page IS NULL")]);
+}
+
+// ---------- rate limiting (per client IP, stored in D1; old rows are pruned as we go)
+export async function rateLimited(env, request, bucket, max, windowSec) {
+  if (!env.DB) return false;
+  await migrate(env);
+  const ip = request.headers.get("cf-connecting-ip") || "unknown";
+  const key = bucket + ":" + (await sha256(ip + "|" + (env.CLICK_SALT || "vettlo"))).slice(0, 32);
+  const since = new Date(Date.now() - windowSec * 1000).toISOString();
+  const r = await env.DB.prepare("SELECT COUNT(*) AS n FROM hits WHERE key = ? AND ts > ?").bind(key, since).first();
+  if (r.n >= max) return true;
+  await env.DB.batch([env.DB.prepare("INSERT INTO hits (key, ts) VALUES (?, ?)").bind(key, now()),
+    env.DB.prepare("DELETE FROM hits WHERE ts < ?").bind(new Date(Date.now() - 86400e3).toISOString())]);
+  return false;
 }
 
 // ---------- email (Brevo for vendors; Email Routing fallback for the admin address)
@@ -153,6 +170,7 @@ function isAdminEmail(env, email) {
 }
 
 async function requestLogin(request, env, data) {
+  if (await rateLimited(env, request, "login", 10, 3600)) return json({ ok: false, error: "Too many sign-in requests from your network. Try again in an hour." }, 429);
   const email = oneLine(data.email, 200).toLowerCase();
   if (!isEmail(email)) return json({ ok: false, error: "Enter a valid work email." }, 400);
   if (clean(data.website_hp, 100)) return json({ ok: true }); // honeypot
@@ -307,7 +325,8 @@ async function vendorApi(request, env, vendor, path) {
     const cat = cats.find((c) => c.slug === body.category);
     const f = { product_name: oneLine(body.product_name, 80), website: oneLine(body.website, 300), landing_url: oneLine(body.landing_url || body.website, 500),
       best_for: oneLine(body.best_for, 90), description: clean(body.description, 600), starting_price: oneLine(body.starting_price, 80) };
-    if (!f.product_name || !isUrl(f.website) || !isUrl(f.landing_url)) return json({ ok: false, error: "Add the product name, website and landing page (https://…)." }, 400);
+    if (!f.product_name || !isHttps(f.website) || !isHttps(f.landing_url)) return json({ ok: false, error: "Add the product name and its website (starting with https://)." }, 400);
+    if (await rateLimited(env, request, "listing:" + vendor.id, 20, 86400)) return json({ ok: false, error: "Too many new products today. Contact us if you need more." }, 429);
     if (!cat) return json({ ok: false, error: "Choose a category." }, 400);
     const tool = (cat.tools || []).find((t) => t.name.toLowerCase() === f.product_name.toLowerCase());
     const r = await env.DB.prepare(`INSERT INTO listings (vendor_id, product_name, website, landing_url, category, tool_id, best_for, description, starting_price, created_at, updated_at)
@@ -320,7 +339,8 @@ async function vendorApi(request, env, vendor, path) {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(m[1]), vendor.id).first();
     if (!l) return json({ ok: false, error: "Not found." }, 404);
     const active = body.active !== undefined ? (body.active ? 1 : 0) : l.active;
-    const landing = body.landing_url !== undefined && isUrl(body.landing_url) ? oneLine(body.landing_url, 500) : l.landing_url;
+    if (body.landing_url !== undefined && !isHttps(body.landing_url)) return json({ ok: false, error: "The landing page must start with https://." }, 400);
+    const landing = body.landing_url !== undefined ? oneLine(body.landing_url, 500) : l.landing_url;
     // Copy edits go back to editorial review; pausing and landing page changes don't.
     const copy = ["best_for", "description", "starting_price"].some((k) => body[k] !== undefined && oneLine(body[k], 600) !== (l[k] || ""));
     const status = copy && l.status === "approved" ? "pending" : l.status;
@@ -655,7 +675,9 @@ async function subscriptionForm(request, env, token) {
 <p><a href="/vendors/app/#invoices">← Back to invoices</a></p><h1>Monthly plan: ${money(inv ? inv.amount_cents : 0)} per month</h1>
 <p class="muted">Your card is charged now and then every month until you stop the renewal in the portal. Payments are processed by iyzico.</p>
 <div id="iyzipay-checkout-form" class="responsive"></div>${f.html}</main></body></html>`;
-  return new Response(page, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex" } });
+  return new Response(page, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex",
+    // iyzico's checkout form loads its own scripts, frames and styles
+    "content-security-policy": "default-src 'self' https://*.iyzipay.com https://*.iyzico.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.iyzipay.com https://*.iyzico.com; style-src 'self' 'unsafe-inline' https://*.iyzipay.com https://*.iyzico.com https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https:; frame-src https://*.iyzipay.com https://*.iyzico.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'" } });
 }
 // Records one successful subscription charge (first or renewal) after confirming it with iyzico. Idempotent per order.
 async function recordSubscriptionOrder(env, s, orderRef) {
@@ -735,8 +757,9 @@ export async function handleGo(request, env, ctx) {
   await migrate(env);
   const url = new URL(request.url);
   const id = Number(url.pathname.split("/")[2]);
-  const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ?").bind(id).first();
-  if (!l || !isUrl(l.landing_url)) return Response.redirect(new URL("/", request.url).toString(), 302);
+  // Only approved, active listings of active vendors redirect, so /go/ links can't be used to bounce visitors to unreviewed URLs.
+  const l = await env.DB.prepare("SELECT l.* FROM listings l JOIN vendors v ON v.id = l.vendor_id WHERE l.id = ? AND l.status = 'approved' AND l.active = 1 AND v.status = 'active'").bind(id).first();
+  if (!l || !isUrl(l.landing_url) || new URL(l.landing_url).protocol !== "https:") return Response.redirect(new URL("/", request.url).toString(), 302);
   const ua = request.headers.get("user-agent") || "";
   const ip = request.headers.get("cf-connecting-ip") || "";
   const day = new Date().toISOString().slice(0, 10);
