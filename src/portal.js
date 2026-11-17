@@ -64,6 +64,7 @@ const ALTERS = [
   "ALTER TABLE subs ADD COLUMN auto_renew INTEGER NOT NULL DEFAULT 0", // 1 while an iyzico subscription renews it
   "ALTER TABLE subs ADD COLUMN page TEXT",                             // the page the position is on, e.g. /tools/best-crm-software/
   "ALTER TABLE plan_waitlist ADD COLUMN page TEXT",
+  "ALTER TABLE subs ADD COLUMN held_since TEXT",                       // paid, waiting for our review; paid time is added back on approval
 ];
 async function migrate(env) {
   if (migrated) return;
@@ -143,8 +144,12 @@ async function currentVendor(request, env) {
   const row = await env.DB.prepare("SELECT v.* FROM sessions s JOIN vendors v ON v.id = s.vendor_id WHERE s.hash = ? AND s.expires_at > ?")
     .bind(await sha256(tok), now()).first();
   if (!row) return null;
-  row.is_admin = !!(env.FORM_TO && row.email.toLowerCase() === env.FORM_TO.toLowerCase()) || (env.ADMIN_EMAILS || "").toLowerCase().split(",").map((s) => s.trim()).includes(row.email.toLowerCase());
+  row.is_admin = isAdminEmail(env, row.email);
   return row;
+}
+function isAdminEmail(env, email) {
+  const e = String(email || "").toLowerCase();
+  return !!(env.FORM_TO && e === env.FORM_TO.toLowerCase()) || (env.ADMIN_EMAILS || "").toLowerCase().split(",").map((x) => x.trim()).filter(Boolean).includes(e);
 }
 
 async function requestLogin(request, env, data) {
@@ -152,6 +157,10 @@ async function requestLogin(request, env, data) {
   if (!isEmail(email)) return json({ ok: false, error: "Enter a valid work email." }, 400);
   if (clean(data.website_hp, 100)) return json({ ok: true }); // honeypot
   let vendor = await env.DB.prepare("SELECT * FROM vendors WHERE email = ?").bind(email).first();
+  if (!vendor && isAdminEmail(env, email)) {  // the site owner signs in without the vendor sign-up step
+    await env.DB.prepare("INSERT INTO vendors (email, company, website, terms_accepted_at, created_at) VALUES (?, 'Vettlo', 'https://vettlo.com', ?, ?)").bind(email, now(), now()).run();
+    vendor = await env.DB.prepare("SELECT * FROM vendors WHERE email = ?").bind(email).first();
+  }
   if (!vendor) {
     const company = oneLine(data.company, 120), website = oneLine(data.website, 300);
     if (!data.signup) return json({ ok: false, error: "No account for this email yet. Create one below.", needs_signup: true }, 404);
@@ -182,12 +191,12 @@ async function verifyLogin(request, env) {
   const row = await env.DB.prepare("SELECT * FROM login_tokens WHERE hash = ? AND expires_at > ?").bind(h, now()).first();
   if (!row) return Response.redirect(new URL("/vendors/login/?expired=1", request.url).toString(), 302);
   await env.DB.prepare("DELETE FROM login_tokens WHERE hash = ?").bind(h).run();
-  const vendor = await env.DB.prepare("SELECT id FROM vendors WHERE email = ?").bind(row.email).first();
+  const vendor = await env.DB.prepare("SELECT id, email FROM vendors WHERE email = ?").bind(row.email).first();
   const sess = randomToken();
   await env.DB.prepare("INSERT INTO sessions (hash, vendor_id, expires_at) VALUES (?, ?, ?)")
     .bind(await sha256(sess), vendor.id, new Date(Date.now() + SESSION_DAYS * 864e5).toISOString()).run();
   return new Response(null, { status: 302, headers: {
-    location: "/vendors/app/",
+    location: isAdminEmail(env, vendor.email) ? "/vendors/admin/" : "/vendors/app/",
     "set-cookie": `vs=${sess}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_DAYS * 86400}`,
   } });
 }
@@ -303,7 +312,7 @@ async function vendorApi(request, env, vendor, path) {
     const tool = (cat.tools || []).find((t) => t.name.toLowerCase() === f.product_name.toLowerCase());
     const r = await env.DB.prepare(`INSERT INTO listings (vendor_id, product_name, website, landing_url, category, tool_id, best_for, description, starting_price, created_at, updated_at)
       VALUES (?,?,?,?,?,?,?,?,?,?,?)`).bind(vendor.id, f.product_name, f.website, f.landing_url, cat.slug, tool ? tool.id : null, f.best_for, f.description, f.starting_price, now(), now()).run();
-    await notifyAdmin(env, `Listing to review: ${f.product_name}`, [`${vendor.company} submitted ${f.product_name} for ${cat.name}.`, `Website: ${f.website}`, `Best for: ${f.best_for}`, `Description: ${f.description}`]);
+    await notifyAdmin(env, `New product to review: ${f.product_name}`, [`${vendor.company} added ${f.product_name} (${f.website}) for ${cat.name}.`, "Review it in the admin portal. It stays pending for the vendor until you approve it."]);
     return json({ ok: true, id: r.meta.last_row_id });
   }
   let m = path.match(/^\/api\/listings\/(\d+)$/);
@@ -459,6 +468,7 @@ async function adminApi(request, env, vendor, path) {
     if (!status) return json({ ok: false, error: "Bad status." }, 400);
     await env.DB.prepare("UPDATE listings SET status = ?, tool_id = ?, review_note = ?, updated_at = ? WHERE id = ?")
       .bind(status, oneLine(body.tool_id, 60) || null, oneLine(body.review_note, 300) || null, now(), Number(m[1])).run();
+    if (status === "approved") await releaseHolds(env, Number(m[1]));
     await clearPlacements();
     return json({ ok: true });
   }
@@ -488,6 +498,19 @@ async function adminApi(request, env, vendor, path) {
   return json({ ok: false, error: "Not found." }, 404);
 }
 
+// A paid position shows on the site once the listing is approved and (for ranked positions) matched to a tool we've reviewed.
+const liveReady = (l, plan) => !!l && l.status === "approved" && (plan === "basic" || !!l.tool_id);
+// Called when a listing is approved: paid time spent waiting for our review is added back to each held plan.
+async function releaseHolds(env, listingId) {
+  const l = await env.DB.prepare("SELECT status, tool_id FROM listings WHERE id = ?").bind(listingId).first();
+  const held = (await env.DB.prepare("SELECT * FROM subs WHERE listing_id = ? AND status = 'active' AND held_since IS NOT NULL").bind(listingId).all()).results;
+  for (const s of held) {
+    if (!liveReady(l, s.plan)) continue;
+    const wait = Math.max(0, Date.now() - Date.parse(s.held_since));
+    const until = new Date(Math.max(Date.parse(s.paid_through), Date.now()) + wait).toISOString();
+    await env.DB.prepare("UPDATE subs SET paid_through = ?, held_since = NULL, updated_at = ? WHERE id = ?").bind(until, now(), s.id).run();
+  }
+}
 // Marks an invoice paid and starts or extends its plan by its billing period. Shared by the admin page, card payments and subscription renewals.
 async function activateInvoice(env, inv, ref) {
   const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(inv.slot_id).first();
@@ -503,6 +526,9 @@ async function activateInvoice(env, inv, ref) {
   const r = await env.DB.prepare("UPDATE invoices SET status = 'paid', provider_ref = ?, updated_at = ? WHERE id = ? AND status = 'requested'").bind(ref, now(), inv.id).run();
   if (!r.meta.changes) return { ok: false, error: "This invoice was already closed." };
   await env.DB.prepare("UPDATE subs SET status = 'active', paid_through = ?, started_at = COALESCE(started_at, ?), updated_at = ? WHERE id = ?").bind(paidThrough, now(), now(), s.id).run();
+  // Not live yet (our review isn't published): note when the wait started, so approval adds those days back.
+  const l = await env.DB.prepare("SELECT status, tool_id FROM listings WHERE id = ?").bind(s.listing_id).first();
+  if (!liveReady(l, s.plan)) await env.DB.prepare("UPDATE subs SET held_since = COALESCE(held_since, ?) WHERE id = ?").bind(now(), s.id).run();
   await clearPlacements();
   return { ok: true, paid_through: paidThrough, sub: s };
 }

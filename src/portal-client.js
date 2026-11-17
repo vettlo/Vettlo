@@ -44,10 +44,10 @@
     if (!me.ok) return;
     ME = me;
     CATS = (await api("/api/categories")).categories || [];
-    $("#pt-company").textContent = me.vendor.company || me.vendor.email;
+    $("#pt-company").textContent = "Signed in as " + (me.vendor.company || me.vendor.email);
     if (me.vendor.is_admin) $("#pt-admin-link").hidden = false;
     $("#pt-logout").addEventListener("click", async () => { await api("/api/logout", { method: "POST" }); location.href = "/vendors/"; });
-    document.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => showTab(b.dataset.tab)));
+    document.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { if (b.dataset.tab === "plans") SEL = { page: null, plan: null }; showTab(b.dataset.tab); }));
     showTab(location.hash.slice(1) || "overview");
   }
   function showTab(name, arg) {
@@ -55,46 +55,50 @@
     history.replaceState(null, "", "#" + name);
     ({ overview, listings, plans, newListing, invoices, reports, account }[name] || overview)(arg);
   }
-  const view = (html) => { $("#pt-view").innerHTML = html; };
+  // On phones, tables become stacked cards; each cell gets its column name as a label.
+  const labelTables = (root) => root.querySelectorAll("table.pt-table").forEach((t) => {
+    const heads = [...t.querySelectorAll("thead th")].map((th) => th.textContent.trim());
+    t.querySelectorAll("tbody tr").forEach((tr) => [...tr.children].forEach((td, i) => { if (heads[i]) td.setAttribute("data-label", heads[i]); }));
+  });
+  const view = (html) => { const v = $("#pt-view"); v.innerHTML = html; labelTables(v); };
   function bindGo() { document.querySelectorAll("[data-go]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); showTab(a.dataset.go, a.dataset.arg); })); }
-  const statusPill = (l) => `<span class="pt-pill ${l.status === "approved" ? (l.active ? "ok" : "off") : l.status}">${l.status === "approved" ? (l.active ? "Approved" : "Paused") : l.status === "pending" ? "In review" : "Not approved"}</span>`;
-  const subText = (s) => !s ? `<span class="muted">No plan</span>` : s.status === "active" ? `<b>${PLAN[s.plan]}</b>, ${s.auto_renew ? "renews monthly" : (s.period === "month" ? "monthly" : "yearly") + ", paid"} until ${date(s.paid_through)}` : `${PLAN[s.plan]} reserved, awaiting payment (until ${date(s.reserved_until)})`;
+  const statusPill = (l) => `<span class="pt-pill ${l.status === "approved" ? (l.active ? "ok" : "off") : l.status}">${l.status === "approved" ? (l.active ? "Published" : "Paused") : l.status === "pending" ? "In editorial review" : "Not approved"}</span>`;
+  const subState = (s) => s.status !== "active" ? `<span class="pt-pill pending">Awaiting payment</span> <small class="muted">held until ${date(s.reserved_until)}</small>`
+    : s.held_since ? `<span class="pt-pill pending">In editorial review</span> <small class="muted">Paid. Goes live when we publish your review; your paid time starts then.</small>`
+    : `<span class="pt-pill ok">Live</span> <small class="muted">${s.auto_renew ? "renews" : "until"} ${date(s.paid_through)}</small>`;
+  const subText = (s) => !s ? `<span class="muted">No position</span>` : `<b>${PLAN[s.plan]}</b> ${subState(s)}`;
 
   async function overview() {
     const [ls, inv] = await Promise.all([api("/api/listings"), api("/api/invoices")]);
     const L = ls.listings || [], I = (inv.rows || []).filter((x) => x.status === "requested");
     const live = L.filter((l) => l.sub && l.sub.status === "active");
     view(`<div class="pt-stats">
-      <div><span>Live plans</span><b>${live.length}</b><small>${L.filter((l) => l.sub && l.sub.status === "reserved").length} awaiting payment</small></div>
+      <div><span>Positions</span><b>${L.reduce((a, l) => a + (l.subs || []).length, 0)}</b><small>${L.reduce((a, l) => a + (l.subs || []).filter((x) => x.held_since).length, 0)} in review · ${L.reduce((a, l) => a + (l.subs || []).filter((x) => x.status === "reserved").length, 0)} awaiting payment</small></div>
       <div><span>Impressions, 30 days</span><b>${L.reduce((a, l) => a + l.impressions_30d, 0).toLocaleString()}</b><small>Views of shortlists showing your product</small></div>
       <div><span>Visits, 30 days</span><b>${L.reduce((a, l) => a + l.clicks_30d, 0).toLocaleString()}</b><small>Unique clicks to your site</small></div>
       <div><span>Open invoices</span><b>${I.length}</b><small>${I.length ? money(I.reduce((a, x) => a + x.amount_cents, 0)) + " due" : "Nothing due"}</small></div></div>
-      ${L.length ? `<div class="table-wrap"><table class="pt-table"><thead><tr><th>Product</th><th>Category</th><th>Status</th><th>Plan</th><th>Impressions (30d)</th><th>Visits (30d)</th><th></th></tr></thead><tbody>
+      ${L.length ? `<div class="table-wrap"><table class="pt-table"><thead><tr><th>Product</th><th>Category</th><th>Review</th><th>Position</th><th>Impressions (30d)</th><th>Visits (30d)</th><th></th></tr></thead><tbody>
         ${L.map((l) => `<tr><td><b>${esc(l.product_name)}</b></td><td><a href="/tools/${esc(l.category)}/" target="_blank">${esc(catName(l.category))}</a></td><td>${statusPill(l)}</td><td>${subText(l.sub)}</td><td>${l.impressions_30d}</td><td>${l.clicks_30d}</td>
-        <td><a href="#plans" data-go="plans" data-arg="${l.id}">${l.sub ? "Manage" : "Choose a plan"}</a></td></tr>`).join("")}</tbody></table></div>`
+        <td><a href="#plans" data-go="plans" data-arg="${l.id}">${l.sub ? "Manage" : "Buy a position"}</a></td></tr>`).join("")}</tbody></table></div>`
       : `<div class="pt-empty"><h3>Get your product in front of buyers</h3><p>Create a listing for your product, then choose a position on its category page, billed monthly or yearly.</p><button class="btn" data-go="newListing">Create a listing</button></div>`}`);
     bindGo();
   }
 
   async function listings() {
     const L = (await api("/api/listings")).listings || [];
-    view(`<div class="pt-head"><h2>Listings</h2><button class="btn small" data-go="newListing">New listing</button></div>
+    view(`<div class="pt-head"><h2>Your products</h2><button class="btn small" data-go="newListing">Add a product</button></div>
+      <p class="muted">Our editors research each product and write its review before it goes live. Until then it shows as in editorial review.</p>
       ${L.length ? L.map((l) => `<form class="pt-card" data-id="${l.id}">
-        <div class="pt-card-head"><div><h3>${esc(l.product_name)}</h3><p class="muted small">${esc(catName(l.category))} · ${statusPill(l)} · ${subText(l.sub)}${l.review_note ? " · " + esc(l.review_note) : ""}</p></div>
+        <div class="pt-card-head"><div><h3>${esc(l.product_name)}</h3><p class="muted small"><a href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.website)}</a> · ${esc(catName(l.category))}</p><p>${statusPill(l)}${l.review_note ? ` <small class="muted">${esc(l.review_note)}</small>` : ""}</p></div>
         <label class="pt-switch"><input type="checkbox" name="active" ${l.active ? "checked" : ""}> Show on site</label></div>
-        <div class="pt-grid">
-          <label>Landing page<input name="landing_url" type="url" value="${esc(l.landing_url)}"><small>Add UTM parameters to track Vettlo traffic.</small></label>
-          <label>Starting price<input name="starting_price" maxlength="80" value="${esc(l.starting_price || "")}"></label>
-          <label class="wide">Best for (one line)<input name="best_for" maxlength="90" value="${esc(l.best_for || "")}"></label>
-          <label class="wide">Description<textarea name="description" rows="3" maxlength="600">${esc(l.description || "")}</textarea><small>Changing the description, best-for line or price sends the listing back to editorial review.</small></label>
-        </div><div class="pt-actions"><button class="btn small" type="submit">Save</button><a class="small" href="#plans" data-go="plans" data-arg="${l.id}">${l.sub ? "Manage plan" : "Choose a plan"} →</a></div></form>`).join("")
-      : `<div class="pt-empty"><p>No listings yet.</p><button class="btn" data-go="newListing">Create a listing</button></div>`}`);
+        <label>Landing page<input name="landing_url" type="url" value="${esc(l.landing_url)}"><small>Where our Visit button sends readers. Add UTM parameters to track Vettlo traffic.</small></label>
+        <div class="pt-actions"><button class="btn small" type="submit">Save</button><a class="small" href="#plans" data-go="plans" data-arg="${l.id}">${l.sub ? "Manage positions" : "Buy a position"} →</a></div></form>`).join("")
+      : `<div class="pt-empty"><p>No products yet.</p><button class="btn" data-go="newListing">Add a product</button></div>`}`);
     bindGo();
     document.querySelectorAll("form.pt-card").forEach((f) => f.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const r = await api(`/api/listings/${f.dataset.id}`, { method: "PUT", body: { active: f.active.checked, landing_url: f.landing_url.value,
-        best_for: f.best_for.value, starting_price: f.starting_price.value, description: f.description.value } });
-      toast(r.ok ? (r.resubmitted ? "Saved. Copy changes are back in editorial review." : "Saved.") : r.error, !r.ok);
+      const r = await api(`/api/listings/${f.dataset.id}`, { method: "PUT", body: { active: f.active.checked, landing_url: f.landing_url.value } });
+      toast(r.ok ? "Saved." : r.error, !r.ok);
       if (r.ok) listings();
     }));
   }
@@ -125,8 +129,8 @@
     view(`<div class="pt-head"><h2>Buy a position</h2></div>${steps(1)}
       ${mine.length ? `<div class="pt-card"><h3>Your positions</h3><div class="table-wrap"><table class="pt-table"><thead><tr><th>Page</th><th>Position</th><th>Product</th><th>Billing</th><th>Status</th><th></th></tr></thead><tbody>
         ${mine.map((s) => { const pg = pageOf(s.page) || { title: s.page };
-          const st = s.status === "active" ? (s.auto_renew ? `Live, renews ${date(s.paid_through)}` : `Live until ${date(s.paid_through)}`) : `Reserved until ${date(s.reserved_until)}, awaiting payment`;
-          const act = s.status !== "active" ? `<button class="btn ghost small" data-cancel="${s.id}">Cancel</button>` : s.auto_renew ? `<button class="btn ghost small" data-stop="${s.id}">Stop renewal</button>` : `<button class="btn ghost small" data-renew="${s.id}">Renew</button>`;
+          const st = subState(s);
+          const act = s.status !== "active" ? `<button class="btn ghost small" data-cancel="${s.id}">Cancel</button>` : s.held_since ? "" : s.auto_renew ? `<button class="btn ghost small" data-stop="${s.id}">Stop renewal</button>` : `<button class="btn ghost small" data-renew="${s.id}">Renew</button>`;
           return `<tr><td><a href="${esc(s.page)}" target="_blank">${esc(pg.title)}</a></td><td><b>${PLAN[s.plan]}</b></td><td>${esc(s.product_name)}</td><td>${s.period === "month" ? "Monthly" : "Yearly"}</td><td>${st}</td><td>${act}</td></tr>`; }).join("")}</tbody></table></div></div>` : ""}
       <p class="muted">Pick the page where you want your product to appear. Every page has 10 positions, each sold to one vendor: from ${lo} to ${hi} a month, or 10% less paid yearly.</p>
       <div class="pt-find"><input id="pt-q" type="search" placeholder="Search pages, e.g. CRM, HubSpot alternatives, payroll" autocomplete="off"></div>
@@ -199,12 +203,9 @@
         <div id="pt-newprod" class="pt-grid" ${L.length ? "hidden" : ""}>
           <label>Product name<input name="product_name" maxlength="80"></label>
           <label>Product website<input name="website" type="url" placeholder="https://"></label>
-          <label>Landing page<input name="landing_url" type="url" placeholder="https:// (optional, add UTM parameters)"></label>
-          <label>Starting price<input name="starting_price" maxlength="80" placeholder="e.g. $12/user/mo billed annually"></label>
-          <label class="wide">Best for (one line)<input name="best_for" maxlength="90" placeholder="e.g. Small teams that want simple pipelines"></label>
-          <label class="wide">Description<textarea name="description" rows="3" maxlength="600" placeholder="What the product does and who it's for. Plain and factual; our editors may edit it."></textarea></label></div>
+          <p class="wide muted small">That's all we need. Our editors research the product and write its review; you'll see it as in editorial review until we publish it.</p></div>
         <div class="pt-actions"><button class="btn" type="submit">Reserve ${PLAN[plan]} for ${money(cents)} / ${period}</button><button class="btn ghost small" type="button" id="pt-back">Back</button>
-          <span class="muted small">We hold the position for 7 days while you pay.</span></div></form>`);
+          <span class="muted small">We hold the position for 7 days while you pay. It goes live once our review is published, and your paid time starts then.</span></div></form>`);
     $("#pt-back").addEventListener("click", () => { SEL.plan = null; stepPosition(); });
     const f = $("#pt-order"), np = $("#pt-newprod");
     f.querySelectorAll('input[name="listing"]').forEach((r) => r.addEventListener("change", () => { np.hidden = f.listing.value !== "new"; }));
@@ -213,8 +214,7 @@
       let id = f.listing.value;
       if (id === "new") {
         if (!f.product_name.value || !f.website.value) return toast("Add the product name and website.", true);
-        const c = await api("/api/listings", { method: "POST", body: { product_name: f.product_name.value, category: pg.category, website: f.website.value,
-          landing_url: f.landing_url.value || f.website.value, best_for: f.best_for.value, starting_price: f.starting_price.value, description: f.description.value } });
+        const c = await api("/api/listings", { method: "POST", body: { product_name: f.product_name.value, category: pg.category, website: f.website.value, landing_url: f.website.value } });
         if (!c.ok) return toast(c.error, true);
         id = c.id;
       }
@@ -228,22 +228,18 @@
 
   function newListing() {
     const opts = CATS.map((c) => `<option value="${esc(c.slug)}">${esc(c.dept)} · ${esc(c.name)}</option>`).join("");
-    view(`<div class="pt-head"><h2>New listing</h2></div><form class="pt-card" id="pt-new-form"><div class="pt-grid">
+    view(`<div class="pt-head"><h2>Add a product</h2></div><form class="pt-card" id="pt-new-form"><div class="pt-grid">
       <label>Product name<input name="product_name" required maxlength="80"></label>
-      <label>Category<select name="category" required><option value="">Choose…</option>${opts}</select></label>
       <label>Product website<input name="website" type="url" required placeholder="https://"></label>
-      <label>Landing page<input name="landing_url" type="url" placeholder="https:// (optional, defaults to website)"></label>
-      <label>Best for (one line)<input name="best_for" maxlength="90" placeholder="e.g. Small teams that want simple pipelines"></label>
-      <label>Starting price<input name="starting_price" maxlength="80" placeholder="e.g. $12/user/mo billed annually"></label>
-      <label class="wide">Description<textarea name="description" rows="3" maxlength="600" placeholder="What the product does and who it's for. Plain and factual; our editors may edit it."></textarea></label>
-      </div><div class="pt-actions"><button class="btn" type="submit">Submit and choose a plan</button><span class="muted small">Editorial review usually takes 1–2 business days.</span></div></form>`);
+      <label class="wide">Category<select name="category" required><option value="">Choose…</option>${opts}</select></label>
+      </div><p class="muted small">Our editors research the product and write its review. It shows as in editorial review until we publish it.</p>
+      <div class="pt-actions"><button class="btn" type="submit">Add product</button></div></form>`);
     $("#pt-new-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const f = e.target;
-      const r = await api("/api/listings", { method: "POST", body: { product_name: f.product_name.value, category: f.category.value, website: f.website.value,
-        landing_url: f.landing_url.value || f.website.value, best_for: f.best_for.value, starting_price: f.starting_price.value, description: f.description.value } });
-      toast(r.ok ? "Submitted for review." : r.error, !r.ok);
-      if (r.ok) showTab("plans", r.id);
+      const r = await api("/api/listings", { method: "POST", body: { product_name: f.product_name.value, category: f.category.value, website: f.website.value, landing_url: f.website.value } });
+      toast(r.ok ? "Added. It's now in editorial review." : r.error, !r.ok);
+      if (r.ok) { SEL = { page: `/tools/${f.category.value}/`, plan: null }; showTab("plans"); }
     });
   }
 
@@ -314,30 +310,46 @@
     const me = await api("/api/me");
     if (!me.ok || !me.vendor.is_admin) { $("#pt-view").innerHTML = "<p>Admins only.</p>"; return; }
     CATS = (await api("/api/categories")).categories || [];
+    const pd = await api("/api/pages"); PAGES = pd.pages || []; PRICES = pd.prices || {};
     renderAdmin();
   }
   async function renderAdmin() {
     const d = await api("/api/admin/overview");
     const D = (iso) => iso ? iso.slice(0, 10) : "";
     const toolOpts = (slug, cur) => `<option value="">Not on our list</option>` + ((CATS.find((c) => c.slug === slug) || {}).tools || []).map((t) => `<option value="${esc(t.id)}" ${t.id === cur ? "selected" : ""}>${esc(t.name)}</option>`).join("");
+    const ptitle = (u) => esc((pageOf(u) || {}).title || u || "");
+    const subsOf = (id) => d.subs.filter((x) => x.listing_id === id);
+    const needs = d.listings.filter((l) => l.status === "pending" || (l.status === "approved" && !l.tool_id && subsOf(l.id).some((x) => x.plan !== "basic")));
+    const reqCard = (l) => `<div class="pt-card pt-req" data-id="${l.id}"><div class="pt-card-head"><div>
+        <h3>${esc(l.product_name)} <a class="small" href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.website)} ↗</a></h3>
+        <p class="muted small">${esc(l.company)} · ${esc(l.email)} · ${esc(catName(l.category))} · added ${D(l.created_at)}</p></div><span class="pt-pill pending">${l.status === "pending" ? "Waiting for review" : "Approved, not matched"}</span></div>
+      ${subsOf(l.id).length ? `<ul class="pt-reqsubs">${subsOf(l.id).map((x) => `<li><b>${PLAN[x.plan]}</b> on ${ptitle(x.page)} · ${x.period === "month" ? "monthly" : "yearly"} · ${x.status === "active" ? `<span class="pt-pill ok">Paid</span>` : `<span class="pt-pill">Not paid yet</span>`}</li>`).join("")}</ul>` : `<p class="muted small">No position reserved yet.</p>`}
+      <ol class="pt-todo"><li>Ask Claude to research ${esc(l.product_name)} and add its review to ${esc(catName(l.category))}.</li><li>Once it's published, match it below and approve. The vendor's paid time starts then.</li></ol>
+      <div class="pt-grid"><label>Matches tool on our list<select name="tool">${toolOpts(l.category, l.tool_id)}</select></label><label>Note to vendor (optional)<input name="note" value="${esc(l.review_note || "")}"></label></div>
+      <div class="pt-actions"><button class="btn small" data-act="approved">Approve and publish</button><button class="btn ghost small" data-act="rejected">Reject</button></div></div>`;
     $("#pt-view").innerHTML = `
+      <h2>Requests to review <span class="pt-count">${needs.length}</span></h2>
+      ${needs.length ? needs.map(reqCard).join("") : `<div class="pt-empty"><p>No requests waiting. New products and position requests appear here.</p></div>`}
       <h2>Invoices</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Date</th><th>Vendor</th><th>For</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
-      ${d.invoices.map((i) => `<tr data-iid="${i.id}"><td>${D(i.created_at)}</td><td>${esc(i.company)}<br><small>${esc(i.email)}</small></td><td>${i.plan ? `${esc(i.product_name)} · ${PLAN[i.plan]} · ${esc(catName(i.category))}` : ""}</td><td>${money(i.amount_cents)}</td><td>${esc(i.status)}</td>
+      ${d.invoices.map((i) => `<tr data-iid="${i.id}"><td>${D(i.created_at)}</td><td>${esc(i.company)}<br><small>${esc(i.email)}</small></td><td>${i.plan ? `${esc(i.product_name)} · ${PLAN[i.plan]} · ${ptitle(i.page)}` : ""}</td><td>${money(i.amount_cents)}</td><td>${esc(i.status)}</td>
         <td>${i.status === "requested" ? `<input name="ref" placeholder="Payment ref"><button class="btn small" data-iact="paid">Mark paid</button> <button class="btn ghost small" data-iact="cancelled">Cancel</button>` : esc(i.provider_ref || "")}</td></tr>`).join("") || `<tr><td colspan="6" class="muted">No invoices.</td></tr>`}</tbody></table></div>
-      <h2>Listings</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Vendor</th><th>Product</th><th>Category</th><th>Copy</th><th>Matches tool</th><th>Status</th><th></th></tr></thead><tbody>
+      <h2>All products</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Vendor</th><th>Product</th><th>Category</th><th>Copy</th><th>Matches tool</th><th>Status</th><th></th></tr></thead><tbody>
       ${d.listings.map((l) => `<tr data-id="${l.id}"><td>${esc(l.company)}<br><small>${esc(l.email)}</small></td><td><a href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.product_name)}</a></td><td>${esc(catName(l.category))}</td>
         <td class="small">${esc(l.best_for || "")}<br>${esc(l.description || "")}<br>${esc(l.starting_price || "")}</td><td><select name="tool">${toolOpts(l.category, l.tool_id)}</select></td><td>${esc(l.status)}</td>
         <td><input name="note" placeholder="Note to vendor" value="${esc(l.review_note || "")}"><button class="btn small" data-act="approved">Approve</button> <button class="btn ghost small" data-act="rejected">Reject</button></td></tr>`).join("") || `<tr><td colspan="7" class="muted">No listings.</td></tr>`}</tbody></table></div>
-      <h2>Plans</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Category</th><th>Plan</th><th>Product</th><th>Vendor</th><th>Status</th><th>Until</th><th></th></tr></thead><tbody>
-      ${d.subs.map((s) => `<tr data-sid="${s.id}"><td>${esc(catName(s.category))}</td><td>${PLAN[s.plan]}</td><td>${esc(s.product_name)}${s.listing_status !== "approved" ? ` <small>(listing ${esc(s.listing_status)})</small>` : ""}</td><td>${esc(s.company)}</td><td>${s.status === "active" ? "Live" : "Reserved, unpaid"}</td><td>${D(s.status === "active" ? s.paid_through : s.reserved_until)}</td><td><button class="btn ghost small" data-sact="end">End now</button></td></tr>`).join("") || `<tr><td colspan="7" class="muted">No plans sold yet.</td></tr>`}</tbody></table></div>
-      <h2>Waitlist</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Category</th><th>Plan</th><th>Product</th><th>Vendor</th><th>Joined</th></tr></thead><tbody>
-      ${d.waitlist.map((w) => `<tr><td>${esc(catName(w.category))}</td><td>${PLAN[w.plan]}</td><td>${esc(w.product_name)}</td><td>${esc(w.company)}</td><td>${D(w.created_at)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">Empty.</td></tr>`}</tbody></table></div>
+      <h2>Positions</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Page</th><th>Position</th><th>Product</th><th>Vendor</th><th>Status</th><th>Until</th><th></th></tr></thead><tbody>
+      ${d.subs.map((s) => `<tr data-sid="${s.id}"><td>${ptitle(s.page)}</td><td>${PLAN[s.plan]}${s.period === "month" ? " · monthly" : " · yearly"}</td><td>${esc(s.product_name)}${s.listing_status !== "approved" ? ` <small>(listing ${esc(s.listing_status)})</small>` : ""}</td><td>${esc(s.company)}</td><td>${s.status !== "active" ? "Reserved, unpaid" : s.held_since ? "Paid, in review" : "Live"}</td><td>${D(s.status === "active" ? s.paid_through : s.reserved_until)}</td><td><button class="btn ghost small" data-sact="end">End now</button></td></tr>`).join("") || `<tr><td colspan="7" class="muted">No plans sold yet.</td></tr>`}</tbody></table></div>
+      <h2>Waitlist</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Page</th><th>Position</th><th>Product</th><th>Vendor</th><th>Joined</th></tr></thead><tbody>
+      ${d.waitlist.map((w) => `<tr><td>${ptitle(w.page)}</td><td>${PLAN[w.plan]}</td><td>${esc(w.product_name)}</td><td>${esc(w.company)}</td><td>${D(w.created_at)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">Empty.</td></tr>`}</tbody></table></div>
       <h2>Vendors</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Company</th><th>Email</th><th>Website</th><th>Joined</th></tr></thead><tbody>
       ${d.vendors.map((v) => `<tr><td>${esc(v.company || "")}</td><td>${esc(v.email)}</td><td>${esc(v.website || "")}</td><td>${D(v.created_at)}</td></tr>`).join("")}</tbody></table></div>
       <h2>Sponsor traffic, last 30 days</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Day</th><th>Impressions</th><th>Visits</th></tr></thead><tbody>
       ${d.stats.map((c) => `<tr><td>${c.day}</td><td>${c.impressions}</td><td>${c.clicks}</td></tr>`).join("") || `<tr><td colspan="3" class="muted">No data yet.</td></tr>`}</tbody></table></div>`;
+    labelTables($("#pt-view"));
     const post = async (url, body) => { const r = await api(url, { method: "POST", body }); toast(r.ok ? "Saved." : r.error, !r.ok); renderAdmin(); };
-    document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => { const tr = b.closest("tr"); post(`/api/admin/listings/${tr.dataset.id}`, { status: b.dataset.act, tool_id: tr.querySelector("[name=tool]").value, review_note: tr.querySelector("[name=note]").value }); }));
+    document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => { const tr = b.closest("tr, .pt-req");
+      if (b.dataset.act === "approved" && !tr.querySelector("[name=tool]").value && !confirm("This product isn't matched to a tool on our list, so ranked positions won't show yet. Approve anyway?")) return;
+      post(`/api/admin/listings/${tr.dataset.id}`, { status: b.dataset.act, tool_id: tr.querySelector("[name=tool]").value, review_note: tr.querySelector("[name=note]").value }); }));
     document.querySelectorAll("[data-iact]").forEach((b) => b.addEventListener("click", () => { const tr = b.closest("tr"); post(`/api/admin/invoices/${tr.dataset.iid}`, { status: b.dataset.iact, ref: tr.querySelector("[name=ref]").value }); }));
     document.querySelectorAll("[data-sact]").forEach((b) => b.addEventListener("click", () => { if (confirm("End this plan now? The vendor won't be refunded automatically.")) post(`/api/admin/subs/${b.closest("tr").dataset.sid}/end`, {}); }));
   }

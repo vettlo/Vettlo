@@ -51,13 +51,13 @@ page("/vendors/login/", "Sign In: Vettlo Vendor Portal",
 <p class="form-msg" id="pt-login-msg" aria-live="polite"></p></div>""" + _PSCRIPT)
 
 page("/vendors/app/", "Dashboard: Vettlo Vendor Portal", "Vettlo vendor dashboard.",
-     """<div class="wrap pt-app" id="pt-root" data-portal="app"><div class="pt-top"><div><span class="kicker">Vendor portal</span><h1 id="pt-company">Loading…</h1></div>
+     """<div class="wrap pt-app" id="pt-root" data-portal="app"><div class="pt-top"><div><h1>Vendor portal</h1><p class="muted small" id="pt-company"></p></div>
 <div class="pt-topnav"><a id="pt-admin-link" href="/vendors/admin/" hidden>Admin</a><button class="btn ghost small" id="pt-logout">Sign out</button></div></div>
-<nav class="pt-tabs"><button data-tab="overview">Overview</button><button data-tab="listings">Listings</button><button data-tab="plans">Buy a position</button><button data-tab="newListing">New listing</button><button data-tab="invoices">Invoices</button><button data-tab="reports">Reports</button><button data-tab="account">Account</button></nav>
+<nav class="pt-tabs"><button data-tab="overview">Overview</button><button data-tab="listings">Products</button><button data-tab="plans">Buy a position</button><button data-tab="newListing">Add a product</button><button data-tab="invoices">Invoices</button><button data-tab="reports">Reports</button><button data-tab="account">Account</button></nav>
 <div id="pt-view" class="pt-view"><p class="muted">Loading…</p></div><div id="pt-toast" class="pt-toast"></div></div>""" + _PSCRIPT)
 
 page("/vendors/admin/", "Admin: Vettlo Vendor Portal", "Vettlo vendor portal admin.",
-     """<div class="wrap pt-app" id="pt-root" data-portal="admin"><div class="pt-top"><div><span class="kicker">Vendor portal</span><h1>Admin</h1></div><div class="pt-topnav"><a href="/vendors/app/">Vendor view</a></div></div>
+     """<div class="wrap pt-app" id="pt-root" data-portal="admin"><div class="pt-top"><div><h1>Vettlo admin</h1><p class="muted small">Vendor requests, positions and payments</p></div><div class="pt-topnav"><a href="/vendors/app/">Vendor view</a></div></div>
 <div id="pt-view" class="pt-view"><p class="muted">Loading…</p></div><div id="pt-toast" class="pt-toast"></div></div>""" + _PSCRIPT)
 
 page("/advertiser-terms/", "Advertiser Terms: Listings, Plans and Billing | Vettlo",
