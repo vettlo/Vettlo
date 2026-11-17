@@ -330,10 +330,10 @@ def explainer_sections(slug, only_what=False):
         oth = pr["others"]
         intro = f'<p>These tools didn\'t make our ranked shortlist but are worth a look for specific needs. We haven\'t scored them.</p>'
         if any(len(o) >= 5 for o in oth):
+            # once a category has verified entries, only verified ones are shown (no placeholder rows)
             rows = "".join(
                 f'<tr><td><b>{o[0]}</b></td><td>{o[1]}</td><td>{o[2]}</td><td><a href="{o[3]}" target="_blank" rel="nofollow noopener">Pricing page</a> <span class="small muted">({hdate(o[4])})</span></td></tr>'
-                if len(o) >= 5 else f'<tr><td><b>{o[0]}</b></td><td>{o[1]}</td><td>Not yet checked</td><td></td></tr>'
-                for o in oth)
+                for o in oth if len(o) >= 5)
             out += (f'<section id="others" class="prose"><h2>Other {pr["noun"]} to consider</h2>{intro}'
                     f'<div class="table-wrap"><table><thead><tr><th>Tool</th><th>What it is</th><th>Entry price</th><th>Source (checked)</th></tr></thead><tbody>{rows}</tbody></table></div></section>')
         else:
