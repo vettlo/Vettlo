@@ -1218,11 +1218,11 @@ def badge_svg(top, cat):
     label = f"Top pick {YEAR}" if top else f"Shortlisted {YEAR}"
     cat = html.escape(cat)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="260" height="84" viewBox="0 0 260 84" role="img" aria-label="Vettlo {label}: {cat}">
-<rect width="260" height="84" rx="12" fill="#0b2018"/><rect x="0.5" y="0.5" width="259" height="83" rx="11.5" fill="none" stroke="#1d3d31"/>
-<rect x="16" y="16" width="26" height="26" rx="7" fill="#00a372"/><path d="M22.9 24.5l5 9.9c.4.8 1.5.8 1.9 0l5.9-12.3" fill="none" stroke="#fff" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="50" y="35" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#eef6f1" letter-spacing="-0.4">vettlo</text>
-<text x="16" y="62" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="{'#5fe3b4' if top else '#eef6f1'}">{label}</text>
-<text x="16" y="76" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="11" fill="#93aea1">{cat}</text></svg>"""
+<rect width="260" height="84" rx="12" fill="#0a1f20"/><rect x="0.5" y="0.5" width="259" height="83" rx="11.5" fill="none" stroke="#1b3a3b"/>
+<rect x="16" y="16" width="26" height="26" rx="7" fill="#10a19c"/><path d="M22.9 24.5l5 9.9c.4.8 1.5.8 1.9 0l5.9-12.3" fill="none" stroke="#fff" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="50" y="35" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#eef6f6" letter-spacing="-0.4">vettlo</text>
+<text x="16" y="62" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="{'#5fe3b4' if top else '#eef6f6'}">{label}</text>
+<text x="16" y="76" font-family="Geist, Inter, Helvetica, Arial, sans-serif" font-size="11" fill="#91acab">{cat}</text></svg>"""
 
 
 def badges_page():
@@ -1604,7 +1604,7 @@ def build():
             shutil.copy(ROOT / "src" / fn, d / fn)
         # web app manifest: gives browsers and search engines a clear, crawlable site icon and name
         (d / "site.webmanifest").write_text(json.dumps({"name": "Vettlo", "short_name": "Vettlo", "start_url": "/",
-            "display": "browser", "background_color": "#ffffff", "theme_color": "#00865e",
+            "display": "browser", "background_color": "#ffffff", "theme_color": "#0b827f",
             "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
                       {"src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png"},
                       {"src": "/assets/logo.svg", "sizes": "any", "type": "image/svg+xml"}]}))
@@ -1630,7 +1630,7 @@ def build():
         (d / "data" / "categories.json").write_text(json.dumps(_cats))
         # retired URLs -> where their content now lives (served as 301s by src/worker.js)
         (d / "data" / "redirects.json").write_text((ROOT / "data" / "redirects.json").read_text() if (ROOT / "data" / "redirects.json").exists() else "{}")
-        (d / "assets" / "logo.svg").write_text(LOGO.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replace("var(--brand-ink)", "#ffffff").replace("var(--brand)", "#00865e"))
+        (d / "assets" / "logo.svg").write_text(LOGO.replace('aria-hidden="true"', 'xmlns="http://www.w3.org/2000/svg"').replace("var(--brand-ink)", "#ffffff").replace("var(--brand)", "#0b827f"))
     for path, p in PAGES.items():
         rel = out_file(path)
         # deploy version

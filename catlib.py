@@ -404,16 +404,16 @@ def guide_cover(g):
     kicker = esc(g.get("kicker", "Guide"))
     kw = 26 + len(kicker) * 13
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="{esc(g['title'])}">
-<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eef9f3"/><stop offset="1" stop-color="#d4f1e3"/></linearGradient></defs>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#edf8f8"/><stop offset="1" stop-color="#d0eeec"/></linearGradient></defs>
 <rect width="1200" height="630" fill="url(#bg)"/>
-<circle cx="1010" cy="300" r="270" fill="none" stroke="#00865e" stroke-opacity=".10" stroke-width="2"/>
-<circle cx="1010" cy="300" r="200" fill="none" stroke="#00865e" stroke-opacity=".14" stroke-width="2"/>
-<rect x="890" y="180" width="240" height="240" rx="56" fill="#00865e"/>
+<circle cx="1010" cy="300" r="270" fill="none" stroke="#0b827f" stroke-opacity=".10" stroke-width="2"/>
+<circle cx="1010" cy="300" r="200" fill="none" stroke="#0b827f" stroke-opacity=".14" stroke-width="2"/>
+<rect x="890" y="180" width="240" height="240" rx="56" fill="#0b827f"/>
 <g transform="translate(940 230) scale(5.8)" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">{icon}</g>
-<rect x="80" y="70" width="{kw}" height="44" rx="22" fill="#00865e"/>
+<rect x="80" y="70" width="{kw}" height="44" rx="22" fill="#0b827f"/>
 <text x="{80 + kw / 2}" y="99" text-anchor="middle" font-family="Geist, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600" fill="#ffffff">{kicker}</text>
-<text font-family="Geist, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="{size}" font-weight="700" letter-spacing="-1.5" fill="#0c1a14">{tspans}</text>
-<text x="80" y="560" font-family="Geist, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="600" fill="#006f4e">{esc(g['dept'])} · vettlo.com</text>
+<text font-family="Geist, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="{size}" font-weight="700" letter-spacing="-1.5" fill="#0c1a1a">{tspans}</text>
+<text x="80" y="560" font-family="Geist, Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="600" fill="#086866">{esc(g['dept'])} · vettlo.com</text>
 </svg>"""
 
 
