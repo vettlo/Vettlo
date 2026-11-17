@@ -1929,3 +1929,155 @@ guide_page({
         ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
     ],
 })
+
+
+# ---------- Double-entry bookkeeping (supporting article for the accounting pillar)
+# Hypothetical catering business; every total below is computed, so the tables always balance.
+_de_acct = {  # number: (name, type)
+    1000: ("Business checking", "Asset"), 1200: ("Accounts receivable", "Asset"), 1500: ("Kitchen equipment", "Asset"),
+    2000: ("Accounts payable", "Liability"), 2500: ("Equipment loan", "Liability"),
+    3000: ("Owner's capital", "Equity"), 4000: ("Catering revenue", "Revenue"),
+    5000: ("Food and supplies", "Expense"), 6000: ("Kitchen rent", "Expense"),
+}
+_de_normal = {"Asset": "Debit", "Expense": "Debit", "Liability": "Credit", "Equity": "Credit", "Revenue": "Credit"}
+_de_tx = [  # (date, description, [(account, debit, credit)])
+    ("Mar&nbsp;1", "Owner deposits savings to start the business", [(1000, 12000, 0), (3000, 0, 12000)]),
+    ("Mar&nbsp;3", "Buy a commercial oven: part cash, part loan", [(1500, 6000, 0), (1000, 0, 1500), (2500, 0, 4500)]),
+    ("Mar&nbsp;6", "Buy ingredients on 30-day supplier terms", [(5000, 800, 0), (2000, 0, 800)]),
+    ("Mar&nbsp;14", "Cater a corporate lunch and send the invoice", [(1200, 3200, 0), (4000, 0, 3200)]),
+    ("Mar&nbsp;20", "Pay the kitchen rent", [(6000, 1100, 0), (1000, 0, 1100)]),
+    ("Mar&nbsp;28", "Client pays the lunch invoice in full", [(1000, 3200, 0), (1200, 0, 3200)]),
+    ("Mar&nbsp;31", "Pay the ingredient supplier", [(2000, 800, 0), (1000, 0, 800)]),
+]
+for _d, _s, _ls in _de_tx:
+    assert sum(l[1] for l in _ls) == sum(l[2] for l in _ls), _s
+_de_an = lambda n: f"{n} {_de_acct[n][0]}"
+_de_signed = lambda n, dr, cr: (dr - cr) if _de_normal[_de_acct[n][1]] == "Debit" else (cr - dr)  # change in the account's balance
+_de_j_rows = ""
+for i, (d, desc, ls) in enumerate(_de_tx, 1):
+    for j, (n, dr, cr) in enumerate(ls):
+        acct = _de_an(n) if dr else f'<span style="padding-left:1.5em">{_de_an(n)}</span>'
+        _de_j_rows += (f"<tr><td>{f'{i}. {d}' if j == 0 else ''}</td><td>{desc if j == 0 else ''}</td><td>{acct}</td>"
+                       f"<td>{_fmt(dr) if dr else ''}</td><td>{_fmt(cr) if cr else ''}</td></tr>")
+_de_compound = [i for i, t in enumerate(_de_tx, 1) if len(t[2]) > 2]
+# The accounting equation after each entry: assets = liabilities + equity (equity includes revenue less expenses)
+_de_bal = {n: 0 for n in _de_acct}
+_de_eq_rows = ""
+for i, (d, desc, ls) in enumerate(_de_tx, 1):
+    chg = {"A": 0, "L": 0, "E": 0}
+    for n, dr, cr in ls:
+        t = _de_acct[n][1]
+        delta = _de_signed(n, dr, cr)
+        _de_bal[n] += delta
+        k = {"Asset": "A", "Liability": "L"}.get(t, "E")
+        chg[k] += -delta if t == "Expense" else delta
+    A = sum(v for n, v in _de_bal.items() if _de_acct[n][1] == "Asset")
+    L = sum(v for n, v in _de_bal.items() if _de_acct[n][1] == "Liability")
+    E = sum(v for n, v in _de_bal.items() if _de_acct[n][1] in ("Equity", "Revenue")) - sum(v for n, v in _de_bal.items() if _de_acct[n][1] == "Expense")
+    assert A == L + E
+    sg = lambda x: ("+" if x > 0 else "&minus;") + _fmt(abs(x)) if x else "0"
+    _de_eq_rows += f"<tr><td>{i}</td><td>{sg(chg['A'])}</td><td>{sg(chg['L'])}</td><td>{sg(chg['E'])}</td><td>{_fmt(A)}</td><td>{_fmt(L + E)}</td></tr>"
+_de_A, _de_L, _de_E = A, L, E
+_de_rev = sum(v for n, v in _de_bal.items() if _de_acct[n][1] == "Revenue")
+_de_exp = sum(v for n, v in _de_bal.items() if _de_acct[n][1] == "Expense")
+_de_cap = _de_bal[3000]
+_de_cash = _de_bal[1000]
+_de_n = len(_de_tx)
+_de_lines = sum(len(t[2]) for t in _de_tx)
+_de_tot = sum(l[1] for t in _de_tx for l in t[2])
+_de_oven = _de_tx[1][2]
+_de_rule_rows = "".join(
+    f"<tr><td>{t}</td><td>{'Increases' if nb == 'Debit' else 'Decreases'}</td><td>{'Decreases' if nb == 'Debit' else 'Increases'}</td><td>{nb}</td><td>{ex}</td></tr>"
+    for t, nb, ex in [("Asset", "Debit", "Cash, receivables, equipment"), ("Expense", "Debit", "Rent, supplies, wages"),
+                      ("Liability", "Credit", "Supplier bills, loans, sales tax owed"), ("Equity", "Credit", "Owner's capital, retained earnings"),
+                      ("Revenue", "Credit", "Sales, service fees")])
+_de_qb = _ap_name.get("quickbooks", "QuickBooks Online")
+_de_qb_ss = _ap_plan_price(_de_qb, "Simple Start")
+_de_free = _ac_and(_ac_free) if _ac_free else ""
+
+guide_page({
+    "slug": "double-entry-bookkeeping", "crumb": "Double-entry bookkeeping", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-17", "kicker": "Explainer",
+    "title": "Double-Entry Bookkeeping: How Debits and Credits Work",
+    "seo_title": "Double-Entry Bookkeeping: Debits, Credits, Examples | Vettlo",
+    "desc": f"Double-entry bookkeeping explained: the debit and credit rules for each account type, {_de_n} worked journal entries, and how it differs from single entry.",
+    "card": f"The debit and credit rules by account type, with {_de_n} journal entries that keep the accounting equation balanced.",
+    "answer": ("Double-entry bookkeeping records every transaction in at least two accounts: one or more debits and one or more credits of equal total, so the books stay in balance. "
+               "Debits increase asset and expense accounts, credits increase liability, equity and revenue accounts, and after every entry assets still equal liabilities plus equity."),
+    "sections": [
+        ("what", "What is double-entry bookkeeping?", f"""<p>Double-entry bookkeeping is the method behind almost every set of business books: each transaction is written as an entry that debits at least one account and credits at least one other for the same total. Buy a $50 printer with cash and two things change at once: you have $50 more equipment and $50 less cash. Double entry records both sides.</p>
+<p>It's also the method accounting software runs on, whichever product you choose. Our <a href="{_ac_cat}">comparison of the best accounting software</a> ranks {len(_ac_ranked)} tools on price and features; this guide covers the rules those tools apply when they write entries for you.</p>
+<p>The idea rests on the accounting equation:</p>
+<p><b>Assets = Liabilities + Equity</b></p>
+<p>Everything the business owns (assets) was paid for either with borrowed money (liabilities) or with the owner's money and retained profit (equity). Because every entry changes two sides by the same amount, the equation can't drift out of balance. IRS Publication 583 calls the system "self-balancing because you record every transaction as a debit entry in one account and as a credit entry in another."</p>
+<p>Revenue and expenses sit inside equity: revenue raises it, expenses lower it. Written out, the expanded equation is <b>Assets = Liabilities + Owner's capital + Revenue &minus; Expenses</b>, which is why sales and costs follow the same debit and credit logic as the balance sheet.</p>"""),
+        ("rules", "How do debits and credits work?", f"""<p>A debit is an entry on the left side of an account and a credit is an entry on the right; whether each one increases or decreases the balance depends on the account type. Assets and expenses go up with debits. Liabilities, equity and revenue go up with credits.</p>
+<div class="table-wrap"><table><thead><tr><th>Account type</th><th>A debit</th><th>A credit</th><th>Normal balance</th><th>Examples</th></tr></thead><tbody>{_de_rule_rows}</tbody></table></div>
+<p>"Debit" and "credit" here have nothing to do with good or bad, or with your bank card. They only mean left and right. That's why your bank statement calls a deposit a credit: to the bank, your money is a liability it owes you. On your own books, the same deposit is a debit to cash.</p>
+<p>A common memory aid is <b>DEAL</b> versus <b>ER</b>: Dividends (or owner's draws), Expenses and Assets increase with a debit; Liabilities, Equity and Revenue increase with a credit. Owner's draws are a contra-equity account, so they run the opposite way from capital.</p>
+<p>To write any entry, ask three questions:</p>
+<ol>
+<li><b>Which accounts changed?</b> Every transaction touches at least two.</li>
+<li><b>What type is each account?</b> Look it up on your <a href="/guides/chart-of-accounts/">chart of accounts</a>, which lists every account by type.</li>
+<li><b>Did each one go up or down?</b> Use the table: an asset going up is a debit, a liability going up is a credit, and so on. Then check that total debits equal total credits.</li>
+</ol>"""),
+        ("examples", "What does double-entry bookkeeping look like? Worked journal entries", f"""<p>Here is a hypothetical catering business's first month as {_de_n} journal entries. Debits are listed first in each entry and credits are indented, the usual journal layout. Together they post {_de_lines} lines totaling {_fmt(_de_tot)} on each side.</p>
+<div class="table-wrap"><table><thead><tr><th>Entry</th><th>Transaction</th><th>Account</th><th>Debit</th><th>Credit</th></tr></thead><tbody>{_de_j_rows}</tbody></table></div>
+<p>Entry {_de_compound[0] if _de_compound else 2} is a <b>compound entry</b>: one debit of {_fmt(_de_oven[0][1])} balanced by two credits, {_fmt(_de_oven[1][2])} from checking and {_fmt(_de_oven[2][2])} borrowed. An entry can have any number of lines as long as the two columns match.</p>
+<p>Entries 3 and 4 show why double entry separates earning from collecting. The ingredients are an expense on the day they arrive, before the supplier is paid, and the lunch is revenue when it's invoiced, before the client pays. That's accrual timing; our <a href="/guides/cash-vs-accrual-accounting/">cash vs accrual accounting guide</a> explains the alternative. Receivables and payables are covered in the <a href="/guides/accounts-receivable/">accounts receivable</a> and <a href="/guides/accounts-payable-process/">accounts payable</a> guides.</p>
+<h3>How each entry keeps the equation balanced</h3>
+<p>Track the three sides of the equation after each entry and they always match. Revenue and expenses are counted in equity.</p>
+<div class="table-wrap"><table><thead><tr><th>Entry</th><th>Assets</th><th>Liabilities</th><th>Equity</th><th>Total assets</th><th>Liabilities + equity</th></tr></thead><tbody>{_de_eq_rows}</tbody></table></div>
+<p>At month-end the business has {_fmt(_de_A)} of assets ({_fmt(_de_cash)} of it in checking), {_fmt(_de_L)} of liabilities and {_fmt(_de_E)} of equity: the owner's {_fmt(_de_cap)} plus a profit of {_fmt(_de_rev - _de_exp)} ({_fmt(_de_rev)} revenue less {_fmt(_de_exp)} expenses). Posting these entries to their accounts is what builds the <a href="/guides/general-ledger/">general ledger</a> and its trial balance.</p>
+<p class="small muted">Hypothetical example for illustration; amounts are not from a real business.</p>"""),
+        ("single", "Single-entry vs double-entry bookkeeping: what's the difference?", f"""<p>Single-entry bookkeeping records each transaction once, as income or an expense in a running list; double entry records it in two or more accounts and tracks assets and debts as well. Single entry is simpler, but it can't produce a balance sheet and has no built-in check for errors.</p>
+<div class="table-wrap"><table><thead><tr><th></th><th>Single entry</th><th>Double entry</th></tr></thead><tbody>
+<tr><td>Records per transaction</td><td>One line: income or expense</td><td>Two or more lines: debits and credits of equal total</td></tr>
+<tr><td>Based on</td><td>The income statement (profit or loss)</td><td>Journals and ledgers for every account</td></tr>
+<tr><td>Tracks assets and liabilities</td><td>Not in the main record; kept in separate lists if at all</td><td>Yes, each has its own account</td></tr>
+<tr><td>Reports</td><td>Income, expenses and profit</td><td>Profit and loss, balance sheet, trial balance</td></tr>
+<tr><td>Error check</td><td>None built in</td><td>Debits must equal credits</td></tr>
+<tr><td>Typical fit</td><td>A new, very small business with few transactions</td><td>Any business with receivables, payables, loans, inventory or employees</td></tr>
+</tbody></table></div>
+<p>The IRS lets you choose. Publication 583 says single entry "can be a simple and practical system if you are starting a small business," recording income and expenses through a daily summary of cash receipts and monthly summaries of receipts and disbursements. It adds that double entry "uses journals and ledgers," and that total debits must equal total credits after posting; if they don't, there's an error to find.</p>
+<p>A spreadsheet of income and expenses is single entry. You move to double entry, in practice, the day you start using accounting software, because it records both sides automatically.</p>
+<p class="small muted">Summarizes IRS guidance and isn't tax or legal advice.</p>"""),
+        ("software", "How does accounting software handle double entry?", f"""<p>Accounting software writes the journal entry for you every time you save a standard form, so you rarely choose debits and credits yourself. What each everyday action records behind the scenes:</p>
+<div class="table-wrap"><table><thead><tr><th>You do this</th><th>Software debits</th><th>Software credits</th></tr></thead><tbody>
+<tr><td>Send an invoice</td><td>Accounts receivable</td><td>Revenue (and sales tax payable, if charged)</td></tr>
+<tr><td>Record a customer payment</td><td>Bank or undeposited funds</td><td>Accounts receivable</td></tr>
+<tr><td>Enter a supplier bill</td><td>The expense or asset account on the bill</td><td>Accounts payable</td></tr>
+<tr><td>Pay a bill</td><td>Accounts payable</td><td>Bank</td></tr>
+<tr><td>Categorize a card or bank charge</td><td>The expense account you pick</td><td>Bank or credit card account</td></tr>
+<tr><td>Transfer between your own accounts</td><td>Receiving account</td><td>Sending account</td></tr>
+</tbody></table></div>
+<p>The one place you write debits and credits directly is a manual journal entry, used for items with no standard form: depreciation, accrued expenses, loan interest splits and year-end corrections from your accountant.</p>
+<ul>
+<li><b>{_ac_rv('quickbooks') if 'quickbooks' in _ac_ranked else 'QuickBooks Online'}:</b> + New &gt; Journal entry. QuickBooks' help page says to enter each account on its own line, with the same amount in the opposite column, keeping total debits and credits equal.</li>
+<li><b>{_ac_rv('zohobooks') if 'zohobooks' in _ac_ranked else 'Zoho Books'}:</b> Accountant &gt; Manual Journals &gt; + New Journal. Zoho's help page tells users to "ensure that the amount debited is always equal to the amount credited."</li>
+</ul>
+<p>Both help pages make balanced debits and credits a requirement of the entry, so the arithmetic is the easy part. Picking the right account is the part software can't do for you, which is why the categories you choose matter more than the mechanics. Prices start low{f": QuickBooks Simple Start is {_de_qb_ss} at the regular price" if _de_qb_ss else ""}{f", and {_de_free} offer free plans" if _de_free else ""}. For plan-by-plan differences, see <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> and <a href="/compare/xero-vs-zohobooks/">Xero vs Zoho Books</a>.</p>
+<p class="small muted">Menu paths from QuickBooks and Zoho Books help pages checked Nov 17, 2026; prices are regular US prices from our pricing data.</p>"""),
+        ("mistakes", "What are the most common double-entry mistakes?", """<p>Most double-entry errors still balance, because the debit and credit match but one of them lands in the wrong place. These are the ones bookkeepers most often fix at month-end:</p>
+<div class="table-wrap"><table><thead><tr><th>Mistake</th><th>What happens</th><th>Fix</th></tr></thead><tbody>
+<tr><td>Debit and credit swapped</td><td>Cash goes down when it should go up, so the error shows up as twice the amount</td><td>Reverse the entry and record it again the right way round</td></tr>
+<tr><td>Equipment recorded as an expense</td><td>Profit is understated and the asset is missing from the balance sheet</td><td>Move it to a fixed-asset account and depreciate it</td></tr>
+<tr><td>Owner's draws recorded as wages or expenses</td><td>Profit is understated; draws aren't a business expense</td><td>Use an owner's draw (contra-equity) account</td></tr>
+<tr><td>Loan payments booked fully to expense</td><td>The loan balance never goes down</td><td>Split each payment: principal debits the loan, interest debits interest expense</td></tr>
+<tr><td>Customer payment recorded as new revenue</td><td>Revenue counted twice and receivables never clear</td><td>Apply the payment to the open invoice so it credits receivables</td></tr>
+</tbody></table></div>
+<p>A monthly bank reconciliation catches many of these, since the books' cash balance won't match the statement; our <a href="/guides/bank-reconciliation/">bank reconciliation guide</a> walks through it.</p>"""),
+    ],
+    "faqs": [
+        ("What is an example of double-entry bookkeeping?", "Paying $1,100 of rent from the business checking account is recorded as a $1,100 debit to rent expense and a $1,100 credit to cash. The expense goes up, cash goes down, and the debit and credit totals match."),
+        ("Does a debit always mean an increase?", "No. A debit increases asset, expense and owner's draw accounts, and decreases liability, equity and revenue accounts. A credit does the opposite. Whether an entry raises or lowers a balance depends on the account's type."),
+        ("Is double-entry bookkeeping required for a small business?", "Not by the IRS. Publication 583 lets a business choose single-entry or double-entry bookkeeping, as long as the records support the return. Lenders, investors and accountants usually expect double-entry books with a balance sheet, and accounting software keeps them by default."),
+        ("Can you do double-entry bookkeeping in Excel?", "Yes. Use one sheet as a journal with date, account, debit and credit columns, check that each entry's debits and credits match, and summarize balances by account with a pivot table or SUMIF formulas. It works for a few dozen transactions a month; beyond that, bank feeds in accounting software save most of the typing."),
+    ],
+    "sources": [
+        ("IRS: Publication 583 (12/2024), Starting a Business and Keeping Records", "https://www.irs.gov/publications/p583"),
+        ("QuickBooks: Create journal entries in QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-us/reports-and-accounting/create-a-journal-entry/00/262076"),
+        ("Zoho Books: Manual Journals", "https://www.zoho.com/books/help/accountant/manual-journal.html"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+    ],
+})
