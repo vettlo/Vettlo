@@ -1665,6 +1665,21 @@ def build():
         (d / "data").mkdir(exist_ok=True)
         _cats = [{"slug": "best-crm-software", "name": "CRM Software", "dept": "Sales", "tools": [{"id": t["id"], "name": t["name"]} for t in CONSIDERED]}]
         _cats += [{"slug": c["slug"], "name": c["plural"], "dept": DEPT_OF[c["slug"]][0], "tools": [{"id": k, "name": t["name"]} for k, t in c["tools"].items()]} for c in ALLCATS]
+        # pages where vendors can buy positions: each category shortlist and its alternatives pages
+        import re as _re
+        _h1 = lambda body: _re.sub(r"<[^>]+>", "", (_re.search(r"<h1[^>]*>(.*?)</h1>", body, _re.S) or [None, ""])[1]).strip()
+        for c in _cats:
+            sl = "/tools/" + c["slug"] + "/"
+            c["pages"] = [{"url": sl, "title": _h1(PAGES[sl]["body"]) if sl in PAGES else c["name"], "kind": "shortlist"}]
+            ids = {t["id"] for t in c["tools"]}
+            names = {t["name"]: t["id"] for t in c["tools"]}
+            for url, pg in sorted(PAGES.items()):
+                if not _re.fullmatch(r"/tools/best-.+-alternatives/", url) or "noindex" in str(pg.get("robots", "")):
+                    continue
+                arts = set(_re.findall(r'<article class="tool" id="([^"]+)"', pg["body"]))
+                ref = _re.search(r'<tr class="ref"><td><b>(.*?)</b>', pg["body"])
+                if arts and arts <= ids:
+                    c["pages"].append({"url": url, "title": _h1(pg["body"]), "kind": "alternatives", "exclude": names.get(ref.group(1)) if ref else None})
         (d / "data" / "categories.json").write_text(json.dumps(_cats))
         # retired URLs -> where their content now lives (served as 301s by src/worker.js)
         (d / "data" / "redirects.json").write_text((ROOT / "data" / "redirects.json").read_text() if (ROOT / "data" / "redirects.json").exists() else "{}")

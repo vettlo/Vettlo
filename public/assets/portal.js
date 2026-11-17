@@ -99,43 +99,131 @@
     }));
   }
 
-  async function plans(listingId) {
-    const L = ((await api("/api/listings")).listings || []).filter((l) => l.status !== "rejected");
-    if (!L.length) { view(`<div class="pt-empty"><p>Create a listing first, then choose a plan.</p><button class="btn" data-go="newListing">Create a listing</button></div>`); return bindGo(); }
-    const cur = L.find((l) => String(l.id) === String(listingId)) || L[0];
-    const P = (await api("/api/plans?category=" + encodeURIComponent(cur.category))).plans || [];
-    const card = (p) => {
-      let action = "", note = "";
+  // ---------- buy a position: 1) page, 2) position, 3) product and billing
+  let PAGES = null, PRICES = null, SEL = { page: null, plan: null };
+  const pageOf = (url) => (PAGES || []).find((p) => p.url === url);
+  const kindLabel = (k) => k === "alternatives" ? "Alternatives page" : "Category shortlist";
+  const steps = (n) => `<ol class="pt-steps">${["Choose a page", "Choose a position", "Product and billing"].map((t, i) => `<li class="${i + 1 < n ? "done" : i + 1 === n ? "on" : ""}"><span>${i + 1}</span>${t}</li>`).join("")}</ol>`;
+  const pmo = (plan) => PRICES && PRICES[plan] ? PRICES[plan] : {};
+
+  async function plans(arg) {
+    const d = await api("/api/pages");
+    PAGES = d.pages || []; PRICES = d.prices || {};
+    if (arg && pageOf(arg)) SEL = { page: arg, plan: null };
+    else if (arg && /^\d+$/.test(String(arg))) { const L = (await api("/api/listings")).listings || []; const l = L.find((x) => String(x.id) === String(arg)); SEL = { page: l ? `/tools/${l.category}/` : null, plan: null }; }
+    if (SEL.page && SEL.plan) return stepProduct();
+    if (SEL.page) return stepPosition();
+    return stepPage();
+  }
+
+  async function stepPage() {
+    const L = (await api("/api/listings")).listings || [];
+    const mine = L.flatMap((l) => (l.subs || []).map((s) => ({ ...s, product_name: l.product_name })));
+    const lo = money(pmo("p10").month), hi = money(pmo("p1").month);
+    const groups = {};
+    for (const p of PAGES) (groups[p.category] ||= { name: p.category_name, dept: p.dept, pages: [] }).pages.push(p);
+    view(`<div class="pt-head"><h2>Buy a position</h2></div>${steps(1)}
+      ${mine.length ? `<div class="pt-card"><h3>Your positions</h3><div class="table-wrap"><table class="pt-table"><thead><tr><th>Page</th><th>Position</th><th>Product</th><th>Billing</th><th>Status</th><th></th></tr></thead><tbody>
+        ${mine.map((s) => { const pg = pageOf(s.page) || { title: s.page };
+          const st = s.status === "active" ? (s.auto_renew ? `Live, renews ${date(s.paid_through)}` : `Live until ${date(s.paid_through)}`) : `Reserved until ${date(s.reserved_until)}, awaiting payment`;
+          const act = s.status !== "active" ? `<button class="btn ghost small" data-cancel="${s.id}">Cancel</button>` : s.auto_renew ? `<button class="btn ghost small" data-stop="${s.id}">Stop renewal</button>` : `<button class="btn ghost small" data-renew="${s.id}">Renew</button>`;
+          return `<tr><td><a href="${esc(s.page)}" target="_blank">${esc(pg.title)}</a></td><td><b>${PLAN[s.plan]}</b></td><td>${esc(s.product_name)}</td><td>${s.period === "month" ? "Monthly" : "Yearly"}</td><td>${st}</td><td>${act}</td></tr>`; }).join("")}</tbody></table></div></div>` : ""}
+      <p class="muted">Pick the page where you want your product to appear. Every page has 10 positions, each sold to one vendor: from ${lo} to ${hi} a month, or 10% less paid yearly.</p>
+      <div class="pt-find"><input id="pt-q" type="search" placeholder="Search pages, e.g. CRM, HubSpot alternatives, payroll" autocomplete="off"></div>
+      <div id="pt-pages">${Object.values(groups).map((g) => `<section class="pt-pgroup"><h3><span>${esc(g.dept)}</span> ${esc(g.name)}</h3>
+        ${g.pages.map((p) => `<button class="pt-prow" data-page="${esc(p.url)}" data-q="${esc((p.title + " " + g.name + " " + g.dept).toLowerCase())}">
+          <span class="pt-prow-t"><b>${esc(p.title)}</b><small>${kindLabel(p.kind)}</small></span>
+          <span class="pt-prow-f ${p.free ? "" : "none"}">${p.free ? `${p.free} of 10 free` : "All taken"}</span><span class="pt-prow-go">Choose →</span></button>`).join("")}</section>`).join("")}</div>
+      <p class="pt-none muted" hidden>No page matches. <a href="/contact/">Ask us</a> about other pages.</p>`);
+    const q = $("#pt-q");
+    q.addEventListener("input", () => { const v = q.value.trim().toLowerCase(); let any = 0;
+      document.querySelectorAll(".pt-pgroup").forEach((g) => { let n = 0; g.querySelectorAll(".pt-prow").forEach((r) => { const ok = !v || r.dataset.q.includes(v); r.hidden = !ok; n += ok; }); g.hidden = !n; any += n; });
+      $(".pt-none").hidden = !!any; });
+    document.querySelectorAll("[data-page]").forEach((b) => b.addEventListener("click", () => { SEL = { page: b.dataset.page, plan: null }; stepPosition(); }));
+    bindSubActions(stepPage);
+  }
+
+  function bindSubActions(again) {
+    const act = async (url, okMsg) => { const r = await api(url, { method: "POST", body: {} }); toast(r.ok ? okMsg : r.error, !r.ok); again(); };
+    document.querySelectorAll("[data-renew]").forEach((b) => b.addEventListener("click", () => act(`/api/subs/${b.dataset.renew}/renew`, "Renewal invoice created. Pay it in Invoices.")));
+    document.querySelectorAll("[data-cancel]").forEach((b) => b.addEventListener("click", () => act(`/api/subs/${b.dataset.cancel}/cancel`, "Reservation cancelled.")));
+    document.querySelectorAll("[data-stop]").forEach((b) => b.addEventListener("click", () => { if (confirm("Stop the monthly renewal? The position stays live until the end of the paid month.")) act(`/api/subs/${b.dataset.stop}/stop`, "Renewal stopped."); }));
+  }
+
+  async function stepPosition() {
+    const r = await api("/api/plans?page=" + encodeURIComponent(SEL.page));
+    if (!r.ok) { SEL = { page: null, plan: null }; return stepPage(); }
+    const pg = r.page, P = r.plans || [];
+    const row = (p) => {
       const period = p.plan === "basic" ? "year" : PERIOD;
       const cents = period === "month" ? p.month_cents : p.year_cents;
-      const seats = p.capacity ? (p.used ? "Taken" : "Available") : "Unlimited seats";
-      if (p.state === "available") action = cur.sub ? `<span class="muted small">This listing already has a plan.</span>` : `<button class="btn small" data-sub="${p.plan}" data-period="${period}">Choose ${p.name}</button>`;
-      else if (p.state === "yours") {
-        note = p.auto_renew ? `Your position, renews monthly (paid until ${date(p.until)})` : `Your position, paid until ${date(p.until)}`;
-        action = p.auto_renew ? `<button class="btn ghost small" data-stop="${p.sub_id}">Stop monthly renewal</button>` : `<button class="btn small" data-renew="${p.sub_id}">Renew for another ${per(p.period)}</button>`; }
-      else if (p.state === "reserved_by_you") { note = `Reserved for you until ${date(p.until)}. Pay the invoice to go live.`; action = `<button class="btn ghost small" data-cancel="${p.sub_id}">Cancel reservation</button>`; }
-      else { note = p.state === "full" ? `Taken until ${date(p.until)} at the earliest` : `Offered to the next vendor on the waitlist until ${date(p.until)}`;
+      let status = "", action = "";
+      if (p.state === "available") { status = "Available"; action = `<button class="btn small" data-pick="${p.plan}">Select</button>`; }
+      else if (p.state === "yours") status = `<b>Yours</b>, ${p.auto_renew ? "renews" : "paid until"} ${date(p.until)}`;
+      else if (p.state === "reserved_by_you") status = `<b>Reserved for you</b> until ${date(p.until)}`;
+      else { status = p.state === "full" ? `Taken until ${date(p.until)}` : `Held for the waitlist until ${date(p.until)}`;
         action = p.on_waitlist ? `<button class="btn ghost small" data-leave="${p.plan}">Leave waitlist</button>` : `<button class="btn ghost small" data-wait="${p.plan}">Join waitlist</button>`; }
-      const save = period === "year" && p.month_cents ? `<small class="muted"> (${money(p.month_cents * 12 - p.year_cents)} less than monthly)</small>` : "";
-      return `<div class="pt-plan ${p.state}"><div class="pt-plan-top"><b>${p.name}</b><span class="pt-plan-price">${money(cents)}<small> / ${period}</small></span></div>${save}
-        <p class="small">${planWhat(p.plan)}</p><span class="muted small">${seats}${p.waitlist ? " · " + p.waitlist + " on waitlist" : ""}</span>${note ? `<span class="small"><b>${note}</b></span>` : ""}<div>${action}</div></div>`;
+      const n = p.plan === "basic" ? "B" : p.plan.slice(1);
+      const label = p.plan === "basic" ? "Basic listing <small>under “Other tools to consider”, yearly only</small>" : `Position #${n}`;
+      return `<div class="pt-slot ${p.state === "full" ? "taken" : p.state}"><span class="pt-slot-n">${n}</span><div><b>${label}</b><span class="small muted">${status}${p.waitlist ? " · " + p.waitlist + " waiting" : ""}</span></div>
+        <div class="pt-slot-r"><span class="pt-plan-price">${money(cents)}<small> / ${period}</small></span>${action}</div></div>`;
     };
-    const auto = ME.payments === "iyzico" && ME.subscriptions;
-    view(`<div class="pt-head"><h2>Positions</h2>${L.length > 1 ? `<select id="pt-pick">${L.map((l) => `<option value="${l.id}" ${l.id === cur.id ? "selected" : ""}>${esc(l.product_name)} · ${esc(catName(l.category))}</option>`).join("")}</select>` : ""}</div>
-      <p class="muted">Positions for <b>${esc(cur.product_name)}</b> on the <a href="/tools/${esc(cur.category)}/" target="_blank">${esc(catName(cur.category))}</a> page. Each position from #1 to #10 is sold to one vendor per category. Your product appears at its position while the plan is paid and the listing is approved. Our editors first review and score your product with the same criteria as every other tool on the list (usually 2–3 business days after payment); the score is ours and isn't affected by your plan.${cur.status === "pending" ? " <b>This listing is still in editorial review</b>; you can reserve a position now and it goes live once approved." : ""}</p>
-      <div class="pt-tabs" role="tablist"><button class="${PERIOD === "month" ? "on" : ""}" data-period-pick="month">Monthly</button><button class="${PERIOD === "year" ? "on" : ""}" data-period-pick="year">Yearly, 10% off</button></div>
-      <div class="pt-plans">${P.map(card).join("")}</div>
-      <p class="muted small">${auto ? "Monthly plans are charged to your card every month until you stop the renewal here; the position stays live until the end of the paid month." : "Monthly plans are invoiced each month."} Yearly plans are paid once for 12 months at 10% off and don't renew automatically. A reservation holds a position for 7 days while you pay. When a position frees up, the first vendor on its waitlist gets 72 hours to claim it. To change positions, <a href="/contact/">contact us</a>. Scores and review text are never part of a plan.</p>`);
-    bindGo();
-    const pick = $("#pt-pick"); if (pick) pick.addEventListener("change", () => plans(pick.value));
-    const act = async (url, body, okMsg) => { const r = await api(url, { method: "POST", body }); toast(r.ok ? okMsg : r.error, !r.ok); plans(cur.id); };
-    document.querySelectorAll("[data-period-pick]").forEach((b) => b.addEventListener("click", () => { PERIOD = b.dataset.periodPick; plans(cur.id); }));
-    document.querySelectorAll("[data-sub]").forEach((b) => b.addEventListener("click", () => act("/api/subscribe", { listing_id: cur.id, plan: b.dataset.sub, period: b.dataset.period }, ME.payments === "iyzico" ? "Reserved. Pay the invoice in the Invoices tab to start your plan." : "Reserved. We'll email your invoice; the plan goes live when it's paid.")));
-    document.querySelectorAll("[data-stop]").forEach((b) => b.addEventListener("click", () => { if (confirm("Stop the monthly renewal? Your position stays live until the end of the paid month.")) act(`/api/subs/${b.dataset.stop}/stop`, {}, "Renewal stopped."); }));
-    document.querySelectorAll("[data-renew]").forEach((b) => b.addEventListener("click", () => act(`/api/subs/${b.dataset.renew}/renew`, {}, "Renewal invoice requested.")));
-    document.querySelectorAll("[data-cancel]").forEach((b) => b.addEventListener("click", () => act(`/api/subs/${b.dataset.cancel}/cancel`, {}, "Reservation cancelled.")));
-    document.querySelectorAll("[data-wait]").forEach((b) => b.addEventListener("click", () => act("/api/waitlist", { listing_id: cur.id, plan: b.dataset.wait }, "You're on the waitlist.")));
-    document.querySelectorAll("[data-leave]").forEach((b) => b.addEventListener("click", () => act("/api/waitlist/leave", { category: cur.category, plan: b.dataset.leave }, "Removed from the waitlist.")));
+    view(`<div class="pt-head"><h2>Buy a position</h2></div>${steps(2)}
+      <div class="pt-pagecard"><div><small>${kindLabel(pg.kind)} · ${esc(pg.category_name)}</small><b>${esc(pg.title)}</b></div>
+        <div class="pt-actions"><a class="small" href="${esc(pg.url)}" target="_blank">View page ↗</a><button class="btn ghost small" id="pt-back">Change page</button></div></div>
+      <div class="pt-seg" role="group" aria-label="Billing"><button class="${PERIOD === "month" ? "on" : ""}" data-period-pick="month">Monthly</button><button class="${PERIOD === "year" ? "on" : ""}" data-period-pick="year">Yearly <em>10% off</em></button></div>
+      <div class="pt-slots">${P.map(row).join("")}</div>
+      <p class="muted small">Your product appears at the position you buy on this page's ranked list, review cards and comparison table${pg.kind === "alternatives" ? "" : ""}. If the list is shorter than your position, it appears at the end. Our editors review and score your product before it goes live; the score is ours and isn't affected by your plan.</p>`);
+    $("#pt-back").addEventListener("click", () => { SEL = { page: null, plan: null }; stepPage(); });
+    document.querySelectorAll("[data-period-pick]").forEach((b) => b.addEventListener("click", () => { PERIOD = b.dataset.periodPick; stepPosition(); }));
+    document.querySelectorAll("[data-pick]").forEach((b) => b.addEventListener("click", () => { SEL.plan = b.dataset.pick; stepProduct(); }));
+    const L = ((await api("/api/listings")).listings || []).filter((l) => l.category === pg.category && l.status !== "rejected");
+    const wl = async (url, plan, msg) => { if (!L.length) { toast("Add your product first: select a free position or create a listing for this category.", true); return; }
+      const x = await api(url, { method: "POST", body: { listing_id: L[0].id, page: pg.url, plan } }); toast(x.ok ? msg : x.error, !x.ok); stepPosition(); };
+    document.querySelectorAll("[data-wait]").forEach((b) => b.addEventListener("click", () => wl("/api/waitlist", b.dataset.wait, "You're on the waitlist.")));
+    document.querySelectorAll("[data-leave]").forEach((b) => b.addEventListener("click", async () => { await api("/api/waitlist/leave", { method: "POST", body: { page: pg.url, plan: b.dataset.leave } }); toast("Removed from the waitlist."); stepPosition(); }));
+  }
+
+  async function stepProduct() {
+    const pg = pageOf(SEL.page), plan = SEL.plan;
+    const period = plan === "basic" ? "year" : PERIOD;
+    const cents = pmo(plan)[period];
+    const L = ((await api("/api/listings")).listings || []).filter((l) => l.category === pg.category && l.status !== "rejected" && !(pg.exclude && l.tool_id === pg.exclude)
+      && !(l.subs || []).some((x) => x.page === pg.url));
+    view(`<div class="pt-head"><h2>Buy a position</h2></div>${steps(3)}
+      <div class="pt-summary"><div><small>Your order</small><b>${PLAN[plan]} on ${esc(pg.title)}</b><span class="muted small">${period === "month" ? "Billed monthly" + (ME.subscriptions ? ", renews automatically until you stop it" : "") : "Billed once for 12 months, 10% off"}</span></div>
+        <span class="pt-plan-price">${money(cents)}<small> / ${period}</small></span></div>
+      <form class="pt-card" id="pt-order"><h3>Which product?</h3>
+        ${L.length ? `<div class="pt-choices">${L.map((l, i) => `<label class="pt-choice"><input type="radio" name="listing" value="${l.id}" ${i === 0 ? "checked" : ""}><span><b>${esc(l.product_name)}</b><small>${esc(l.best_for || l.website)}${l.status === "pending" ? " · in editorial review" : ""}</small></span></label>`).join("")}
+          <label class="pt-choice"><input type="radio" name="listing" value="new"><span><b>Another product</b><small>Add a new product for ${esc(pg.category_name)}</small></span></label></div>` : `<input type="hidden" name="listing" value="new">`}
+        <div id="pt-newprod" class="pt-grid" ${L.length ? "hidden" : ""}>
+          <label>Product name<input name="product_name" maxlength="80"></label>
+          <label>Product website<input name="website" type="url" placeholder="https://"></label>
+          <label>Landing page<input name="landing_url" type="url" placeholder="https:// (optional, add UTM parameters)"></label>
+          <label>Starting price<input name="starting_price" maxlength="80" placeholder="e.g. $12/user/mo billed annually"></label>
+          <label class="wide">Best for (one line)<input name="best_for" maxlength="90" placeholder="e.g. Small teams that want simple pipelines"></label>
+          <label class="wide">Description<textarea name="description" rows="3" maxlength="600" placeholder="What the product does and who it's for. Plain and factual; our editors may edit it."></textarea></label></div>
+        <div class="pt-actions"><button class="btn" type="submit">Reserve ${PLAN[plan]} for ${money(cents)} / ${period}</button><button class="btn ghost small" type="button" id="pt-back">Back</button>
+          <span class="muted small">We hold the position for 7 days while you pay.</span></div></form>`);
+    $("#pt-back").addEventListener("click", () => { SEL.plan = null; stepPosition(); });
+    const f = $("#pt-order"), np = $("#pt-newprod");
+    f.querySelectorAll('input[name="listing"]').forEach((r) => r.addEventListener("change", () => { np.hidden = f.listing.value !== "new"; }));
+    f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      let id = f.listing.value;
+      if (id === "new") {
+        if (!f.product_name.value || !f.website.value) return toast("Add the product name and website.", true);
+        const c = await api("/api/listings", { method: "POST", body: { product_name: f.product_name.value, category: pg.category, website: f.website.value,
+          landing_url: f.landing_url.value || f.website.value, best_for: f.best_for.value, starting_price: f.starting_price.value, description: f.description.value } });
+        if (!c.ok) return toast(c.error, true);
+        id = c.id;
+      }
+      const r = await api("/api/subscribe", { method: "POST", body: { listing_id: Number(id), page: pg.url, plan, period } });
+      if (!r.ok) return toast(r.error, true);
+      SEL = { page: null, plan: null };
+      toast(ME.payments === "iyzico" ? "Reserved. Pay the invoice to go live." : "Reserved. We'll email your invoice.");
+      showTab("invoices");
+    });
   }
 
   function newListing() {
@@ -161,6 +249,7 @@
 
   async function invoices() {
     const rows = (await api("/api/invoices")).rows || [];
+    if (!PAGES) { const d = await api("/api/pages"); PAGES = d.pages || []; PRICES = d.prices || {}; }
     const card = ME.payments === "iyzico";
     const res = new URLSearchParams(location.search).get("pay");
     const msg = { ok: "Payment received. Your plan is active; it goes live on the site as soon as your listing is approved.", failed: "The payment didn't go through. You haven't been charged; please try again.",
@@ -170,7 +259,7 @@
       ${msg ? `<div class="pt-note">${msg}</div>` : ""}
       <p class="muted">${card ? "Pay open invoices by card. Payments are processed securely by iyzico; your plan starts, or is extended by its billing period, as soon as the payment is confirmed." : "We email an invoice for each new plan and renewal. Your plan goes live, or is extended by its billing period, as soon as payment arrives."}</p>
       ${rows.length ? `<div class="table-wrap"><table class="pt-table"><thead><tr><th>Date</th><th>For</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
-      ${rows.map((x) => `<tr><td>${date(x.created_at)}</td><td>${x.plan ? `${esc(x.product_name)}, ${PLAN[x.plan]} in ${esc(catName(x.category))}, 1 ${per(x.period)}` : "Adjustment"}</td><td>${money(x.amount_cents)}</td><td><span class="pt-pill ${x.status === "paid" ? "ok" : x.status === "requested" ? "pending" : "off"}">${x.status === "requested" ? "Due" : x.status === "paid" ? "Paid" : "Cancelled"}</span></td>
+      ${rows.map((x) => `<tr><td>${date(x.created_at)}</td><td>${x.plan ? `${esc(x.product_name)}, ${PLAN[x.plan]} on ${esc((pageOf(x.page) || {}).title || catName(x.category))}, 1 ${per(x.period)}` : "Adjustment"}</td><td>${money(x.amount_cents)}</td><td><span class="pt-pill ${x.status === "paid" ? "ok" : x.status === "requested" ? "pending" : "off"}">${x.status === "requested" ? "Due" : x.status === "paid" ? "Paid" : "Cancelled"}</span></td>
         <td>${x.status === "requested" && card ? `<button class="btn small" data-pay="${x.id}">Pay by card</button>` : ""}</td></tr>`).join("")}</tbody></table></div>`
       : `<p class="muted">No invoices yet.</p>`}`);
     document.querySelectorAll("[data-pay]").forEach((b) => b.addEventListener("click", async () => {

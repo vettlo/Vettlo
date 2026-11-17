@@ -4,13 +4,13 @@
 _PSCRIPT = '<script src="/assets/portal.js?v=' + PORTAL_V + '" defer></script>'
 
 page("/vendors/", "Advertise Your Software on Vettlo: Vendor Portal | Vettlo",
-     "Put your software in front of buyers comparing tools on Vettlo. Buy positions #1 to #10 on your category's shortlist, billed monthly or yearly, with a self-serve portal and live reports.",
+     "Put your software in front of buyers comparing tools on Vettlo. Pick a category shortlist or alternatives page, then buy position #1 to #10 on it, billed monthly or yearly, with a self-serve portal and live reports.",
      """<section class="about-hero"><div class="wrap">
 <div><span class="kicker">For software vendors</span><h1>Reach buyers while they compare software.</h1>
-<p class="lede">Vettlo readers arrive with a buying question, on shortlists, comparisons and reviews for the category you sell in. Choose a position from #1 to #10 on your category's shortlist, or a listing under Other tools to consider, billed monthly or yearly.</p>
+<p class="lede">Vettlo readers arrive with a buying question, on shortlists, comparisons and reviews for the category you sell in. Pick the page you want, a category shortlist or an alternatives page, then choose a position from #1 to #10 on it, billed monthly or yearly.</p>
 <div class="ctas"><a class="btn" href="/advertise/#adv-form">Request pricing</a><a class="btn ghost" href="/vendors/login/">Vendor sign in</a></div></div>
 <aside class="scorecard" aria-label="How placement works"><div class="sc-head"><span>How placement works</span><span class="sc-ex">Per category</span></div>
-<ol class="pt-how"><li><b>Positions #1 to #10</b><span>Each position on a category shortlist is sold to one vendor at a time.</span></li>
+<ol class="pt-how"><li><b>Pick a page, then a position</b><span>Category shortlists and alternatives pages each have positions #1 to #10, each sold to one vendor at a time.</span></li>
 <li><b>Monthly or yearly</b><span>A flat price per position, however many readers see or click it. Yearly saves 10%.</span></li>
 <li><b>Waitlist</b><span>When the position you want is taken, join its waitlist and get first claim when it frees up.</span></li></ol></aside>
 </div></section>
@@ -18,11 +18,11 @@ page("/vendors/", "Advertise Your Software on Vettlo: Vendor Portal | Vettlo",
 <section><div class="section-head"><div><span class="kicker">How it works</span><h2>Live in four steps</h2></div></div>
 <ol class="steps"><li><b>Ask for pricing</b><span>Tell us your product and category. We'll reply with prices and your link to the vendor portal.</span></li>
 <li><b>Add your listing</b><span>Choose a category, add your product details and landing page with UTM parameters.</span></li>
-<li><b>Choose a position</b><span>See which positions are free in your category and reserve one. We hold it for 7 days while you pay.</span></li>
+<li><b>Choose a page and position</b><span>Pick a shortlist or alternatives page, see which positions are free and reserve one. We hold it for 7 days while you pay.</span></li>
 <li><b>Pay and go live</b><span>Once payment is confirmed and our editors approve the listing, your product appears at its position for the paid month or year.</span></li></ol></section>
 <section><div class="section-head"><div><span class="kicker">Plans</span><h2>Positions and listings</h2></div></div>
 <div class="cards3 aud">
-<div class="card"><span class="label">1 vendor per position</span><h3 class="card-title">Positions #1 to #10</h3><p class="muted small">Your product at the position you buy on the category shortlist, review cards and comparison table. Higher positions cost more.</p></div>
+<div class="card"><span class="label">1 vendor per position</span><h3 class="card-title">Positions #1 to #10</h3><p class="muted small">Your product at the position you buy on a category shortlist or alternatives page: its ranked list, review cards and comparison table. Higher positions cost more.</p></div>
 <div class="card"><span class="label">Monthly or yearly</span><h3 class="card-title">Billing</h3><p class="muted small">Monthly plans renew automatically by card until you stop them. Yearly plans are paid once for 12 months at 10% off.</p></div>
 <div class="card"><span class="label">Unlimited seats</span><h3 class="card-title">Basic listing</h3><p class="muted small">Listed first under “Other tools to consider” on your category page, with your description and a link to your site. Billed yearly.</p></div></div>
 <p class="muted small">Every plan is per category and includes the vendor portal with impression and visit reports. <a href="/advertise/#adv-form">Ask us for pricing</a>.</p></section>
@@ -53,7 +53,7 @@ page("/vendors/login/", "Sign In: Vettlo Vendor Portal",
 page("/vendors/app/", "Dashboard: Vettlo Vendor Portal", "Vettlo vendor dashboard.",
      """<div class="wrap pt-app" id="pt-root" data-portal="app"><div class="pt-top"><div><span class="kicker">Vendor portal</span><h1 id="pt-company">Loading…</h1></div>
 <div class="pt-topnav"><a id="pt-admin-link" href="/vendors/admin/" hidden>Admin</a><button class="btn ghost small" id="pt-logout">Sign out</button></div></div>
-<nav class="pt-tabs"><button data-tab="overview">Overview</button><button data-tab="listings">Listings</button><button data-tab="plans">Plans</button><button data-tab="newListing">New listing</button><button data-tab="invoices">Invoices</button><button data-tab="reports">Reports</button><button data-tab="account">Account</button></nav>
+<nav class="pt-tabs"><button data-tab="overview">Overview</button><button data-tab="listings">Listings</button><button data-tab="plans">Buy a position</button><button data-tab="newListing">New listing</button><button data-tab="invoices">Invoices</button><button data-tab="reports">Reports</button><button data-tab="account">Account</button></nav>
 <div id="pt-view" class="pt-view"><p class="muted">Loading…</p></div><div id="pt-toast" class="pt-toast"></div></div>""" + _PSCRIPT)
 
 page("/vendors/admin/", "Admin: Vettlo Vendor Portal", "Vettlo vendor portal admin.",
@@ -68,7 +68,7 @@ page("/advertiser-terms/", "Advertiser Terms: Listings, Plans and Billing | Vett
 <h2>1. Listings and editorial review</h2><ul><li>Listings go live only after editorial approval. We may edit listing copy for accuracy and clarity, request changes, or decline or remove a listing at our discretion.</li>
 <li>You must provide accurate information about your product, pricing and landing page, and keep it up to date. Changes to listing copy are reviewed again before they go live.</li>
 <li>Your listing doesn't change your product's Vettlo score, our reviews or what we write about other products.</li></ul>
-<h2>2. Plans</h2><ul><li>Plans are sold per category. A position plan places your product at the position you buy, from #1 to #10, on the category shortlist, review cards and comparison table; each position is sold to one vendor at a time. If a list has fewer entries than your position, your product appears at its end. Basic lists your product under Other tools to consider.</li>
+<h2>2. Plans</h2><ul><li>Plans are sold per category. A position plan places your product at the position you buy, from #1 to #10, on the page you choose (a category shortlist or an alternatives page): its ranked list, review cards and comparison table. Each position on each page is sold to one vendor at a time, and a product can't buy a position on its own alternatives page. If a list has fewer entries than your position, your product appears at its end. Basic lists your product under Other tools to consider.</li>
 <li>A reservation holds a seat for 7 days while the invoice is paid. Unpaid reservations lapse automatically.</li>
 <li>When a position becomes free, the first vendor on its waitlist may claim it within 72 hours before it opens to others.</li>
 <li>Your product appears only while the plan is paid and the listing is approved and active.</li>

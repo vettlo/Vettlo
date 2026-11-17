@@ -62,6 +62,8 @@ const ALTERS = [
   "ALTER TABLE subs ADD COLUMN period TEXT NOT NULL DEFAULT 'year'",   // 'month' | 'year'
   "ALTER TABLE subs ADD COLUMN provider_sub TEXT",                     // iyzico subscription reference (monthly card plans)
   "ALTER TABLE subs ADD COLUMN auto_renew INTEGER NOT NULL DEFAULT 0", // 1 while an iyzico subscription renews it
+  "ALTER TABLE subs ADD COLUMN page TEXT",                             // the page the position is on, e.g. /tools/best-crm-software/
+  "ALTER TABLE plan_waitlist ADD COLUMN page TEXT",
 ];
 async function migrate(env) {
   if (migrated) return;
@@ -83,7 +85,9 @@ async function migrateLegacyPlans(env) {
     }
     await env.DB.batch(stmts);
   }
-  await env.DB.batch([env.DB.prepare("UPDATE plan_waitlist SET plan = 'p1' WHERE plan = 'premium'"), env.DB.prepare("UPDATE plan_waitlist SET plan = 'p2' WHERE plan = 'pro'")]);
+  await env.DB.batch([env.DB.prepare("UPDATE plan_waitlist SET plan = 'p1' WHERE plan = 'premium'"), env.DB.prepare("UPDATE plan_waitlist SET plan = 'p2' WHERE plan = 'pro'"),
+    // plans bought before pages could be chosen are on their category's shortlist
+    env.DB.prepare("UPDATE subs SET page = '/tools/' || category || '/' WHERE page IS NULL"), env.DB.prepare("UPDATE plan_waitlist SET page = '/tools/' || category || '/' WHERE page IS NULL")]);
 }
 
 // ---------- email (Brevo for vendors; Email Routing fallback for the admin address)
@@ -217,25 +221,34 @@ const addYear = (iso) => { const d = new Date(iso); const day = d.getUTCDate(); 
 const later = (a, b) => (!a ? b : !b ? a : a > b ? a : b);
 const LIVE = "((status = 'active' AND paid_through > ?1) OR (status = 'reserved' AND reserved_until > ?1))";
 
-async function occupants(env, category, plan) {
-  return (await env.DB.prepare(`SELECT * FROM subs WHERE category = ?2 AND plan = ?3 AND ${LIVE} ORDER BY id ASC`).bind(now(), category, plan).all()).results;
+async function occupants(env, page, plan) {
+  return (await env.DB.prepare(`SELECT * FROM subs WHERE page = ?2 AND plan = ?3 AND ${LIVE} ORDER BY id ASC`).bind(now(), page, plan).all()).results;
 }
-async function freedAt(env, category, plan) {
+async function freedAt(env, page, plan) {
   const r = await env.DB.prepare(`SELECT MAX(t) AS t FROM (SELECT CASE WHEN status = 'cancelled' THEN updated_at WHEN paid_through IS NOT NULL THEN paid_through ELSE reserved_until END AS t
-    FROM subs WHERE category = ? AND plan = ?) WHERE t <= ?`).bind(category, plan, now()).first();
+    FROM subs WHERE page = ? AND plan = ?) WHERE t <= ?`).bind(page, plan, now()).first();
   return r && r.t;
 }
-async function planState(env, category, vendorId) {
+// Pages vendors can buy positions on (category shortlists and their alternatives pages), from /data/categories.json.
+async function pageIndex(env, request) {
+  const m = new Map();
+  for (const c of await categories(env, request))
+    for (const p of c.pages || [{ url: `/tools/${c.slug}/`, title: c.name, kind: "shortlist" }])
+      m.set(p.url, { ...p, category: c.slug, category_name: c.name, dept: c.dept });
+  return m;
+}
+async function planState(env, pg, vendorId) {
   const P = priceTable(env), out = [];
   for (const plan of PLANS) {
-    const occ = await occupants(env, category, plan);
-    const wl = plan === "basic" ? [] : (await env.DB.prepare("SELECT vendor_id FROM plan_waitlist WHERE category = ? AND plan = ? ORDER BY created_at ASC, id ASC").bind(category, plan).all()).results;
+    if (plan === "basic" && pg.kind !== "shortlist") continue;  // "Other tools to consider" exists only on shortlists
+    const occ = await occupants(env, pg.url, plan);
+    const wl = plan === "basic" ? [] : (await env.DB.prepare("SELECT vendor_id FROM plan_waitlist WHERE page = ? AND plan = ? ORDER BY created_at ASC, id ASC").bind(pg.url, plan).all()).results;
     const st = { plan, name: PLAN_NAME[plan], position: posOf(plan), month_cents: P[plan].month || null, year_cents: P[plan].year, capacity: CAPACITY[plan] === Infinity ? null : CAPACITY[plan], used: occ.length, waitlist: wl.length, on_waitlist: wl.some((w) => w.vendor_id === vendorId) };
     const mine = occ.find((o) => o.vendor_id === vendorId);
     if (mine) { st.state = mine.status === "active" ? "yours" : "reserved_by_you"; st.until = mine.status === "active" ? mine.paid_through : mine.reserved_until; st.sub_id = mine.id; st.period = mine.period; st.auto_renew = !!mine.auto_renew; }
     else if (occ.length >= CAPACITY[plan]) { st.state = "full"; st.until = occ.map((o) => (o.status === "active" ? o.paid_through : o.reserved_until)).sort()[0]; }
     else {
-      const f = wl.length ? await freedAt(env, category, plan) : null;
+      const f = wl.length ? await freedAt(env, pg.url, plan) : null;
       const ends = f ? new Date(Date.parse(f) + WAITLIST_HOURS * 3600e3).toISOString() : null;
       if (ends && ends > now() && wl[0].vendor_id !== vendorId) { st.state = "priority_other"; st.until = ends; } else st.state = "available";
     }
@@ -275,8 +288,8 @@ async function vendorApi(request, env, vendor, path) {
     for (const l of rows) {
       const c = await env.DB.prepare("SELECT COUNT(*) AS n FROM clicks WHERE listing_id = ? AND ts >= ? AND billable = 1").bind(l.id, since30).first();
       const im = await env.DB.prepare("SELECT COALESCE(SUM(n),0) AS n FROM impressions WHERE listing_id = ? AND day >= ?").bind(l.id, since30.slice(0, 10)).first();
-      const s = await env.DB.prepare(`SELECT * FROM subs WHERE listing_id = ?2 AND ${LIVE} ORDER BY id DESC LIMIT 1`).bind(now(), l.id).first();
-      Object.assign(l, { clicks_30d: c.n, impressions_30d: im.n, sub: s || null });
+      const subs = (await env.DB.prepare(`SELECT * FROM subs WHERE listing_id = ?2 AND ${LIVE} ORDER BY id DESC`).bind(now(), l.id).all()).results;
+      Object.assign(l, { clicks_30d: c.n, impressions_30d: im.n, subs, sub: subs[0] || null });
     }
     return json({ ok: true, listings: rows });
   }
@@ -309,9 +322,16 @@ async function vendorApi(request, env, vendor, path) {
     if (status !== l.status) await notifyAdmin(env, `Listing edited, review again: ${l.product_name}`, [`${vendor.company} changed the copy of ${l.product_name}. It's hidden until you approve it again.`]);
     return json({ ok: true, resubmitted: status !== l.status });
   }
+  if (path === "/api/pages" && method === "GET") {
+    const pages = [...(await pageIndex(env, request)).values()];
+    const taken = (await env.DB.prepare(`SELECT page, COUNT(DISTINCT plan) AS n FROM subs WHERE plan != 'basic' AND ${LIVE} GROUP BY page`).bind(now()).all()).results;
+    const t = Object.fromEntries(taken.map((r) => [r.page, r.n]));
+    return json({ ok: true, prices: priceTable(env), positions: POSITIONS, pages: pages.map((p) => ({ ...p, free: POSITIONS - (t[p.url] || 0) })) });
+  }
   if (path === "/api/plans" && method === "GET") {
-    const cat = new URL(request.url).searchParams.get("category") || "";
-    return json({ ok: true, category: cat, plans: await planState(env, cat, vendor.id) });
+    const pg = (await pageIndex(env, request)).get(new URL(request.url).searchParams.get("page") || "");
+    if (!pg) return json({ ok: false, error: "Choose a page." }, 400);
+    return json({ ok: true, page: pg, plans: await planState(env, pg, vendor.id) });
   }
   if (path === "/api/subscribe" && method === "POST") {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(body.listing_id), vendor.id).first();
@@ -319,24 +339,29 @@ async function vendorApi(request, env, vendor, path) {
     const period = plan === "basic" ? "year" : PERIODS.includes(body.period) ? body.period : "month";
     if (!l) return json({ ok: false, error: "Choose one of your listings." }, 400);
     if (!plan) return json({ ok: false, error: "Choose a plan." }, 400);
+    const pg = (await pageIndex(env, request)).get(String(body.page || `/tools/${l.category}/`));
+    if (!pg) return json({ ok: false, error: "Choose a page." }, 400);
+    if (pg.category !== l.category) return json({ ok: false, error: "This product is listed in another category. Add it for this category first." }, 400);
+    if (pg.exclude && l.tool_id === pg.exclude) return json({ ok: false, error: "A product can't take a position on its own alternatives page." }, 400);
+    if (plan === "basic" && pg.kind !== "shortlist") return json({ ok: false, error: "Basic listings are only on category shortlists." }, 400);
     const amount = priceOf(env, plan, period);
     if (!amount) return json({ ok: false, error: "This billing period isn't available for this plan." }, 400);
     if (l.status === "rejected") return json({ ok: false, error: "This listing wasn't approved. Edit it and resubmit first." }, 400);
-    const own = await env.DB.prepare(`SELECT 1 FROM subs WHERE listing_id = ?2 AND ${LIVE}`).bind(now(), l.id).first();
-    if (own) return json({ ok: false, error: "This listing already has a plan. To change plans, contact us." }, 400);
-    const st = (await planState(env, l.category, vendor.id)).find((x) => x.plan === plan);
+    const own = await env.DB.prepare(`SELECT 1 FROM subs WHERE listing_id = ?2 AND page = ?3 AND ${LIVE}`).bind(now(), l.id, pg.url).first();
+    if (own) return json({ ok: false, error: "This product already has a position on this page. To change it, contact us." }, 400);
+    const st = (await planState(env, pg, vendor.id)).find((x) => x.plan === plan);
     if (st.state !== "available") return json({ ok: false, error: st.state === "priority_other" ? "A vendor on the waitlist has first claim on this plan until " + st.until.slice(0, 10) + "." : "This plan is full in this category. Join the waitlist to get the next seat." }, 409);
-    const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, plan, period, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?,?, 'reserved', ?,?,?,?)")
-      .bind(vendor.id, l.id, l.category, plan, period, amount, new Date(Date.now() + RESERVE_DAYS * 864e5).toISOString(), now(), now()).run();
+    const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, page, plan, period, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?,?,?, 'reserved', ?,?,?,?)")
+      .bind(vendor.id, l.id, l.category, pg.url, plan, period, amount, new Date(Date.now() + RESERVE_DAYS * 864e5).toISOString(), now(), now()).run();
     const subId = r.meta.last_row_id;
     // Race check: the earliest rows win the seats.
-    const occ = await occupants(env, l.category, plan);
+    const occ = await occupants(env, pg.url, plan);
     if (occ.findIndex((o) => o.id === subId) >= CAPACITY[plan]) { await env.DB.prepare("UPDATE subs SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), subId).run(); return json({ ok: false, error: "Someone took the last seat a moment ago." }, 409); }
     await env.DB.batch([
       env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, subId, amount, now(), now()),
-      env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, l.category, plan),
+      env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND page = ? AND plan = ?").bind(vendor.id, pg.url, plan),
     ]);
-    await notifyAdmin(env, `Plan reserved: ${PLAN_NAME[plan]} for ${l.product_name}`, [`${vendor.company} reserved ${PLAN_NAME[plan]} (${period === "month" ? "monthly" : "yearly"}) on ${l.category} for ${l.product_name}.`,
+    await notifyAdmin(env, `Plan reserved: ${PLAN_NAME[plan]} for ${l.product_name}`, [`${vendor.company} reserved ${PLAN_NAME[plan]} (${period === "month" ? "monthly" : "yearly"}) on ${pg.url} for ${l.product_name}.`,
       `Invoice: ${money(amount)} per ${period}, open for ${RESERVE_DAYS} days.`, payMode(env) === "iyzico" ? "They can pay by card in the portal." : "Send them an invoice, then mark it paid in the admin page.", l.status !== "approved" ? "The listing still needs your approval." : ""]);
     return json({ ok: true, sub_id: subId, method: payMode(env) });
   }
@@ -357,7 +382,7 @@ async function vendorApi(request, env, vendor, path) {
       const r = await iyzico(env, `/v2/subscription/subscriptions/${encodeURIComponent(s.provider_sub)}/cancel`, {});
       if (r.status !== "success") return json({ ok: false, error: "We couldn't stop the renewal right now" + (r.errorMessage ? ": " + r.errorMessage : ".") + " Please contact us." }, 502);
       await env.DB.prepare("UPDATE subs SET auto_renew = 0, updated_at = ? WHERE id = ?").bind(now(), s.id).run();
-      await notifyAdmin(env, "Monthly renewal stopped", [`${vendor.company} stopped the monthly renewal of subscription ${s.id} (${PLAN_NAME[s.plan]} on ${s.category}). It stays live until ${String(s.paid_through).slice(0, 10)}.`]);
+      await notifyAdmin(env, "Monthly renewal stopped", [`${vendor.company} stopped the monthly renewal of subscription ${s.id} (${PLAN_NAME[s.plan]} on ${s.page}). It stays live until ${String(s.paid_through).slice(0, 10)}.`]);
       return json({ ok: true });
     }
     if (s.status !== "active" || s.paid_through <= now()) return json({ ok: false, error: "This plan has ended. Subscribe again if a seat is available." }, 400);
@@ -370,13 +395,14 @@ async function vendorApi(request, env, vendor, path) {
   }
   if (path === "/api/waitlist" && method === "POST") {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(body.listing_id), vendor.id).first();
-    if (!l || !POS_PLANS.includes(body.plan)) return json({ ok: false, error: "Choose a listing and position." }, 400);
-    const dup = await env.DB.prepare("SELECT 1 FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, l.category, body.plan).first();
-    if (!dup) await env.DB.prepare("INSERT INTO plan_waitlist (vendor_id, listing_id, category, plan, created_at) VALUES (?,?,?,?,?)").bind(vendor.id, l.id, l.category, body.plan, now()).run();
+    const pg = (await pageIndex(env, request)).get(String(body.page || ""));
+    if (!l || !pg || pg.category !== l.category || !POS_PLANS.includes(body.plan)) return json({ ok: false, error: "Choose a product, page and position." }, 400);
+    const dup = await env.DB.prepare("SELECT 1 FROM plan_waitlist WHERE vendor_id = ? AND page = ? AND plan = ?").bind(vendor.id, pg.url, body.plan).first();
+    if (!dup) await env.DB.prepare("INSERT INTO plan_waitlist (vendor_id, listing_id, category, page, plan, created_at) VALUES (?,?,?,?,?,?)").bind(vendor.id, l.id, l.category, pg.url, body.plan, now()).run();
     return json({ ok: true });
   }
   if (path === "/api/waitlist/leave" && method === "POST") {
-    await env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, oneLine(body.category, 120), oneLine(body.plan, 20)).run();
+    await env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND page = ? AND plan = ?").bind(vendor.id, oneLine(body.page, 200), oneLine(body.plan, 20)).run();
     return json({ ok: true });
   }
   if (path === "/api/billing" && method === "GET") {
@@ -391,7 +417,7 @@ async function vendorApi(request, env, vendor, path) {
   }
   if (path === "/api/pay" && method === "POST") return startCardPayment(request, env, vendor, body);
   if (path === "/api/invoices" && method === "GET") {
-    const rows = (await env.DB.prepare(`SELECT i.*, s.category, s.plan, s.period, l.product_name FROM invoices i LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id
+    const rows = (await env.DB.prepare(`SELECT i.*, s.category, s.page, s.plan, s.period, l.product_name FROM invoices i LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id
       WHERE i.vendor_id = ? ORDER BY i.created_at DESC LIMIT 100`).bind(vendor.id).all()).results;
     return json({ ok: true, rows });
   }
@@ -420,10 +446,10 @@ async function adminApi(request, env, vendor, path) {
       vendors: await q("SELECT id, email, company, website, status, created_at FROM vendors ORDER BY created_at DESC"),
       listings: await q("SELECT l.*, v.company, v.email FROM listings l JOIN vendors v ON v.id = l.vendor_id ORDER BY CASE l.status WHEN 'pending' THEN 0 ELSE 1 END, l.updated_at DESC"),
       subs: await q(`SELECT s.*, l.product_name, l.status AS listing_status, v.company, v.email FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
-        WHERE (s.status = 'active' AND s.paid_through > ?) OR (s.status = 'reserved' AND s.reserved_until > ?) ORDER BY s.category, CASE WHEN s.plan = 'basic' THEN 99 ELSE CAST(substr(s.plan, 2) AS INTEGER) END, s.started_at`, now(), now()),
-      invoices: await q(`SELECT i.*, s.category, s.plan, s.period, s.status AS sub_status, l.product_name, v.company, v.email FROM invoices i JOIN vendors v ON v.id = i.vendor_id
+        WHERE (s.status = 'active' AND s.paid_through > ?) OR (s.status = 'reserved' AND s.reserved_until > ?) ORDER BY s.page, CASE WHEN s.plan = 'basic' THEN 99 ELSE CAST(substr(s.plan, 2) AS INTEGER) END, s.started_at`, now(), now()),
+      invoices: await q(`SELECT i.*, s.category, s.page, s.plan, s.period, s.status AS sub_status, l.product_name, v.company, v.email FROM invoices i JOIN vendors v ON v.id = i.vendor_id
         LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id ORDER BY CASE i.status WHEN 'requested' THEN 0 ELSE 1 END, i.created_at DESC LIMIT 200`),
-      waitlist: await q("SELECT w.*, l.product_name, v.company FROM plan_waitlist w JOIN listings l ON l.id = w.listing_id JOIN vendors v ON v.id = w.vendor_id ORDER BY w.category, CAST(substr(w.plan, 2) AS INTEGER), w.created_at"),
+      waitlist: await q("SELECT w.*, l.product_name, v.company FROM plan_waitlist w JOIN listings l ON l.id = w.listing_id JOIN vendors v ON v.id = w.vendor_id ORDER BY w.page, CAST(substr(w.plan, 2) AS INTEGER), w.created_at"),
       stats: await q(`SELECT d.day, COALESCE((SELECT SUM(n) FROM impressions i WHERE i.day = d.day),0) AS impressions, COALESCE((SELECT SUM(billable) FROM clicks c WHERE substr(c.ts,1,10) = d.day),0) AS clicks
         FROM (SELECT DISTINCT day FROM impressions WHERE day >= ? UNION SELECT DISTINCT substr(ts,1,10) FROM clicks WHERE ts >= ?) d ORDER BY d.day DESC`, new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10), new Date(Date.now() - 30 * 864e5).toISOString()) });
   }
@@ -469,7 +495,7 @@ async function activateInvoice(env, inv, ref) {
   if (s.status === "cancelled") return { ok: false, error: "This reservation was cancelled." };
   const live = s.status === "active" ? s.paid_through > now() : s.reserved_until > now();
   if (!live) {
-    const others = (await occupants(env, s.category, s.plan)).filter((o) => o.id !== s.id);
+    const others = (await occupants(env, s.page, s.plan)).filter((o) => o.id !== s.id);
     if (others.length >= CAPACITY[s.plan]) return { ok: false, error: "This plan lapsed and its seat has been taken. Refund or offer another plan." };
   }
   const extend = s.period === "month" ? addMonth : addYear;
@@ -553,7 +579,7 @@ async function cardCallback(request, env) {
     return back("pay=held");
   }
   const l = await env.DB.prepare("SELECT product_name, status, tool_id FROM listings WHERE id = ?").bind(r.sub.listing_id).first();
-  await notifyAdmin(env, `Payment received: ${money(inv.amount_cents)} from ${v && v.company}`, [`${PLAN_NAME[r.sub.plan]} plan for ${l.product_name} on ${r.sub.category}, paid by card (iyzico ${res.paymentId}).`, `Active until ${r.paid_through.slice(0, 10)}.`,
+  await notifyAdmin(env, `Payment received: ${money(inv.amount_cents)} from ${v && v.company}`, [`${PLAN_NAME[r.sub.plan]} plan for ${l.product_name} on ${r.sub.page}, paid by card (iyzico ${res.paymentId}).`, `Active until ${r.paid_through.slice(0, 10)}.`,
     r.sub.plan !== "basic" && !l.tool_id ? "We haven't scored this product yet, so it won't show in the top places until it's reviewed and matched to a tool on our list. Ask Claude to review and score it." :
     l.status === "approved" ? "The listing is approved, so it's live now." : "The listing is waiting for your approval. Approve it in the admin page to put it live."]);
   return back("pay=ok");
@@ -651,7 +677,7 @@ async function subscriptionCallback(request, env) {
       return back("pay=held");
     }
   }
-  await notifyAdmin(env, `Monthly plan started: ${money(s.price_cents)}/month from ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.category}, iyzico subscription ${data.referenceCode}. It renews every month until the vendor stops it.`]);
+  await notifyAdmin(env, `Monthly plan started: ${money(s.price_cents)}/month from ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.page}, iyzico subscription ${data.referenceCode}. It renews every month until the vendor stops it.`]);
   return back("pay=ok");
 }
 // iyzico subscription notifications (set the URL https://vettlo.com/api/iyzico/webhook in the iyzico panel).
@@ -670,9 +696,9 @@ async function iyzicoWebhook(request, env) {
   if (e.iyziEventType === "subscription.order.success") {
     const r = await recordSubscriptionOrder(env, s, e.orderReferenceCode);
     if (!r.ok) await notifyAdmin(env, "Monthly charge needs a manual check", [`${v && v.company}: subscription ${e.subscriptionReferenceCode}, order ${e.orderReferenceCode}: ${r.error}`]);
-    else if (!r.dup) await notifyAdmin(env, `Monthly renewal paid: ${money(s.price_cents)} from ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.category}, live until ${String(r.paid_through).slice(0, 10)}.`]);
+    else if (!r.dup) await notifyAdmin(env, `Monthly renewal paid: ${money(s.price_cents)} from ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.page}, live until ${String(r.paid_through).slice(0, 10)}.`]);
   } else if (e.iyziEventType === "subscription.order.failure") {
-    await notifyAdmin(env, `Monthly charge failed: ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.category} (subscription ${e.subscriptionReferenceCode}). iyzico retries the card; the position stays live until ${String(s.paid_through).slice(0, 10)} and then lapses if nothing is paid.`]);
+    await notifyAdmin(env, `Monthly charge failed: ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.page} (subscription ${e.subscriptionReferenceCode}). iyzico retries the card; the position stays live until ${String(s.paid_through).slice(0, 10)} and then lapses if nothing is paid.`]);
   }
   return ok;
 }
@@ -728,18 +754,18 @@ export async function handlePortalApi(request, env, path) {
 const placementCache = new Map();
 // Sponsor placements for every category, cached in memory (per isolate) and in the colo's edge cache (shared),
 // so public shortlist pages don't wait on the database. Admin and billing changes call clearPlacements().
-const SPONSOR_KEY = "https://vettlo.com/__cache/sponsors-v1";
+const SPONSOR_KEY = "https://vettlo.com/__cache/sponsors-v2";
 async function allSponsors(env) {
   const hit = placementCache.get("*");
   if (hit && hit.t > Date.now() - 60e3) return hit.v;
   let v = null;
   try { const c = await caches.default.match(SPONSOR_KEY); if (c) v = await c.json(); } catch {}
   if (!v) {
-    const rows = (await env.DB.prepare(`SELECT l.*, s.plan, s.category AS sub_category FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
+    const rows = (await env.DB.prepare(`SELECT l.*, s.plan, COALESCE(s.page, '/tools/' || s.category || '/') AS sub_page FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
       WHERE s.status = 'active' AND s.paid_through > ? AND l.status = 'approved' AND l.active = 1 AND v.status = 'active'
       ORDER BY s.started_at ASC, s.id ASC`).bind(now()).all()).results;
     v = {};
-    for (const r of rows) (v[r.sub_category] ||= []).push(r);
+    for (const r of rows) (v[r.sub_page] ||= []).push(r);
     try { await caches.default.put(SPONSOR_KEY, new Response(JSON.stringify(v), { headers: { "content-type": "application/json", "cache-control": "public, max-age=300" } })); } catch {}
   }
   placementCache.set("*", { t: Date.now(), v });
@@ -749,8 +775,8 @@ async function clearPlacements() {
   placementCache.clear();
   try { await caches.default.delete(SPONSOR_KEY); } catch {}
 }
-async function sponsors(env, category) {
-  const rows = (await allSponsors(env))[category] || [];
+async function sponsors(env, pagePath) {
+  const rows = (await allSponsors(env))[pagePath] || [];
   // p1..p10 take that place on the shortlist (one vendor each); basic goes to the top of "Other tools to consider".
   // Positions show only once we've scored the product (it maps to a tool on our list), so every ranked card looks and reads the same.
   const out = [], taken = new Set();
@@ -786,10 +812,10 @@ function arrange(items, partners, find, make) {
 export async function placeOnShortlist(request, env, response, ctx) {
   const url = new URL(request.url);
   const m = url.pathname.match(/^\/tools\/(best-[a-z0-9-]+)\/$/);
-  if (!m || m[1].endsWith("-alternatives") || !env.DB || response.status !== 200 || !(response.headers.get("content-type") || "").includes("text/html")) return response;
+  if (!m || !env.DB || response.status !== 200 || !(response.headers.get("content-type") || "").includes("text/html")) return response;
   const slug = m[1];
   let partners;
-  try { partners = await sponsors(env, slug); } catch { return response; }  // no schema setup on the public path: tables exist once the portal has run
+  try { partners = await sponsors(env, url.pathname); } catch { return response; }  // no schema setup on the public path: tables exist once the portal has run
   if (!partners.length) return response;
   let html = await response.text();
   const path = url.pathname;
