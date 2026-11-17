@@ -85,7 +85,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <div><a class="brand" href="/">{LOGO}<b>vettlo</b></a>
 <p>Independent reviews of the software businesses run on.</p></div>
 <div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/guides/">Guides</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
-<div><h4>Trust</h4><ul><li><a href="/methodology/">How we vet</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
+<div><h4>Trust</h4><ul><li><a href="/methodology/">How we vet</a></li><li><a href="/how-we-make-money/">How we make money</a></li></ul></div>
 <div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
 </div>
 <div class="legal"><span>© {YEAR} Vettlo. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span></div>
@@ -970,9 +970,8 @@ page("/methodology/", "How We Score Software: Our Review Methodology | Vettlo",
 <div class="meth-chips"><span>6 steps</span><span>Weighted criteria per category</span><span>Prices checked at the source</span><span class="mono">Last updated {UPDATED_H}</span></div></div></section>
 <div class="wrap meth">
 <ol class="msteps"><li class="mstep"><span class="mstep-n">1</span><div><h2>Build the long list</h2><p>For each category we start from every product a team could reasonably buy: vendor directories, review platforms (G2, Capterra, TrustRadius), practitioner communities and reader suggestions. A tool does not need any relationship with us to be considered.</p></div></li><li class="mstep"><span class="mstep-n">2</span><div><h2>Set criteria for the category</h2><p>We write criteria specific to the job the software does. A dialer is judged on dialing modes and CRM sync; a CRM on pipeline management and reporting; a payroll tool on tax filing and compliance. Each criterion gets a published weight, shown on the review.</p></div></li><li class="mstep"><span class="mstep-n">3</span><div><h2>Test hands-on</h2><p>We sign up for trials or free plans and run the workflows a real team would: setting up a project, importing contacts, building an automation, running a report. We also read each vendor's current pricing page, plan limits and documentation, and note exactly which plan a feature sits on and what's an add-on.</p></div></li><li class="mstep"><span class="mstep-n">4</span><div><h2>Check against real users</h2><p>We compare our findings with patterns in verified user reviews and with practitioners in our network, looking for consistent strengths and complaints across company sizes.</p></div></li><li class="mstep"><span class="mstep-n">5</span><div><h2>Score and rank</h2><p>Each tool gets a 0 to 5 rating per criterion. Weighted totals become a score out of 100. Tools below 70 are usually not included in the ranked list; we list them under <b>Also considered</b> with their score. Position follows score, adjusted only by editorial judgment we explain in the review. The exception: partner compensation may affect which products we include and where they appear, as disclosed on every review.</p></div></li><li class="mstep"><span class="mstep-n">6</span><div><h2>Re-check every 90 days</h2><p>We re-verify pricing, plans and major features at least every 90 days and show the date on each review. Corrections are logged at the bottom of the page.</p></div></li></ol>
-<section class="meth-vendors"><h2>What vendors can and cannot do</h2><div class="mv2">
-<div class="mv-can"><h3>Vendors can</h3><ul><li>Vendors <b>can</b> correct factual errors, provide demo access and suggest their product for review.</li><li>Vendors <b>can</b> become paying partners. Partner compensation may affect which products we include and where they appear in a list. It never changes a tool's score.</li></ul></div>
-<div class="mv-cannot"><h3>Vendors cannot</h3><ul><li>Vendors <b>cannot</b> pay for a score, for the wording of a review or to remove criticism. See <a href="/how-we-make-money/">how we make money</a>.</li></ul></div></div></section>
+<section class="meth-std" id="standards"><h2>Editorial standards</h2><div class="std4"><div class="std"><h3>Independence</h3><p>Editorial decisions are made by the editorial team. People who sell advertising do not assign, edit or approve reviews.</p></div><div class="std"><h3>Accuracy</h3><p>Prices, plan limits and feature claims are checked against the vendor's current public pages or our own test account. Every review shows its last verified date.</p></div><div class="std"><h3>Use of AI</h3><p>We may use AI tools to help with research summaries, transcription and copy editing. Testing, scoring, conclusions and final wording are done and approved by the editorial team.</p></div><div class="std"><h3>Corrections</h3><p>When we get something wrong, we fix it and note the change in the review's change log. Report an error through our <a href="/contact/">contact page</a>.</p></div></div>
+<p class="std-money">What vendors can pay for, and what money never buys: see <a href="/how-we-make-money/">how we make money</a>.</p></section>
 <section class="meth-foot"><div><h2>Who reviews</h2><p>Reviews are researched, tested and written by the <a href="/team/">Vettlo Editorial Team</a>.</p></div><div><h2>Change log</h2><p class="small mono">{UPDATED_H}: First version published.</p></div></section>
 </div>""", cur="/methodology/")
 
@@ -985,30 +984,16 @@ page("/how-we-make-money/", "How We Make Money (Affiliate Disclosure) | Vettlo",
 <div class="page-body prose">
 <h2>Affiliate links</h2>
 <p>Some links to software vendors are affiliate links. If you click one and later buy, we may earn a commission. The disclosure line at the top of each review tells you when a page contains them. Links are marked <code>rel="sponsored"</code>.</p>
-<h2>Partner placements</h2>
-<p>Software vendors can become paying partners, on category pages and in our newsletter. Partner compensation may affect which products we include in a list and where they appear, including positions at the top of a list. We say this in the disclosure line at the top of every review. A partner's score is the same score it would have without paying, and payment never changes what we write about a product.</p>
-<h2>Paid plans</h2>
-<p>Vendors can buy a plan through our <a href="/vendors/">vendor portal</a>, billed monthly or yearly, that lists their product on a category page or places it at a position from #1 to #10 on the shortlist. A plan changes where a product appears, not its score or what we write. Tools without any commercial relationship appear in our lists too.</p>
+<h2>Paid positions</h2>
+<p>Software vendors can buy a position, from #1 to #10, on a category shortlist or an alternatives page through our <a href="/vendors/">vendor portal</a>, billed monthly or yearly. So partner compensation may affect which products we include in a list and where they appear, including the top of a list. We say this in the disclosure line at the top of every review.</p>
+<p>A paid position changes where a product appears. Its score is the same score it would have without paying, and payment never changes what we write about it or about its competitors. Every product goes through the same review before it appears. Tools without any commercial relationship appear in our lists too.</p>
 <h2>Sponsored content</h2>
-<p>Occasionally we publish content paid for by a vendor, such as a webinar recap or a partner guide. It is labeled <b>Sponsored</b> at the top and is never presented as a review.</p>
+<p>If we publish content paid for by a vendor, such as a partner guide, it is labeled <b>Sponsored</b> at the top and is never presented as a review.</p>
 <h2>What money never buys</h2>
 <div class="callout">A score, the wording of a review, or the removal of criticism.</div>
-<h2>How reviewers are paid</h2>
-<p>Writers and reviewers are paid for their time and expertise. Their pay is never tied to clicks, conversions or which tools they recommend.</p>
+<h2>Who decides what we write</h2>
+<p>Editorial decisions are made by the editorial team. Nobody is paid by clicks, conversions or which tools we recommend, and people who sell positions don't assign, edit or approve reviews.</p>
 <p>Questions about a specific relationship? <a href="/contact/">Contact us</a> and we'll answer.</p>
-</div></div>""")
-
-# ---------- EDITORIAL STANDARDS
-page("/editorial-standards/", "Editorial Standards: Independence, Accuracy, AI | Vettlo",
-     "The standards behind every Vettlo review: editorial independence from partners, how we check facts and prices, how we correct errors and how we use AI.",
-     """<div class="wrap"><div class="page-head"><span class="eyebrow">Standards</span><h1>Editorial standards</h1>
-<p>The rules every Vettlo writer and editor follows.</p></div>
-<div class="page-body prose">
-<h2>Independence</h2><p>Editorial decisions are made by the editorial team. People who sell advertising do not assign, edit or approve reviews.</p>
-<h2>Accuracy</h2><p>Prices, plan limits and feature claims are checked against the vendor's current public pages or our own test account. Every review shows its last verified date.</p>
-<h2>Use of AI</h2><p>We may use AI tools to help with research summaries, transcription and copy editing. Testing, scoring, conclusions and final wording are done and approved by the editorial team.</p>
-<h2>Corrections</h2><p>When we get something wrong, we fix it and note the change in the review's change log. Report an error through our <a href="/contact/">contact page</a>.</p>
-<h2>Editorial team</h2><p>Reviews are published by the <a href="/team/">Vettlo Editorial Team</a>. Questions about a review go through our <a href="/contact/">contact page</a>.</p>
 </div></div>""")
 
 # ---------- ABOUT (facts)
@@ -1146,7 +1131,7 @@ page("/404/", "Page Not Found | Vettlo", "This page doesn't exist.",
 
 # ------------------------------------------------------------------ render
 # Static explainer pages that read as articles get Article schema too (Ahrefs flagged them).
-for _pth in ("/how-we-make-money/", "/editorial-standards/"):
+for _pth in ("/how-we-make-money/",):
     if _pth in PAGES:
         PAGES[_pth]["jsonld"] = PAGES[_pth]["jsonld"] + [{"@context": "https://schema.org", "@type": "Article",
             "headline": PAGES[_pth]["title"].split(" | ")[0], "url": DOMAIN + _pth, "mainEntityOfPage": DOMAIN + _pth,
@@ -1697,14 +1682,13 @@ Scores are editorial only and based on published, weighted criteria per category
 ## Trust
 - [Review methodology]({DOMAIN}/methodology/)
 - [How we make money]({DOMAIN}/how-we-make-money/)
-- [Editorial standards]({DOMAIN}/editorial-standards/)
 - [About Vettlo]({DOMAIN}/about/)
 - [Editorial team]({DOMAIN}/team/)
 """)
     (site / f"{INDEXNOW_KEY}.txt").write_text(INDEXNOW_KEY)
     # Yandex Webmaster ownership verification (file method)
     (site / "yandex_5f475d4efe20ffdc.html").write_text('<html>\n    <head>\n        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">\n    </head>\n    <body>Verification: 5f475d4efe20ffdc</body>\n</html>\n')
-    (site / "_redirects").write_text("/author/editor/ /team/ 301\n/author/editor /team/ 301\n/topics/ /reviews/ 301\n/topics /reviews/ 301\n/advertise/ /vendors/ 301\n/advertise /vendors/ 301\n")
+    (site / "_redirects").write_text("/author/editor/ /team/ 301\n/author/editor /team/ 301\n/topics/ /reviews/ 301\n/topics /reviews/ 301\n/advertise/ /vendors/ 301\n/advertise /vendors/ 301\n/editorial-standards/ /methodology/#standards 301\n/editorial-standards /methodology/#standards 301\n")
     (site / ".well-known").mkdir(exist_ok=True)
     (site / ".well-known" / "security.txt").write_text("Contact: https://vettlo.com/contact/\nExpires: 2027-11-17T00:00:00.000Z\nPreferred-Languages: en, tr\nCanonical: https://vettlo.com/.well-known/security.txt\n")
     # security headers for every static file (the Worker adds the same ones to the responses it builds itself)

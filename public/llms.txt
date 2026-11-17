@@ -286,6 +286,5 @@ Scores are editorial only and based on published, weighted criteria per category
 ## Trust
 - [Review methodology](https://vettlo.com/methodology/)
 - [How we make money](https://vettlo.com/how-we-make-money/)
-- [Editorial standards](https://vettlo.com/editorial-standards/)
 - [About Vettlo](https://vettlo.com/about/)
 - [Editorial team](https://vettlo.com/team/)
