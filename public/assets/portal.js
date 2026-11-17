@@ -34,9 +34,11 @@
   let ME = null;
   const date = (iso) => iso ? new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "";
   const PLAN = { basic: "Basic", pro: "Pro", premium: "Premium" };
-  const PLAN_WHAT = { basic: "Listed first under \u201cOther tools to consider\u201d on the category page, with a link to your site.",
-    pro: "2nd or 3rd place on the category shortlist, review cards and comparison table. 2 seats per category; earlier subscribers rank higher.",
-    premium: "1st place on the category shortlist, review cards and comparison table. 1 seat per category." };
+  for (let i = 1; i <= 10; i++) PLAN["p" + i] = "#" + i + " position";
+  const planWhat = (plan) => plan === "basic" ? "Listed first under \u201cOther tools to consider\u201d on the category page, with a link to your site. Billed yearly."
+    : `Your product at #${plan.slice(1)} on the category shortlist, review cards and comparison table. One vendor per position.`;
+  const per = (p) => p === "month" ? "month" : "year";
+  let PERIOD = "month";
   async function initApp() {
     const me = await api("/api/me");
     if (!me.ok) return;
@@ -56,7 +58,7 @@
   const view = (html) => { $("#pt-view").innerHTML = html; };
   function bindGo() { document.querySelectorAll("[data-go]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); showTab(a.dataset.go, a.dataset.arg); })); }
   const statusPill = (l) => `<span class="pt-pill ${l.status === "approved" ? (l.active ? "ok" : "off") : l.status}">${l.status === "approved" ? (l.active ? "Approved" : "Paused") : l.status === "pending" ? "In review" : "Not approved"}</span>`;
-  const subText = (s) => !s ? `<span class="muted">No plan</span>` : s.status === "active" ? `<b>${PLAN[s.plan]}</b> until ${date(s.paid_through)}` : `${PLAN[s.plan]} reserved, awaiting payment (until ${date(s.reserved_until)})`;
+  const subText = (s) => !s ? `<span class="muted">No plan</span>` : s.status === "active" ? `<b>${PLAN[s.plan]}</b>, ${s.auto_renew ? "renews monthly" : (s.period === "month" ? "monthly" : "yearly") + ", paid"} until ${date(s.paid_through)}` : `${PLAN[s.plan]} reserved, awaiting payment (until ${date(s.reserved_until)})`;
 
   async function overview() {
     const [ls, inv] = await Promise.all([api("/api/listings"), api("/api/invoices")]);
@@ -70,7 +72,7 @@
       ${L.length ? `<div class="table-wrap"><table class="pt-table"><thead><tr><th>Product</th><th>Category</th><th>Status</th><th>Plan</th><th>Impressions (30d)</th><th>Visits (30d)</th><th></th></tr></thead><tbody>
         ${L.map((l) => `<tr><td><b>${esc(l.product_name)}</b></td><td><a href="/tools/${esc(l.category)}/" target="_blank">${esc(catName(l.category))}</a></td><td>${statusPill(l)}</td><td>${subText(l.sub)}</td><td>${l.impressions_30d}</td><td>${l.clicks_30d}</td>
         <td><a href="#plans" data-go="plans" data-arg="${l.id}">${l.sub ? "Manage" : "Choose a plan"}</a></td></tr>`).join("")}</tbody></table></div>`
-      : `<div class="pt-empty"><h3>Get your product in front of buyers</h3><p>Create a listing for your product, then choose an annual plan for its category page.</p><button class="btn" data-go="newListing">Create a listing</button></div>`}`);
+      : `<div class="pt-empty"><h3>Get your product in front of buyers</h3><p>Create a listing for your product, then choose a position on its category page, billed monthly or yearly.</p><button class="btn" data-go="newListing">Create a listing</button></div>`}`);
     bindGo();
   }
 
@@ -104,23 +106,32 @@
     const P = (await api("/api/plans?category=" + encodeURIComponent(cur.category))).plans || [];
     const card = (p) => {
       let action = "", note = "";
-      const seats = p.capacity ? `${Math.max(0, p.capacity - p.used)} of ${p.capacity} seats free` : "Unlimited seats";
-      if (p.state === "available") action = cur.sub ? `<span class="muted small">This listing already has a plan.</span>` : `<button class="btn small" data-sub="${p.plan}">Choose ${p.name}</button>`;
-      else if (p.state === "yours") { note = `Your plan, active until ${date(p.until)}`; action = `<button class="btn small" data-renew="${p.sub_id}">Renew for a year</button>`; }
+      const period = p.plan === "basic" ? "year" : PERIOD;
+      const cents = period === "month" ? p.month_cents : p.year_cents;
+      const seats = p.capacity ? (p.used ? "Taken" : "Available") : "Unlimited seats";
+      if (p.state === "available") action = cur.sub ? `<span class="muted small">This listing already has a plan.</span>` : `<button class="btn small" data-sub="${p.plan}" data-period="${period}">Choose ${p.name}</button>`;
+      else if (p.state === "yours") {
+        note = p.auto_renew ? `Your position, renews monthly (paid until ${date(p.until)})` : `Your position, paid until ${date(p.until)}`;
+        action = p.auto_renew ? `<button class="btn ghost small" data-stop="${p.sub_id}">Stop monthly renewal</button>` : `<button class="btn small" data-renew="${p.sub_id}">Renew for another ${per(p.period)}</button>`; }
       else if (p.state === "reserved_by_you") { note = `Reserved for you until ${date(p.until)}. Pay the invoice to go live.`; action = `<button class="btn ghost small" data-cancel="${p.sub_id}">Cancel reservation</button>`; }
-      else { note = p.state === "full" ? `Full until ${date(p.until)} at the earliest` : `Offered to the next vendor on the waitlist until ${date(p.until)}`;
+      else { note = p.state === "full" ? `Taken until ${date(p.until)} at the earliest` : `Offered to the next vendor on the waitlist until ${date(p.until)}`;
         action = p.on_waitlist ? `<button class="btn ghost small" data-leave="${p.plan}">Leave waitlist</button>` : `<button class="btn ghost small" data-wait="${p.plan}">Join waitlist</button>`; }
-      return `<div class="pt-plan ${p.state}"><div class="pt-plan-top"><b>${p.name}</b><span class="pt-plan-price">${money(p.price_cents)}<small> / year</small></span></div>
-        <p class="small">${PLAN_WHAT[p.plan]}</p><span class="muted small">${seats}${p.waitlist ? " · " + p.waitlist + " on waitlist" : ""}</span>${note ? `<span class="small"><b>${note}</b></span>` : ""}<div>${action}</div></div>`;
+      const save = period === "year" && p.month_cents ? `<small class="muted"> (${money(p.month_cents * 12 - p.year_cents)} less than monthly)</small>` : "";
+      return `<div class="pt-plan ${p.state}"><div class="pt-plan-top"><b>${p.name}</b><span class="pt-plan-price">${money(cents)}<small> / ${period}</small></span></div>${save}
+        <p class="small">${planWhat(p.plan)}</p><span class="muted small">${seats}${p.waitlist ? " · " + p.waitlist + " on waitlist" : ""}</span>${note ? `<span class="small"><b>${note}</b></span>` : ""}<div>${action}</div></div>`;
     };
-    view(`<div class="pt-head"><h2>Plans</h2>${L.length > 1 ? `<select id="pt-pick">${L.map((l) => `<option value="${l.id}" ${l.id === cur.id ? "selected" : ""}>${esc(l.product_name)} · ${esc(catName(l.category))}</option>`).join("")}</select>` : ""}</div>
-      <p class="muted">Annual plans for <b>${esc(cur.product_name)}</b> on the <a href="/tools/${esc(cur.category)}/" target="_blank">${esc(catName(cur.category))}</a> page. Your product appears while the year is paid and the listing is approved. For Pro and Premium, our editors first review and score your product with the same criteria as every other tool on the list (usually 2–3 business days after payment); the score is ours and isn't affected by your plan.${cur.status === "pending" ? " <b>This listing is still in editorial review</b>; you can reserve a plan now and it goes live once approved." : ""}</p>
+    const auto = ME.payments === "iyzico" && ME.subscriptions;
+    view(`<div class="pt-head"><h2>Positions</h2>${L.length > 1 ? `<select id="pt-pick">${L.map((l) => `<option value="${l.id}" ${l.id === cur.id ? "selected" : ""}>${esc(l.product_name)} · ${esc(catName(l.category))}</option>`).join("")}</select>` : ""}</div>
+      <p class="muted">Positions for <b>${esc(cur.product_name)}</b> on the <a href="/tools/${esc(cur.category)}/" target="_blank">${esc(catName(cur.category))}</a> page. Each position from #1 to #10 is sold to one vendor per category. Your product appears at its position while the plan is paid and the listing is approved. Our editors first review and score your product with the same criteria as every other tool on the list (usually 2–3 business days after payment); the score is ours and isn't affected by your plan.${cur.status === "pending" ? " <b>This listing is still in editorial review</b>; you can reserve a position now and it goes live once approved." : ""}</p>
+      <div class="pt-tabs" role="tablist"><button class="${PERIOD === "month" ? "on" : ""}" data-period-pick="month">Monthly</button><button class="${PERIOD === "year" ? "on" : ""}" data-period-pick="year">Yearly, 10% off</button></div>
       <div class="pt-plans">${P.map(card).join("")}</div>
-      <p class="muted small">Plans are billed once a year, with no automatic renewal. A reservation holds your seat for 7 days while you pay the invoice. When a Pro or Premium seat frees up, the first vendor on its waitlist gets 72 hours to claim it. To change plans, <a href="/contact/">contact us</a>. Scores and review text are never part of a plan.</p>`);
+      <p class="muted small">${auto ? "Monthly plans are charged to your card every month until you stop the renewal here; the position stays live until the end of the paid month." : "Monthly plans are invoiced each month."} Yearly plans are paid once for 12 months at 10% off and don't renew automatically. A reservation holds a position for 7 days while you pay. When a position frees up, the first vendor on its waitlist gets 72 hours to claim it. To change positions, <a href="/contact/">contact us</a>. Scores and review text are never part of a plan.</p>`);
     bindGo();
     const pick = $("#pt-pick"); if (pick) pick.addEventListener("change", () => plans(pick.value));
     const act = async (url, body, okMsg) => { const r = await api(url, { method: "POST", body }); toast(r.ok ? okMsg : r.error, !r.ok); plans(cur.id); };
-    document.querySelectorAll("[data-sub]").forEach((b) => b.addEventListener("click", () => act("/api/subscribe", { listing_id: cur.id, plan: b.dataset.sub }, ME.payments === "iyzico" ? "Reserved. Pay the invoice in the Invoices tab to start your plan." : "Reserved. We'll email your invoice; the plan goes live when it's paid.")));
+    document.querySelectorAll("[data-period-pick]").forEach((b) => b.addEventListener("click", () => { PERIOD = b.dataset.periodPick; plans(cur.id); }));
+    document.querySelectorAll("[data-sub]").forEach((b) => b.addEventListener("click", () => act("/api/subscribe", { listing_id: cur.id, plan: b.dataset.sub, period: b.dataset.period }, ME.payments === "iyzico" ? "Reserved. Pay the invoice in the Invoices tab to start your plan." : "Reserved. We'll email your invoice; the plan goes live when it's paid.")));
+    document.querySelectorAll("[data-stop]").forEach((b) => b.addEventListener("click", () => { if (confirm("Stop the monthly renewal? Your position stays live until the end of the paid month.")) act(`/api/subs/${b.dataset.stop}/stop`, {}, "Renewal stopped."); }));
     document.querySelectorAll("[data-renew]").forEach((b) => b.addEventListener("click", () => act(`/api/subs/${b.dataset.renew}/renew`, {}, "Renewal invoice requested.")));
     document.querySelectorAll("[data-cancel]").forEach((b) => b.addEventListener("click", () => act(`/api/subs/${b.dataset.cancel}/cancel`, {}, "Reservation cancelled.")));
     document.querySelectorAll("[data-wait]").forEach((b) => b.addEventListener("click", () => act("/api/waitlist", { listing_id: cur.id, plan: b.dataset.wait }, "You're on the waitlist.")));
@@ -153,13 +164,13 @@
     const card = ME.payments === "iyzico";
     const res = new URLSearchParams(location.search).get("pay");
     const msg = { ok: "Payment received. Your plan is active; it goes live on the site as soon as your listing is approved.", failed: "The payment didn't go through. You haven't been charged; please try again.",
-      error: "We couldn't confirm that payment. If you were charged, contact us and we'll sort it out.", held: "Payment received, but the plan couldn't start automatically. We'll contact you shortly." }[res];
+      error: "We couldn't confirm that payment. If you were charged, contact us and we'll sort it out.", pending: "Your monthly plan is set up. We're waiting for iyzico to confirm the first charge; it goes live as soon as it does.", held: "Payment received, but the plan couldn't start automatically. We'll contact you shortly." }[res];
     if (res) history.replaceState(null, "", location.pathname + "#invoices");
     view(`<div class="pt-head"><h2>Invoices</h2></div>
       ${msg ? `<div class="pt-note">${msg}</div>` : ""}
-      <p class="muted">${card ? "Pay open invoices by card. Payments are processed securely by iyzico; your plan starts, or is extended by a year, as soon as the payment is confirmed." : "We email an invoice for each new plan and renewal. Your plan goes live, or is extended by a year, as soon as payment arrives."}</p>
+      <p class="muted">${card ? "Pay open invoices by card. Payments are processed securely by iyzico; your plan starts, or is extended by its billing period, as soon as the payment is confirmed." : "We email an invoice for each new plan and renewal. Your plan goes live, or is extended by its billing period, as soon as payment arrives."}</p>
       ${rows.length ? `<div class="table-wrap"><table class="pt-table"><thead><tr><th>Date</th><th>For</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
-      ${rows.map((x) => `<tr><td>${date(x.created_at)}</td><td>${x.plan ? `${esc(x.product_name)}, ${PLAN[x.plan]} plan in ${esc(catName(x.category))}, 1 year` : "Adjustment"}</td><td>${money(x.amount_cents)}</td><td><span class="pt-pill ${x.status === "paid" ? "ok" : x.status === "requested" ? "pending" : "off"}">${x.status === "requested" ? "Due" : x.status === "paid" ? "Paid" : "Cancelled"}</span></td>
+      ${rows.map((x) => `<tr><td>${date(x.created_at)}</td><td>${x.plan ? `${esc(x.product_name)}, ${PLAN[x.plan]} in ${esc(catName(x.category))}, 1 ${per(x.period)}` : "Adjustment"}</td><td>${money(x.amount_cents)}</td><td><span class="pt-pill ${x.status === "paid" ? "ok" : x.status === "requested" ? "pending" : "off"}">${x.status === "requested" ? "Due" : x.status === "paid" ? "Paid" : "Cancelled"}</span></td>
         <td>${x.status === "requested" && card ? `<button class="btn small" data-pay="${x.id}">Pay by card</button>` : ""}</td></tr>`).join("")}</tbody></table></div>`
       : `<p class="muted">No invoices yet.</p>`}`);
     document.querySelectorAll("[data-pay]").forEach((b) => b.addEventListener("click", async () => {

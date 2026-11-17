@@ -1,5 +1,6 @@
-// Vettlo vendor portal: magic-link login, listings, annual plans (Basic / Pro / Premium) that place a product
-// on its category shortlist, with invoices, renewals and waitlists, plus click and impression reporting. Data lives in the D1 database bound as DB.
+// Vettlo vendor portal: magic-link login, listings, paid positions #1-#10 on a category shortlist (one vendor per
+// position, billed monthly or yearly) plus the Basic listing, with invoices, renewals, iyzico card payments and
+// subscriptions, waitlists, and click and impression reporting. Data lives in the D1 database bound as DB.
 
 const SESSION_DAYS = 30;
 const TOKEN_MINUTES = 20;
@@ -51,13 +52,38 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS billing (vendor_id INTEGER PRIMARY KEY, name TEXT, surname TEXT, phone TEXT, tax_id TEXT, address TEXT, city TEXT, country TEXT, zip TEXT, updated_at TEXT)`,
   `CREATE TABLE IF NOT EXISTS pay_sessions (token TEXT PRIMARY KEY, invoice_id INTEGER NOT NULL, vendor_id INTEGER NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS impressions (listing_id INTEGER NOT NULL, day TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (listing_id, day))`,
+  `CREATE TABLE IF NOT EXISTS iyzico_refs (key TEXT PRIMARY KEY, ref TEXT NOT NULL, created_at TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS pay_forms (token TEXT PRIMARY KEY, invoice_id INTEGER NOT NULL, vendor_id INTEGER NOT NULL, html TEXT NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS ledger (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, amount_cents INTEGER NOT NULL, kind TEXT NOT NULL,
      status TEXT NOT NULL, note TEXT, provider_ref TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
+];
+// Columns added after launch (ALTER fails harmlessly once the column exists).
+const ALTERS = [
+  "ALTER TABLE subs ADD COLUMN period TEXT NOT NULL DEFAULT 'year'",   // 'month' | 'year'
+  "ALTER TABLE subs ADD COLUMN provider_sub TEXT",                     // iyzico subscription reference (monthly card plans)
+  "ALTER TABLE subs ADD COLUMN auto_renew INTEGER NOT NULL DEFAULT 0", // 1 while an iyzico subscription renews it
 ];
 async function migrate(env) {
   if (migrated) return;
   await env.DB.batch(SCHEMA.map((s) => env.DB.prepare(s)));
+  for (const a of ALTERS) { try { await env.DB.prepare(a).run(); } catch {} }
+  await migrateLegacyPlans(env);
   migrated = true;
+}
+// The old Premium plan was 1st place and Pro was 2nd/3rd place (earlier subscriber first). Map them onto positions.
+async function migrateLegacyPlans(env) {
+  const rows = (await env.DB.prepare("SELECT id, category, plan FROM subs WHERE plan IN ('premium', 'pro') ORDER BY id").all()).results;
+  if (rows.length) {
+    const live = new Set((await env.DB.prepare(`SELECT id FROM subs WHERE plan IN ('premium', 'pro') AND ${LIVE}`).bind(now()).all()).results.map((r) => r.id));
+    const proCount = {}, stmts = [];
+    for (const r of [...rows.filter((r) => live.has(r.id)), ...rows.filter((r) => !live.has(r.id))]) {
+      let plan = "p1";
+      if (r.plan === "pro") { proCount[r.category] = (proCount[r.category] || 0) + 1; plan = proCount[r.category] === 1 ? "p2" : "p3"; }
+      stmts.push(env.DB.prepare("UPDATE subs SET plan = ? WHERE id = ?").bind(plan, r.id));
+    }
+    await env.DB.batch(stmts);
+  }
+  await env.DB.batch([env.DB.prepare("UPDATE plan_waitlist SET plan = 'p1' WHERE plan = 'premium'"), env.DB.prepare("UPDATE plan_waitlist SET plan = 'p2' WHERE plan = 'pro'")]);
 }
 
 // ---------- email (Brevo for vendors; Email Routing fallback for the admin address)
@@ -162,20 +188,31 @@ async function verifyLogin(request, env) {
   } });
 }
 
-// ---------- plans: annual packages per category
-// basic: listed first under "Other tools to consider", unlimited seats
-// pro: 2nd or 3rd place on the shortlist, 2 seats per category (earlier subscribers rank higher)
-// premium: 1st place on the shortlist, 1 seat per category
-const PLANS = ["basic", "pro", "premium"];
-const CAPACITY = { basic: Infinity, pro: 2, premium: 1 };
-const PLAN_NAME = { basic: "Basic", pro: "Pro", premium: "Premium" };
+// ---------- plans: paid positions per category
+// p1..p10: that exact place on the category shortlist, review cards and comparison table; one vendor per position.
+//          Billed monthly (auto-renewing through iyzico subscriptions when enabled) or yearly (10% off, renewed by invoice).
+// basic:   listed first under "Other tools to consider", unlimited seats, yearly.
+const POSITIONS = 10;
+const POS_PLANS = Array.from({ length: POSITIONS }, (_, i) => "p" + (i + 1));
+const PLANS = [...POS_PLANS, "basic"];
+const CAPACITY = Object.fromEntries([...POS_PLANS.map((p) => [p, 1]), ["basic", Infinity]]);
+const PLAN_NAME = { ...Object.fromEntries(POS_PLANS.map((p, i) => [p, `#${i + 1} position`])), basic: "Basic", premium: "Premium", pro: "Pro" };
+const posOf = (plan) => (/^p\d+$/.test(plan) ? Number(plan.slice(1)) : 0);
 const RESERVE_DAYS = 7;       // an unpaid reservation holds a seat this long
 const WAITLIST_HOURS = 72;    // when a seat frees up, the first vendor on its waitlist gets it first for this long
-const DEFAULT_PRICES = { basic: 5000, pro: 9900, premium: 14900 }; // cents per year
-function prices(env) {
-  const p = (env.PLAN_PRICES || "").split(",").map((x) => Number(x.trim()));
-  return p.length === 3 && p.every((x) => x > 0) ? { basic: p[0], pro: p[1], premium: p[2] } : DEFAULT_PRICES;
+const DEFAULT_MONTHLY = [15000, 9900, 7900, 5900, 4900, 3900, 2900, 1900, 1200, 1000]; // cents per month, positions 1..10
+const YEAR_DISCOUNT = 0.10;   // yearly = 12 months minus 10%
+const BASIC_YEAR = 5000;      // cents per year
+function priceTable(env) {
+  const m = (env.POSITION_PRICES || "").split(",").map((x) => Number(x.trim()));
+  const monthly = m.length === POSITIONS && m.every((x) => x > 0) ? m : DEFAULT_MONTHLY;
+  const t = { basic: { year: Number(env.BASIC_PRICE) > 0 ? Number(env.BASIC_PRICE) : BASIC_YEAR } };
+  POS_PLANS.forEach((p, i) => { t[p] = { month: monthly[i], year: Math.round(monthly[i] * 12 * (1 - YEAR_DISCOUNT)) }; });
+  return t;
 }
+const priceOf = (env, plan, period) => (priceTable(env)[plan] || {})[period] || null;
+const PERIODS = ["month", "year"];
+const addMonth = (iso) => { const d = new Date(iso); const day = d.getUTCDate(); d.setUTCMonth(d.getUTCMonth() + 1); if (d.getUTCDate() < day) d.setUTCDate(0); return d.toISOString(); };
 const addYear = (iso) => { const d = new Date(iso); const day = d.getUTCDate(); d.setUTCFullYear(d.getUTCFullYear() + 1); if (d.getUTCDate() < day) d.setUTCDate(0); return d.toISOString(); };
 const later = (a, b) => (!a ? b : !b ? a : a > b ? a : b);
 const LIVE = "((status = 'active' AND paid_through > ?1) OR (status = 'reserved' AND reserved_until > ?1))";
@@ -189,13 +226,13 @@ async function freedAt(env, category, plan) {
   return r && r.t;
 }
 async function planState(env, category, vendorId) {
-  const P = prices(env), out = [];
+  const P = priceTable(env), out = [];
   for (const plan of PLANS) {
     const occ = await occupants(env, category, plan);
     const wl = plan === "basic" ? [] : (await env.DB.prepare("SELECT vendor_id FROM plan_waitlist WHERE category = ? AND plan = ? ORDER BY created_at ASC, id ASC").bind(category, plan).all()).results;
-    const st = { plan, name: PLAN_NAME[plan], price_cents: P[plan], capacity: CAPACITY[plan] === Infinity ? null : CAPACITY[plan], used: occ.length, waitlist: wl.length, on_waitlist: wl.some((w) => w.vendor_id === vendorId) };
+    const st = { plan, name: PLAN_NAME[plan], position: posOf(plan), month_cents: P[plan].month || null, year_cents: P[plan].year, capacity: CAPACITY[plan] === Infinity ? null : CAPACITY[plan], used: occ.length, waitlist: wl.length, on_waitlist: wl.some((w) => w.vendor_id === vendorId) };
     const mine = occ.find((o) => o.vendor_id === vendorId);
-    if (mine) { st.state = mine.status === "active" ? "yours" : "reserved_by_you"; st.until = mine.status === "active" ? mine.paid_through : mine.reserved_until; st.sub_id = mine.id; }
+    if (mine) { st.state = mine.status === "active" ? "yours" : "reserved_by_you"; st.until = mine.status === "active" ? mine.paid_through : mine.reserved_until; st.sub_id = mine.id; st.period = mine.period; st.auto_renew = !!mine.auto_renew; }
     else if (occ.length >= CAPACITY[plan]) { st.state = "full"; st.until = occ.map((o) => (o.status === "active" ? o.paid_through : o.reserved_until)).sort()[0]; }
     else {
       const f = wl.length ? await freedAt(env, category, plan) : null;
@@ -220,7 +257,7 @@ async function vendorApi(request, env, vendor, path) {
 
   if (path === "/api/me" && method === "GET") {
     return json({ ok: true, vendor: { id: vendor.id, email: vendor.email, company: vendor.company, website: vendor.website, is_admin: vendor.is_admin },
-      payments: payMode(env) });
+      payments: payMode(env), subscriptions: subsEnabled(env) });
   }
   if (path === "/api/me" && method === "PUT") {
     const company = oneLine(body.company, 120) || vendor.company;
@@ -279,28 +316,31 @@ async function vendorApi(request, env, vendor, path) {
   if (path === "/api/subscribe" && method === "POST") {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(body.listing_id), vendor.id).first();
     const plan = PLANS.includes(body.plan) ? body.plan : null;
+    const period = plan === "basic" ? "year" : PERIODS.includes(body.period) ? body.period : "month";
     if (!l) return json({ ok: false, error: "Choose one of your listings." }, 400);
     if (!plan) return json({ ok: false, error: "Choose a plan." }, 400);
+    const amount = priceOf(env, plan, period);
+    if (!amount) return json({ ok: false, error: "This billing period isn't available for this plan." }, 400);
     if (l.status === "rejected") return json({ ok: false, error: "This listing wasn't approved. Edit it and resubmit first." }, 400);
     const own = await env.DB.prepare(`SELECT 1 FROM subs WHERE listing_id = ?2 AND ${LIVE}`).bind(now(), l.id).first();
     if (own) return json({ ok: false, error: "This listing already has a plan. To change plans, contact us." }, 400);
     const st = (await planState(env, l.category, vendor.id)).find((x) => x.plan === plan);
     if (st.state !== "available") return json({ ok: false, error: st.state === "priority_other" ? "A vendor on the waitlist has first claim on this plan until " + st.until.slice(0, 10) + "." : "This plan is full in this category. Join the waitlist to get the next seat." }, 409);
-    const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, plan, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?, 'reserved', ?,?,?,?)")
-      .bind(vendor.id, l.id, l.category, plan, st.price_cents, new Date(Date.now() + RESERVE_DAYS * 864e5).toISOString(), now(), now()).run();
+    const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, plan, period, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?,?, 'reserved', ?,?,?,?)")
+      .bind(vendor.id, l.id, l.category, plan, period, amount, new Date(Date.now() + RESERVE_DAYS * 864e5).toISOString(), now(), now()).run();
     const subId = r.meta.last_row_id;
     // Race check: the earliest rows win the seats.
     const occ = await occupants(env, l.category, plan);
     if (occ.findIndex((o) => o.id === subId) >= CAPACITY[plan]) { await env.DB.prepare("UPDATE subs SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), subId).run(); return json({ ok: false, error: "Someone took the last seat a moment ago." }, 409); }
     await env.DB.batch([
-      env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, subId, st.price_cents, now(), now()),
+      env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, subId, amount, now(), now()),
       env.DB.prepare("DELETE FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, l.category, plan),
     ]);
-    await notifyAdmin(env, `Plan reserved: ${PLAN_NAME[plan]} for ${l.product_name}`, [`${vendor.company} reserved ${PLAN_NAME[plan]} on ${l.category} for ${l.product_name}.`,
-      `Invoice: ${money(st.price_cents)}, open for ${RESERVE_DAYS} days.`, payMode(env) === "iyzico" ? "They can pay by card in the portal." : "Send them an invoice, then mark it paid in the admin page.", l.status !== "approved" ? "The listing still needs your approval." : ""]);
+    await notifyAdmin(env, `Plan reserved: ${PLAN_NAME[plan]} for ${l.product_name}`, [`${vendor.company} reserved ${PLAN_NAME[plan]} (${period === "month" ? "monthly" : "yearly"}) on ${l.category} for ${l.product_name}.`,
+      `Invoice: ${money(amount)} per ${period}, open for ${RESERVE_DAYS} days.`, payMode(env) === "iyzico" ? "They can pay by card in the portal." : "Send them an invoice, then mark it paid in the admin page.", l.status !== "approved" ? "The listing still needs your approval." : ""]);
     return json({ ok: true, sub_id: subId, method: payMode(env) });
   }
-  m = path.match(/^\/api\/subs\/(\d+)\/(renew|cancel)$/);
+  m = path.match(/^\/api\/subs\/(\d+)\/(renew|cancel|stop)$/);
   if (m && method === "POST") {
     const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ? AND vendor_id = ?").bind(Number(m[1]), vendor.id).first();
     if (!s) return json({ ok: false, error: "Not found." }, 404);
@@ -312,16 +352,25 @@ async function vendorApi(request, env, vendor, path) {
       ]);
       return json({ ok: true });
     }
+    if (m[2] === "stop") {
+      if (!s.auto_renew || !s.provider_sub) return json({ ok: false, error: "This plan doesn't renew automatically." }, 400);
+      const r = await iyzico(env, `/v2/subscription/subscriptions/${encodeURIComponent(s.provider_sub)}/cancel`, {});
+      if (r.status !== "success") return json({ ok: false, error: "We couldn't stop the renewal right now" + (r.errorMessage ? ": " + r.errorMessage : ".") + " Please contact us." }, 502);
+      await env.DB.prepare("UPDATE subs SET auto_renew = 0, updated_at = ? WHERE id = ?").bind(now(), s.id).run();
+      await notifyAdmin(env, "Monthly renewal stopped", [`${vendor.company} stopped the monthly renewal of subscription ${s.id} (${PLAN_NAME[s.plan]} on ${s.category}). It stays live until ${String(s.paid_through).slice(0, 10)}.`]);
+      return json({ ok: true });
+    }
     if (s.status !== "active" || s.paid_through <= now()) return json({ ok: false, error: "This plan has ended. Subscribe again if a seat is available." }, 400);
+    if (s.auto_renew) return json({ ok: false, error: "This plan renews automatically every month." }, 400);
     const open = await env.DB.prepare("SELECT 1 FROM invoices WHERE slot_id = ? AND status = 'requested'").bind(s.id).first();
     if (open) return json({ ok: false, error: "A renewal invoice is already open for this plan." }, 400);
-    const price = prices(env)[s.plan];
+    const price = priceOf(env, s.plan, s.period || "year");
     await env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(vendor.id, s.id, price, now(), now()).run();
     return json({ ok: true, method: payMode(env) });
   }
   if (path === "/api/waitlist" && method === "POST") {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(body.listing_id), vendor.id).first();
-    if (!l || !["pro", "premium"].includes(body.plan)) return json({ ok: false, error: "Choose a listing and plan." }, 400);
+    if (!l || !POS_PLANS.includes(body.plan)) return json({ ok: false, error: "Choose a listing and position." }, 400);
     const dup = await env.DB.prepare("SELECT 1 FROM plan_waitlist WHERE vendor_id = ? AND category = ? AND plan = ?").bind(vendor.id, l.category, body.plan).first();
     if (!dup) await env.DB.prepare("INSERT INTO plan_waitlist (vendor_id, listing_id, category, plan, created_at) VALUES (?,?,?,?,?)").bind(vendor.id, l.id, l.category, body.plan, now()).run();
     return json({ ok: true });
@@ -342,7 +391,7 @@ async function vendorApi(request, env, vendor, path) {
   }
   if (path === "/api/pay" && method === "POST") return startCardPayment(request, env, vendor, body);
   if (path === "/api/invoices" && method === "GET") {
-    const rows = (await env.DB.prepare(`SELECT i.*, s.category, s.plan, l.product_name FROM invoices i LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id
+    const rows = (await env.DB.prepare(`SELECT i.*, s.category, s.plan, s.period, l.product_name FROM invoices i LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id
       WHERE i.vendor_id = ? ORDER BY i.created_at DESC LIMIT 100`).bind(vendor.id).all()).results;
     return json({ ok: true, rows });
   }
@@ -371,10 +420,10 @@ async function adminApi(request, env, vendor, path) {
       vendors: await q("SELECT id, email, company, website, status, created_at FROM vendors ORDER BY created_at DESC"),
       listings: await q("SELECT l.*, v.company, v.email FROM listings l JOIN vendors v ON v.id = l.vendor_id ORDER BY CASE l.status WHEN 'pending' THEN 0 ELSE 1 END, l.updated_at DESC"),
       subs: await q(`SELECT s.*, l.product_name, l.status AS listing_status, v.company, v.email FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
-        WHERE (s.status = 'active' AND s.paid_through > ?) OR (s.status = 'reserved' AND s.reserved_until > ?) ORDER BY s.category, CASE s.plan WHEN 'premium' THEN 0 WHEN 'pro' THEN 1 ELSE 2 END, s.started_at`, now(), now()),
-      invoices: await q(`SELECT i.*, s.category, s.plan, s.status AS sub_status, l.product_name, v.company, v.email FROM invoices i JOIN vendors v ON v.id = i.vendor_id
+        WHERE (s.status = 'active' AND s.paid_through > ?) OR (s.status = 'reserved' AND s.reserved_until > ?) ORDER BY s.category, CASE WHEN s.plan = 'basic' THEN 99 ELSE CAST(substr(s.plan, 2) AS INTEGER) END, s.started_at`, now(), now()),
+      invoices: await q(`SELECT i.*, s.category, s.plan, s.period, s.status AS sub_status, l.product_name, v.company, v.email FROM invoices i JOIN vendors v ON v.id = i.vendor_id
         LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id ORDER BY CASE i.status WHEN 'requested' THEN 0 ELSE 1 END, i.created_at DESC LIMIT 200`),
-      waitlist: await q("SELECT w.*, l.product_name, v.company FROM plan_waitlist w JOIN listings l ON l.id = w.listing_id JOIN vendors v ON v.id = w.vendor_id ORDER BY w.category, w.plan, w.created_at"),
+      waitlist: await q("SELECT w.*, l.product_name, v.company FROM plan_waitlist w JOIN listings l ON l.id = w.listing_id JOIN vendors v ON v.id = w.vendor_id ORDER BY w.category, CAST(substr(w.plan, 2) AS INTEGER), w.created_at"),
       stats: await q(`SELECT d.day, COALESCE((SELECT SUM(n) FROM impressions i WHERE i.day = d.day),0) AS impressions, COALESCE((SELECT SUM(billable) FROM clicks c WHERE substr(c.ts,1,10) = d.day),0) AS clicks
         FROM (SELECT DISTINCT day FROM impressions WHERE day >= ? UNION SELECT DISTINCT substr(ts,1,10) FROM clicks WHERE ts >= ?) d ORDER BY d.day DESC`, new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10), new Date(Date.now() - 30 * 864e5).toISOString()) });
   }
@@ -401,14 +450,19 @@ async function adminApi(request, env, vendor, path) {
   }
   m = path.match(/^\/api\/admin\/subs\/(\d+)\/end$/);
   if (m && method === "POST") {
-    await env.DB.prepare("UPDATE subs SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), Number(m[1])).run();
+    const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(Number(m[1])).first();
+    if (s && s.auto_renew && s.provider_sub) {
+      const r = await iyzico(env, `/v2/subscription/subscriptions/${encodeURIComponent(s.provider_sub)}/cancel`, {});
+      if (r.status !== "success") return json({ ok: false, error: "iyzico didn't cancel the subscription" + (r.errorMessage ? ": " + r.errorMessage : "") + ". Cancel it in the iyzico panel first." }, 502);
+    }
+    await env.DB.prepare("UPDATE subs SET status = 'cancelled', auto_renew = 0, updated_at = ? WHERE id = ?").bind(now(), Number(m[1])).run();
     await clearPlacements();
     return json({ ok: true });
   }
   return json({ ok: false, error: "Not found." }, 404);
 }
 
-// Marks an invoice paid and starts or extends its plan by a year. Shared by the admin page and card payments.
+// Marks an invoice paid and starts or extends its plan by its billing period. Shared by the admin page, card payments and subscription renewals.
 async function activateInvoice(env, inv, ref) {
   const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(inv.slot_id).first();
   if (!s) return { ok: false, error: "The plan for this invoice no longer exists." };
@@ -418,7 +472,8 @@ async function activateInvoice(env, inv, ref) {
     const others = (await occupants(env, s.category, s.plan)).filter((o) => o.id !== s.id);
     if (others.length >= CAPACITY[s.plan]) return { ok: false, error: "This plan lapsed and its seat has been taken. Refund or offer another plan." };
   }
-  const paidThrough = addYear(s.status === "active" ? later(s.paid_through, now()) : now());
+  const extend = s.period === "month" ? addMonth : addYear;
+  const paidThrough = extend(s.status === "active" ? later(s.paid_through, now()) : now());
   const r = await env.DB.prepare("UPDATE invoices SET status = 'paid', provider_ref = ?, updated_at = ? WHERE id = ? AND status = 'requested'").bind(ref, now(), inv.id).run();
   if (!r.meta.changes) return { ok: false, error: "This invoice was already closed." };
   await env.DB.prepare("UPDATE subs SET status = 'active', paid_through = ?, started_at = COALESCE(started_at, ?), updated_at = ? WHERE id = ?").bind(paidThrough, now(), now(), s.id).run();
@@ -429,20 +484,22 @@ async function activateInvoice(env, inv, ref) {
 // ---------- card payments through iyzico (Checkout Form)
 const money = (c) => "$" + (c / 100).toFixed(2);
 function payMode(env) { return env.IYZICO_API_KEY && env.IYZICO_SECRET_KEY ? "iyzico" : "invoice"; }
+// Monthly card plans renew through iyzico's Subscription add-on once it's enabled on the merchant account (IYZICO_SUBSCRIPTIONS=1).
+const subsEnabled = (env) => payMode(env) === "iyzico" && env.IYZICO_SUBSCRIPTIONS === "1";
 const iyzicoBase = (env) => env.IYZICO_BASE_URL || (env.IYZICO_LIVE === "1" ? "https://api.iyzipay.com" : "https://sandbox-api.iyzipay.com");
 async function hmacHex(key, msg) {
   const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(key), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
   const sig = await crypto.subtle.sign("HMAC", k, new TextEncoder().encode(msg));
   return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
-async function iyzico(env, path, payload) {
-  const body = JSON.stringify(payload);
+async function iyzico(env, path, payload, method = "POST") {
+  const body = method === "GET" ? "" : JSON.stringify(payload || {});
   const rnd = Date.now() + "" + Math.floor(Math.random() * 1e9);
-  const sig = await hmacHex(env.IYZICO_SECRET_KEY, rnd + path + body);
+  const sig = await hmacHex(env.IYZICO_SECRET_KEY, rnd + path.split("?")[0] + body);
   const auth = btoa(`apiKey:${env.IYZICO_API_KEY}&randomKey:${rnd}&signature:${sig}`);
-  const r = await fetch(iyzicoBase(env) + path, { method: "POST", body,
+  const r = await fetch(iyzicoBase(env) + path, { method, body: method === "GET" ? undefined : body,
     headers: { "content-type": "application/json", accept: "application/json", authorization: "IYZWSv2 " + auth, "x-iyzi-rnd": rnd } });
-  return r.json();
+  return r.json().catch(() => ({ status: "failure", errorMessage: "HTTP " + r.status }));
 }
 const num = (v) => String(Number(v)); // iyzico signs prices without trailing zeros ("50.00" -> "50")
 
@@ -458,13 +515,14 @@ async function startCardPayment(request, env, vendor, body) {
   const origin = new URL(request.url).origin;
   const contact = `${b.name} ${b.surname}`;
   const addr = { contactName: contact, city: b.city, country: b.country, address: b.address, zipCode: b.zip || undefined };
+  if (s.period === "month" && subsEnabled(env) && s.status === "reserved") return startSubscriptionCheckout(env, vendor, inv, s, b, addr, origin);
   const res = await iyzico(env, "/payment/iyzipos/checkoutform/initialize/auth/ecom", {
     locale: "en", conversationId: String(inv.id), price, paidPrice: price, currency: env.IYZICO_CURRENCY || "USD", basketId: "inv-" + inv.id,
     paymentGroup: "LISTING", callbackUrl: origin + "/api/pay/callback", enabledInstallments: [1],
     buyer: { id: "v" + vendor.id, name: b.name, surname: b.surname, gsmNumber: b.phone, email: vendor.email, identityNumber: b.tax_id,
       registrationAddress: b.address, city: b.city, country: b.country, zipCode: b.zip || undefined, ip: request.headers.get("cf-connecting-ip") || "" },
     billingAddress: addr,
-    basketItems: [{ id: "sub-" + s.id, name: `Vettlo ${PLAN_NAME[s.plan]} plan, 1 year: ${s.product_name}`.slice(0, 120), category1: "Advertising", itemType: "VIRTUAL", price }],
+    basketItems: [{ id: "sub-" + s.id, name: `Vettlo ${PLAN_NAME[s.plan]}, 1 ${s.period === "month" ? "month" : "year"}: ${s.product_name}`.slice(0, 120), category1: "Advertising", itemType: "VIRTUAL", price }],
   });
   if (res.status !== "success" || !res.token || !res.paymentPageUrl) return json({ ok: false, error: "The payment page couldn't be opened" + (res.errorMessage ? ": " + res.errorMessage : ".") }, 502);
   await env.DB.prepare("INSERT INTO pay_sessions (token, invoice_id, vendor_id, created_at) VALUES (?,?,?,?)").bind(res.token, inv.id, vendor.id, now()).run();
@@ -501,6 +559,124 @@ async function cardCallback(request, env) {
   return back("pay=ok");
 }
 
+// ---------- monthly subscriptions through iyzico (Subscription add-on)
+// One iyzico product for all placements; one monthly pricing plan per position and price, created on first use.
+async function iyzicoRef(env, key, create) {
+  const hit = await env.DB.prepare("SELECT ref FROM iyzico_refs WHERE key = ?").bind(key).first();
+  if (hit) return hit.ref;
+  const r = await create();
+  const ref = r && r.status === "success" && r.data && r.data.referenceCode;
+  if (!ref) throw new Error((r && r.errorMessage) || "iyzico setup failed");
+  await env.DB.prepare("INSERT OR IGNORE INTO iyzico_refs (key, ref, created_at) VALUES (?,?,?)").bind(key, ref, now()).run();
+  return ref;
+}
+async function monthlyPlanRef(env, plan, cents) {
+  const cur = env.IYZICO_CURRENCY || "USD";
+  const product = await iyzicoRef(env, "product", () => iyzico(env, "/v2/subscription/products", { locale: "en", name: "Vettlo category placement",
+    description: "Monthly position on a Vettlo category shortlist" }));
+  return iyzicoRef(env, `plan:${plan}:month:${cur}:${cents}`, () => iyzico(env, `/v2/subscription/products/${encodeURIComponent(product)}/pricing-plans`, {
+    locale: "en", name: `Vettlo ${PLAN_NAME[plan]}, monthly (${money(cents)})`, price: cents / 100, currencyCode: cur,
+    paymentInterval: "MONTHLY", paymentIntervalCount: 1, planPaymentType: "RECURRING" }));
+}
+async function startSubscriptionCheckout(env, vendor, inv, s, b, addr, origin) {
+  let planRef;
+  try { planRef = await monthlyPlanRef(env, s.plan, inv.amount_cents); }
+  catch (e) { return json({ ok: false, error: "Monthly card payments aren't set up yet (" + e.message + "). We'll email you an invoice." }, 502); }
+  const res = await iyzico(env, "/v2/subscription/checkoutform/initialize", {
+    locale: "en", conversationId: String(inv.id), callbackUrl: origin + "/api/pay/sub-callback", pricingPlanReferenceCode: planRef, subscriptionInitialStatus: "ACTIVE",
+    customer: { name: b.name, surname: b.surname, email: vendor.email, gsmNumber: b.phone, identityNumber: b.tax_id, billingAddress: addr, shippingAddress: addr } });
+  if (res.status !== "success" || !res.token || !res.checkoutFormContent) return json({ ok: false, error: "The payment page couldn't be opened" + (res.errorMessage ? ": " + res.errorMessage : ".") }, 502);
+  await env.DB.batch([
+    env.DB.prepare("INSERT INTO pay_sessions (token, invoice_id, vendor_id, created_at) VALUES (?,?,?,?)").bind(res.token, inv.id, vendor.id, now()),
+    env.DB.prepare("INSERT INTO pay_forms (token, invoice_id, vendor_id, html, created_at) VALUES (?,?,?,?,?)").bind(res.token, inv.id, vendor.id, res.checkoutFormContent, now()),
+  ]);
+  return json({ ok: true, url: origin + "/api/pay/form/" + encodeURIComponent(res.token) });
+}
+// The subscription checkout comes back as an embeddable script, so we serve it on a small page of our own.
+async function subscriptionForm(request, env, token) {
+  const vendor = await currentVendor(request, env);
+  const f = vendor && (await env.DB.prepare("SELECT * FROM pay_forms WHERE token = ? AND vendor_id = ?").bind(token, vendor.id).first());
+  if (!f) return Response.redirect(new URL("/vendors/app/#invoices", request.url).toString(), 302);
+  const inv = await env.DB.prepare("SELECT amount_cents FROM invoices WHERE id = ?").bind(f.invoice_id).first();
+  const page = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Pay monthly plan | Vettlo</title><link rel="stylesheet" href="/assets/site.css"></head><body><main class="wrap" style="max-width:40rem;padding:2rem 1rem">
+<p><a href="/vendors/app/#invoices">← Back to invoices</a></p><h1>Monthly plan: ${money(inv ? inv.amount_cents : 0)} per month</h1>
+<p class="muted">Your card is charged now and then every month until you stop the renewal in the portal. Payments are processed by iyzico.</p>
+<div id="iyzipay-checkout-form" class="responsive"></div>${f.html}</main></body></html>`;
+  return new Response(page, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex" } });
+}
+// Records one successful subscription charge (first or renewal) after confirming it with iyzico. Idempotent per order.
+async function recordSubscriptionOrder(env, s, orderRef) {
+  const ref = "iyzico-order:" + orderRef;
+  if (await env.DB.prepare("SELECT 1 FROM invoices WHERE provider_ref = ?").bind(ref).first()) return { ok: true, dup: true };
+  const d = await iyzico(env, `/v2/subscription/subscriptions/${encodeURIComponent(s.provider_sub)}`, null, "GET");
+  const item = d && d.status === "success" && d.data && (d.data.items || [])[0];
+  const order = item && (item.orders || []).find((o) => o.referenceCode === orderRef);
+  if (!order || order.orderStatus !== "SUCCESS") return { ok: false, error: "iyzico doesn't show this order as paid." };
+  const cents = Math.round(Number(order.price) * 100);
+  if (cents !== s.price_cents) return { ok: false, error: `Charged ${money(cents)} but the plan costs ${money(s.price_cents)}.` };
+  let inv = await env.DB.prepare("SELECT * FROM invoices WHERE slot_id = ? AND status = 'requested' ORDER BY id LIMIT 1").bind(s.id).first();
+  if (!inv) {
+    const r = await env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(s.vendor_id, s.id, cents, now(), now()).run();
+    inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ?").bind(r.meta.last_row_id).first();
+  }
+  return activateInvoice(env, inv, ref);
+}
+async function subscriptionOrders(env, subRef) {
+  const d = await iyzico(env, `/v2/subscription/subscriptions/${encodeURIComponent(subRef)}`, null, "GET");
+  const item = d && d.status === "success" && d.data && (d.data.items || [])[0];
+  return item ? item.orders || [] : [];
+}
+async function subscriptionCallback(request, env) {
+  const back = (q) => Response.redirect(new URL("/vendors/app/?" + q + "#invoices", request.url).toString(), 303);
+  const form = await request.formData().catch(() => null);
+  const token = form ? String(form.get("token") || "") : "";
+  const ps = token && (await env.DB.prepare("SELECT * FROM pay_sessions WHERE token = ?").bind(token).first());
+  if (!ps) return back("pay=error");
+  await env.DB.prepare("DELETE FROM pay_forms WHERE token = ?").bind(token).run();
+  const res = await iyzico(env, `/v2/subscription/checkoutform/${encodeURIComponent(token)}`, null, "GET");
+  const data = res && res.status === "success" && res.data;
+  const inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ?").bind(ps.invoice_id).first();
+  const s = inv && (await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(inv.slot_id).first());
+  if (!data || !data.referenceCode || !s) return back("pay=failed");
+  await env.DB.prepare("UPDATE subs SET provider_sub = ?, auto_renew = 1, updated_at = ? WHERE id = ?").bind(data.referenceCode, now(), s.id).run();
+  s.provider_sub = data.referenceCode;
+  const paid = (await subscriptionOrders(env, data.referenceCode)).filter((o) => o.orderStatus === "SUCCESS");
+  if (!paid.length) return back("pay=pending"); // the first charge is confirmed by the webhook
+  const v = await env.DB.prepare("SELECT company FROM vendors WHERE id = ?").bind(s.vendor_id).first();
+  for (const o of paid) {
+    const r = await recordSubscriptionOrder(env, s, o.referenceCode);
+    if (!r.ok) {
+      await notifyAdmin(env, "Monthly plan paid, but it couldn't start", [`${v && v.company}: subscription ${data.referenceCode}, order ${o.referenceCode}: ${r.error}`, "Check it in the iyzico panel; cancel and refund if needed."]);
+      return back("pay=held");
+    }
+  }
+  await notifyAdmin(env, `Monthly plan started: ${money(s.price_cents)}/month from ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.category}, iyzico subscription ${data.referenceCode}. It renews every month until the vendor stops it.`]);
+  return back("pay=ok");
+}
+// iyzico subscription notifications (set the URL https://vettlo.com/api/iyzico/webhook in the iyzico panel).
+// Every event is re-checked against iyzico's API before anything changes, so a forged call can't start or extend a plan.
+async function iyzicoWebhook(request, env) {
+  const e = await request.json().catch(() => ({}));
+  const ok = new Response("ok");
+  if (!e.subscriptionReferenceCode || !e.orderReferenceCode) return ok;
+  if (env.IYZICO_MERCHANT_ID && request.headers.get("x-iyz-signature-v3")) {
+    const expect = await hmacHex(env.IYZICO_SECRET_KEY, [env.IYZICO_MERCHANT_ID, env.IYZICO_SECRET_KEY, e.iyziEventType, e.subscriptionReferenceCode, e.orderReferenceCode, e.customerReferenceCode].join(""));
+    if (expect !== request.headers.get("x-iyz-signature-v3")) return new Response("bad signature", { status: 401 });
+  }
+  const s = await env.DB.prepare("SELECT * FROM subs WHERE provider_sub = ?").bind(e.subscriptionReferenceCode).first();
+  if (!s) return ok;
+  const v = await env.DB.prepare("SELECT company FROM vendors WHERE id = ?").bind(s.vendor_id).first();
+  if (e.iyziEventType === "subscription.order.success") {
+    const r = await recordSubscriptionOrder(env, s, e.orderReferenceCode);
+    if (!r.ok) await notifyAdmin(env, "Monthly charge needs a manual check", [`${v && v.company}: subscription ${e.subscriptionReferenceCode}, order ${e.orderReferenceCode}: ${r.error}`]);
+    else if (!r.dup) await notifyAdmin(env, `Monthly renewal paid: ${money(s.price_cents)} from ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.category}, live until ${String(r.paid_through).slice(0, 10)}.`]);
+  } else if (e.iyziEventType === "subscription.order.failure") {
+    await notifyAdmin(env, `Monthly charge failed: ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.category} (subscription ${e.subscriptionReferenceCode}). iyzico retries the card; the position stays live until ${String(s.paid_through).slice(0, 10)} and then lapses if nothing is paid.`]);
+  }
+  return ok;
+}
+
 // ---------- click tracking (reporting only; positions are billed monthly, not per click)
 export async function handleGo(request, env, ctx) {
   if (!env.DB) return Response.redirect(new URL("/", request.url).toString(), 302);
@@ -534,6 +710,10 @@ export async function handlePortalApi(request, env, path) {
   if (!env.DB) return json({ ok: false, error: "The vendor portal isn't connected to its database yet." }, 503);
   await migrate(env);
   if (path === "/api/pay/callback" && request.method === "POST") return cardCallback(request, env); // posted by the iyzico form
+  if (path === "/api/pay/sub-callback" && request.method === "POST") return subscriptionCallback(request, env); // posted by the iyzico subscription form
+  if (path === "/api/iyzico/webhook" && request.method === "POST") return iyzicoWebhook(request, env);
+  const pf = path.match(/^\/api\/pay\/form\/([^/]+)$/);
+  if (pf && request.method === "GET") return subscriptionForm(request, env, decodeURIComponent(pf[1]));
   if (request.method !== "GET" && request.headers.get("x-requested-with") !== "vettlo") return json({ ok: false, error: "Bad request." }, 400);
   if (path === "/api/auth/request" && request.method === "POST") return requestLogin(request, env, await request.json().catch(() => ({})));
   if (path === "/api/auth/verify" && request.method === "GET") return verifyLogin(request, env);
@@ -571,11 +751,14 @@ async function clearPlacements() {
 }
 async function sponsors(env, category) {
   const rows = (await allSponsors(env))[category] || [];
-  // premium takes 1st place, pro takes 2nd and 3rd in order of subscription, basic goes to the top of "Other tools to consider"
-  // Pro and Premium show only once we've scored the product (it maps to a tool on our list), so every ranked card looks and reads the same.
-  return [...rows.filter((r) => r.plan === "premium" && r.tool_id).slice(0, 1).map((r) => ({ ...r, position: 1 })),
-    ...rows.filter((r) => r.plan === "pro" && r.tool_id).slice(0, 2).map((r, i) => ({ ...r, position: 2 + i })),
-    ...rows.filter((r) => r.plan === "basic").map((r) => ({ ...r, position: 0 }))];
+  // p1..p10 take that place on the shortlist (one vendor each); basic goes to the top of "Other tools to consider".
+  // Positions show only once we've scored the product (it maps to a tool on our list), so every ranked card looks and reads the same.
+  const out = [], taken = new Set();
+  for (const r of rows) {
+    const pos = posOf(r.plan);
+    if (pos && r.tool_id && !taken.has(pos)) { taken.add(pos); out.push({ ...r, position: pos }); }
+  }
+  return [...out.sort((a, b) => a.position - b.position), ...rows.filter((r) => r.plan === "basic").map((r) => ({ ...r, position: 0 }))];
 }
 
 const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return ""; } };
