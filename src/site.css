@@ -957,3 +957,12 @@ details.breakdown .criteria { margin-top: .9rem; }
 .legal-body li { margin-bottom: .5rem; }
 @media (max-width: 860px) { .legal-grid { grid-template-columns: 1fr; gap: 0; } .legal-glance ul { grid-template-columns: 1fr; } }
 .legal-body h2 + p { margin-top: .7rem; }
+
+/* about (Nov 2026) */
+.pledges.about3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.about-money { background: var(--brand-tint); border-radius: var(--r); padding: 2rem 2.2rem; }
+.about-cta p a { color: var(--meter-b); }
+@media (max-width: 860px) { .pledges.about3 { grid-template-columns: 1fr; } .about-money { padding: 1.4rem; } }
+.about .about-money { margin-top: 3.5rem; padding: 2.4rem 2.4rem; align-items: center; }
+.about .about-money h2 { margin-bottom: 0; }
+@media (max-width: 860px) { .about .about-money { padding: 1.6rem 1.4rem; } }
