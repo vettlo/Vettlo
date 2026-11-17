@@ -85,7 +85,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <div><a class="brand" href="/">{LOGO}<b>vettlo</b></a>
 <p>Independent reviews of the software businesses run on.</p></div>
 <div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/guides/">Guides</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
-<div><h4>Trust</h4><ul><li><a href="/methodology/">Review methodology</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
+<div><h4>Trust</h4><ul><li><a href="/methodology/">How we vet</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
 <div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
 </div>
 <div class="legal"><span>© {YEAR} Vettlo. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span></div>
