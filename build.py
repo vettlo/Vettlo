@@ -86,7 +86,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <p>Independent reviews of the software businesses run on.</p></div>
 <div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/guides/">Guides</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
 <div><h4>Trust</h4><ul><li><a href="/methodology/">Review methodology</a></li><li><a href="/how-we-make-money/">How we make money</a></li><li><a href="/editorial-standards/">Editorial standards</a></li></ul></div>
-<div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/advertise/">Advertise</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
 </div>
 <div class="legal"><span>© {YEAR} Vettlo. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span></div>
 </div></footer>"""
@@ -544,11 +544,6 @@ def crm_page():
 <section id="compare"><h2>CRM comparison at a glance</h2>
 <div class="table-wrap"><table><thead><tr><th>#</th><th>Tool</th><th>Best for</th><th>Free plan / trial</th><th>Starting price</th><th>G2 rating</th><th>Score</th></tr></thead><tbody>{rows}</tbody></table></div></section>
 
-<aside class="sponsored" aria-label="Sponsored placement">
-<span class="tag">Sponsored · Not part of our ranking</span>
-<h3 style="font-size:1.05rem">Featured partner slot</h3>
-<p class="small">A paying vendor can appear here, clearly labeled and kept separate from the editorial shortlist above. <a href="/advertise/">How featured slots work</a>.</p>
-</aside>
 
 <section id="reviews"><h2>The reviews</h2>{"".join(cards)}</section>
 
@@ -1071,7 +1066,7 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
 <div class="card"><span class="label">Team leads</span><h3 class="card-title">Upgrading what they use</h3><p class="muted small">Sales, marketing, support and project leads who have outgrown a tool and want to know which plan unlocks what they need.</p></div>
 <div class="card"><span class="label">Finance, IT &amp; ops managers</span><h3 class="card-title">Signing off on spend</h3><p class="muted small">The people who approve contracts and want the full cost for the whole team, including add-ons and onboarding fees.</p></div>
 </div>
-<p class="muted small" style="margin-top:1rem">Software vendor? Reach these readers with partner placements: see <a href="/advertise/">advertising</a> and <a href="/badges/">badges</a>.</p></section>
+<p class="muted small" style="margin-top:1rem">Software vendor? Reach these readers with partner placements: see the <a href="/vendors/">vendor portal</a> and <a href="/badges/">badges</a>.</p></section>
 <section><div class="section-head"><div><span class="kicker">How a review gets made</span><h2>From a category to a ranked shortlist</h2></div><a class="btn ghost small" href="/methodology/">Full methodology</a></div>
 <ol class="steps">
 <li><b>Define the job</b><span>We set the criteria and weights that matter for the category, such as automation for email tools or AI resolution costs for help desks.</span></li>
@@ -1088,33 +1083,6 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
 <section class="about-cta"><div><h2>Choosing software this quarter?</h2><p>Start with a shortlist you can check.</p></div><a class="btn" href="/best-tools/">See every category</a></section>
 </div>""", cur="/about/", jsonld=[ORG, {"@context": "https://schema.org", "@type": "AboutPage", "name": "About Vettlo", "url": DOMAIN + "/about/",
      "description": "Vettlo is an independent publication that tests and scores business software for every team.", "publisher": {"@type": "Organization", "name": "Vettlo", "url": DOMAIN}}])
-
-# ---------- ADVERTISE
-page("/advertise/", "Advertise With Us: Reach Business Software Buyers | Vettlo",
-     "Reach software buyers while they compare tools. Positions #1 to #10 on category pages, newsletter sponsorships and sponsored guides, with clear disclosure.",
-     """<div class="wrap"><div class="page-head"><span class="eyebrow">For vendors</span><h1>Reach buyers while they're choosing software</h1>
-<p>Our readers arrive with a buying question. Put your product in front of them, next to reviews buyers trust.</p></div>
-<div class="page-body" style="display:grid;gap:2.5rem">
-<div class="cards3">
-<div class="card"><span class="label">Self-serve</span><h3>Category positions</h3><p class="muted small">Positions #1 to #10 on your category's shortlist, one vendor per position, or a Basic listing on the page. Plans never change scores or review wording. <a href="/vendors/">How plans work</a></p><span class="price">Monthly or yearly · pricing on request</span></div>
-<div class="card"><span class="label">Awareness</span><h3>Newsletter sponsorship</h3><p class="muted small">One sponsor per issue of The Vettlo Briefing, sent weekly to software buyers.</p><span class="price">Per issue · pricing on request</span></div>
-<div class="card"><span class="label">Thought leadership</span><h3>Sponsored guides &amp; events</h3><p class="muted small">Co-produced webinars and guides, labeled Sponsored and kept separate from reviews.</p><span class="price">Custom</span></div>
-</div>
-<div class="prose"><h2>What sponsorship buys, and what it doesn't</h2><p>A partner placement can put your product in a category list and higher in it. Scores and review wording stay editorial only. That's what makes a placement next to them worth paying for. Read the full <a href="/how-we-make-money/">disclosure</a>.</p></div>
-<div class="prose"><h2>Audience</h2><p>Vettlo is written for the people who choose software for their company: founders, team leads, and operations, IT and finance managers. We'll publish audited traffic and newsletter numbers after our first full quarter. Until then, <a href="/contact/">ask us</a> for current figures.</p></div>
-<div><h2 style="margin-bottom:1rem">Talk to us</h2>
-<form class="form" id="adv-form"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div><label for="a-name">Name<input id="a-name" required autocomplete="name"></label>
-<label for="a-email">Work email<input id="a-email" type="email" required autocomplete="email"></label>
-<label for="a-company">Company website<input id="a-company" required placeholder="https://"></label>
-<label for="a-int">Interested in<select id="a-int"><option>Category positions (#1 to #10)</option><option>Newsletter sponsorship</option><option>Sponsored guides &amp; events</option></select></label>
-<label for="a-msg">Message (optional)<textarea id="a-msg" rows="4"></textarea></label>
-<button class="btn" type="submit">Send inquiry</button><p class="form-msg" id="adv-msg" aria-live="polite"></p></form>
-<script>(function(){var t0=Date.now();var f=document.getElementById('adv-form'),o=document.getElementById('adv-msg');
-f.addEventListener('submit',function(e){e.preventDefault();var b=f.querySelector('button[type=submit]');b.disabled=true;o.textContent='Sending…';
-var d={form:'advertise',elapsed:Date.now()-t0,website:f.querySelector('[name=website]').value,name:f.querySelector('#a-name').value,email:f.querySelector('#a-email').value,company:f.querySelector('#a-company').value,interest:f.querySelector('#a-int').value,message:(f.querySelector('#a-msg')||{}).value||''};
-fetch('/api/form',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json().catch(function(){return {ok:false}})}).then(function(r){
-if(r.ok){f.reset();o.textContent='Thanks, we\\'ll get back to you by email.';}else{o.textContent=r.error||'Something went wrong. Please try again.';}b.disabled=false;}).catch(function(){o.textContent='Network error. Please try again.';b.disabled=false;});});})();</script>
-</div></div></div>""")
 
 # ---------- TEAM
 page("/team/", "Editorial Team: Who Researches and Writes Our Reviews | Vettlo",

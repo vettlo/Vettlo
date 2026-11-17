@@ -86,7 +86,7 @@ async function handleForm(request, env) {
   return json({ ok: true });
 }
 
-// Retired URLs (merged near-duplicate pages) -> the page that now holds their content. Built into /data/redirects.json.
+// Retired URLs (merged or removed pages) -> the page that now holds their content. Built into /data/redirects.json.
 let REDIRECTS = null, REDIRECTS_AT = 0;
 async function redirects(env, request) {
   if (REDIRECTS && Date.now() - REDIRECTS_AT < 300e3) return REDIRECTS;
@@ -113,7 +113,7 @@ async function route(request, env, ctx) {
     }
     if (url.pathname.startsWith("/api/")) return handlePortalApi(request, env, url.pathname);
     if (url.pathname.startsWith("/go/")) return handleGo(request, env, ctx);
-    if (url.pathname.startsWith("/tools/")) {
+    if (!/\.[a-z0-9]+$/i.test(url.pathname)) {  // pages only, not assets
       const to = (await redirects(env, request))[url.pathname.endsWith("/") ? url.pathname : url.pathname + "/"];
       if (to) return new Response(null, { status: 301, headers: { location: new URL(to, url).toString() + url.search, "cache-control": "public, max-age=86400" } });
     }

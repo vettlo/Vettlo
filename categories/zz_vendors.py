@@ -18,7 +18,7 @@ page("/vendors/", "Vendor Portal: Put Your Software on Vettlo | Vettlo",
 <section class="split"><div><span class="kicker">What stays editorial</span><h2>Scores and reviews aren't for sale</h2></div>
 <div class="prose"><p>A position changes where your product appears on a page. It doesn't change its score, our review or what we write about competitors. Every review discloses that partner compensation may affect which products we include and where they appear. See the <a href="/advertiser-terms/">advertiser terms</a>.</p></div></section>
 <section class="about-cta"><div><h2>Ready to get listed?</h2><p>Create your account, pick a page and choose your position.</p></div><a class="btn" href="/vendors/login/?new=1">Go to the vendor portal</a></section>
-</div>""", cur="/advertise/")
+</div>""")
 
 page("/vendors/login/", "Sign In: Vettlo Vendor Portal",
      "Sign in to the Vettlo vendor portal.",
