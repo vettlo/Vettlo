@@ -1763,5 +1763,51 @@
       "No Marketing Hub free trial is listed; the free plan is the way to try it.",
       "The page shows two prices for Starter and Professional and labels the lower one Best Value next to annual billing; it doesn't label the higher one explicitly."
     ]
+  },
+  "Brevo": {
+    "checked": "2026-11-18",
+    "source": ["Brevo pricing: compare all features by plan", "https://www.brevo.com/pricing/see-all-features/"],
+    "plans": [
+      ["Free", "$0, up to 300 emails a day", "Up to 100,000 contacts, 1 user, drag-and-drop editor, signup forms, SMS campaigns, transactional email (API and SMTP), Aura AI and basic reporting, with the Brevo logo on emails"],
+      ["Starter", "$9/mo billed monthly or $97/yr billed yearly, for 5,000 emails a month", "Sends up to 100,000 emails a month by tier, 1 user, marketing automation for up to 2,000 contacts and basic reporting; removing the Brevo logo is a paid add-on"],
+      ["Standard", "$18/mo billed monthly or $194/yr billed yearly, for 5,000 emails a month", "Sends up to 500,000 emails a month by tier, no Brevo logo, unlimited marketing automation, A/B testing, AI send-time optimization, 1 landing page, user permissions, click heatmaps and advanced reporting; up to 3 users with the seat add-on"],
+      ["Professional", "$499/mo billed monthly or $5,389/yr billed yearly, for 150,000 emails a month", "Up to 10 million emails a month, up to 2 million contacts, 10 users included, WhatsApp campaigns, popups, contact scoring (RFM, CLV), AI segmentation, 10 landing pages, multi-branch automation testing, Analytics Studio and phone support"],
+      ["Enterprise", "Custom pricing (contact sales)", "Custom sending volume, unlimited contacts and users, SSO and SAML, sub-account management, one dedicated IP and a Customer Success Manager"]
+    ],
+    "first_plan": [
+      ["SMS campaigns and transactional email (API and SMTP)", "Free"],
+      ["Marketing automation (up to 2,000 contacts)", "Free"],
+      ["Remove the Brevo logo (paid add-on)", "Starter"],
+      ["Brevo logo removed at no extra cost", "Standard"],
+      ["Unlimited marketing automation", "Standard"],
+      ["A/B testing and AI send-time optimization", "Standard"],
+      ["Landing pages and user permissions", "Standard"],
+      ["WhatsApp campaigns and popups", "Professional"],
+      ["Contact scoring (RFM, CLV) and AI segmentation", "Professional"],
+      ["Phone support", "Professional"],
+      ["SSO and SAML (add-on on Professional, included on Enterprise)", "Professional"],
+      ["Sub-account management and Customer Success Manager", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Free", "Starter", "Standard", "Professional", "Enterprise"],
+      "rows": [
+        ["Email sends", "300 a day", "Up to 100,000 a month", "Up to 500,000 a month", "Up to 10 million a month", "Custom"],
+        ["Contacts", "Up to 100,000", "Up to 500,000", "Up to 500,000", "Up to 2 million", "Unlimited"],
+        ["Users", "1", "1", "Up to 3 (add-on)", "10 included", "Unlimited"],
+        ["Marketing automation", "Up to 2,000 contacts", "Up to 2,000 contacts", "Unlimited", "Unlimited", "Unlimited"],
+        ["Landing pages", "None", "None", "1", "10", "Custom"],
+        ["Reporting", "Basic", "Basic", "Advanced", "Analytics Studio", "Analytics Studio"],
+        ["Support", "Email", "Email", "Email", "Phone", "Customer Success Manager"]
+      ]
+    },
+    "notes": [
+      "Starter, Standard and Professional are priced by monthly email volume, not contacts: the entry prices above cover 5,000 emails a month on Starter and Standard and 150,000 on Professional, and higher tiers cost more.",
+      "Yearly billing takes 10% off, is charged once a year and tops up email credits monthly; unused monthly credits expire before the next top-up.",
+      "Monthly plans can be paused for up to 3 months and cancelled at any time; yearly plans can't be paused.",
+      "The Free plan can send up to 300 emails a day once the account is approved, and needs no credit card.",
+      "Prepaid email credits (5,000 to 1 million emails) never expire and remove the Brevo logo; SMS credits are prepaid on every plan, WhatsApp credits on Professional and Enterprise.",
+      "Sales Essentials seats cost $31 a month (Starter and higher); a dedicated IP is a Professional add-on and is included on Enterprise.",
+      "Listed prices exclude taxes."
+    ]
   }
 }

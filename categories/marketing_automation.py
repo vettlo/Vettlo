@@ -52,7 +52,7 @@ MA = {
             "who": "Small teams with large lists that want automation and A/B testing for under $20 a month.",
             "why": "Standard includes unlimited multi-step workflows and A/B testing for $18 a month, the lowest price for that combination here.",
             "pros": ["Unlimited multi-step workflows from $18 a month", "Priced by emails sent, not contacts", "Free plan sends 300 emails a day"],
-            "cons": ["Starter has no marketing automation", "Contact scoring starts on Professional at $499 a month", "Standard allows up to 3 users"],
+            "cons": ["Starter limits marketing automation to 2,000 contacts", "Contact scoring starts on Professional at $499 a month", "Standard allows up to 3 users"],
             "skip": "You need lead scoring and B2B attribution on a mid-priced plan.",
         },
         "salesforce": {

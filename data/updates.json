@@ -95,14 +95,14 @@
     "note": "Re-verified prices, plans, AI resolution pricing and trials for all 7 help desks on vendor pricing pages (no price changes; Zoho Desk's page still shows rupee prices only, so its euro prices are unchanged and last confirmed Oct 26) and refreshed G2 review counts (ratings unchanged; e.g. Freshdesk 3,921 to 3,977)."
   },
   "/tools/best-email-marketing-software/": {
-    "updated": "2026-11-15",
+    "updated": "2026-11-18",
     "checked": "2026-11-15",
-    "note": "Re-verified plans, limits and trials for all 6 tools on vendor pricing pages (no price changes: Brevo, Kit and Mailchimp starting prices confirmed, and Klaviyo's $20 Email plan at 500 profiles; MailerLite's and ActiveCampaign's tier prices aren't shown in page text, so they're unchanged and unconfirmed). Mailchimp's page now labels its prices as for the first 12 months, noted in the price note and footnote. Refreshed G2 review counts (ratings unchanged)."
+    "note": "Re-verified plans, limits and trials for all 6 tools on vendor pricing pages (no price changes: Brevo, Kit and Mailchimp starting prices confirmed, and Klaviyo's $20 Email plan at 500 profiles; MailerLite's and ActiveCampaign's tier prices aren't shown in page text, so they're unchanged and unconfirmed). Mailchimp's page now labels its prices as for the first 12 months, noted in the price note and footnote. Refreshed G2 review counts (ratings unchanged). Nov 18: Corrected Brevo Starter: Brevo's plan comparison shows marketing automation on Starter for up to 2,000 contacts (unlimited from Standard), so the text no longer says Starter has no automation."
   },
   "/tools/best-mailchimp-alternatives/": {
-    "updated": "2026-11-15",
+    "updated": "2026-11-18",
     "checked": "2026-11-15",
-    "note": "Re-verified plans, limits and trials for all 6 tools on vendor pricing pages (no price changes: Brevo, Kit and Mailchimp starting prices confirmed, and Klaviyo's $20 Email plan at 500 profiles; MailerLite's and ActiveCampaign's tier prices aren't shown in page text, so they're unchanged and unconfirmed). Mailchimp's page now labels its prices as for the first 12 months, noted in the price note and footnote. Refreshed G2 review counts (ratings unchanged)."
+    "note": "Re-verified plans, limits and trials for all 6 tools on vendor pricing pages (no price changes: Brevo, Kit and Mailchimp starting prices confirmed, and Klaviyo's $20 Email plan at 500 profiles; MailerLite's and ActiveCampaign's tier prices aren't shown in page text, so they're unchanged and unconfirmed). Mailchimp's page now labels its prices as for the first 12 months, noted in the price note and footnote. Refreshed G2 review counts (ratings unchanged). Nov 18: Corrected Brevo Starter: Brevo's plan comparison shows marketing automation on Starter for up to 2,000 contacts (unlimited from Standard), so the text no longer says Starter has no automation."
   },
   "/compare/salesforce-vs-hubspot/": {
     "updated": "2026-11-17",
@@ -190,14 +190,14 @@
     "note": "Re-verified ClickUp and Asana plan prices on vendor pricing pages (no changes) and refreshed G2 review counts."
   },
   "/tools/best-marketing-automation-software/": {
-    "updated": "2026-11-11",
+    "updated": "2026-11-18",
     "checked": "2026-11-11",
-    "note": "Re-verified all 6 platforms on vendor pricing pages: Keap's pricing page now shows $320/mo, or $3,195 a year on annual billing (was $249/mo billed annually, $299 monthly); other prices unchanged. Refreshed G2: Account Engagement 4.0 to 4.1; review counts updated."
+    "note": "Re-verified all 6 platforms on vendor pricing pages: Keap's pricing page now shows $320/mo, or $3,195 a year on annual billing (was $249/mo billed annually, $299 monthly); other prices unchanged. Refreshed G2: Account Engagement 4.0 to 4.1; review counts updated. Nov 18: Corrected Brevo Starter: Brevo's plan comparison shows marketing automation on Starter for up to 2,000 contacts (unlimited from Standard), so the text no longer says Starter has no automation."
   },
   "/tools/best-hubspot-marketing-hub-alternatives/": {
-    "updated": "2026-11-11",
+    "updated": "2026-11-18",
     "checked": "2026-11-11",
-    "note": "Re-verified HubSpot Marketing Hub, ActiveCampaign, Brevo, Account Engagement and Customer.io prices on vendor pages (unchanged) and refreshed G2 ratings and review counts."
+    "note": "Re-verified HubSpot Marketing Hub, ActiveCampaign, Brevo, Account Engagement and Customer.io prices on vendor pages (unchanged) and refreshed G2 ratings and review counts. Nov 18: Corrected Brevo Starter: Brevo's plan comparison shows marketing automation on Starter for up to 2,000 contacts (unlimited from Standard), so the text no longer says Starter has no automation."
   },
   "/compare/mailerlite-vs-mailchimp/": {
     "updated": "2026-11-11",
@@ -253,5 +253,20 @@
     "updated": "2026-11-16",
     "checked": "2026-11-16",
     "note": "Re-verified Linear's Free, Basic and Business prices and limits on linear.app/pricing (unchanged) and refreshed G2 review counts; Jira's pricing page now shows prices only via a calculator, so its list prices are as last verified Nov 2."
+  },
+  "/tools/best-time-tracking-software/": {
+    "updated": "2026-11-18",
+    "checked": "2026-11-18",
+    "note": "Re-verified prices, free plans, trials and plan features for all 7 time trackers on vendor pages (no price changes; TimeCamp's pricing page no longer states its trial length and Hubstaff's pricing guide and help center disagree on whether a 1-seat free plan exists, so both stay as last verified) and refreshed G2 review counts (ratings unchanged; Toggl 1,684 to 1,685, Hubstaff 2,338 to 2,344, Harvest 845 to 846, TimeCamp 392 to 394)."
+  },
+  "/tools/best-toggl-alternatives/": {
+    "updated": "2026-11-18",
+    "checked": "2026-11-18",
+    "note": "Re-verified prices, free plans, trials and plan features for all 7 time trackers on vendor pages (no price changes; TimeCamp's pricing page no longer states its trial length and Hubstaff's pricing guide and help center disagree on whether a 1-seat free plan exists, so both stay as last verified) and refreshed G2 review counts (ratings unchanged; Toggl 1,684 to 1,685, Hubstaff 2,338 to 2,344, Harvest 845 to 846, TimeCamp 392 to 394)."
+  },
+  "/compare/clockify-vs-toggl/": {
+    "updated": "2026-11-18",
+    "checked": "2026-11-18",
+    "note": "Re-verified Clockify's and Toggl's plan prices ($3.99 to $11.99 and $9 to $16 a user billed annually), free-plan user limits and trials on vendor pages (no changes); refreshed G2 review counts (Toggl 1,684 to 1,685, Clockify unchanged at 205)."
   }
 }

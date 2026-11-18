@@ -63,7 +63,7 @@ EM = {
             "who": "Businesses with large lists that send a few campaigns a month and want marketing and transactional email in one place.",
             "why": "Pricing by sends instead of contacts keeps the bill low for big lists, and Standard includes automation and A/B testing at $16.17 a month billed yearly.",
             "pros": ["Priced by emails sent, not contacts", "Unlimited automations and A/B testing on Standard", "Free plan sends 300 emails a day"],
-            "cons": ["Starter has no automation or A/B testing", "Extra seats are a paid add-on on Standard; 10 included on Professional", "SMS credits sold separately"],
+            "cons": ["Starter limits automation to 2,000 contacts and has no A/B testing", "Extra seats are a paid add-on on Standard; 10 included on Professional", "SMS credits sold separately"],
             "skip": "You need advanced ecommerce flows or a large team on a mid-priced plan.",
         },
         "mailchimp": {
@@ -96,7 +96,7 @@ EM = {
     },
     "choose": [
         ("Price at your list size, not the entry price.", "At 1,000 contacts MailerLite Comfort is $17.10 a month billed yearly, Klaviyo Email $30, Mailchimp Essentials $26.50 and ActiveCampaign Starter $15. Brevo prices by emails sent instead."),
-        ("Check automation limits on the cheaper plans.", "Mailchimp Essentials caps flows at 4 steps, ActiveCampaign Starter at 5 actions per automation, and Brevo Starter has no automation."),
+        ("Check automation limits on the cheaper plans.", "Mailchimp Essentials caps flows at 4 steps, ActiveCampaign Starter at 5 actions per automation, and Brevo Starter limits automation to 2,000 contacts."),
         ("Match the tool to your business model.", "Klaviyo is built around store data, ActiveCampaign around journeys and lead scoring, Kit around creators' newsletters."),
         ("Count the people who need access.", "Seats range from 1 on Brevo Starter to unlimited on MailerLite Power and Mailchimp Premium."),
         ("Send real campaigns during the trial.", "Import a segment of your list and send a campaign and one automation before you commit."),
