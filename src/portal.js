@@ -15,6 +15,18 @@ const oneLine = (v, max) => clean(v, max).replace(/\s*\n\s*/g, " ");
 const isEmail = (e) => /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(e);
 const isUrl = (u) => { try { const x = new URL(u); return x.protocol === "https:" || x.protocol === "http:"; } catch { return false; } };
 const isHttps = (u) => { try { return new URL(u).protocol === "https:"; } catch { return false; } };
+// Vendors may type just "example.com": add https://, upgrade http:// and require a real domain. Returns the URL or null.
+function toUrl(raw, max = 500) {
+  let v = oneLine(raw, max).trim();
+  if (!v) return null;
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(v)) v = "https://" + v.replace(/^\/+/, "");
+  v = v.replace(/^http:\/\//i, "https://");
+  try {
+    const u = new URL(v);
+    if (u.protocol !== "https:" || !/^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i.test(u.hostname) || u.username || u.password) return null;
+    return u.href.length <= max ? u.href : null;
+  } catch { return null; }
+}
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 async function sha256(s) {
@@ -180,9 +192,9 @@ async function requestLogin(request, env, data) {
     vendor = await env.DB.prepare("SELECT * FROM vendors WHERE email = ?").bind(email).first();
   }
   if (!vendor) {
-    const company = oneLine(data.company, 120), website = oneLine(data.website, 300);
+    const company = oneLine(data.company, 120), website = toUrl(data.website, 300);
     if (!data.signup) return json({ ok: false, error: "No account for this email yet. Create one below.", needs_signup: true }, 404);
-    if (!company || !isUrl(website)) return json({ ok: false, error: "Add your company name and website (https://…)." }, 400);
+    if (!company || !website) return json({ ok: false, error: "Add your company name and website, e.g. example.com." }, 400);
     if (!data.accept_terms) return json({ ok: false, error: "Please accept the advertiser terms." }, 400);
     await env.DB.prepare("INSERT INTO vendors (email, company, website, terms_accepted_at, created_at) VALUES (?, ?, ?, ?, ?)")
       .bind(email, company, website, now(), now()).run();
@@ -301,7 +313,7 @@ async function vendorApi(request, env, vendor, path) {
   }
   if (path === "/api/me" && method === "PUT") {
     const company = oneLine(body.company, 120) || vendor.company;
-    const website = isUrl(body.website) ? oneLine(body.website, 300) : vendor.website;
+    const website = toUrl(body.website, 300) || vendor.website;
     await env.DB.prepare("UPDATE vendors SET company = ?, website = ? WHERE id = ?").bind(company, website, vendor.id).run();
     return json({ ok: true });
   }
@@ -323,9 +335,9 @@ async function vendorApi(request, env, vendor, path) {
   if (path === "/api/listings" && method === "POST") {
     const cats = await categories(env, request);
     const cat = cats.find((c) => c.slug === body.category);
-    const f = { product_name: oneLine(body.product_name, 80), website: oneLine(body.website, 300), landing_url: oneLine(body.landing_url || body.website, 500),
+    const f = { product_name: oneLine(body.product_name, 80), website: toUrl(body.website, 300), landing_url: toUrl(body.landing_url || body.website, 500),
       best_for: oneLine(body.best_for, 90), description: clean(body.description, 600), starting_price: oneLine(body.starting_price, 80) };
-    if (!f.product_name || !isHttps(f.website) || !isHttps(f.landing_url)) return json({ ok: false, error: "Add the product name and its website (starting with https://)." }, 400);
+    if (!f.product_name || !f.website || !f.landing_url) return json({ ok: false, error: "Add the product name and its website, e.g. example.com." }, 400);
     if (await rateLimited(env, request, "listing:" + vendor.id, 20, 86400)) return json({ ok: false, error: "Too many new products today. Contact us if you need more." }, 429);
     if (!cat) return json({ ok: false, error: "Choose a category." }, 400);
     const tool = (cat.tools || []).find((t) => t.name.toLowerCase() === f.product_name.toLowerCase());
@@ -339,8 +351,8 @@ async function vendorApi(request, env, vendor, path) {
     const l = await env.DB.prepare("SELECT * FROM listings WHERE id = ? AND vendor_id = ?").bind(Number(m[1]), vendor.id).first();
     if (!l) return json({ ok: false, error: "Not found." }, 404);
     const active = body.active !== undefined ? (body.active ? 1 : 0) : l.active;
-    if (body.landing_url !== undefined && !isHttps(body.landing_url)) return json({ ok: false, error: "The landing page must start with https://." }, 400);
-    const landing = body.landing_url !== undefined ? oneLine(body.landing_url, 500) : l.landing_url;
+    const landing = body.landing_url !== undefined ? toUrl(body.landing_url, 500) : l.landing_url;
+    if (!landing) return json({ ok: false, error: "Enter a valid landing page, e.g. example.com/pricing." }, 400);
     // Copy edits go back to editorial review; pausing and landing page changes don't.
     const copy = ["best_for", "description", "starting_price"].some((k) => body[k] !== undefined && oneLine(body[k], 600) !== (l[k] || ""));
     const status = copy && l.status === "approved" ? "pending" : l.status;

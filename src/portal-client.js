@@ -92,7 +92,7 @@
       ${L.length ? L.map((l) => `<form class="pt-card" data-id="${l.id}">
         <div class="pt-card-head"><div><h3>${esc(l.product_name)}</h3><p class="muted small"><a href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.website)}</a> · ${esc(catName(l.category))}</p><p>${statusPill(l)}${l.review_note ? ` <small class="muted">${esc(l.review_note)}</small>` : ""}</p></div>
         <label class="pt-switch"><input type="checkbox" name="active" ${l.active ? "checked" : ""}> Show on site</label></div>
-        <label>Landing page<input name="landing_url" type="url" value="${esc(l.landing_url)}"><small>Where our Visit button sends readers. Add UTM parameters to track Vettlo traffic.</small></label>
+        <label>Landing page<input name="landing_url" type="text" inputmode="url" autocapitalize="off" spellcheck="false" value="${esc(l.landing_url)}"><small>Where our Visit button sends readers. Add UTM parameters to track Vettlo traffic.</small></label>
         <div class="pt-actions"><button class="btn small" type="submit">Save</button><a class="small" href="#plans" data-go="plans" data-arg="${l.id}">${l.sub ? "Manage positions" : "Buy a position"} →</a></div></form>`).join("")
       : `<div class="pt-empty"><p>No products yet.</p><button class="btn" data-go="newListing">Add a product</button></div>`}`);
     bindGo();
@@ -203,7 +203,7 @@
           <label class="pt-choice"><input type="radio" name="listing" value="new"><span><b>Another product</b><small>Add a new product for ${esc(pg.category_name)}</small></span></label></div>` : `<input type="hidden" name="listing" value="new">`}
         <div id="pt-newprod" class="pt-grid" ${L.length ? "hidden" : ""}>
           <label>Product name<input name="product_name" maxlength="80"></label>
-          <label>Product website<input name="website" type="url" placeholder="https://"></label>
+          <label>Product website<input name="website" type="text" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="example.com"></label>
           <p class="wide muted small">That's all we need. Our editors research the product and write its review; you'll see it as in editorial review until we publish it.</p></div>
         <div class="pt-actions"><button class="btn" type="submit">Reserve ${PLAN[plan]} for ${money(cents)} / ${period}</button><button class="btn ghost small" type="button" id="pt-back">Back</button>
           <span class="muted small">We hold the position for 7 days while you pay. It goes live once our review is published, and your paid time starts then.</span></div></form>`);
@@ -231,7 +231,7 @@
     const opts = CATS.map((c) => `<option value="${esc(c.slug)}">${esc(c.dept)} · ${esc(c.name)}</option>`).join("");
     view(`<div class="pt-head"><h2>Add a product</h2></div><form class="pt-card" id="pt-new-form"><div class="pt-grid">
       <label>Product name<input name="product_name" required maxlength="80"></label>
-      <label>Product website<input name="website" type="url" required placeholder="https://"></label>
+      <label>Product website<input name="website" type="text" inputmode="url" autocapitalize="off" spellcheck="false" required placeholder="example.com"></label>
       <label class="wide">Category<select name="category" required><option value="">Choose…</option>${opts}</select></label>
       </div><p class="muted small">Our editors research the product and write its review. It shows as in editorial review until we publish it.</p>
       <div class="pt-actions"><button class="btn" type="submit">Add product</button></div></form>`);
@@ -284,7 +284,7 @@
     const f = (k, label, extra = "") => `<label>${label}<input name="${k}" value="${esc(b[k] || "")}" ${extra}></label>`;
     view(`<div class="pt-head"><h2>Account</h2></div><form class="pt-card" id="pt-acct"><h3>Company</h3><div class="pt-grid">
       <label>Company<input name="company" value="${esc(v.company || "")}"></label>
-      <label>Website<input name="website" type="url" value="${esc(v.website || "")}"></label>
+      <label>Website<input name="website" type="text" inputmode="url" autocapitalize="off" spellcheck="false" value="${esc(v.website || "")}"></label>
       <label>Sign-in email<input value="${esc(v.email)}" disabled></label></div>
       <div class="pt-actions"><button class="btn small" type="submit">Save</button><a class="small" href="/advertiser-terms/" target="_blank">Advertiser terms</a></div></form>
       <form class="pt-card" id="pt-bill"><h3>Billing details</h3><p class="muted small">Used on your invoices and required by our payment provider for card payments.</p><div class="pt-grid">

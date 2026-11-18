@@ -22,7 +22,7 @@ page("/vendors/login/", "Sign In: Vettlo Vendor Portal",
      """<div class="wrap pt-narrow" id="pt-root" data-portal="login"><div class="page-head"><h1>Vendor portal</h1><p>We'll email you a one-time sign-in link.</p></div>
 <form class="form pt-card" id="pt-login"><div aria-hidden="true" style="position:absolute;left:-9999px"><label>Website<input name="website_hp" tabindex="-1" autocomplete="off"></label></div>
 <label>Work email<input name="email" type="email" required autocomplete="email"></label>
-<div id="pt-signup" hidden><label>Company<input name="company" autocomplete="organization"></label><label>Company website<input name="website" type="url" placeholder="https://"></label>
+<div id="pt-signup" hidden><label>Company<input name="company" autocomplete="organization"></label><label>Company website<input name="website" type="text" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="example.com"></label>
 <label class="pt-check"><input type="checkbox" name="accept"> I agree to the <a href="/advertiser-terms/" target="_blank">advertiser terms</a>.</label></div>
 <button class="btn" id="pt-submit" type="submit">Send sign-in link</button>
 <p class="small muted">New here? <a href="#" id="pt-new">Create a vendor account</a></p></form>
