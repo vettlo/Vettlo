@@ -12,7 +12,7 @@ PAY = {
     ],
     "criteria": [("Payroll & tax filing", 25), ("Compliance & multi-state", 15), ("HR & benefits", 15),
                  ("Time tracking & integrations", 10), ("Ease of use", 15), ("Price & value", 20)],
-    "price_footnote": "Starting prices are the entry plan that files payroll taxes for you, from each vendor's pricing page on Nov 7, 2026, billed monthly. Gusto's pricing page didn't load for us; its Simple price is from Gusto's comparison pages and its Plus price from a guide published on gusto.com, while its Premium price is as last published by Gusto and could not be re-confirmed. Patriot and QuickBooks also advertise introductory discounts; these are the regular prices. Rippling lists only its per-employee starting price and a monthly base fee (the $40 figure it showed on Nov 7 no longer appears on its pricing page as of Nov 14, 2026); ADP prices by quote.",
+    "price_footnote": "Starting prices are the entry plan that files payroll taxes for you, from each vendor's pricing page on Nov 7, 2026, billed monthly. Gusto's Simple, Plus and Premium prices were re-confirmed on Gusto's own pricing page on Nov 19, 2026; that page no longer lists a separate contractor-only plan. Patriot and QuickBooks also advertise introductory discounts; these are the regular prices. Rippling lists only its per-employee starting price and a monthly base fee (the $40 figure it showed on Nov 7 no longer appears on its pricing page as of Nov 14, 2026); ADP prices by quote.",
     "tools": {
         "gusto": {
             "name": "Gusto", "short": "Gusto", "url": "https://gusto.com/",
@@ -20,10 +20,10 @@ PAY = {
             "price": "$49/mo + $6/person", "price_note": "Simple, single-state; Plus $80 + $12/person; Premium $180 + $22/person", "trial": "Free to set up; you pay once you run payroll", "trial_short": "Free until first payroll",
             "g2": ("4.6", "13,942", "https://www.g2.com/products/gusto/reviews"),
             "scores": [5, 4.5, 4.5, 4, 4.5, 3.5],
-            "what": "Gusto is full-service payroll with built-in HR and benefits administration. Simple ($49 a month plus $6 per person) covers single-state payroll, tax filing and core HR; Plus ($80 plus $12 per person) adds multi-state payroll, next-day direct deposit and time tracking; Premium ($180 plus $22 per person) adds access to HR experts. A Contractor plan costs $35 a month plus $6 per contractor.",
+            "what": "Gusto is full-service payroll with built-in HR and benefits administration. Simple ($49 a month plus $6 per person) covers single-state payroll, tax filing and core HR; Plus ($80 plus $12 per person) adds multi-state payroll, next-day direct deposit and time tracking; Premium ($180 plus $22 per person) adds HR guidance and tools, Gusto Business Compliance, same-day and instant pay and a dedicated account partner. U.S. contractors are billed at the plan's per-person fee, only in months you pay them.",
             "who": "Small businesses that want payroll, health benefits administration and core HR handled by one tool.",
             "why": "It covers the most ground for a small team, from payroll and tax filing to benefits and HR support, and you can set it up for free before the first pay run.",
-            "pros": ["Payroll, core HR and health benefits administration in one product", "Contractor-only plan at $35 a month plus $6 per contractor", "Rated 4.6/5 on G2 across more than 13,000 reviews"],
+            "pros": ["Payroll, core HR and health benefits administration in one product", "Unlimited payroll runs on every plan, month to month with no contract", "Rated 4.6/5 on G2 across more than 13,000 reviews"],
             "cons": ["Simple is single-state; multi-state payroll needs Plus ($80 + $12 per person)", "Next-day direct deposit is a Plus feature or a Simple add-on", "Per-person fees double from Simple to Plus"],
             "skip": "You have employees in several states and want that on the cheapest plan; OnPay includes all 50 states for $49 + $6.",
             "links": [("/tools/best-gusto-alternatives/", "Gusto alternatives")],

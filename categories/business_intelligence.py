@@ -1,10 +1,10 @@
-# Business intelligence tools. Published Nov 3, 2026; prices and G2 ratings checked Nov 3, 2026.
+# Business intelligence tools. Published Nov 3, 2026; prices and G2 ratings checked Nov 3, 2026; re-checked Nov 19, 2026.
 BI = {
     "slug": "best-business-intelligence-tools",
     "plural": "Business Intelligence Tools",
     "crumb": "Business intelligence",
     "choose_title": "a business intelligence tool",
-    "date": "2026-11-03", "date_h": "Nov 3, 2026", "checked": "Nov 3, 2026",
+    "date": "2026-11-03", "date_h": "Nov 3, 2026", "checked": "Nov 19, 2026",
     "desc": "Seven BI tools compared on price, sharing and data limits. Power BI Pro is $14 a user; 10 Tableau users with 2 Creators cost $3,240 a year.",
     "intro": [
         "Business intelligence (BI) tools connect to your databases, spreadsheets and business apps, model the data and turn it into dashboards and reports people can filter and share. Every tool here builds charts and dashboards, so the differences are in how they charge (per user, per role, per data capacity or by usage credits), what the free version can share, how much data a plan holds and which plan adds row-level security, embedding and SSO.",
@@ -12,13 +12,13 @@ BI = {
     ],
     "criteria": [("Data connectivity & modeling", 20), ("Visualization & dashboards", 20), ("Self-serve analysis & AI", 15),
                  ("Sharing, embedding & governance", 15), ("Ease of use", 15), ("Price & value", 15)],
-    "price_footnote": "Starting prices are the cheapest paid plan on each vendor's pricing page on Nov 3, 2026. Units differ: Power BI and Data Studio Pro charge per user; Tableau per user by role (Creator, Explorer, Viewer), billed annually only; Metabase, Zoho Analytics and Qlik charge a monthly plan price that includes a set number of users or data; Domo is credit-based. Zoho Analytics prices are from its help center and its own plan comparison, because its pricing page loads prices dynamically. Data Studio was called Looker Studio until 2026.",
+    "price_footnote": "Starting prices are the cheapest paid plan on each vendor's pricing page, re-checked Nov 19, 2026. Units differ: Power BI and Data Studio Pro charge per user; Tableau per user by role (Creator, Explorer, Viewer), billed annually only; Metabase, Zoho Analytics and Qlik charge a monthly plan price that includes a set number of users or data; Domo is credit-based. Zoho Analytics prices are from its help center and its own plan comparison, because its pricing page loads prices dynamically; they were last fully confirmed Nov 3, 2026. Data Studio was called Looker Studio until 2026.",
     "tools": {
         "power_bi": {
             "name": "Microsoft Power BI", "short": "Power BI", "url": "https://www.microsoft.com/en-us/power-platform/products/power-bi",
             "bf": "Best overall and best value for most companies",
             "price": "$14/user/mo", "price_note": "Pro, paid yearly; Premium Per User $24", "trial": "Free plan (Power BI Desktop and a free account for personal use; sharing needs Pro); free trial of paid features", "trial_short": "Free plan + trial",
-            "g2": ("4.5", "1,662", "https://www.g2.com/products/microsoft-microsoft-power-bi/reviews"),
+            "g2": ("4.5", "1,671", "https://www.g2.com/products/microsoft-microsoft-power-bi/reviews"),
             "scores": [5, 4.5, 4.5, 4.5, 4, 5],
             "what": "Microsoft Power BI is a BI platform with a free Windows app, Power BI Desktop, for modeling data and building reports, and a cloud service for publishing and sharing them. The free account is for personal analysis; Pro ($14 per user a month, paid yearly) adds publishing and sharing, with a 1 GB model memory limit and 8 refreshes a day; Premium Per User ($24) raises that to 100 GB and 48 refreshes a day and adds advanced AI, dataflows and XMLA read/write. Fabric capacity plans let viewers use reports without a per-user license from F64 up.",
             "who": "Companies on Microsoft 365 that want analysts to build governed reports and everyone else to view them, at a low per-user price.",
@@ -31,12 +31,12 @@ BI = {
             "name": "Tableau", "short": "Tableau", "url": "https://www.tableau.com/",
             "bf": "Best for visual analysis and dedicated analyst teams",
             "price": "$15/user/mo", "price_note": "Viewer, Standard, billed annually; Creator $75, Explorer $42; at least one Creator required", "trial": "Free trial; free Tableau Desktop edition for local files", "trial_short": "Free trial",
-            "g2": ("4.4", "4,235", "https://www.g2.com/products/tableau/reviews"),
+            "g2": ("4.4", "4,237", "https://www.g2.com/products/tableau/reviews"),
             "scores": [4.5, 5, 4.5, 4.5, 3.5, 2.5],
             "what": "Tableau, part of Salesforce, is a visual analytics platform sold per user by role. On the Standard edition, Creator ($75 a user a month, billed annually) builds workbooks and data flows with Tableau Desktop and Prep Builder, Explorer ($42) edits existing workbooks, and Viewer ($15) views and interacts with dashboards. Enterprise ($115, $70 and $35) adds Advanced Management, Data Management and up to 10 sites. Every deployment needs at least one Creator, and all plans require an annual contract.",
             "who": "Analyst and data teams that build many custom visual dashboards for a large audience of viewers.",
             "why": "It rates highest here on visualization, with Tableau Pulse metrics and the largest G2 review base in the category.",
-            "pros": ["Rated 4.4/5 on G2 across 4,235 reviews, the most here", "Creator includes Tableau Desktop, Prep Builder and Tableau Pulse", "Free Desktop edition for analysis of local files and databases"],
+            "pros": ["Rated 4.4/5 on G2 across 4,237 reviews, the most here", "Creator includes Tableau Desktop, Prep Builder and Tableau Pulse", "Free Desktop edition for analysis of local files and databases"],
             "cons": ["Creators cost $75 a user a month, over five times Power BI Pro", "Annual contract only; no monthly plans", "Data Management and Advanced Management need Enterprise ($115 per Creator)"],
             "skip": "You need a low-cost tool for a small team or want to pay month to month.",
         },

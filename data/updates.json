@@ -120,9 +120,9 @@
     "note": "Re-verified Asana and monday.com plan prices, seat minimums, automation limits and trials on vendor pricing pages (no changes) and refreshed G2 review counts."
   },
   "/compare/zendesk-vs-freshdesk/": {
-    "updated": "2026-11-03",
-    "checked": "2026-11-03",
-    "note": "Re-verified Zendesk and Freshdesk plan prices, AI allowances, add-on prices and trials on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-19",
+    "checked": "2026-11-19",
+    "note": "Re-verified Zendesk ($19/$55/$115 annual, $25/$69/$149 monthly, 5-10 AI resolutions per agent, $1.50-$2.00 extra) and Freshdesk ($19 Growth, $55 Pro, 500 AI agent sessions, $29 Copilot add-on, 14-day Enterprise trial) on vendor pricing pages (no changes) and refreshed G2 review counts (ratings unchanged; Zendesk 7,123 to 7,129, Freshdesk 3,977 to 4,014)."
   },
   "/compare/gong-vs-avoma/": {
     "updated": "2026-11-05",
@@ -145,19 +145,19 @@
     "note": "Re-verified Outreach Amplify tiers and Salesloft pricing page (both still quote-only, packaging unchanged) and refreshed G2 review counts."
   },
   "/tools/best-payroll-software/": {
-    "updated": "2026-11-14",
+    "updated": "2026-11-19",
     "checked": "2026-11-07",
-    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged). Nov 14: Rippling's pricing page no longer shows the $40 base-fee figure (it says only \"with a monthly base fee\"), so Rippling's text no longer cites $40."
+    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged). Nov 14: Rippling's pricing page no longer shows the $40 base-fee figure (it says only \"with a monthly base fee\"), so Rippling's text no longer cites $40. Nov 19: Gusto's own pricing page re-confirmed Simple ($49 + $6), Plus ($80 + $12) and Premium ($180 + $22); it no longer lists a $35 contractor-only plan (U.S. contractors are billed at the plan's per-person fee only in months they're paid), so Gusto's text no longer cites it."
   },
   "/tools/best-gusto-alternatives/": {
-    "updated": "2026-11-14",
+    "updated": "2026-11-19",
     "checked": "2026-11-07",
-    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged). Nov 14: Rippling's pricing page no longer shows the $40 base-fee figure (it says only \"with a monthly base fee\"), so Rippling's text no longer cites $40."
+    "note": "Re-verified payroll prices and plans for all 7 services on vendor pages (no list-price changes; Rippling now shows a $40 monthly base fee alongside its $8 per-user start, ADP is advertising up to 6 months free) and refreshed G2 review counts (ratings unchanged). Nov 14: Rippling's pricing page no longer shows the $40 base-fee figure (it says only \"with a monthly base fee\"), so Rippling's text no longer cites $40. Nov 19: Gusto's own pricing page re-confirmed Simple ($49 + $6), Plus ($80 + $12) and Premium ($180 + $22); it no longer lists a $35 contractor-only plan (U.S. contractors are billed at the plan's per-person fee only in months they're paid), so Gusto's text no longer cites it."
   },
   "/compare/gusto-vs-quickbooks-payroll/": {
-    "updated": "2026-11-07",
+    "updated": "2026-11-19",
     "checked": "2026-11-07",
-    "note": "Re-verified Gusto Simple and Plus and all three QuickBooks Workforce plan prices, direct deposit speeds and HR tiers on vendor pages (no changes) and refreshed G2 review counts."
+    "note": "Re-verified Gusto Simple and Plus and all three QuickBooks Workforce plan prices, direct deposit speeds and HR tiers on vendor pages (no changes) and refreshed G2 review counts. Nov 19: Gusto's own pricing page re-confirmed Simple ($49 + $6), Plus ($80 + $12) and Premium ($180 + $22); it no longer lists a $35 contractor-only plan (U.S. contractors are billed at the plan's per-person fee only in months they're paid), so Gusto's text no longer cites it. Gusto's next-day pay add-on price ($15/mo + $3 per person) is now cited."
   },
   "/compare/mailchimp-vs-brevo/": {
     "updated": "2026-11-07",
@@ -268,5 +268,20 @@
     "updated": "2026-11-18",
     "checked": "2026-11-18",
     "note": "Re-verified Clockify's and Toggl's plan prices ($3.99 to $11.99 and $9 to $16 a user billed annually), free-plan user limits and trials on vendor pages (no changes); refreshed G2 review counts (Toggl 1,684 to 1,685, Clockify unchanged at 205)."
+  },
+  "/tools/best-business-intelligence-tools/": {
+    "updated": "2026-11-19",
+    "checked": "2026-11-19",
+    "note": "Re-verified prices, plans and trials for all 7 BI tools on vendor pricing pages (no price changes: Power BI Pro $14 and Premium Per User $24, Tableau Creator $75/Explorer $42/Viewer $15, Qlik Starter $300, Metabase Starter $100, Data Studio Pro $9; Domo still quote-only; Zoho Analytics' pricing page shows no dollar figures, so its prices are unchanged and last fully confirmed Nov 3) and refreshed G2 review counts (ratings unchanged; Power BI 1,662 to 1,671, Tableau 4,235 to 4,237)."
+  },
+  "/tools/best-tableau-alternatives/": {
+    "updated": "2026-11-19",
+    "checked": "2026-11-19",
+    "note": "Re-verified prices, plans and trials for all 7 BI tools on vendor pricing pages (no price changes: Power BI Pro $14 and Premium Per User $24, Tableau Creator $75/Explorer $42/Viewer $15, Qlik Starter $300, Metabase Starter $100, Data Studio Pro $9; Domo still quote-only; Zoho Analytics' pricing page shows no dollar figures, so its prices are unchanged and last fully confirmed Nov 3) and refreshed G2 review counts (ratings unchanged; Power BI 1,662 to 1,671, Tableau 4,235 to 4,237)."
+  },
+  "/compare/power-bi-vs-tableau/": {
+    "updated": "2026-11-19",
+    "checked": "2026-11-19",
+    "note": "Re-verified prices, plans and trials for all 7 BI tools on vendor pricing pages (no price changes: Power BI Pro $14 and Premium Per User $24, Tableau Creator $75/Explorer $42/Viewer $15, Qlik Starter $300, Metabase Starter $100, Data Studio Pro $9; Domo still quote-only; Zoho Analytics' pricing page shows no dollar figures, so its prices are unchanged and last fully confirmed Nov 3) and refreshed G2 review counts (ratings unchanged; Power BI 1,662 to 1,671, Tableau 4,235 to 4,237)."
   }
 }

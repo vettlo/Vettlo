@@ -1809,5 +1809,50 @@
       "Sales Essentials seats cost $31 a month (Starter and higher); a dedicated IP is a Professional add-on and is included on Enterprise.",
       "Listed prices exclude taxes."
     ]
+  },
+  "Gusto": {
+    "checked": "2026-11-19",
+    "source": ["Gusto pricing", "https://gusto.com/pricing"],
+    "plans": [
+      ["Simple", "$49/mo base + $6 per person per month, month to month", "Payroll in one state, unlimited payroll runs, federal, state and local tax filings and payments, basic PTO policies and holiday pay, Basic Support (24/7 Help Center, phone and chat in business hours)"],
+      ["Plus", "$80/mo base + $12 per person per month, month to month", "Everything in Simple plus multi-state payroll, time tracking and scheduling, unlimited next-day pay and contractor invoice management"],
+      ["Premium", "$180/mo base + $22 per person per month, month to month", "Everything in Plus plus a dedicated Premium Account Partner, HR guidance and tools, Gusto Business Compliance, unlimited same-day and instant pay, project-based rules and costing, and 25 invoice payments and bank transfers a month"]
+    ],
+    "first_plan": [
+      ["Unlimited payroll runs, no charge for off-cycle payrolls", "Simple"],
+      ["Federal, state and local payroll tax filings (W-2, 1099, 940, 941)", "Simple"],
+      ["Basic PTO policies and holiday pay", "Simple"],
+      ["Multi-state payroll", "Plus"],
+      ["Time tracking and scheduling", "Plus"],
+      ["Unlimited next-day pay", "Plus (add-on on Simple: $15/mo + $3 per person)"],
+      ["Contractor invoice management", "Plus"],
+      ["Unlimited same-day and instant pay", "Premium (add-on on Simple and Plus: $90 or $100 per payroll)"],
+      ["Gusto Business Compliance", "Premium (add-on on Simple and Plus: $85/mo per state, annual contract)"],
+      ["Remote I-9 and E-Verify", "Premium (add-ons on Simple and Plus: $20 and $5 per submission)"],
+      ["Dedicated Premium Account Partner", "Premium"]
+    ],
+    "limits": {
+      "cols": ["Simple", "Plus", "Premium"],
+      "rows": [
+        ["Base fee", "$49/mo", "$80/mo", "$180/mo"],
+        ["Per person (active employees and paid U.S. contractors)", "$6/mo", "$12/mo", "$22/mo"],
+        ["States for payroll", "1", "Multi-state", "Multi-state"],
+        ["Next-day pay", "Add-on, $15/mo + $3 per person", "Unlimited, included", "Unlimited, included"],
+        ["Same-day pay", "$90 per payroll", "$90 per payroll", "Unlimited, included"],
+        ["Instant pay", "$100 per payroll", "$100 per payroll", "Unlimited, included"],
+        ["Support", "Basic; Priority add-on $30/mo + $3 per person", "Basic; Priority add-on $30/mo + $3 per person", "Premium Account Support"],
+        ["Invoice payments and bank transfers included", "Not listed", "Not listed", "25 a month"],
+        ["Example: 10 people, before add-ons", "$109/mo", "$200/mo", "$400/mo"]
+      ]
+    },
+    "notes": [
+      "All plans are month to month with no long-term contract; upgrades apply immediately and downgrades from the first of the next month.",
+      "You're billed only for active employees; U.S. contractors are billed at the plan's per-person fee only in months you pay them. The pricing page lists no separate contractor-only plan.",
+      "Global contractor payments cover 120+ countries with no monthly per-contractor fee; each payment costs $5 to a U.S. bank account plus foreign exchange fees.",
+      "Health insurance with Gusto as broker has no administration fee; keeping your own broker costs $6/mo per eligible employee. Workers' compensation starts at $14/mo.",
+      "Tax-advantaged accounts carry a $200 annual service charge, then $2.50/mo per HSA participant and $4/mo per FSA or commuter participant ($20/mo minimum).",
+      "The R&D tax credit service costs 15% of the credits it identifies; state tax registration is priced by state.",
+      "The pricing page lists no free trial for the payroll plans; only the Time & Attendance Plus add-on ($6/mo per person) mentions a free trial."
+    ]
   }
 }
