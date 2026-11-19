@@ -139,7 +139,7 @@ def category_page(cat):
 </div><nav class="toc" aria-label="On this page"><span class="label">On this page</span>{toc}</nav></div></div>
 {newsletter()}"""
     crumbs = [("/", "Home"), dept_crumb_ld(cat["slug"]), (url, cat["crumb"])]
-    page(url, fit_title(f"{n} Best {cat['plural']} ({YEAR}): Compared & Scored | Vettlo", f"{n} Best {cat['plural']} ({YEAR}): Compared | Vettlo", f"{n} Best {cat['plural']} ({YEAR}) | Vettlo"), cat["desc"], body, cur="/best-tools/", ptype="article",
+    page(url, fit_title(*[x.format(n=n, year=YEAR) for x in cat.get("titles", [])], f"{n} Best {cat['plural']} ({YEAR}): Compared & Scored | Vettlo", f"{n} Best {cat['plural']} ({YEAR}): Compared | Vettlo", f"{n} Best {cat['plural']} ({YEAR}) | Vettlo"), cat["desc"], body, cur="/best-tools/", ptype="article",
          jsonld=_ld(h1, url, cat["date"], crumbs, [(k, tools[k]["name"]) for k in ranked], cat["faqs"]))
 
 
@@ -548,7 +548,7 @@ def link_guides():
 # ---------- TOOL REVIEWS and CATEGORY VARIANTS (generated from the same verified category data)
 def _tslug(name):
     n = name.strip().lower()
-    n = n if n in ("customer.io",) else re.sub(r"\.(io|com|ai)$", "", n)
+    n = n if n in ("customer.io", "incident.io") else re.sub(r"\.(io|com|ai)$", "", n)
     return re.sub(r"[^a-z0-9]+", "-", n).strip("-")
 
 

@@ -1004,6 +1004,77 @@
      "priority": null
     }
    ]
+  },
+  {
+   "pillar": "best-incident-management-software",
+   "dept": "IT & security",
+   "why": "New pillar (Nov 19, 2026); no Search Console data yet. Opsgenie's April 5, 2027 shutdown creates migration demand.",
+   "articles": [
+    {
+     "slug": "what-is-incident-management",
+     "type": "explainer",
+     "title": "What Is Incident Management? The Process From Alert to Postmortem",
+     "intent": "what is incident management",
+     "angle": "Detection, triage, paging, response roles, communication and postmortems; severity levels; how tools in the pillar map to each step from category data.",
+     "status": "todo",
+     "url": "/guides/what-is-incident-management/",
+     "target_keyword": "what is incident management",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "incident-management-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Incident Management Software Cost?",
+     "intent": "incident management software pricing",
+     "angle": "Per-user vs per-responder pricing, on-call and status page add-ons, SMS/voice limits; cost for 10 and 50 responders computed from category data.",
+     "status": "todo",
+     "url": "/guides/incident-management-software-cost/",
+     "target_keyword": "incident management software cost",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "on-call-rotation",
+     "type": "how-to",
+     "title": "How to Set Up an On-Call Rotation That People Can Sustain",
+     "intent": "how to set up an on call rotation",
+     "angle": "Rotation types (weekly, follow-the-sun), escalation policies, overrides and handoffs, alert hygiene; tool features from category data. No invented team examples.",
+     "status": "todo",
+     "url": "/guides/on-call-rotation/",
+     "target_keyword": "on call rotation",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "opsgenie-end-of-life",
+     "type": "migration",
+     "title": "Opsgenie End of Life: Dates and How to Migrate",
+     "intent": "opsgenie end of life",
+     "angle": "Atlassian's end-of-sale (June 4, 2025) and end-of-support (April 5, 2027) dates from atlassian.com fetched that day; what moves to Jira Service Management; checklist for switching to another tool.",
+     "status": "todo",
+     "url": "/guides/opsgenie-end-of-life/",
+     "target_keyword": "opsgenie end of life",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    }
+   ]
   }
  ]
 }

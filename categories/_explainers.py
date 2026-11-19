@@ -112,6 +112,14 @@ EXPLAIN = {
                      ("Asset management and CMDB", "An inventory of hardware and software, and how configuration items depend on each other."),
                      ("Self-service and AI", "A knowledge base and virtual agents that answer common requests before they become tickets.")],
     },
+    "best-incident-management-software": {
+        "what": "Incident management software helps engineering and operations teams respond when a service breaks. It receives alerts from monitoring tools, pages whoever is on call through push, SMS or phone, escalates if nobody acknowledges, and gives responders a shared place, usually a Slack or Teams channel, to coordinate the fix and update stakeholders. Afterwards it records a timeline for the postmortem. Most tools price per user or responder a month, sometimes with on-call, status pages or AI sold separately.",
+        "features": [("On-call scheduling and escalation", "Rotations, overrides and escalation policies that page the next person if an alert isn't acknowledged."),
+                     ("Alert routing and grouping", "Alerts from monitoring tools routed to the right team, with duplicates grouped to cut noise."),
+                     ("Incident response in chat", "Declaring an incident, assigning roles and posting updates from Slack or Microsoft Teams."),
+                     ("Status pages", "Public or internal pages that tell customers and colleagues what is down and when it is fixed."),
+                     ("Postmortems", "Timelines, action items and retrospective templates, increasingly drafted with AI.")],
+    },
     "best-password-managers-for-business": {
         "what": "A business password manager stores logins and other secrets in encrypted vaults and lets teams share them safely, without passing passwords around in chat or spreadsheets. Admins control who can see what and enforce security policies across the company.",
         "features": [("Shared vaults", "Team and project collections with granular permissions."),

@@ -109,7 +109,7 @@ ITSM = {
         ("How much does Freshservice cost?", "Freshservice is $19 per agent per month for Starter, $49 for Growth and $99 for Pro, billed annually. Enterprise is priced on request, and Freddy AI Copilot is a $29 per agent add-on."),
         ("What's the difference between ITSM software and a help desk?", "A help desk handles tickets. ITSM software adds the ITIL processes IT teams use around them: problem management to fix root causes, change management to approve and schedule changes, and asset and configuration management to track what IT supports."),
     ],
-    "related": [("/tools/best-freshservice-alternatives/", "Best Freshservice alternatives"), ("/tools/best-help-desk-software/", "Best help desk software"), ("/it-security-software/", "All IT & security software")],
+    "related": [("/tools/best-freshservice-alternatives/", "Best Freshservice alternatives"), ("/tools/best-help-desk-software/", "Best help desk software"), ("/tools/best-incident-management-software/", "Best incident management software"), ("/it-security-software/", "All IT & security software")],
 }
 
 ITSM["others"] = [

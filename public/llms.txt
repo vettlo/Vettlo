@@ -35,6 +35,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Zendesk Alternatives](https://vettlo.com/tools/best-zendesk-alternatives/): Five help desks with lower prices or simpler setup.
 - [Best HRIS Software](https://vettlo.com/tools/best-hris-software/): Six HRIS platforms compared on records, time off, reviews and real per-employee cost.
 - [Best BambooHR Alternatives](https://vettlo.com/tools/best-bamboohr-alternatives/): Five HRIS options with lower prices, time tracking included or payroll on the same record.
+- [Best Incident Management Software](https://vettlo.com/tools/best-incident-management-software/): Six on-call and incident response tools compared on paging, postmortems, status pages and per-user price.
 - [Best Issue Tracking Software](https://vettlo.com/tools/best-issue-tracking-software/): Seven issue trackers compared on free plans, sprints and per-user price.
 - [Best Jira Alternatives](https://vettlo.com/tools/best-jira-alternatives/): Five issue trackers that are simpler, cheaper or already in your stack.
 - [Best ITSM Software](https://vettlo.com/tools/best-itsm-software/): Six ITSM tools compared on ITIL processes, assets, AI and per-agent price.
@@ -182,6 +183,12 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Rippling Review](https://vettlo.com/tools/rippling-review/): Rippling's pricing, pros, cons and score, from our payroll tools ranking.
 - [HiBob Review](https://vettlo.com/tools/hibob-review/): HiBob's pricing, pros, cons and score, from our HRIS tools ranking.
 - [Connecteam Review](https://vettlo.com/tools/connecteam-review/): Connecteam's pricing, pros, cons and score, from our HRIS tools ranking.
+- [incident.io Review](https://vettlo.com/tools/incident-io-review/): incident.io's pricing, pros, cons and score, from our incident management tools ranking.
+- [Rootly Review](https://vettlo.com/tools/rootly-review/): Rootly's pricing, pros, cons and score, from our incident management tools ranking.
+- [FireHydrant Review](https://vettlo.com/tools/firehydrant-review/): FireHydrant's pricing, pros, cons and score, from our incident management tools ranking.
+- [PagerDuty Review](https://vettlo.com/tools/pagerduty-review/): PagerDuty's pricing, pros, cons and score, from our incident management tools ranking.
+- [Better Stack Review](https://vettlo.com/tools/better-stack-review/): Better Stack's pricing, pros, cons and score, from our incident management tools ranking.
+- [ilert Review](https://vettlo.com/tools/ilert-review/): ilert's pricing, pros, cons and score, from our incident management tools ranking.
 - [Jira Review](https://vettlo.com/tools/jira-review/): Jira's pricing, pros, cons and score, from our issue tracking tools ranking.
 - [Linear Review](https://vettlo.com/tools/linear-review/): Linear's pricing, pros, cons and score, from our issue tracking tools ranking.
 - [YouTrack Review](https://vettlo.com/tools/youtrack-review/): YouTrack's pricing, pros, cons and score, from our issue tracking tools ranking.

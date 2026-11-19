@@ -228,7 +228,7 @@ DEPTS = [
     ("IT & security", "Devices, access and incidents", [
         ("best-password-managers-for-business", "Password Managers", "Shared vaults, SSO and access policies", True),
         ("best-mdm-software", "Mobile Device Management", "Device enrollment, policies and remote wipe", False),
-        ("best-incident-management-software", "Incident Management", "On-call, alerting and postmortems", False),
+        ("best-incident-management-software", "Incident Management", "On-call, alerting and postmortems", True),
         ("best-itsm-software", "ITSM Software", "Service desk, assets and change", True),
         ("best-identity-and-access-management-software", "Identity and Access Management", "SSO, MFA and provisioning", False),
         ("best-endpoint-protection-software", "Endpoint Protection", "Antivirus, EDR and device security", False),
@@ -1443,7 +1443,7 @@ DEPT_INTRO = {
     "Data & analytics": "The software teams use to collect, move and understand their data: business intelligence for dashboards, product and web analytics for user behavior, ETL tools and data warehouses for pipelines, and customer data platforms for unified profiles. Each shortlist explains how pricing scales with usage, seats or data volume.",
     "Collaboration": "The tools teams use to work together every day: video conferencing, team chat, online whiteboards, document management, e-signature and file sharing. Each shortlist compares free plan limits, per-user prices and the admin and security controls bigger companies need.",
     "Legal & compliance": "The software legal, security and operations teams use to manage contracts, risk and privacy: contract management, compliance automation for SOC 2 and ISO 27001, privacy management and policy management. Each shortlist explains what's included and how vendors price.",
-    "IT & security": "The software IT teams use to secure and support people and systems: a password manager for shared logins and access policies, and ITSM software for service requests, incidents, changes and IT assets. Each shortlist compares which plan first includes what IT asks for, such as SSO and provisioning in a password manager or change management and a CMDB in a service desk, at published prices.",
+    "IT & security": "The software IT teams use to secure and support people and systems: a password manager for shared logins and access policies, ITSM software for service requests, incidents, changes and IT assets, and incident management software for on-call paging, outage response and postmortems. Each shortlist compares which plan first includes what IT asks for, such as SSO and provisioning in a password manager, change management and a CMDB in a service desk, or on-call and status pages in an incident tool, at published prices.",
 }
 HUB_URLS = []
 

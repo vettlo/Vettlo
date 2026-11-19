@@ -121,7 +121,7 @@ CICD = {
         ("How much do GitHub Actions minutes cost?", "Beyond the included allowance (2,000 minutes on Free, 3,000 on Team at $4 per user, 50,000 on Enterprise at $21), GitHub charges $0.006 a minute on a standard 2-core Linux runner, $0.010 on Windows and $0.062 on macOS. Self-hosted runners are free and don't use the allowance."),
         ("Is it cheaper to run CI/CD on your own servers?", "Often, at high volume. GitHub doesn't charge for self-hosted runners, Azure Pipelines charges $15 a month per self-hosted parallel job with unlimited minutes, Buildkite Pro includes 10 self-hosted agents then $3.50 each, and Jenkins is free to license. You still pay for the machines and the time to maintain them."),
     ],
-    "related": [("/tools/best-jenkins-alternatives/", "Best Jenkins alternatives"), ("/tools/best-issue-tracking-software/", "Best issue tracking software"), ("/engineering-software/", "All engineering & DevOps software")],
+    "related": [("/tools/best-jenkins-alternatives/", "Best Jenkins alternatives"), ("/tools/best-issue-tracking-software/", "Best issue tracking software"), ("/tools/best-incident-management-software/", "Best incident management software"), ("/engineering-software/", "All engineering & DevOps software")],
 }
 
 CICD["others"] = [("TeamCity", "CI/CD server from JetBrains, available in the cloud or self-hosted."),
