@@ -88,7 +88,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <div><h4>Trust</h4><ul><li><a href="/methodology/">How we vet</a></li><li><a href="/how-we-make-money/">How we make money</a></li></ul></div>
 <div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
 </div>
-<div class="legal"><span>© {YEAR} Vettlo. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></span></div>
+<div class="legal"><span>© {YEAR} Vettlo. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/refunds/">Refunds</a></span></div>
 </div></footer>"""
 
 NL_SCRIPT = """<script>
@@ -1092,23 +1092,23 @@ if(r.ok){f.reset();pick(sel.value);o.textContent='Thanks, your message was sent.
 page("/privacy/", "Privacy Policy: Cookies, Analytics and Your Data | Vettlo", "How Vettlo handles information: analytics without cookies, contact forms, vendor portal accounts, payments, the providers we use and your choices.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Privacy Policy</h1><p class="small mono">Last updated Nov 20, 2026</p></div>
 <div class="page-body prose">
-<p>This policy explains what information Vettlo handles when you visit vettlo.com, contact us or use the vendor portal.</p>
+<p>This policy explains what information Vettlo handles when you visit vettlo.com, contact us or use the vendor portal. Contact: <a href="mailto:vendors@vettlo.com">vendors@vettlo.com</a> or our <a href="/contact/">contact page</a>.</p>
 <h2>Visiting the site</h2>
 <p>Vettlo does not use advertising trackers or marketing cookies. We measure visits with Cloudflare Web Analytics, which counts page views without cookies and without building a profile of you. Our hosting and security provider, Cloudflare, processes standard technical data such as IP addresses and browser details to deliver and protect the site.</p>
 <h2>Contact, suggestion and newsletter forms</h2>
 <p>When you send a form, your name, email address and message are emailed to us so we can reply. To stop abuse, we keep a one-way hashed version of your IP address for up to 24 hours.</p>
 <h2>Vendor portal</h2>
 <ul><li><b>Account details:</b> your email address, company name and website, and the name and website of the products you add.</li>
-<li><b>Billing details:</b> if you pay by card, the name, phone number, tax or ID number and address you enter for invoicing.</li>
+<li><b>Billing details:</b> if you enter them in the portal, the name, phone number, tax or ID number and address you give us for invoicing.</li>
 <li><b>Sign-in cookie:</b> when you sign in, a strictly necessary cookie keeps you signed in for up to 30 days. It isn't used for advertising or tracking.</li>
 <li><b>Visit reports:</b> we count clicks on product links using a hashed version of the visitor's IP address to tell repeat clicks apart. We don't store the IP address itself.</li>
 <li><b>Order records:</b> your orders, invoices and when you accepted our terms.</li></ul>
 <h2>Payments</h2>
-<p>Card payments are handled by a licensed payment provider. Your card details go directly to that provider; we never see or store your card number.</p>
+<p>Our order process is conducted by our online reseller Paddle.com, which is the Merchant of Record for all our orders. Paddle collects your payment and billing details, issues invoices and handles payment questions and refunds under its own <a href="https://www.paddle.com/legal/privacy" rel="nofollow">privacy policy</a>. Your card details go directly to Paddle; we never see or store your card number. Paddle tells us what you bought, your email address and the status of your subscription.</p>
 <h2>Providers we use</h2>
 <ul><li><b>Cloudflare:</b> hosting, security, database and email routing.</li>
 <li><b>Brevo:</b> sending sign-in links and service emails.</li>
-<li><b>Payment provider:</b> processing card payments.</li></ul>
+<li><b>Paddle:</b> checkout, payments, invoices and subscriptions, as our Merchant of Record.</li></ul>
 <p>Some of these providers process data outside your country.</p>
 <h2>Links to other sites</h2>
 <p>Reviews link to software vendors and review platforms. Some links are affiliate links. Those sites have their own privacy policies.</p>
@@ -1121,7 +1121,7 @@ page("/privacy/", "Privacy Policy: Cookies, Analytics and Your Data | Vettlo", "
 page("/terms/", "Terms of Use: Using Our Reviews, Content and Site | Vettlo", "The terms for using vettlo.com: how you may use our reviews and content, links to vendor sites, disclaimers and limits of liability.",
      f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Terms of Use</h1><p class="small mono">Last updated {UPDATED_H}</p></div>
 <div class="page-body prose">
-<p>By using vettlo.com you agree to these terms.</p>
+<p>By using vettlo.com you agree to these terms. Vendors who buy a position also agree to our <a href="/advertiser-terms/">advertiser terms</a> and <a href="/refunds/">refund policy</a>. Contact: <a href="mailto:vendors@vettlo.com">vendors@vettlo.com</a>.</p>
 <h2>Information, not advice</h2>
 <p>Our reviews, scores and prices are provided for general information. Vendors change prices and features often, so confirm details with the vendor before you buy. Nothing on this site is professional, legal or financial advice.</p>
 <h2>Accuracy</h2>

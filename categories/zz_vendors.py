@@ -41,13 +41,14 @@ page("/vendors/admin/", "Admin: Vettlo Vendor Portal", "Vettlo vendor portal adm
 page("/advertiser-terms/", "Advertiser Terms: Positions, Review and Billing | Vettlo",
      "The terms for buying a position on Vettlo: pages and positions #1 to #10, editorial review before going live, reservations, monthly and yearly billing, refunds.",
      """<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Advertiser terms</h1>
-<p>The terms for software vendors who buy a position on Vettlo through the vendor portal. By creating a vendor account you agree to them.</p>
-<p class="small mono">Draft · last updated Nov 17, 2026</p></div>
+<p>The terms for software vendors who buy a position on Vettlo through the vendor portal. (“Vettlo”, “we”, “us”). By creating a vendor account you agree to these terms and our <a href="/refunds/">refund policy</a>.</p>
+<p class="small mono">Last updated Nov 20, 2026</p></div>
 <div class="legal-glance"><h2>At a glance</h2><ul>
 <li><b>You pick a page and a position.</b> #1 to #10 on a category shortlist or alternatives page, one vendor per position.</li>
 <li><b>We review first.</b> Your product goes live after we publish its review. Paid time starts then.</li>
 <li><b>Scores aren't for sale.</b> A position changes where you appear, not what we write.</li>
-<li><b>Monthly or yearly.</b> Monthly renews until you stop it; yearly is 10% off and doesn't auto-renew.</li></ul></div>
+<li><b>Monthly or yearly.</b> Both renew automatically until you cancel; yearly is 10% off.</li>
+<li><b>14-day refunds.</b> A full refund for any payment within 14 days, no questions asked.</li></ul></div>
 <div class="legal-grid"><nav class="toc" aria-label="Sections"><span class="label">Sections</span><a href="#pages">1. Pages and positions</a><a href="#review">2. Editorial review</a><a href="#independence">3. What a position doesn't buy</a><a href="#reservations">4. Reservations and waitlists</a><a href="#billing">5. Prices and billing</a><a href="#ending">6. Ending a plan</a><a href="#responsibilities">7. Your responsibilities</a><a href="#guarantees">8. No guarantees</a><a href="#changes">9. Changes to these terms</a><a href="#contact">10. Contact</a></nav>
 <div class="page-body prose legal-body">
 <section id="pages"><h2>1. Pages and positions</h2><ul><li>You buy a position on a specific page: a category shortlist or an alternatives page in your product's category. Each page has positions #1 to #10, and each position is sold to one vendor at a time.</li>
@@ -58,29 +59,25 @@ page("/advertiser-terms/", "Advertiser Terms: Positions, Review and Billing | Ve
 <li>Your product goes live at its position only after its review is published and we approve it. Until then the portal shows it as in editorial review.</li>
 <li>If you've already paid, your paid time starts when the product goes live: the days spent in review are added to your plan.</li>
 <li>We may decline a product that doesn't fit the category or our standards. If we decline it after you've paid, we refund the full payment.</li>
-<li>If you cancel a paid order before your product goes live, we refund the full payment.</li></ul></section>
+<li>If you cancel a paid order before your product goes live, we refund the full payment, whenever you cancel.</li></ul></section>
 <section id="independence"><h2>3. What a position doesn't buy</h2><ul><li>A position changes where your product appears. It doesn't change its score, our review, or what we write about any other product, and you can't review or edit our text before it's published.</li>
 <li>Every page that may contain paid positions discloses that partner compensation may affect which products we include and where they appear.</li></ul></section>
 <section id="reservations"><h2>4. Reservations and waitlists</h2><ul><li>Choosing a free position reserves it for you for 7 days while you pay. Unpaid reservations lapse automatically and the position becomes free.</li>
 <li>When a position is taken, you can join its waitlist. When it frees up, the first vendor on the waitlist may claim it within 72 hours before it opens to everyone.</li></ul></section>
-<section id="billing"><h2>5. Prices and billing</h2><ul><li>Prices are shown in the portal in US dollars and are charged in advance. Yearly plans cost 12 monthly payments minus 10%.</li>
-<li>Monthly plans paid by card renew automatically each month until you stop the renewal in the portal. The position then stays live until the end of the paid month. If a renewal payment fails, the position ends when the paid month ends.</li>
-<li>Yearly plans don't renew automatically. You can renew from the portal before the year ends.</li>
-<li>Prices may change for future billing periods. A paid period keeps the price you paid, and a running monthly subscription keeps its price until you stop it.</li>
+<section id="billing"><h2>5. Prices and billing</h2><ul><li>Prices are listed on our <a href="/vendors/pricing/">pricing page</a> and in the portal in US dollars and are charged in advance. Yearly plans cost 12 monthly payments minus 10%.</li>
+<li>Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns. Applicable sales tax or VAT is added at checkout.</li>
+<li>Plans are subscriptions: monthly plans renew every month and yearly plans every year, charged to your saved payment method, until you cancel in the portal. If a renewal payment fails, the position ends when the paid period ends.</li>
+<li>Prices may change for future billing periods. A running subscription keeps its price until you cancel it.</li>
 <li>Impression and visit figures in the portal are for your information and don't affect the price.</li></ul></section>
-<section id="ending"><h2>6. Ending a plan</h2><ul><li>You can stop a monthly renewal, let a yearly plan lapse, pause your listing or close your account at any time.</li>
-<li>Once your product is live, a monthly plan you stop stays live until the end of the paid month, without a partial refund, and a yearly plan you cancel isn't refunded for the unused months.</li>
+<section id="ending"><h2>6. Ending a plan</h2><ul><li>You can cancel a plan, pause your listing or close your account at any time. A cancelled plan doesn't renew and stays live until the end of the period you paid for.</li>
+<li>You can get a full refund of any payment, first or renewal, within 14 days of that payment, no questions asked. See our <a href="/refunds/">refund policy</a>.</li>
 <li>If we remove your product or end your plan early for a reason other than a breach of these terms, we refund the unused part of the paid period.</li>
-<li>Refunds go back to the payment method you used. Turkish customers can also read our <a href="/yasal/iptal-ve-iade/" lang="tr">İptal ve İade Politikası</a>.</li>
+<li>Refunds are made by Paddle to the payment method you used.</li>
 <li>We may suspend or end the plans of accounts that breach these terms.</li></ul></section>
 <section id="responsibilities"><h2>7. Your responsibilities</h2><ul><li>The information you give us about your product and your landing page must be accurate and lawful, must not be misleading, and must not infringe anyone's rights.</li>
 <li>You're responsible for your landing pages, your tracking and your compliance with privacy laws for the visitors we send you.</li></ul></section>
 <section id="guarantees"><h2>8. No guarantees</h2><p>We don't guarantee any number of impressions, clicks or sales. The portal and its reports are provided as is.</p></section>
 <section id="changes"><h2>9. Changes to these terms</h2><p>We may update these terms. We'll announce material changes in the portal before they apply to your next billing period.</p></section>
-<section id="contact"><h2>10. Contact</h2><p>Questions about these terms or a payment: <a href="/contact/">contact us</a>.</p></section>
+<section id="contact"><h2>10. Contact</h2><p>Questions about these terms or a payment: <a href="mailto:vendors@vettlo.com">vendors@vettlo.com</a> or our <a href="/contact/">contact page</a>.</p></section>
 </div></div></div>""")
 
-# The Turkish refund policy link appears only once the Turkish legal pages are published (categories/zz_legal_tr.py).
-if not (globals().get("LEGAL_TR_READY") or globals().get("_PREVIEW")) and "/advertiser-terms/" in PAGES:
-    PAGES["/advertiser-terms/"]["body"] = PAGES["/advertiser-terms/"]["body"].replace(
-        ' Turkish customers can also read our <a href="/yasal/iptal-ve-iade/" lang="tr">İptal ve İade Politikası</a>.', "")
