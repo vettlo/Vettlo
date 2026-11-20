@@ -12,15 +12,18 @@ const CRM = '/tools/best-crm-software/', HALT = '/tools/best-hubspot-alternative
 (async () => {
   console.log('1) Pages and prices');
   const pg = await call('vc', '/api/pages');
-  ok(pg.pages.length === 56, '56 buyable pages', pg.pages.length);
+  ok(pg.pages.length >= 56 && pg.pages.every((p) => p.kind === 'shortlist' || p.kind === 'alternatives'), `${pg.pages.length} buyable pages (shortlists + alternatives)`, pg.pages.length);
   ok(pg.prices.p1.month === 15000 && pg.prices.p10.month === 1000 && pg.prices.p1.year === 162000, 'prices: #1 $150/mo, #10 $10/mo, #1 $1,620/yr');
 
   console.log('2) Vendor C adds a product with only name + site, buys #3 yearly on CRM, pays by card');
   let r = await call('vc', '/api/listings', { product_name: 'Attio', category: 'best-crm-software', website: 'https://attio.com', landing_url: 'https://attio.com/?utm_source=vettlo' });
   ok(r.ok, 'product added', r); const attio = r.id;
-  ok((await call('vc', '/api/listings', { product_name: 'X', category: 'best-crm-software', website: 'http://x.com' })).status === 400, 'http:// website rejected');
-  r = await call('vc', '/api/subscribe', { listing_id: attio, page: CRM, plan: 'p3', period: 'year' });
+  ok((await call('vc', '/api/listings', { product_name: 'X', category: 'best-crm-software', website: 'not a site' })).status === 400, 'invalid website rejected');
+  const bare = await call('vc', '/api/listings', { product_name: 'Bare', category: 'best-crm-software', website: 'bare-domain.com' });
+  ok(bare.ok && (await call('vc', '/api/listings')).listings.find((l) => l.id === bare.id).website === 'https://bare-domain.com/', 'bare domain accepted and stored as https');
+  r = await call('vc', '/api/subscribe', { listing_id: attio, page: CRM, plan: 'p3', period: 'year', accept_terms: true });
   ok(r.ok, 'reserved #3 yearly', r);
+  ok((await call('vc', '/api/subscribe', { listing_id: attio, page: HALT, plan: 'p5', period: 'month' })).status === 400, 'order without accepting the terms refused');
   let inv = (await call('vc', '/api/invoices')).rows.find((x) => x.status === 'requested');
   ok(inv && inv.amount_cents === 85320, 'invoice $853.20 (12 × $79 − 10%)', inv);
   r = await call('vc', '/api/pay', { invoice_id: inv.id });
@@ -49,9 +52,9 @@ const CRM = '/tools/best-crm-software/', HALT = '/tools/best-hubspot-alternative
   console.log('4) Monthly subscription on an alternatives page');
   r = await call('vc', '/api/listings', { product_name: 'Close', category: 'best-crm-software', website: 'https://close.com' });
   const close = r.id;
-  r = await call('vc', '/api/subscribe', { listing_id: close, page: HALT, plan: 'p1', period: 'month' });
+  r = await call('vc', '/api/subscribe', { listing_id: close, page: HALT, plan: 'p1', period: 'month', accept_terms: true });
   ok(r.ok, 'reserved #1 monthly on HubSpot alternatives', r);
-  r = await call('vc', '/api/subscribe', { listing_id: close, page: PALT, plan: 'p1', period: 'month' }); // allowed: Close isn't Pipedrive
+  r = await call('vc', '/api/subscribe', { listing_id: close, page: PALT, plan: 'p1', period: 'month', accept_terms: true }); // allowed: Close isn't Pipedrive
   ok(r.ok, 'can also reserve #1 on Pipedrive alternatives', r);
   inv = (await call('vc', '/api/invoices')).rows.find((x) => x.status === 'requested' && x.page === HALT);
   ok(inv.amount_cents === 15000, 'invoice $150', inv);
@@ -90,10 +93,10 @@ const CRM = '/tools/best-crm-software/', HALT = '/tools/best-hubspot-alternative
   console.log('7) Rules and waitlist');
   r = await call('vd', '/api/listings', { product_name: 'Pipedrive', category: 'best-crm-software', website: 'https://pipedrive.com' });
   const pd = r.id;
-  ok((await call('vd', '/api/subscribe', { listing_id: pd, page: PALT, plan: 'p2', period: 'month' })).status === 400, "can't buy on its own alternatives page");
-  ok((await call('vd', '/api/subscribe', { listing_id: pd, page: CRM, plan: 'p3', period: 'month' })).status === 409, 'taken position refused');
-  ok((await call('vd', '/api/subscribe', { listing_id: pd, page: '/tools/best-payroll-software/', plan: 'p3', period: 'month' })).status === 400, 'wrong-category page refused');
-  ok((await call('vd', '/api/subscribe', { listing_id: pd, page: HALT, plan: 'basic', period: 'year' })).status === 400, 'Basic not sold on alternatives pages');
+  ok((await call('vd', '/api/subscribe', { listing_id: pd, page: PALT, plan: 'p2', period: 'month', accept_terms: true })).status === 400, "can't buy on its own alternatives page");
+  ok((await call('vd', '/api/subscribe', { listing_id: pd, page: CRM, plan: 'p3', period: 'month', accept_terms: true })).status === 409, 'taken position refused');
+  ok((await call('vd', '/api/subscribe', { listing_id: pd, page: '/tools/best-payroll-software/', plan: 'p3', period: 'month', accept_terms: true })).status === 400, 'wrong-category page refused');
+  ok((await call('vd', '/api/subscribe', { listing_id: pd, page: HALT, plan: 'basic', period: 'year', accept_terms: true })).status === 400, 'Basic not sold on alternatives pages');
   ok((await call('vd', '/api/waitlist', { listing_id: pd, page: CRM, plan: 'p3' })).ok, 'joined waitlist for #3');
   const attioSub = await subOf('vc', 'Attio', CRM);
   await call('adm', `/api/admin/subs/${attioSub.id}/end`, {});

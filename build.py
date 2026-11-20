@@ -1089,18 +1089,31 @@ fetch('/api/form',{method:'POST',headers:{'content-type':'application/json'},bod
 if(r.ok){f.reset();pick(sel.value);o.textContent='Thanks, your message was sent. We\\'ll reply by email.';}else{o.textContent=r.error||'Something went wrong. Please try again.';}b.disabled=false;}).catch(function(){o.textContent='Network error. Please try again.';b.disabled=false;});});})();</script>""")
 
 # ---------- PRIVACY / TERMS
-page("/privacy/", "Privacy Policy: Cookies, Analytics and Your Data | Vettlo", "How Vettlo handles information when you visit the site: analytics, cookies, newsletter sign-ups, contact forms and your choices about your data.",
-     f"""<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Privacy Policy</h1><p class="small mono">Last updated {UPDATED_H}</p></div>
+page("/privacy/", "Privacy Policy: Cookies, Analytics and Your Data | Vettlo", "How Vettlo handles information: analytics without cookies, contact forms, vendor portal accounts, payments, the providers we use and your choices.",
+     """<div class="wrap"><div class="page-head"><span class="eyebrow">Legal</span><h1>Privacy Policy</h1><p class="small mono">Last updated Nov 20, 2026</p></div>
 <div class="page-body prose">
-<p>This policy explains what information Vettlo handles when you visit vettlo.com.</p>
-<h2>What we collect</h2>
-<p>Vettlo does not use advertising trackers or analytics cookies. We measure visits with Cloudflare Web Analytics, which counts page views without cookies and without building a profile of you. Our hosting provider, Cloudflare, processes standard technical data such as IP addresses and browser details to deliver and protect the site. See <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a>.</p>
-<h2>Forms and newsletter</h2>
-<p>Our newsletter and contact forms do not yet send or store any information. When they go live, we'll update this policy to say which provider handles your details and how to unsubscribe or request deletion.</p>
+<p>This policy explains what information Vettlo handles when you visit vettlo.com, contact us or use the vendor portal.</p>
+<h2>Visiting the site</h2>
+<p>Vettlo does not use advertising trackers or marketing cookies. We measure visits with Cloudflare Web Analytics, which counts page views without cookies and without building a profile of you. Our hosting and security provider, Cloudflare, processes standard technical data such as IP addresses and browser details to deliver and protect the site.</p>
+<h2>Contact, suggestion and newsletter forms</h2>
+<p>When you send a form, your name, email address and message are emailed to us so we can reply. To stop abuse, we keep a one-way hashed version of your IP address for up to 24 hours.</p>
+<h2>Vendor portal</h2>
+<ul><li><b>Account details:</b> your email address, company name and website, and the name and website of the products you add.</li>
+<li><b>Billing details:</b> if you pay by card, the name, phone number, tax or ID number and address you enter for invoicing.</li>
+<li><b>Sign-in cookie:</b> when you sign in, a strictly necessary cookie keeps you signed in for up to 30 days. It isn't used for advertising or tracking.</li>
+<li><b>Visit reports:</b> we count clicks on product links using a hashed version of the visitor's IP address to tell repeat clicks apart. We don't store the IP address itself.</li>
+<li><b>Order records:</b> your orders, invoices and when you accepted our terms.</li></ul>
+<h2>Payments</h2>
+<p>Card payments are handled by a licensed payment provider. Your card details go directly to that provider; we never see or store your card number.</p>
+<h2>Providers we use</h2>
+<ul><li><b>Cloudflare:</b> hosting, security, database and email routing.</li>
+<li><b>Brevo:</b> sending sign-in links and service emails.</li>
+<li><b>Payment provider:</b> processing card payments.</li></ul>
+<p>Some of these providers process data outside your country.</p>
 <h2>Links to other sites</h2>
 <p>Reviews link to software vendors and review platforms. Some links are affiliate links. Those sites have their own privacy policies.</p>
 <h2>Your rights</h2>
-<p>You can ask what information we hold about you, or ask us to delete it, through our <a href="/contact/">contact page</a>.</p>
+<p>You can ask what information we hold about you, or ask us to correct or delete it, through our <a href="/contact/">contact page</a>.</p>
 <h2>Changes</h2>
 <p>We'll post any changes on this page and update the date above.</p>
 </div></div>""")
@@ -1634,7 +1647,7 @@ def build():
     for path, p in PAGES.items():
         rel = out_file(path)
         # deploy version
-        doc = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
+        doc = (f'<!doctype html><html lang="{p.get("lang", "en")}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
                f'{head_block(path, p, "/assets/site.css?v=" + CSS_V)}</head><body>{body_block(p, path)}{CF_BEACON}</body></html>')
         f = site / rel
         f.parent.mkdir(parents=True, exist_ok=True)
@@ -1643,7 +1656,7 @@ def build():
         if path == "/":
             pdoc = f'<title>Vettlo Site Preview</title>{FONTS}<link rel="stylesheet" href="assets/site.css">{body_block(p, path)}'
         else:
-            pdoc = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
+            pdoc = (f'<!doctype html><html lang="{p.get("lang", "en")}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">'
                     f'<title>{p["title"]}</title>{FONTS}<link rel="stylesheet" href="/assets/site.css?v={CSS_V}"></head><body>{body_block(p, path)}</body></html>')
         pdoc = relativize(pdoc, path, rel)
         g = prev / rel

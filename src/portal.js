@@ -79,7 +79,8 @@ const ALTERS = [
   "ALTER TABLE subs ADD COLUMN auto_renew INTEGER NOT NULL DEFAULT 0", // 1 while an iyzico subscription renews it
   "ALTER TABLE subs ADD COLUMN page TEXT",                             // the page the position is on, e.g. /tools/best-crm-software/
   "ALTER TABLE plan_waitlist ADD COLUMN page TEXT",
-  "ALTER TABLE subs ADD COLUMN held_since TEXT",                       // paid, waiting for our review; paid time is added back on approval
+  "ALTER TABLE subs ADD COLUMN held_since TEXT",
+  "ALTER TABLE subs ADD COLUMN consent_at TEXT",                       // when the buyer accepted the terms (and Turkish pre-information form / contract) at checkout                       // paid, waiting for our review; paid time is added back on approval
 ];
 async function migrate(env) {
   if (migrated) return;
@@ -380,6 +381,7 @@ async function vendorApi(request, env, vendor, path) {
     const period = plan === "basic" ? "year" : PERIODS.includes(body.period) ? body.period : "month";
     if (!l) return json({ ok: false, error: "Choose one of your listings." }, 400);
     if (!plan) return json({ ok: false, error: "Choose a plan." }, 400);
+    if (body.accept_terms !== true) return json({ ok: false, error: "Please accept the terms to place your order." }, 400);
     const pg = (await pageIndex(env, request)).get(String(body.page || `/tools/${l.category}/`));
     if (!pg) return json({ ok: false, error: "Choose a page." }, 400);
     if (pg.category !== l.category) return json({ ok: false, error: "This product is listed in another category. Add it for this category first." }, 400);
@@ -392,8 +394,8 @@ async function vendorApi(request, env, vendor, path) {
     if (own) return json({ ok: false, error: "This product already has a position on this page. To change it, contact us." }, 400);
     const st = (await planState(env, pg, vendor.id)).find((x) => x.plan === plan);
     if (st.state !== "available") return json({ ok: false, error: st.state === "priority_other" ? "A vendor on the waitlist has first claim on this plan until " + st.until.slice(0, 10) + "." : "This plan is full in this category. Join the waitlist to get the next seat." }, 409);
-    const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, page, plan, period, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?,?,?, 'reserved', ?,?,?,?)")
-      .bind(vendor.id, l.id, l.category, pg.url, plan, period, amount, new Date(Date.now() + RESERVE_DAYS * 864e5).toISOString(), now(), now()).run();
+    const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, page, plan, period, status, price_cents, reserved_until, consent_at, created_at, updated_at) VALUES (?,?,?,?,?,?, 'reserved', ?,?,?,?,?)")
+      .bind(vendor.id, l.id, l.category, pg.url, plan, period, amount, new Date(Date.now() + RESERVE_DAYS * 864e5).toISOString(), now(), now(), now()).run();
     const subId = r.meta.last_row_id;
     // Race check: the earliest rows win the seats.
     const occ = await occupants(env, pg.url, plan);

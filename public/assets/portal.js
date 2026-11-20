@@ -205,9 +205,11 @@
           <label>Product name<input name="product_name" maxlength="80"></label>
           <label>Product website<input name="website" type="text" inputmode="url" autocapitalize="off" spellcheck="false" placeholder="example.com"></label>
           <p class="wide muted small">That's all we need. Our editors research the product and write its review; you'll see it as in editorial review until we publish it.</p></div>
+        <label class="pt-consent"><input type="checkbox" name="accept_terms" required> <span>I have read and agree to the <a href="/advertiser-terms/" target="_blank">advertiser terms</a><span class="pt-tr-docs" hidden>, the <a href="/yasal/on-bilgilendirme-formu/" target="_blank" lang="tr">Ön Bilgilendirme Formu</a> and the <a href="/yasal/mesafeli-hizmet-sozlesmesi/" target="_blank" lang="tr">Mesafeli Hizmet Sözleşmesi</a></span>.</span></label>
         <div class="pt-actions"><button class="btn" type="submit">Reserve ${PLAN[plan]} for ${money(cents)} / ${period}</button><button class="btn ghost small" type="button" id="pt-back">Back</button>
           <span class="muted small">We hold the position for 7 days while you pay. It goes live once our review is published, and your paid time starts then.</span></div></form>`);
     $("#pt-back").addEventListener("click", () => { SEL.plan = null; stepPosition(); });
+    fetch("/yasal/on-bilgilendirme-formu/", { method: "HEAD" }).then((r) => { if (r.ok) document.querySelectorAll(".pt-tr-docs").forEach((x) => (x.hidden = false)); }).catch(() => {});
     const f = $("#pt-order"), np = $("#pt-newprod");
     f.querySelectorAll('input[name="listing"]').forEach((r) => r.addEventListener("change", () => { np.hidden = f.listing.value !== "new"; }));
     f.addEventListener("submit", async (e) => {
@@ -219,7 +221,8 @@
         if (!c.ok) return toast(c.error, true);
         id = c.id;
       }
-      const r = await api("/api/subscribe", { method: "POST", body: { listing_id: Number(id), page: pg.url, plan, period } });
+      if (!f.accept_terms.checked) return toast("Please accept the terms to place your order.", true);
+      const r = await api("/api/subscribe", { method: "POST", body: { listing_id: Number(id), page: pg.url, plan, period, accept_terms: true } });
       if (!r.ok) return toast(r.error, true);
       SEL = { page: null, plan: null };
       toast(ME.payments === "iyzico" ? "Reserved. Pay the invoice to go live." : "Reserved. We'll email your invoice.");

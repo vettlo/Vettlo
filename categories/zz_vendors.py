@@ -57,7 +57,8 @@ page("/advertiser-terms/", "Advertiser Terms: Positions, Review and Billing | Ve
 <section id="review"><h2>2. Editorial review</h2><ul><li>You give us your product's name and website. Our editors research the product and write its review and score with the same criteria we use for every tool in the category.</li>
 <li>Your product goes live at its position only after its review is published and we approve it. Until then the portal shows it as in editorial review.</li>
 <li>If you've already paid, your paid time starts when the product goes live: the days spent in review are added to your plan.</li>
-<li>We may decline a product that doesn't fit the category or our standards. If we decline it after you've paid, we refund the full payment.</li></ul></section>
+<li>We may decline a product that doesn't fit the category or our standards. If we decline it after you've paid, we refund the full payment.</li>
+<li>If you cancel a paid order before your product goes live, we refund the full payment.</li></ul></section>
 <section id="independence"><h2>3. What a position doesn't buy</h2><ul><li>A position changes where your product appears. It doesn't change its score, our review, or what we write about any other product, and you can't review or edit our text before it's published.</li>
 <li>Every page that may contain paid positions discloses that partner compensation may affect which products we include and where they appear.</li></ul></section>
 <section id="reservations"><h2>4. Reservations and waitlists</h2><ul><li>Choosing a free position reserves it for you for 7 days while you pay. Unpaid reservations lapse automatically and the position becomes free.</li>
@@ -68,7 +69,9 @@ page("/advertiser-terms/", "Advertiser Terms: Positions, Review and Billing | Ve
 <li>Prices may change for future billing periods. A paid period keeps the price you paid, and a running monthly subscription keeps its price until you stop it.</li>
 <li>Impression and visit figures in the portal are for your information and don't affect the price.</li></ul></section>
 <section id="ending"><h2>6. Ending a plan</h2><ul><li>You can stop a monthly renewal, let a yearly plan lapse, pause your listing or close your account at any time.</li>
+<li>Once your product is live, a monthly plan you stop stays live until the end of the paid month, without a partial refund, and a yearly plan you cancel isn't refunded for the unused months.</li>
 <li>If we remove your product or end your plan early for a reason other than a breach of these terms, we refund the unused part of the paid period.</li>
+<li>Refunds go back to the payment method you used. Turkish customers can also read our <a href="/yasal/iptal-ve-iade/" lang="tr">İptal ve İade Politikası</a>.</li>
 <li>We may suspend or end the plans of accounts that breach these terms.</li></ul></section>
 <section id="responsibilities"><h2>7. Your responsibilities</h2><ul><li>The information you give us about your product and your landing page must be accurate and lawful, must not be misleading, and must not infringe anyone's rights.</li>
 <li>You're responsible for your landing pages, your tracking and your compliance with privacy laws for the visitors we send you.</li></ul></section>
@@ -76,3 +79,8 @@ page("/advertiser-terms/", "Advertiser Terms: Positions, Review and Billing | Ve
 <section id="changes"><h2>9. Changes to these terms</h2><p>We may update these terms. We'll announce material changes in the portal before they apply to your next billing period.</p></section>
 <section id="contact"><h2>10. Contact</h2><p>Questions about these terms or a payment: <a href="/contact/">contact us</a>.</p></section>
 </div></div></div>""")
+
+# The Turkish refund policy link appears only once the Turkish legal pages are published (categories/zz_legal_tr.py).
+if not (globals().get("LEGAL_TR_READY") or globals().get("_PREVIEW")) and "/advertiser-terms/" in PAGES:
+    PAGES["/advertiser-terms/"]["body"] = PAGES["/advertiser-terms/"]["body"].replace(
+        ' Turkish customers can also read our <a href="/yasal/iptal-ve-iade/" lang="tr">İptal ve İade Politikası</a>.', "")
