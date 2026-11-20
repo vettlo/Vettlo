@@ -347,6 +347,8 @@
       ${d.waitlist.map((w) => `<tr><td>${ptitle(w.page)}</td><td>${PLAN[w.plan]}</td><td>${esc(w.product_name)}</td><td>${esc(w.company)}</td><td>${D(w.created_at)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">Empty.</td></tr>`}</tbody></table></div>
       <h2>Vendors</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Company</th><th>Email</th><th>Website</th><th>Joined</th></tr></thead><tbody>
       ${d.vendors.map((v) => `<tr><td>${esc(v.company || "")}</td><td>${esc(v.email)}</td><td>${esc(v.website || "")}</td><td>${D(v.created_at)}</td></tr>`).join("")}</tbody></table></div>
+      <h2>Payments</h2><div class="pt-card"><p class="muted small">Creates the Paddle products and prices for every position and billing period (matching the pricing page). Safe to run again; existing ones are reused.</p>
+        <div class="pt-actions"><button class="btn small" id="pt-paddle-sync">Sync Paddle catalog</button></div></div>
       <h2>Sponsor traffic, last 30 days</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Day</th><th>Impressions</th><th>Visits</th></tr></thead><tbody>
       ${d.stats.map((c) => `<tr><td>${c.day}</td><td>${c.impressions}</td><td>${c.clicks}</td></tr>`).join("") || `<tr><td colspan="3" class="muted">No data yet.</td></tr>`}</tbody></table></div>`;
     labelTables($("#pt-view"));
@@ -355,7 +357,9 @@
       if (b.dataset.act === "approved" && !tr.querySelector("[name=tool]").value && !confirm("This product isn't matched to a tool on our list, so ranked positions won't show yet. Approve anyway?")) return;
       post(`/api/admin/listings/${tr.dataset.id}`, { status: b.dataset.act, tool_id: tr.querySelector("[name=tool]").value, review_note: tr.querySelector("[name=note]").value }); }));
     document.querySelectorAll("[data-iact]").forEach((b) => b.addEventListener("click", () => { const tr = b.closest("tr"); post(`/api/admin/invoices/${tr.dataset.iid}`, { status: b.dataset.iact, ref: tr.querySelector("[name=ref]").value }); }));
-    document.querySelectorAll("[data-sact]").forEach((b) => b.addEventListener("click", () => { if (confirm("End this plan now? The vendor won't be refunded automatically.")) post(`/api/admin/subs/${b.closest("tr").dataset.sid}/end`, {}); }));
+    $("#pt-paddle-sync").addEventListener("click", async (ev) => { ev.target.disabled = true; const r = await api("/api/admin/paddle/sync", { method: "POST", body: {} });
+      toast(r.ok ? `Paddle ${r.sandbox ? "sandbox" : "live"} catalog ready: ${r.count} prices.` : r.error, !r.ok); ev.target.disabled = false; });
+    document.querySelectorAll("[data-sact]").forEach((b) => b.addEventListener("click", () => { if (confirm("End this plan now? Its Paddle subscription is cancelled too. Refunds are issued in Paddle.")) post(`/api/admin/subs/${b.closest("tr").dataset.sid}/end`, {}); }));
   }
 
   const mode = document.body.dataset.portal || ($("#pt-root") || {}).dataset?.portal;

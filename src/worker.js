@@ -2,7 +2,7 @@
 // Mail goes through Cloudflare Email Routing's send_email binding to the verified
 // address stored in the FORM_TO variable (set in the Cloudflare dashboard, not in this repo).
 import { EmailMessage } from "cloudflare:email";
-import { handlePortalApi, handleGo, placeOnShortlist, rateLimited, paytrRenewals } from "./portal.js";
+import { handlePortalApi, handleGo, handleCheckoutPage, placeOnShortlist, rateLimited } from "./portal.js";
 
 // Same security headers as public/_headers, added to everything the Worker returns (API, redirects, shortlist pages).
 const SECURITY = {
@@ -102,10 +102,6 @@ export default {
   async fetch(request, env, ctx) {
     return secure(await route(request, env, ctx));
   },
-  // Daily: charge stored cards (PayTR) for plans that renew within a day.
-  async scheduled(event, env, ctx) {
-    ctx.waitUntil(paytrRenewals(env));
-  },
 };
 
 async function route(request, env, ctx) {
@@ -117,6 +113,7 @@ async function route(request, env, ctx) {
     }
     if (url.pathname.startsWith("/api/")) return handlePortalApi(request, env, url.pathname);
     if (url.pathname.startsWith("/go/")) return handleGo(request, env, ctx);
+    if (url.pathname === "/vendors/checkout/" || url.pathname === "/vendors/checkout") return handleCheckoutPage(request, env); // Paddle default payment link
     if (!/\.[a-z0-9]+$/i.test(url.pathname)) {  // pages only, not assets
       const to = (await redirects(env, request))[url.pathname.endsWith("/") ? url.pathname : url.pathname + "/"];
       if (to) return new Response(null, { status: 301, headers: { location: new URL(to, url).toString() + url.search, "cache-control": "public, max-age=86400" } });
