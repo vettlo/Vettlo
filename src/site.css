@@ -1066,7 +1066,7 @@ details.breakdown .criteria { margin-top: .9rem; }
 @media (max-width: 860px) { .vladder { justify-self: stretch; max-width: none; } }
 @media (max-width: 420px) { .vl-you .vl-name small { display: none; } .vladder li { grid-template-columns: 1.4rem 2rem 1fr auto; gap: .55rem; } }
 /* Turkish legal pages */
-.legal-table { width: 100%; border-collapse: collapse; margin: .6rem 0 1rem; font-size: .95rem; }
+.legal-table { width: 100%; min-width: 0; border-collapse: collapse; margin: .6rem 0 1rem; font-size: .95rem; }
 .legal-table th, .legal-table td { text-align: left; padding: .55rem .75rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 .legal-table tbody th { width: 34%; color: var(--ink-2); font-weight: 600; }
 .legal-table thead th { background: var(--band); }
@@ -1074,3 +1074,5 @@ mark.gap { background: #fff1a8; color: #5a4500; padding: 0 .3rem; border-radius:
 .legal-grid .toc a[aria-current="page"] { color: var(--brand); font-weight: 600; }
 .pt-consent { display: flex !important; gap: .6rem !important; align-items: flex-start; font-size: .92rem; color: var(--ink-2); margin-top: .4rem; }
 .pt-consent input { width: auto !important; margin-top: .2rem; accent-color: var(--brand); }
+.about .split > * { min-width: 0; }
+@media (max-width: 560px) { .legal-table th, .legal-table td { padding: .5rem .45rem; font-size: .88rem; } }
