@@ -20,6 +20,6 @@ refund and admin End.
 
 1. `node scripts/portal-test/mock-paddle.js &`
 2. `.dev.vars` (never commit): `ADMIN_EMAILS=admin@ex.com`, `PADDLE_API_KEY=test-api-key`, `PADDLE_CLIENT_TOKEN=test_client_token`,
-   `PADDLE_WEBHOOK_SECRET=test-webhook-secret`, `PADDLE_BASE_URL=http://localhost:9997`
+   `PADDLE_WEBHOOK_SECRET=test-webhook-secret`, `PADDLE_BASE_URL=http://localhost:9997`, `PADDLE_CHECKOUT=1`
 3. Start wrangler as above with `--persist-to <dir>`, open `/api/categories` once, seed vendors 1–3 and sessions `adm`, `vc`, `vd`
 4. `WRANGLER=<path to wrangler> STATE=<dir> node scripts/portal-test/e2e-paddle.js` → expect "0 failed"

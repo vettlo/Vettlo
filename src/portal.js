@@ -310,7 +310,7 @@ async function vendorApi(request, env, vendor, path) {
 
   if (path === "/api/me" && method === "GET") {
     return json({ ok: true, vendor: { id: vendor.id, email: vendor.email, company: vendor.company, website: vendor.website, is_admin: vendor.is_admin },
-      payments: payMode(env), subscriptions: subsEnabled(env) || paddleOn(env) });
+      payments: payMode(env), subscriptions: subsEnabled(env) || payMode(env) === "paddle" });
   }
   if (path === "/api/me" && method === "PUT") {
     const company = oneLine(body.company, 120) || vendor.company;
@@ -585,7 +585,7 @@ async function activateInvoice(env, inv, ref) {
 
 // ---------- card payments through iyzico (Checkout Form)
 const money = (c) => "$" + (c / 100).toFixed(2);
-function payMode(env) { return paddleOn(env) ? "paddle" : env.IYZICO_API_KEY && env.IYZICO_SECRET_KEY ? "iyzico" : "invoice"; }
+function payMode(env) { return paddleOn(env) && env.PADDLE_CHECKOUT === "1" ? "paddle" : env.IYZICO_API_KEY && env.IYZICO_SECRET_KEY ? "iyzico" : "invoice"; }
 // Monthly card plans renew through iyzico's Subscription add-on once it's enabled on the merchant account (IYZICO_SUBSCRIPTIONS=1).
 const subsEnabled = (env) => payMode(env) === "iyzico" && env.IYZICO_SUBSCRIPTIONS === "1";
 const iyzicoBase = (env) => env.IYZICO_BASE_URL || (env.IYZICO_LIVE === "1" ? "https://api.iyzipay.com" : "https://sandbox-api.iyzipay.com");
@@ -789,6 +789,8 @@ async function iyzicoWebhook(request, env) {
 //   PADDLE_CLIENT_TOKEN    same page, client-side token (starts with test_ in sandbox, live_ in production)
 //   PADDLE_WEBHOOK_SECRET  Paddle → Developer tools → Notifications → destination https://vettlo.com/api/paddle/webhook
 //                          (events: transaction.completed, subscription.*, adjustment.*), its secret key
+//   PADDLE_CHECKOUT=1      switches vendor payments to Paddle (after Paddle approves the account and vettlo.com);
+//                          without it the keys only power the admin catalog sync
 //   PADDLE_BASE_URL        only for the local test mock
 // Paddle → Checkout → Checkout settings → Default payment link: https://vettlo.com/vendors/checkout/
 // Paddle sells to the vendor; we keep only Paddle's subscription id in subs.provider_sub as "paddle:<sub_...>".
@@ -849,7 +851,7 @@ async function paddleCheckoutPage(request, env) {
   const vendor = await currentVendor(request, env);
   const txn = new URL(request.url).searchParams.get("_ptxn") || "";
   const own = vendor && /^txn_[a-z0-9]+$/i.test(txn) && (await env.DB.prepare("SELECT 1 FROM pay_sessions WHERE token = ? AND vendor_id = ?").bind(txn, vendor.id).first());
-  if (!paddleOn(env) || !own) return Response.redirect(new URL("/vendors/app/#invoices", request.url).toString(), 302);
+  if (payMode(env) !== "paddle" || !own) return Response.redirect(new URL("/vendors/app/#invoices", request.url).toString(), 302);
   const nonce = randomToken().slice(0, 24);
   const cfg = JSON.stringify({ token: env.PADDLE_CLIENT_TOKEN, sandbox: paddleSandbox(env), txn, email: vendor.email }).replace(/</g, "\\u003c");
   const page = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
