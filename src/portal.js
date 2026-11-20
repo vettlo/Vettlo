@@ -68,6 +68,7 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS iyzico_refs (key TEXT PRIMARY KEY, ref TEXT NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS pay_forms (token TEXT PRIMARY KEY, invoice_id INTEGER NOT NULL, vendor_id INTEGER NOT NULL, html TEXT NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS hits (key TEXT NOT NULL, ts TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS notices (sub_id INTEGER NOT NULL, kind TEXT NOT NULL, period_end TEXT NOT NULL, created_at TEXT NOT NULL, PRIMARY KEY (sub_id, kind, period_end))`,
   `CREATE INDEX IF NOT EXISTS hits_key_ts ON hits(key, ts)`,
   `CREATE TABLE IF NOT EXISTS ledger (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, amount_cents INTEGER NOT NULL, kind TEXT NOT NULL,
      status TEXT NOT NULL, note TEXT, provider_ref TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
@@ -498,6 +499,15 @@ async function adminApi(request, env, vendor, path) {
         WHERE (s.status = 'active' AND s.paid_through > ?) OR (s.status = 'reserved' AND s.reserved_until > ?) ORDER BY s.page, CASE WHEN s.plan = 'basic' THEN 99 ELSE CAST(substr(s.plan, 2) AS INTEGER) END, s.started_at`, now(), now()),
       invoices: await q(`SELECT i.*, s.category, s.page, s.plan, s.period, s.status AS sub_status, l.product_name, v.company, v.email FROM invoices i JOIN vendors v ON v.id = i.vendor_id
         LEFT JOIN subs s ON s.id = i.slot_id LEFT JOIN listings l ON l.id = s.listing_id ORDER BY CASE i.status WHEN 'requested' THEN 0 ELSE 1 END, i.created_at DESC LIMIT 200`),
+      customers: await q(`SELECT s.*, l.product_name, l.website, l.status AS listing_status, l.tool_id, v.company, v.email,
+        (SELECT MAX(i.updated_at) FROM invoices i WHERE i.slot_id = s.id AND i.status = 'paid') AS last_paid_at,
+        (SELECT i.provider_ref FROM invoices i WHERE i.slot_id = s.id AND i.status = 'paid' ORDER BY i.updated_at DESC LIMIT 1) AS last_ref,
+        (SELECT COALESCE(SUM(i.amount_cents), 0) FROM invoices i WHERE i.slot_id = s.id AND i.status = 'paid') AS paid_total,
+        (SELECT i.id FROM invoices i WHERE i.slot_id = s.id AND i.status = 'requested' ORDER BY i.id LIMIT 1) AS open_invoice,
+        (SELECT i.amount_cents FROM invoices i WHERE i.slot_id = s.id AND i.status = 'requested' ORDER BY i.id LIMIT 1) AS open_amount
+        FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
+        WHERE s.status = 'active' OR (s.status = 'reserved' AND s.reserved_until > ?) OR s.updated_at > ?
+        ORDER BY CASE WHEN s.status = 'active' AND s.paid_through > ? THEN 0 WHEN s.status = 'reserved' THEN 1 ELSE 2 END, s.paid_through`, now(), new Date(Date.now() - 90 * 864e5).toISOString(), now()),
       waitlist: await q("SELECT w.*, l.product_name, v.company FROM plan_waitlist w JOIN listings l ON l.id = w.listing_id JOIN vendors v ON v.id = w.vendor_id ORDER BY w.page, CAST(substr(w.plan, 2) AS INTEGER), w.created_at"),
       stats: await q(`SELECT d.day, COALESCE((SELECT SUM(n) FROM impressions i WHERE i.day = d.day),0) AS impressions, COALESCE((SELECT SUM(billable) FROM clicks c WHERE substr(c.ts,1,10) = d.day),0) AS clicks
         FROM (SELECT DISTINCT day FROM impressions WHERE day >= ? UNION SELECT DISTINCT substr(ts,1,10) FROM clicks WHERE ts >= ?) d ORDER BY d.day DESC`, new Date(Date.now() - 30 * 864e5).toISOString().slice(0, 10), new Date(Date.now() - 30 * 864e5).toISOString()) });
@@ -524,6 +534,7 @@ async function adminApi(request, env, vendor, path) {
     const r = await activateInvoice(env, inv, oneLine(body.ref, 120) || "manual");
     return json(r, r.ok ? 200 : 409);
   }
+  if (path === "/api/admin/orders" && method === "POST") return adminCreateOrder(request, env, body);
   if (path === "/api/admin/paddle/sync" && method === "POST") {
     if (!paddleOn(env)) return json({ ok: false, error: "Paddle isn't connected yet (add the PADDLE_* settings in Cloudflare)." }, 400);
     try { const prices = await paddleSyncCatalog(env); return json({ ok: true, count: prices.length, sandbox: paddleSandbox(env), prices }); }
@@ -966,6 +977,128 @@ async function paddleAlignBilling(env, s) {
   const id = s.provider_sub.slice(7);
   const r = await paddle(env, `/subscriptions/${encodeURIComponent(id)}`, { next_billed_at: s.paid_through, proration_billing_mode: "do_not_bill" }, "PATCH");
   if (r.error) await notifyAdmin(env, "Paddle billing date not moved", [`Subscription ${id} (${PLAN_NAME[s.plan]} on ${s.page}): set its next billing date to ${s.paid_through.slice(0, 10)} in Paddle by hand. Error: ${r.error}`]);
+}
+
+// ---------- admin-led sales: orders entered by the admin, invoices paid outside the site (Payoneer payment requests)
+const PERIOD_WORD = { month: "monthly", year: "yearly" };
+// Service emails to vendors (Brevo). Sent from vendors@vettlo.com when Brevo accepts it, otherwise from MAIL_FROM.
+async function mailVendor(env, to, subject, text) {
+  if (!env.BREVO_API_KEY || !to) return false;
+  for (const from of [env.VENDOR_MAIL_FROM || "vendors@vettlo.com", env.MAIL_FROM || "editor@vettlo.com"]) {
+    try {
+      const r = await fetch("https://api.brevo.com/v3/smtp/email", { method: "POST",
+        headers: { "api-key": env.BREVO_API_KEY, "content-type": "application/json", accept: "application/json" },
+        body: JSON.stringify({ sender: { name: "Vettlo", email: from }, replyTo: { email: "vendors@vettlo.com", name: "Vettlo" }, to: [{ email: to }], subject, textContent: text }) });
+      if (r.ok) return true;
+    } catch (e) { /* try the next sender */ }
+  }
+  return false;
+}
+const pageLabel = (pg) => (pg && (pg.title || pg.url)) || "";
+async function adminCreateOrder(request, env, b) {
+  const email = oneLine(b.email, 200).toLowerCase();
+  const company = oneLine(b.company, 120);
+  const product = oneLine(b.product_name, 120);
+  const site = toUrl(b.product_website);
+  if (!isEmail(email)) return json({ ok: false, error: "Enter the vendor's email address." }, 400);
+  if (!company || !product) return json({ ok: false, error: "Enter the company and product name." }, 400);
+  if (!site) return json({ ok: false, error: "Enter the product's website, e.g. example.com." }, 400);
+  const pg = (await pageIndex(env, request)).get(String(b.page || ""));
+  if (!pg) return json({ ok: false, error: "Choose a page." }, 400);
+  const plan = PLANS.includes(b.plan) ? b.plan : null;
+  const period = plan === "basic" ? "year" : PERIODS.includes(b.period) ? b.period : null;
+  if (!plan || !period) return json({ ok: false, error: "Choose a position and billing period." }, 400);
+  if (plan === "basic" && pg.kind !== "shortlist") return json({ ok: false, error: "Basic listings are only on category shortlists." }, 400);
+  const tool = oneLine(b.tool_id, 60) || null;
+  if (tool && pg.exclude && tool === pg.exclude) return json({ ok: false, error: "A product can't take a position on its own alternatives page." }, 400);
+  const custom = Math.round(Number(b.price) * 100);
+  const amount = custom > 0 ? custom : priceOf(env, plan, period);
+  if (!amount) return json({ ok: false, error: "No price for this plan." }, 400);
+  // vendor and listing (reused when they already exist)
+  let v = await env.DB.prepare("SELECT * FROM vendors WHERE email = ?").bind(email).first();
+  if (!v) {
+    await env.DB.prepare("INSERT INTO vendors (email, company, website, created_at, status) VALUES (?,?,?,?, 'active')").bind(email, company, site, now()).run();
+    v = await env.DB.prepare("SELECT * FROM vendors WHERE email = ?").bind(email).first();
+  } else if (!v.company) await env.DB.prepare("UPDATE vendors SET company = ? WHERE id = ?").bind(company, v.id).run();
+  let l = await env.DB.prepare("SELECT * FROM listings WHERE vendor_id = ? AND category = ? AND lower(product_name) = lower(?)").bind(v.id, pg.category, product).first();
+  if (!l) {
+    const st = tool || plan === "basic" ? "approved" : "pending";
+    await env.DB.prepare(`INSERT INTO listings (vendor_id, product_name, website, landing_url, category, tool_id, status, created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?)`)
+      .bind(v.id, product, site, site, pg.category, tool, st, now(), now()).run();
+    l = await env.DB.prepare("SELECT * FROM listings WHERE vendor_id = ? AND category = ? AND lower(product_name) = lower(?)").bind(v.id, pg.category, product).first();
+  } else if (tool && (l.tool_id !== tool || l.status !== "approved")) {
+    await env.DB.prepare("UPDATE listings SET tool_id = ?, status = 'approved', updated_at = ? WHERE id = ?").bind(tool, now(), l.id).run();
+    l = { ...l, tool_id: tool, status: "approved" };
+  }
+  if (await env.DB.prepare(`SELECT 1 FROM subs WHERE listing_id = ?2 AND page = ?3 AND ${LIVE}`).bind(now(), l.id, pg.url).first())
+    return json({ ok: false, error: "This product already has a position on this page." }, 400);
+  const stt = (await planState(env, pg, v.id)).find((x) => x.plan === plan);
+  if (!stt || !["available", "priority_other"].includes(stt.state)) return json({ ok: false, error: `${PLAN_NAME[plan]} on this page is taken.` }, 409);
+  const hold = Math.min(30, Math.max(1, Number(b.hold_days) || 14));
+  const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, page, plan, period, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?,?,?, 'reserved', ?,?,?,?)")
+    .bind(v.id, l.id, l.category, pg.url, plan, period, amount, new Date(Date.now() + hold * 864e5).toISOString(), now(), now()).run();
+  const subId = r.meta.last_row_id;
+  const occ = await occupants(env, pg.url, plan);
+  if (occ.findIndex((o) => o.id === subId) >= CAPACITY[plan]) { await env.DB.prepare("UPDATE subs SET status = 'cancelled', updated_at = ? WHERE id = ?").bind(now(), subId).run(); return json({ ok: false, error: "That position was just taken." }, 409); }
+  const ir = await env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(v.id, subId, amount, now(), now()).run();
+  const inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ?").bind(ir.meta.last_row_id).first();
+  let activated = null;
+  if (b.paid) {
+    activated = await activateInvoice(env, inv, oneLine(b.ref, 120) || "payoneer");
+    if (!activated.ok) return json({ ok: false, error: activated.error }, 409);
+  }
+  let mailed = false;
+  if (b.notify) {
+    const live = liveReady(l, plan);
+    mailed = await mailVendor(env, email, `Your Vettlo order: ${PLAN_NAME[plan]} on ${pageLabel(pg)}`,
+      `Hi,\n\nThank you for your order. Here are the details:\n\nProduct: ${product}\nPage: ${pageLabel(pg)} (https://vettlo.com${pg.url})\nPosition: ${PLAN_NAME[plan]}\nBilling: ${PERIOD_WORD[period]}, ${money(amount)}\n\n`
+      + (b.paid ? "We've received your payment. " : `You'll receive a payment request from Payoneer for ${money(amount)} shortly. You can pay it by card or bank transfer. `)
+      + (live ? "Your product goes live at this position as soon as the payment is confirmed.\n\n" : "We're researching your product and writing its review. Your paid time starts the day it goes live, so the review days don't count against your plan.\n\n")
+      + `You can sign in at https://vettlo.com/vendors/login/ with this email address to see your listing and its traffic.\n\nTerms: https://vettlo.com/advertiser-terms/\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
+  }
+  await clearPlacements();
+  return json({ ok: true, sub_id: subId, invoice_id: inv.id, amount_cents: amount, paid: !!b.paid, paid_through: activated && activated.paid_through, mailed, listing_status: l.status });
+}
+
+// Daily billing job (Worker cron): opens renewal invoices 7 days before a plan ends, reminds the vendor the day before,
+// and tells the admin what to send through Payoneer. Plans that renew through a card provider are skipped.
+export async function billingDaily(env) {
+  if (!env.DB) return { renewals: 0 };
+  await migrate(env);
+  const t = now(), week = new Date(Date.now() + 7 * 864e5).toISOString(), day = new Date(Date.now() + 1.5 * 864e5).toISOString();
+  const lines = { renew: [], remind: [], lapsed: [] };
+  const mark = async (s, kind) => (await env.DB.prepare("INSERT OR IGNORE INTO notices (sub_id, kind, period_end, created_at) VALUES (?,?,?,?)").bind(s.id, kind, s.paid_through, t).run()).meta.changes > 0;
+  const base = `SELECT s.*, l.product_name, v.email, v.company FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
+    WHERE s.status = 'active' AND s.auto_renew = 0 AND s.held_since IS NULL AND v.status = 'active'`;
+  for (const s of (await env.DB.prepare(base + " AND s.paid_through > ? AND s.paid_through <= ?").bind(t, week).all()).results) {
+    if (!(await mark(s, "renewal"))) continue;
+    let inv = await env.DB.prepare("SELECT * FROM invoices WHERE slot_id = ? AND status = 'requested' ORDER BY id LIMIT 1").bind(s.id).first();
+    if (!inv) {
+      await env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(s.vendor_id, s.id, s.price_cents, t, t).run();
+      inv = { amount_cents: s.price_cents };
+    }
+    lines.renew.push(`• ${s.company} <${s.email}>: ${money(inv.amount_cents)} for ${PLAN_NAME[s.plan]} (${PERIOD_WORD[s.period]}) on ${s.page}, ${s.product_name}. Ends ${s.paid_through.slice(0, 10)}.`);
+    await mailVendor(env, s.email, `Your Vettlo plan renews on ${s.paid_through.slice(0, 10)}`,
+      `Hi,\n\nYour ${PLAN_NAME[s.plan]} for ${s.product_name} on https://vettlo.com${s.page} ends on ${s.paid_through.slice(0, 10)}.\n\nTo keep it, pay the ${PERIOD_WORD[s.period]} renewal of ${money(inv.amount_cents)}. You'll receive a payment request from Payoneer in the next day or two; you can pay it by card or bank transfer.\n\nIf you'd rather not renew, just reply and let us know. The position then ends on that date and opens up for other vendors.\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
+  }
+  for (const s of (await env.DB.prepare(base + " AND s.paid_through > ? AND s.paid_through <= ? AND EXISTS (SELECT 1 FROM invoices i WHERE i.slot_id = s.id AND i.status = 'requested')").bind(t, day).all()).results) {
+    if (!(await mark(s, "reminder"))) continue;
+    lines.remind.push(`• ${s.company} <${s.email}>: ${PLAN_NAME[s.plan]} on ${s.page} ends ${s.paid_through.slice(0, 10)}, renewal still unpaid.`);
+    await mailVendor(env, s.email, `Reminder: your Vettlo position ends ${s.paid_through.slice(0, 10)}`,
+      `Hi,\n\nA quick reminder: your ${PLAN_NAME[s.plan]} for ${s.product_name} on https://vettlo.com${s.page} ends on ${s.paid_through.slice(0, 10)} and the renewal hasn't been paid yet. You can pay it through the Payoneer payment request we sent.\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
+  }
+  for (const s of (await env.DB.prepare(base + " AND s.paid_through <= ? AND s.paid_through > ?").bind(t, new Date(Date.now() - 3 * 864e5).toISOString()).all()).results) {
+    if (!(await mark(s, "lapsed"))) continue;
+    lines.lapsed.push(`• ${s.company}: ${PLAN_NAME[s.plan]} on ${s.page} ended ${s.paid_through.slice(0, 10)} unpaid and was taken off the page. A late payment still restarts it if the position is free.`);
+  }
+  if (lines.renew.length || lines.remind.length || lines.lapsed.length) {
+    await clearPlacements();
+    await notifyAdmin(env, `Billing: ${lines.renew.length} renewal${lines.renew.length === 1 ? "" : "s"} to send`, [
+      lines.renew.length ? "Send a Payoneer payment request (Get Paid → Request a payment) to each, then mark the invoice paid in the admin page when it arrives:\n" + lines.renew.join("\n") : "",
+      lines.remind.length ? "\nUnpaid, ending tomorrow (the vendor got a reminder):\n" + lines.remind.join("\n") : "",
+      lines.lapsed.length ? "\nEnded unpaid:\n" + lines.lapsed.join("\n") : ""]);
+  }
+  return { renewals: lines.renew.length, reminders: lines.remind.length, lapsed: lines.lapsed.length };
 }
 
 // ---------- click tracking (reporting only; positions are billed monthly, not per click)

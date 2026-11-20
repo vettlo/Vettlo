@@ -13,5 +13,7 @@
   "send_email": [{ "name": "SEND" }],
   // Vendor portal data (vendors, listings, clicks, ledger). Tables are created by src/portal.js on first use.
   "d1_databases": [{ "binding": "DB", "database_name": "vettlo", "database_id": "42829df1-e54c-426d-b625-3fd9e2851fc8" }],
-  "keep_vars": true
+  "keep_vars": true,
+  // Daily billing job (05:47 UTC = 08:47 Istanbul): renewal invoices, reminders, admin to-do email.
+  "triggers": { "crons": ["47 5 * * *"] }
 }

@@ -23,3 +23,9 @@ refund and admin End.
    `PADDLE_WEBHOOK_SECRET=test-webhook-secret`, `PADDLE_BASE_URL=http://localhost:9997`, `PADDLE_CHECKOUT=1`
 3. Start wrangler as above with `--persist-to <dir>`, open `/api/categories` once, seed vendors 1–3 and sessions `adm`, `vc`, `vd`
 4. `WRANGLER=<path to wrangler> STATE=<dir> node scripts/portal-test/e2e-paddle.js` → expect "0 failed"
+
+## Admin-led sales (current setup: invoices paid through Payoneer)
+
+`e2e-billing.js`: admin order form, customers list, mark paid, review hold, and the daily billing job (renewal invoice
+7 days before the end, reminder the day before, lapse report). `.dev.vars`: only `ADMIN_EMAILS=admin@ex.com`; start
+wrangler with `--test-scheduled`; seed vendors 1–2 with sessions `adm`, `vc`; run with `WRANGLER=… STATE=…`.
