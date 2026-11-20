@@ -225,7 +225,7 @@
       const r = await api("/api/subscribe", { method: "POST", body: { listing_id: Number(id), page: pg.url, plan, period, accept_terms: true } });
       if (!r.ok) return toast(r.error, true);
       SEL = { page: null, plan: null };
-      toast(ME.payments === "iyzico" ? "Reserved. Pay the invoice to go live." : "Reserved. We'll email your invoice.");
+      toast(ME.payments !== "invoice" ? "Reserved. Pay the invoice to go live." : "Reserved. We'll email your invoice.");
       showTab("invoices");
     });
   }
@@ -250,14 +250,14 @@
   async function invoices() {
     const rows = (await api("/api/invoices")).rows || [];
     if (!PAGES) { const d = await api("/api/pages"); PAGES = d.pages || []; PRICES = d.prices || {}; }
-    const card = ME.payments === "iyzico";
+    const card = ME.payments !== "invoice";
     const res = new URLSearchParams(location.search).get("pay");
     const msg = { ok: "Payment received. Your plan is active; it goes live on the site as soon as your listing is approved.", failed: "The payment didn't go through. You haven't been charged; please try again.",
-      error: "We couldn't confirm that payment. If you were charged, contact us and we'll sort it out.", pending: "Your monthly plan is set up. We're waiting for iyzico to confirm the first charge; it goes live as soon as it does.", held: "Payment received, but the plan couldn't start automatically. We'll contact you shortly." }[res];
+      error: "We couldn't confirm that payment. If you were charged, contact us and we'll sort it out.", pending: "We're waiting for the payment provider to confirm your payment. Your plan starts as soon as it does; refresh in a minute.", held: "Payment received, but the plan couldn't start automatically. We'll contact you shortly." }[res];
     if (res) history.replaceState(null, "", location.pathname + "#invoices");
     view(`<div class="pt-head"><h2>Invoices</h2></div>
       ${msg ? `<div class="pt-note">${msg}</div>` : ""}
-      <p class="muted">${card ? "Pay open invoices by card. Payments are processed securely by iyzico; your plan starts, or is extended by its billing period, as soon as the payment is confirmed." : "We email an invoice for each new plan and renewal. Your plan goes live, or is extended by its billing period, as soon as payment arrives."}</p>
+      <p class="muted">${card ? "Pay open invoices by card. Card details go straight to our payment provider and are never stored by Vettlo; your plan starts, or is extended by its billing period, as soon as the payment is confirmed." : "We email an invoice for each new plan and renewal. Your plan goes live, or is extended by its billing period, as soon as payment arrives."}</p>
       ${rows.length ? `<div class="table-wrap"><table class="pt-table"><thead><tr><th>Date</th><th>For</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
       ${rows.map((x) => `<tr><td>${date(x.created_at)}</td><td>${x.plan ? `${esc(x.product_name)}, ${PLAN[x.plan]} on ${esc((pageOf(x.page) || {}).title || catName(x.category))}, 1 ${per(x.period)}` : "Adjustment"}</td><td>${money(x.amount_cents)}</td><td><span class="pt-pill ${x.status === "paid" ? "ok" : x.status === "requested" ? "pending" : "off"}">${x.status === "requested" ? "Due" : x.status === "paid" ? "Paid" : "Cancelled"}</span></td>
         <td>${x.status === "requested" && card ? `<button class="btn small" data-pay="${x.id}">Pay by card</button>` : ""}</td></tr>`).join("")}</tbody></table></div>`

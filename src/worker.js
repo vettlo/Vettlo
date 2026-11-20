@@ -2,7 +2,7 @@
 // Mail goes through Cloudflare Email Routing's send_email binding to the verified
 // address stored in the FORM_TO variable (set in the Cloudflare dashboard, not in this repo).
 import { EmailMessage } from "cloudflare:email";
-import { handlePortalApi, handleGo, placeOnShortlist, rateLimited } from "./portal.js";
+import { handlePortalApi, handleGo, placeOnShortlist, rateLimited, paytrRenewals } from "./portal.js";
 
 // Same security headers as public/_headers, added to everything the Worker returns (API, redirects, shortlist pages).
 const SECURITY = {
@@ -101,6 +101,10 @@ async function redirects(env, request) {
 export default {
   async fetch(request, env, ctx) {
     return secure(await route(request, env, ctx));
+  },
+  // Daily: charge stored cards (PayTR) for plans that renew within a day.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(paytrRenewals(env));
   },
 };
 

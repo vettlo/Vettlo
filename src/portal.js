@@ -1,6 +1,6 @@
 // Vettlo vendor portal: magic-link login, listings, paid positions #1-#10 on a category shortlist (one vendor per
-// position, billed monthly or yearly) plus the Basic listing, with invoices, renewals, iyzico card payments and
-// subscriptions, waitlists, and click and impression reporting. Data lives in the D1 database bound as DB.
+// position, billed monthly or yearly) plus the Basic listing, with invoices, renewals, card payments (PayTR, with
+// stored cards for automatic renewal; iyzico kept as an alternative) and subscriptions, waitlists, and click and impression reporting. Data lives in the D1 database bound as DB.
 
 const SESSION_DAYS = 30;
 const TOKEN_MINUTES = 20;
@@ -68,6 +68,9 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS iyzico_refs (key TEXT PRIMARY KEY, ref TEXT NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS pay_forms (token TEXT PRIMARY KEY, invoice_id INTEGER NOT NULL, vendor_id INTEGER NOT NULL, html TEXT NOT NULL, created_at TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS hits (key TEXT NOT NULL, ts TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS paytr_orders (oid TEXT PRIMARY KEY, invoice_id INTEGER NOT NULL, vendor_id INTEGER NOT NULL, sub_id INTEGER NOT NULL,
+     kind TEXT NOT NULL, amount_cents INTEGER NOT NULL, status TEXT NOT NULL DEFAULT 'pending', ip TEXT, note TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
+  `CREATE INDEX IF NOT EXISTS paytr_orders_sub ON paytr_orders(sub_id, kind, created_at)`,
   `CREATE INDEX IF NOT EXISTS hits_key_ts ON hits(key, ts)`,
   `CREATE TABLE IF NOT EXISTS ledger (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_id INTEGER NOT NULL, amount_cents INTEGER NOT NULL, kind TEXT NOT NULL,
      status TEXT NOT NULL, note TEXT, provider_ref TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
@@ -79,8 +82,8 @@ const ALTERS = [
   "ALTER TABLE subs ADD COLUMN auto_renew INTEGER NOT NULL DEFAULT 0", // 1 while an iyzico subscription renews it
   "ALTER TABLE subs ADD COLUMN page TEXT",                             // the page the position is on, e.g. /tools/best-crm-software/
   "ALTER TABLE plan_waitlist ADD COLUMN page TEXT",
-  "ALTER TABLE subs ADD COLUMN held_since TEXT",
-  "ALTER TABLE subs ADD COLUMN consent_at TEXT",                       // when the buyer accepted the terms (and Turkish pre-information form / contract) at checkout                       // paid, waiting for our review; paid time is added back on approval
+  "ALTER TABLE subs ADD COLUMN held_since TEXT",                       // paid, waiting for our review; paid time is added back on approval
+  "ALTER TABLE subs ADD COLUMN consent_at TEXT",                       // when the buyer accepted the terms (and Turkish pre-information form / contract) at checkout
 ];
 async function migrate(env) {
   if (migrated) return;
@@ -310,7 +313,7 @@ async function vendorApi(request, env, vendor, path) {
 
   if (path === "/api/me" && method === "GET") {
     return json({ ok: true, vendor: { id: vendor.id, email: vendor.email, company: vendor.company, website: vendor.website, is_admin: vendor.is_admin },
-      payments: payMode(env), subscriptions: subsEnabled(env) });
+      payments: payMode(env), subscriptions: subsEnabled(env) || paytrRecurring(env) });
   }
   if (path === "/api/me" && method === "PUT") {
     const company = oneLine(body.company, 120) || vendor.company;
@@ -422,6 +425,11 @@ async function vendorApi(request, env, vendor, path) {
     }
     if (m[2] === "stop") {
       if (!s.auto_renew || !s.provider_sub) return json({ ok: false, error: "This plan doesn't renew automatically." }, 400);
+      if (s.provider_sub.startsWith("paytr:")) {
+        await paytrStop(env, s);
+        await notifyAdmin(env, "Automatic renewal stopped", [`${vendor.company} stopped the automatic renewal of subscription ${s.id} (${PLAN_NAME[s.plan]} on ${s.page}). It stays live until ${String(s.paid_through).slice(0, 10)}.`]);
+        return json({ ok: true });
+      }
       const r = await iyzico(env, `/v2/subscription/subscriptions/${encodeURIComponent(s.provider_sub)}/cancel`, {});
       if (r.status !== "success") return json({ ok: false, error: "We couldn't stop the renewal right now" + (r.errorMessage ? ": " + r.errorMessage : ".") + " Please contact us." }, 502);
       await env.DB.prepare("UPDATE subs SET auto_renew = 0, updated_at = ? WHERE id = ?").bind(now(), s.id).run();
@@ -429,7 +437,7 @@ async function vendorApi(request, env, vendor, path) {
       return json({ ok: true });
     }
     if (s.status !== "active" || s.paid_through <= now()) return json({ ok: false, error: "This plan has ended. Subscribe again if a seat is available." }, 400);
-    if (s.auto_renew) return json({ ok: false, error: "This plan renews automatically every month." }, 400);
+    if (s.auto_renew) return json({ ok: false, error: "This plan renews automatically." }, 400);
     const open = await env.DB.prepare("SELECT 1 FROM invoices WHERE slot_id = ? AND status = 'requested'").bind(s.id).first();
     if (open) return json({ ok: false, error: "A renewal invoice is already open for this plan." }, 400);
     const price = priceOf(env, s.plan, s.period || "year");
@@ -521,7 +529,8 @@ async function adminApi(request, env, vendor, path) {
   m = path.match(/^\/api\/admin\/subs\/(\d+)\/end$/);
   if (m && method === "POST") {
     const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(Number(m[1])).first();
-    if (s && s.auto_renew && s.provider_sub) {
+    if (s && s.auto_renew && s.provider_sub && s.provider_sub.startsWith("paytr:")) await paytrStop(env, s);
+    else if (s && s.auto_renew && s.provider_sub) {
       const r = await iyzico(env, `/v2/subscription/subscriptions/${encodeURIComponent(s.provider_sub)}/cancel`, {});
       if (r.status !== "success") return json({ ok: false, error: "iyzico didn't cancel the subscription" + (r.errorMessage ? ": " + r.errorMessage : "") + ". Cancel it in the iyzico panel first." }, 502);
     }
@@ -569,7 +578,7 @@ async function activateInvoice(env, inv, ref) {
 
 // ---------- card payments through iyzico (Checkout Form)
 const money = (c) => "$" + (c / 100).toFixed(2);
-function payMode(env) { return env.IYZICO_API_KEY && env.IYZICO_SECRET_KEY ? "iyzico" : "invoice"; }
+function payMode(env) { return paytrOn(env) ? "paytr" : env.IYZICO_API_KEY && env.IYZICO_SECRET_KEY ? "iyzico" : "invoice"; }
 // Monthly card plans renew through iyzico's Subscription add-on once it's enabled on the merchant account (IYZICO_SUBSCRIPTIONS=1).
 const subsEnabled = (env) => payMode(env) === "iyzico" && env.IYZICO_SUBSCRIPTIONS === "1";
 const iyzicoBase = (env) => env.IYZICO_BASE_URL || (env.IYZICO_LIVE === "1" ? "https://api.iyzipay.com" : "https://sandbox-api.iyzipay.com");
@@ -590,6 +599,7 @@ async function iyzico(env, path, payload, method = "POST") {
 const num = (v) => String(Number(v)); // iyzico signs prices without trailing zeros ("50.00" -> "50")
 
 async function startCardPayment(request, env, vendor, body) {
+  if (payMode(env) === "paytr") return startPaytr(request, env, vendor, body);
   if (payMode(env) !== "iyzico") return json({ ok: false, error: "Card payments aren't available yet. We'll email you an invoice." }, 400);
   const inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ? AND vendor_id = ? AND status = 'requested'").bind(Number(body.invoice_id), vendor.id).first();
   if (!inv) return json({ ok: false, error: "This invoice isn't open." }, 400);
@@ -765,6 +775,234 @@ async function iyzicoWebhook(request, env) {
   return ok;
 }
 
+// ---------- card payments through PayTR (Direct API, with stored cards for automatic renewals)
+// Settings (Cloudflare → Worker → Settings → Variables; the three PAYTR_MERCHANT_* values as secrets):
+//   PAYTR_MERCHANT_ID, PAYTR_MERCHANT_KEY, PAYTR_MERCHANT_SALT  from PayTR's merchant panel (turns PayTR on)
+//   PAYTR_LIVE=1        real charges (otherwise every request is sent with test_mode=1)
+//   PAYTR_RECURRING=1   once PayTR has enabled card storage and Non3D/recurring charges on the store
+//   PAYTR_CURRENCY      defaults to USD;  PAYTR_BASE_URL only for the local test mock
+// Notification URL to set in the PayTR panel: https://vettlo.com/api/paytr/notify
+// Card numbers are typed into a form that posts straight to paytr.com; they never reach this Worker or the database.
+// We keep only PayTR's user token (utoken) for a stored card, in subs.provider_sub as "paytr:<utoken>".
+const paytrOn = (env) => !!(env.PAYTR_MERCHANT_ID && env.PAYTR_MERCHANT_KEY && env.PAYTR_MERCHANT_SALT);
+const paytrRecurring = (env) => paytrOn(env) && env.PAYTR_RECURRING === "1";
+const paytrBase = (env) => (env.PAYTR_BASE_URL || "https://www.paytr.com").replace(/\/$/, "");
+const paytrTest = (env) => (env.PAYTR_LIVE === "1" ? "0" : "1");
+const paytrCur = (env) => env.PAYTR_CURRENCY || "USD";
+const RENEW_TRY_DAYS = 3; // after paid_through, a declined renewal is retried daily for this many days
+async function hmacB64(key, msg) {
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(key), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return btoa(String.fromCharCode(...new Uint8Array(await crypto.subtle.sign("HMAC", k, new TextEncoder().encode(msg)))));
+}
+const paytrToken = (env, f) => hmacB64(env.PAYTR_MERCHANT_KEY, f.merchant_id + f.user_ip + f.merchant_oid + f.email + f.payment_amount + f.payment_type
+  + f.installment_count + f.currency + f.test_mode + f.non_3d + env.PAYTR_MERCHANT_SALT);
+async function paytrPost(env, path, fields) {
+  const r = await fetch(paytrBase(env) + path, { method: "POST", body: new URLSearchParams(fields) });
+  const t = await r.text();
+  try { return JSON.parse(t); } catch { return { status: "error", err_msg: "HTTP " + r.status + " " + t.slice(0, 120) }; }
+}
+const cardsOf = (r) => Array.isArray(r) ? r : !r || r.status === "error" ? [] : r.ctoken ? [r] : Array.isArray(r.cards) ? r.cards : Object.values(r).filter((x) => x && x.ctoken);
+const paytrCards = async (env, utoken) => cardsOf(await paytrPost(env, "/odeme/capi/list", { merchant_id: env.PAYTR_MERCHANT_ID, utoken,
+  paytr_token: await hmacB64(env.PAYTR_MERCHANT_KEY, utoken + env.PAYTR_MERCHANT_SALT) }));
+const newOid = (invoiceId) => "V" + invoiceId + "R" + randomToken().slice(0, 16); // PayTR order ids are alphanumeric only
+const asciiOnly = (s) => /^[\x20-\x7e]*$/.test(s);
+function buyerFields(env, vendor, b, inv, s, oid, ip, origin) {
+  return {
+    merchant_id: String(env.PAYTR_MERCHANT_ID), user_ip: ip, merchant_oid: oid, email: vendor.email,
+    payment_amount: (inv.amount_cents / 100).toFixed(2), payment_type: "card", installment_count: "0", currency: paytrCur(env),
+    test_mode: paytrTest(env), client_lang: "en",
+    merchant_ok_url: origin + "/api/pay/paytr-ok?oid=" + oid, merchant_fail_url: origin + "/api/pay/paytr-fail",
+    user_name: `${b.name} ${b.surname}`.slice(0, 60), user_address: [b.address, b.zip, b.city, b.country].filter(Boolean).join(", ").slice(0, 400),
+    user_phone: String(b.phone).slice(0, 20),
+    user_basket: JSON.stringify([[`Vettlo ${PLAN_NAME[s.plan]}, 1 ${s.period === "month" ? "month" : "year"}: ${s.product_name || "listing"}`.slice(0, 100), (inv.amount_cents / 100).toFixed(2), 1]]),
+  };
+}
+
+async function startPaytr(request, env, vendor, body) {
+  const inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ? AND vendor_id = ? AND status = 'requested'").bind(Number(body.invoice_id), vendor.id).first();
+  if (!inv) return json({ ok: false, error: "This invoice isn't open." }, 400);
+  const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(inv.slot_id).first();
+  if (!s || s.status === "cancelled" || (s.status === "reserved" && s.reserved_until <= now())) return json({ ok: false, error: "This reservation has lapsed. Reserve the plan again." }, 400);
+  const b = await env.DB.prepare("SELECT * FROM billing WHERE vendor_id = ?").bind(vendor.id).first();
+  if (!b || !b.name || !b.surname || !b.phone || !b.address || !b.city || !b.country) return json({ ok: false, error: "Add your billing details first (Account tab).", needs_billing: true }, 400);
+  if (!asciiOnly(vendor.email)) return json({ ok: false, error: "Card payments need an email address without accented letters. Contact us and we'll invoice you." }, 400);
+  const oid = newOid(inv.id);
+  await env.DB.prepare("INSERT INTO paytr_orders (oid, invoice_id, vendor_id, sub_id, kind, amount_cents, ip, created_at, updated_at) VALUES (?,?,?,?, 'first', ?,?,?,?)")
+    .bind(oid, inv.id, vendor.id, s.id, inv.amount_cents, request.headers.get("cf-connecting-ip") || "", now(), now()).run();
+  return json({ ok: true, url: new URL(request.url).origin + "/api/pay/paytr/" + oid });
+}
+
+// The card form. It posts straight to PayTR (form-action allows only PayTR), so card details never touch our servers.
+async function paytrForm(request, env, oid) {
+  const vendor = await currentVendor(request, env);
+  const o = vendor && (await env.DB.prepare("SELECT * FROM paytr_orders WHERE oid = ? AND vendor_id = ? AND kind = 'first' AND status = 'pending'").bind(oid, vendor.id).first());
+  const inv = o && (await env.DB.prepare("SELECT * FROM invoices WHERE id = ? AND status = 'requested'").bind(o.invoice_id).first());
+  const s = inv && (await env.DB.prepare("SELECT s.*, l.product_name FROM subs s JOIN listings l ON l.id = s.listing_id WHERE s.id = ?").bind(inv.slot_id).first());
+  const b = s && (await env.DB.prepare("SELECT * FROM billing WHERE vendor_id = ?").bind(vendor.id).first());
+  if (!b) return Response.redirect(new URL("/vendors/app/#invoices", request.url).toString(), 302);
+  const ip = request.headers.get("cf-connecting-ip") || o.ip || "";
+  const f = buyerFields(env, vendor, b, inv, s, oid, ip, new URL(request.url).origin);
+  f.non_3d = "0";
+  f.paytr_token = await paytrToken(env, f);
+  if (f.test_mode === "1") f.debug_on = "1";
+  await env.DB.prepare("UPDATE paytr_orders SET ip = ?, updated_at = ? WHERE oid = ?").bind(ip, now(), oid).run();
+  const hidden = Object.entries(f).map(([k, v]) => `<input type="hidden" name="${k}" value="${esc(v)}">`).join("");
+  const yr = new Date().getUTCFullYear() % 100;
+  const renew = paytrRecurring(env);
+  const per = s.period === "month" ? "month" : "year";
+  const page = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Pay by card | Vettlo</title><link rel="stylesheet" href="/assets/site.css"></head><body><main class="wrap pay-card">
+<p><a href="/vendors/app/#invoices">← Back to invoices</a></p>
+<h1>Pay ${money(inv.amount_cents)}</h1>
+<p class="muted">${esc(PLAN_NAME[s.plan])} for ${esc(s.product_name)}, billed per ${per}. ${f.test_mode === "1" ? "<strong>Test mode: no real charge.</strong>" : ""}</p>
+<form method="post" action="${esc(paytrBase(env))}/odeme" class="pay-form" autocomplete="on">${hidden}
+<label>Name on card<input name="cc_owner" required maxlength="50" autocomplete="cc-name" value="${esc(f.user_name)}"></label>
+<label>Card number<input name="card_number" required inputmode="numeric" pattern="[0-9 ]{12,19}" maxlength="19" autocomplete="cc-number"></label>
+<div class="pay-row"><label>Month<select name="expiry_month" required autocomplete="cc-exp-month">${Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${String(i + 1).padStart(2, "0")}</option>`).join("")}</select></label>
+<label>Year<select name="expiry_year" required autocomplete="cc-exp-year">${Array.from({ length: 15 }, (_, i) => `<option value="${yr + i}">20${yr + i}</option>`).join("")}</select></label>
+<label>CVC<input name="cvv" required inputmode="numeric" pattern="[0-9]{3,4}" maxlength="4" autocomplete="cc-csc"></label></div>
+${renew ? `<label class="pt-consent"><input type="checkbox" name="store_card" value="1" checked> Save this card with PayTR and charge it automatically each ${per} when this plan renews. You can turn this off anytime in the portal.</label>` : ""}
+<button class="btn" type="submit">Pay ${money(inv.amount_cents)}</button>
+<p class="muted small">Your card details go directly to PayTR, our payment provider, and are never stored by Vettlo. Your bank may ask you to confirm the payment (3D Secure).</p>
+</form></main></body></html>`;
+  return new Response(page, { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store", "x-robots-tag": "noindex",
+    "content-security-policy": `default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data:; script-src 'none'; form-action ${new URL(paytrBase(env)).origin}; frame-ancestors 'none'; base-uri 'none'; object-src 'none'` } });
+}
+
+// PayTR's server-to-server notification for every payment (first payments, renewals). Must answer plain "OK".
+async function paytrNotify(request, env) {
+  const OK = new Response("OK", { headers: { "content-type": "text/plain" } });
+  const f = Object.fromEntries((await request.formData().catch(() => new FormData())).entries());
+  if (!paytrOn(env) || !f.merchant_oid || !f.hash) return new Response("bad request", { status: 400 });
+  if (f.hash !== (await hmacB64(env.PAYTR_MERCHANT_KEY, f.merchant_oid + env.PAYTR_MERCHANT_SALT + f.status + f.total_amount))) return new Response("bad hash", { status: 400 });
+  const o = await env.DB.prepare("SELECT * FROM paytr_orders WHERE oid = ?").bind(f.merchant_oid).first();
+  if (!o || o.status !== "pending") return OK; // unknown, or already handled (PayTR repeats notifications)
+  const v = await env.DB.prepare("SELECT company, email FROM vendors WHERE id = ?").bind(o.vendor_id).first();
+  if (f.status !== "success") {
+    await env.DB.prepare("UPDATE paytr_orders SET status = 'failed', note = ?, updated_at = ? WHERE oid = ?").bind(oneLine(`${f.failed_reason_code || ""} ${f.failed_reason_msg || ""}`, 300), now(), o.oid).run();
+    if (o.kind === "renewal") await renewalFailed(env, o, v, f.failed_reason_msg);
+    return OK;
+  }
+  await paytrPaid(env, o, v, Number(f.payment_amount), f.utoken || "");
+  return OK;
+}
+// A confirmed PayTR payment: close the invoice, start or extend the plan, and keep the card for renewals if one was stored.
+async function paytrPaid(env, o, v, amountCents, utoken) {
+  if (amountCents !== o.amount_cents) {
+    await env.DB.prepare("UPDATE paytr_orders SET status = 'check', note = ?, updated_at = ? WHERE oid = ?").bind(`paid ${amountCents}, expected ${o.amount_cents}`, now(), o.oid).run();
+    await notifyAdmin(env, "Card payment needs a manual check", [`PayTR order ${o.oid} (${v && v.company}) was paid ${money(amountCents)} but the invoice is ${money(o.amount_cents)}. Check it in the PayTR panel.`]);
+    return;
+  }
+  const claimed = await env.DB.prepare("UPDATE paytr_orders SET status = 'paid', updated_at = ? WHERE oid = ? AND status = 'pending'").bind(now(), o.oid).run();
+  if (!claimed.meta.changes) return;
+  const inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ?").bind(o.invoice_id).first();
+  const r = inv && inv.status === "requested" ? await activateInvoice(env, inv, "paytr:" + o.oid) : { ok: false, error: "The invoice was already closed." };
+  if (!r.ok) {
+    await notifyAdmin(env, "Paid, but the plan couldn't start", [`${v && v.company} paid ${money(o.amount_cents)} (PayTR order ${o.oid}), but: ${r.error}`, "Refund it in the PayTR panel or contact the vendor."]);
+    return;
+  }
+  let renews = false;
+  if (o.kind === "first" && utoken && paytrRecurring(env)) {
+    renews = (await paytrCards(env, utoken)).length > 0;
+    if (renews) await env.DB.prepare("UPDATE subs SET provider_sub = ?, auto_renew = 1, updated_at = ? WHERE id = ?").bind("paytr:" + utoken, now(), o.sub_id).run();
+  }
+  const s = r.sub, l = await env.DB.prepare("SELECT product_name, status, tool_id FROM listings WHERE id = ?").bind(s.listing_id).first();
+  await notifyAdmin(env, `${o.kind === "renewal" ? "Renewal paid" : "Payment received"}: ${money(o.amount_cents)} from ${v && v.company}`, [
+    `${PLAN_NAME[s.plan]} for ${l.product_name} on ${s.page}, paid by card (PayTR order ${o.oid}). Active until ${r.paid_through.slice(0, 10)}.`,
+    o.kind === "first" ? (renews ? "Card stored: it renews automatically until the vendor stops it." : "No stored card: renewals are paid from the portal.") : "",
+    o.kind === "first" ? (s.plan !== "basic" && !l.tool_id ? "We haven't scored this product yet, so it won't show in the top places until it's reviewed and matched to a tool on our list. Ask Claude to review and score it."
+      : l.status === "approved" ? "The listing is approved, so it's live now." : "The listing is waiting for your approval. Approve it in the admin page to put it live.") : ""]);
+}
+async function renewalFailed(env, o, v, reason) {
+  const s = await env.DB.prepare("SELECT * FROM subs WHERE id = ?").bind(o.sub_id).first();
+  const last = s && Date.parse(s.paid_through) + RENEW_TRY_DAYS * 864e5 <= Date.now() + 864e5;
+  await notifyAdmin(env, `Renewal charge declined: ${v && v.company}`, [`${s && PLAN_NAME[s.plan]} on ${s && s.page}, ${money(o.amount_cents)} (PayTR order ${o.oid}): ${reason || "declined"}.`,
+    last ? "That was the last automatic try; the plan lapses unless they pay the open invoice in the portal." : "We try again tomorrow. The open invoice can also be paid in the portal."]);
+  if (v && v.email) await emailVendor(env, v.email, "Your Vettlo renewal payment didn't go through",
+    `We couldn't charge your saved card for your Vettlo ${s ? PLAN_NAME[s.plan] : "plan"} (${money(o.amount_cents)}).\n\n`
+    + (last ? "This was our last automatic try. " : "We'll try again tomorrow. ")
+    + `To keep your position, pay the open invoice by card in the vendor portal:\nhttps://vettlo.com/vendors/app/#invoices\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
+}
+async function emailVendor(env, to, subject, text) {
+  try {
+    if (!env.BREVO_API_KEY) return;
+    await fetch("https://api.brevo.com/v3/smtp/email", { method: "POST", headers: { "api-key": env.BREVO_API_KEY, "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify({ sender: { name: "Vettlo", email: env.MAIL_FROM || "editor@vettlo.com" }, replyTo: { email: "vendors@vettlo.com" }, to: [{ email: to }], subject, textContent: text }) });
+  } catch (e) { /* best effort */ }
+}
+// Where PayTR sends the buyer back. The notification normally lands first; if not, the portal says it's being confirmed.
+async function paytrReturn(request, env) {
+  const oid = new URL(request.url).searchParams.get("oid") || "";
+  const o = oid && (await env.DB.prepare("SELECT status FROM paytr_orders WHERE oid = ?").bind(oid).first());
+  const q = o && o.status === "paid" ? "pay=ok" : o && o.status === "failed" ? "pay=failed" : "pay=pending";
+  return Response.redirect(new URL("/vendors/app/?" + q + "#invoices", request.url).toString(), 303);
+}
+
+// Stop automatic renewal: delete the stored card at PayTR (unless another renewing plan uses it) and turn renewal off.
+async function paytrStop(env, s) {
+  const utoken = String(s.provider_sub || "").replace(/^paytr:/, "");
+  const shared = await env.DB.prepare("SELECT 1 FROM subs WHERE provider_sub = ? AND auto_renew = 1 AND id != ?").bind(s.provider_sub, s.id).first();
+  if (utoken && !shared && paytrOn(env)) {
+    for (const c of await paytrCards(env, utoken).catch(() => [])) {
+      await paytrPost(env, "/odeme/capi/delete", { merchant_id: env.PAYTR_MERCHANT_ID, utoken, ctoken: c.ctoken,
+        paytr_token: await hmacB64(env.PAYTR_MERCHANT_KEY, c.ctoken + utoken + env.PAYTR_MERCHANT_SALT) }).catch(() => null);
+    }
+  }
+  await env.DB.prepare("UPDATE subs SET auto_renew = 0, updated_at = ? WHERE id = ?").bind(now(), s.id).run();
+}
+
+// Daily job (Worker cron): charge stored cards for plans that end within a day. Plans still in editorial review wait,
+// since their paid time is extended on approval anyway. A declined card is retried once a day for RENEW_TRY_DAYS.
+export async function paytrRenewals(env) {
+  if (!env.DB || !paytrRecurring(env)) return { charged: 0 };
+  await migrate(env);
+  const due = (await env.DB.prepare(`SELECT s.*, l.product_name FROM subs s JOIN listings l ON l.id = s.listing_id WHERE s.status = 'active' AND s.auto_renew = 1
+    AND s.provider_sub LIKE 'paytr:%' AND s.held_since IS NULL AND s.paid_through <= ?`).bind(new Date(Date.now() + 864e5).toISOString()).all()).results;
+  let charged = 0;
+  for (const s of due) {
+    const v = await env.DB.prepare("SELECT * FROM vendors WHERE id = ?").bind(s.vendor_id).first();
+    if (Date.parse(s.paid_through) + RENEW_TRY_DAYS * 864e5 < Date.now()) {
+      await env.DB.prepare("UPDATE subs SET auto_renew = 0, updated_at = ? WHERE id = ?").bind(now(), s.id).run();
+      await notifyAdmin(env, `Renewal gave up: ${v && v.company}`, [`${PLAN_NAME[s.plan]} on ${s.page} ended ${String(s.paid_through).slice(0, 10)} and the card kept failing. Automatic renewal is off.`]);
+      continue;
+    }
+    const recent = await env.DB.prepare("SELECT 1 FROM paytr_orders WHERE sub_id = ? AND kind = 'renewal' AND (status = 'pending' OR created_at > ?) LIMIT 1")
+      .bind(s.id, new Date(Date.now() - 20 * 36e5).toISOString()).first();
+    if (recent) continue;
+    await chargeStoredCard(env, s, v);
+    charged++;
+  }
+  return { charged };
+}
+async function chargeStoredCard(env, s, v) {
+  const utoken = s.provider_sub.replace(/^paytr:/, "");
+  let inv = await env.DB.prepare("SELECT * FROM invoices WHERE slot_id = ? AND status = 'requested' ORDER BY id LIMIT 1").bind(s.id).first();
+  if (!inv) {
+    const r = await env.DB.prepare("INSERT INTO invoices (vendor_id, slot_id, amount_cents, status, created_at, updated_at) VALUES (?,?,?, 'requested', ?, ?)").bind(s.vendor_id, s.id, s.price_cents, now(), now()).run();
+    inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ?").bind(r.meta.last_row_id).first();
+  }
+  const b = await env.DB.prepare("SELECT * FROM billing WHERE vendor_id = ?").bind(s.vendor_id).first();
+  const first = await env.DB.prepare("SELECT ip FROM paytr_orders WHERE sub_id = ? AND kind = 'first' AND status = 'paid' ORDER BY created_at DESC LIMIT 1").bind(s.id).first();
+  const card = (await paytrCards(env, utoken)).at(-1);
+  const oid = newOid(inv.id);
+  await env.DB.prepare("INSERT INTO paytr_orders (oid, invoice_id, vendor_id, sub_id, kind, amount_cents, ip, created_at, updated_at) VALUES (?,?,?,?, 'renewal', ?,?,?,?)")
+    .bind(oid, inv.id, s.vendor_id, s.id, inv.amount_cents, (first && first.ip) || "", now(), now()).run();
+  const o = await env.DB.prepare("SELECT * FROM paytr_orders WHERE oid = ?").bind(oid).first();
+  if (!card || !b) {
+    await env.DB.prepare("UPDATE paytr_orders SET status = 'failed', note = 'no stored card', updated_at = ? WHERE oid = ?").bind(now(), oid).run();
+    return renewalFailed(env, o, v, "no stored card found at PayTR");
+  }
+  const f = buyerFields(env, v, b, inv, s, oid, o.ip || "127.0.0.1", "https://vettlo.com");
+  f.non_3d = "1";
+  f.paytr_token = await paytrToken(env, f);
+  Object.assign(f, { utoken, ctoken: card.ctoken, recurring_payment: "1", sync_mode: "1" });
+  const r = await paytrPost(env, "/odeme", f);
+  if (r.status === "success") return paytrPaid(env, o, v, inv.amount_cents, "");
+  if (r.status === "wait_callback") return; // the notification decides
+  await env.DB.prepare("UPDATE paytr_orders SET status = 'failed', note = ?, updated_at = ? WHERE oid = ? AND status = 'pending'").bind(oneLine(r.err_msg || r.reason || "failed", 300), now(), oid).run();
+  return renewalFailed(env, o, v, r.err_msg || r.reason);
+}
+
 // ---------- click tracking (reporting only; positions are billed monthly, not per click)
 export async function handleGo(request, env, ctx) {
   if (!env.DB) return Response.redirect(new URL("/", request.url).toString(), 302);
@@ -801,6 +1039,11 @@ export async function handlePortalApi(request, env, path) {
   if (path === "/api/pay/callback" && request.method === "POST") return cardCallback(request, env); // posted by the iyzico form
   if (path === "/api/pay/sub-callback" && request.method === "POST") return subscriptionCallback(request, env); // posted by the iyzico subscription form
   if (path === "/api/iyzico/webhook" && request.method === "POST") return iyzicoWebhook(request, env);
+  if (path === "/api/paytr/notify" && request.method === "POST") return paytrNotify(request, env); // PayTR server-to-server
+  if (path === "/api/pay/paytr-ok") return paytrReturn(request, env);                              // buyer returns from PayTR
+  if (path === "/api/pay/paytr-fail") return Response.redirect(new URL("/vendors/app/?pay=failed#invoices", request.url).toString(), 303);
+  const pp = path.match(/^\/api\/pay\/paytr\/([A-Za-z0-9]+)$/);
+  if (pp && request.method === "GET") return paytrForm(request, env, pp[1]);
   const pf = path.match(/^\/api\/pay\/form\/([^/]+)$/);
   if (pf && request.method === "GET") return subscriptionForm(request, env, decodeURIComponent(pf[1]));
   if (request.method !== "GET" && request.headers.get("x-requested-with") !== "vettlo") return json({ ok: false, error: "Bad request." }, 400);

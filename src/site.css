@@ -1076,3 +1076,9 @@ mark.gap { background: #fff1a8; color: #5a4500; padding: 0 .3rem; border-radius:
 .pt-consent input { width: auto !important; margin-top: .2rem; accent-color: var(--brand); }
 .about .split > * { min-width: 0; }
 @media (max-width: 560px) { .legal-table th, .legal-table td { padding: .5rem .45rem; font-size: .88rem; } }
+.pay-card { max-width: 34rem; padding: 2rem 1rem 3rem; }
+.pay-form { display: grid; gap: .9rem; margin-top: 1rem; }
+.pay-form label { display: grid; gap: .3rem; font-weight: 600; font-size: .92rem; }
+.pay-form input:not([type=checkbox]), .pay-form select { width: 100%; min-width: 0; padding: .65rem .75rem; border: 1px solid var(--line); border-radius: 8px; font: inherit; background: #fff; }
+.pay-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .6rem; }
+.pay-form .pt-consent { font-weight: 400; }
