@@ -1104,11 +1104,11 @@ page("/privacy/", "Privacy Policy: Cookies, Analytics and Your Data | Vettlo", "
 <li><b>Visit reports:</b> we count clicks on product links using a hashed version of the visitor's IP address to tell repeat clicks apart. We don't store the IP address itself.</li>
 <li><b>Order records:</b> your orders, invoices and when you accepted our terms.</li></ul>
 <h2>Payments</h2>
-<p>Our order process is conducted by our online reseller Paddle.com, which is the Merchant of Record for all our orders. Paddle collects your payment and billing details, issues invoices and handles payment questions and refunds under its own <a href="https://www.paddle.com/legal/privacy" rel="nofollow">privacy policy</a>. Your card details go directly to Paddle; we never see or store your card number. Paddle tells us what you bought, your email address and the status of your subscription.</p>
+<p>When you pay for a position, you pay by card or bank transfer through a payment request we send you. Card details are handled by the payment provider and never reach Vettlo. We keep a record of each payment (amount, date and reference) for our accounts.</p>
 <h2>Providers we use</h2>
 <ul><li><b>Cloudflare:</b> hosting, security, database and email routing.</li>
 <li><b>Brevo:</b> sending sign-in links and service emails.</li>
-<li><b>Paddle:</b> checkout, payments, invoices and subscriptions, as our Merchant of Record.</li></ul>
+<li><b>Payment providers:</b> processing the payments vendors make to us.</li></ul>
 <p>Some of these providers process data outside your country.</p>
 <h2>Links to other sites</h2>
 <p>Reviews link to software vendors and review platforms. Some links are affiliate links. Those sites have their own privacy policies.</p>

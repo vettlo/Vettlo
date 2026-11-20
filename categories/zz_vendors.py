@@ -47,7 +47,7 @@ page("/advertiser-terms/", "Advertiser Terms: Positions, Review and Billing | Ve
 <li><b>You pick a page and a position.</b> #1 to #10 on a category shortlist or alternatives page, one vendor per position.</li>
 <li><b>We review first.</b> Your product goes live after we publish its review. Paid time starts then.</li>
 <li><b>Scores aren't for sale.</b> A position changes where you appear, not what we write.</li>
-<li><b>Monthly or yearly.</b> Both renew automatically until you cancel; yearly is 10% off.</li>
+<li><b>Monthly or yearly.</b> Both renew each period until you cancel; yearly is 10% off.</li>
 <li><b>14-day refunds.</b> A full refund for any payment within 14 days, no questions asked.</li></ul></div>
 <div class="legal-grid"><nav class="toc" aria-label="Sections"><span class="label">Sections</span><a href="#pages">1. Pages and positions</a><a href="#review">2. Editorial review</a><a href="#independence">3. What a position doesn't buy</a><a href="#reservations">4. Reservations and waitlists</a><a href="#billing">5. Prices and billing</a><a href="#ending">6. Ending a plan</a><a href="#responsibilities">7. Your responsibilities</a><a href="#guarantees">8. No guarantees</a><a href="#changes">9. Changes to these terms</a><a href="#contact">10. Contact</a></nav>
 <div class="page-body prose legal-body">
@@ -65,14 +65,14 @@ page("/advertiser-terms/", "Advertiser Terms: Positions, Review and Billing | Ve
 <section id="reservations"><h2>4. Reservations and waitlists</h2><ul><li>Choosing a free position reserves it for you for 7 days while you pay. Unpaid reservations lapse automatically and the position becomes free.</li>
 <li>When a position is taken, you can join its waitlist. When it frees up, the first vendor on the waitlist may claim it within 72 hours before it opens to everyone.</li></ul></section>
 <section id="billing"><h2>5. Prices and billing</h2><ul><li>Prices are listed on our <a href="/vendors/pricing/">pricing page</a> and in the portal in US dollars and are charged in advance. Yearly plans cost 12 monthly payments minus 10%.</li>
-<li>Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns. Applicable sales tax or VAT is added at checkout.</li>
-<li>Plans are subscriptions: monthly plans renew every month and yearly plans every year, charged to your saved payment method, until you cancel in the portal. If a renewal payment fails, the position ends when the paid period ends.</li>
+<li>You pay by card or bank transfer through a payment request we send after you order. Prices don't include any sales tax or VAT your country may require you to account for.</li>
+<li>Plans renew every month or every year until you cancel. We email you a renewal payment request 7 days before the end of each period; if it isn't paid, the position ends when the paid period ends.</li>
 <li>Prices may change for future billing periods. A running subscription keeps its price until you cancel it.</li>
 <li>Impression and visit figures in the portal are for your information and don't affect the price.</li></ul></section>
 <section id="ending"><h2>6. Ending a plan</h2><ul><li>You can cancel a plan, pause your listing or close your account at any time. A cancelled plan doesn't renew and stays live until the end of the period you paid for.</li>
 <li>You can get a full refund of any payment, first or renewal, within 14 days of that payment, no questions asked. See our <a href="/refunds/">refund policy</a>.</li>
 <li>If we remove your product or end your plan early for a reason other than a breach of these terms, we refund the unused part of the paid period.</li>
-<li>Refunds are made by Paddle to the payment method you used.</li>
+<li>Refunds go back to the payment method you used.</li>
 <li>We may suspend or end the plans of accounts that breach these terms.</li></ul></section>
 <section id="responsibilities"><h2>7. Your responsibilities</h2><ul><li>The information you give us about your product and your landing page must be accurate and lawful, must not be misleading, and must not infringe anyone's rights.</li>
 <li>You're responsible for your landing pages, your tracking and your compliance with privacy laws for the visitors we send you.</li></ul></section>

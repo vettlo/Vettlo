@@ -17,6 +17,8 @@
   // ---------- login / signup
   async function initLogin() {
     const f = $("#pt-login"), msg = $("#pt-login-msg"), extra = $("#pt-signup");
+    const qs = new URLSearchParams(location.search);
+    if (/^(p([1-9]|10)|basic)$/.test(qs.get("plan") || "")) { try { localStorage.setItem("vt_intent", JSON.stringify({ plan: qs.get("plan"), period: qs.get("period") === "year" ? "year" : "month", at: Date.now() })); } catch (e) {} }
     if (new URLSearchParams(location.search).get("expired")) msg.textContent = "That link has expired or was already used. Request a new one.";
     if (new URLSearchParams(location.search).get("new")) { extra.hidden = false; f.dataset.signup = "1"; $("#pt-submit").textContent = "Create account and send link"; }
     $("#pt-new").addEventListener("click", (e) => { e.preventDefault(); extra.hidden = false; f.dataset.signup = "1"; $("#pt-submit").textContent = "Create account and send link"; });
@@ -40,6 +42,7 @@
     : `Your product at #${plan.slice(1)} on the category shortlist, review cards and comparison table. One vendor per position.`;
   const per = (p) => p === "month" ? "month" : "year";
   let PERIOD = "month";
+  let INTENT = null; // position picked on the public pricing page, highlighted once a page is chosen
   async function initApp() {
     const me = await api("/api/me");
     if (!me.ok) return;
@@ -49,7 +52,10 @@
     if (me.vendor.is_admin) $("#pt-admin-link").hidden = false;
     $("#pt-logout").addEventListener("click", async () => { await api("/api/logout", { method: "POST" }); location.href = "/vendors/"; });
     document.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => { if (b.dataset.tab === "plans") SEL = { page: null, plan: null }; showTab(b.dataset.tab); }));
-    showTab(location.hash.slice(1) || "overview");
+    let intent = null;
+    try { intent = JSON.parse(localStorage.getItem("vt_intent") || "null"); } catch (e) {}
+    if (intent && Date.now() - intent.at < 864e5) { INTENT = intent; PERIOD = intent.plan === "basic" ? "year" : intent.period; showTab("plans"); }
+    else showTab(location.hash.slice(1) || "overview");
   }
   function showTab(name, arg) {
     document.querySelectorAll("[data-tab]").forEach((b) => b.classList.toggle("on", b.dataset.tab === name));
@@ -179,9 +185,11 @@
       <div class="pt-seg" role="group" aria-label="Billing"><button class="${PERIOD === "month" ? "on" : ""}" data-period-pick="month">Monthly</button><button class="${PERIOD === "year" ? "on" : ""}" data-period-pick="year">Yearly <em>10% off</em></button></div>
       <div class="pt-slots">${P.map(row).join("")}</div>
       <p class="muted small">Your product appears at the position you buy on this page's ranked list, review cards and comparison table${pg.kind === "alternatives" ? "" : ""}. If the list is shorter than your position, it appears at the end. Our editors review and score your product before it goes live; the score is ours and isn't affected by your plan.</p>`);
+    if (INTENT) { const el = document.querySelector(`[data-pick="${INTENT.plan}"]`); const slot = el && el.closest(".pt-slot");
+      if (slot) { slot.classList.add("pt-intent"); slot.scrollIntoView({ block: "center" }); } }
     $("#pt-back").addEventListener("click", () => { SEL = { page: null, plan: null }; stepPage(); });
     document.querySelectorAll("[data-period-pick]").forEach((b) => b.addEventListener("click", () => { PERIOD = b.dataset.periodPick; stepPosition(); }));
-    document.querySelectorAll("[data-pick]").forEach((b) => b.addEventListener("click", () => { SEL.plan = b.dataset.pick; stepProduct(); }));
+    document.querySelectorAll("[data-pick]").forEach((b) => b.addEventListener("click", () => { SEL.plan = b.dataset.pick; INTENT = null; try { localStorage.removeItem("vt_intent"); } catch (e) {} stepProduct(); }));
     const L = ((await api("/api/listings")).listings || []).filter((l) => l.category === pg.category && l.status !== "rejected");
     const wl = async (url, plan, msg) => { if (!L.length) { toast("Add your product first: select a free position or create a listing for this category.", true); return; }
       const x = await api(url, { method: "POST", body: { listing_id: L[0].id, page: pg.url, plan } }); toast(x.ok ? msg : x.error, !x.ok); stepPosition(); };
