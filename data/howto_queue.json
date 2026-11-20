@@ -1,0 +1,62 @@
+{
+  "_about": "Backlog of Friday tool task guides: long-tail how-to and fix-it articles about one specific job in one tool we review. Each item: tool, pillar (category slug), kind ('How-to' or 'Fix it'), title, target_keyword (must be free in scripts/keyword_check.py), help_doc (the vendor's official help-center URL for the task; the source of truth for steps and menu names, fetched on the day of writing), status ('todo'|'done'|'skipped'), date, url, kd (Vettlo difficulty 20-100; 'kd_source': 'websearch estimate' when judged from the Google first page), note. Keep at least 6 'todo' items. Never plan '<tool> review/pricing/alternatives/vs' topics or login pages.",
+  "items": [
+    {
+      "tool": "QuickBooks Online", "pillar": "best-accounting-software", "kind": "Fix it",
+      "title": "QuickBooks Online Bank Feed Not Updating? How to Fix It",
+      "target_keyword": "quickbooks online bank feed not updating",
+      "help_doc": "https://quickbooks.intuit.com/learn-support/en-ca/help-article/manage-workflows/get-bank-error-download-transactions-quickbooks/L0xmVo0w1_CA_en_CA",
+      "status": "done", "date": "2026-11-20", "url": "/guides/quickbooks-bank-feed-not-updating/",
+      "kd": 45, "kd_source": "websearch estimate",
+      "note": "SERP 2026-11-20: Intuit community threads, plus spammy hackmd.io and sites.google.com pages. No page puts Intuit's error codes, wait times and fixes in one table."
+    },
+    {
+      "tool": "QuickBooks Online", "pillar": "best-accounting-software", "kind": "How-to",
+      "title": "How to Undo a Reconciliation in QuickBooks Online",
+      "target_keyword": "how to undo a reconciliation in quickbooks online",
+      "help_doc": "https://quickbooks.intuit.com/learn-support/en-us/help-articles/undo-your-client-s-reconciliations-with-quickbooks-online/00/262360",
+      "status": "todo", "date": null, "url": null, "kd": null,
+      "note": "Check which user roles can undo (accountant user) and the single-transaction alternative."
+    },
+    {
+      "tool": "Zoho Books", "pillar": "best-accounting-software", "kind": "How-to",
+      "title": "How to Import a Bank Statement into Zoho Books",
+      "target_keyword": "zoho books import bank statement",
+      "help_doc": "https://www.zoho.com/books/kb/banking/how-to-import-a-bank-statement.html",
+      "status": "todo", "date": null, "url": null, "kd": null,
+      "note": "Supported file formats and the plan that adds automatic bank feeds (from category data)."
+    },
+    {
+      "tool": "HubSpot Sales Hub", "pillar": "best-crm-software", "kind": "How-to",
+      "title": "How to Export Contacts from HubSpot",
+      "target_keyword": "how to export contacts from hubspot",
+      "help_doc": "https://knowledge.hubspot.com/import-and-export/export-records",
+      "status": "todo", "date": null, "url": null, "kd": null,
+      "note": "SERP 2026-11-20: many small vendor tutorials (Supademo, Bardeen, Whalesync). Must not overlap /guides/crm-data-migration/ (planned)."
+    },
+    {
+      "tool": "Zendesk", "pillar": "best-help-desk-software", "kind": "How-to",
+      "title": "How to Export Tickets from Zendesk to CSV",
+      "target_keyword": "zendesk export tickets",
+      "help_doc": "https://support.zendesk.com/hc/en-us/articles/5521220496154-Exporting-a-view-of-tickets-to-a-CSV-file",
+      "status": "todo", "date": null, "url": null, "kd": null,
+      "note": "View export vs full data export; which roles and plans allow each."
+    },
+    {
+      "tool": "Bitwarden", "pillar": "best-password-managers-for-business", "kind": "How-to",
+      "title": "How to Import Passwords from LastPass into Bitwarden",
+      "target_keyword": "import lastpass to bitwarden",
+      "help_doc": "https://bitwarden.com/help/import-from-lastpass.md",
+      "status": "todo", "date": null, "url": null, "kd": null,
+      "note": "Individual vault vs organization import; deleting the export file afterward."
+    },
+    {
+      "tool": "Bitwarden", "pillar": "best-password-managers-for-business", "kind": "How-to",
+      "title": "How to Import from 1Password into Bitwarden",
+      "target_keyword": "import 1password to bitwarden",
+      "help_doc": "https://bitwarden.com/pdf/help-import-from-1password.pdf",
+      "status": "todo", "date": null, "url": null, "kd": null,
+      "note": "Distinct from the LastPass item: different export formats (1PUX/CSV). Fetch the HTML help page on the day."
+    }
+  ]
+}

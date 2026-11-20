@@ -2081,3 +2081,99 @@ guide_page({
         ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
     ],
 })
+
+
+# ---------- QuickBooks Online bank feed not updating (tool task guide, Fix it)
+# Steps, menu names, error meanings and wait times from Intuit's QuickBooks Online help articles fetched Nov 20, 2026.
+# Plan names come from data/review_depth.json so they follow the daily pricing refresh.
+_bf_qb = _ac_depth.get("QuickBooks Online", {})
+_bf_plans = [p for p, _s, _d in _bf_qb.get("plans", [])]
+_bf_plan_txt = f"{_bf_plans[0]} through {_bf_plans[-1]}" if len(_bf_plans) > 1 else "every plan"
+_bf_qbrv = _ac_rv("quickbooks") if "quickbooks" in _ac_ranked else '<a href="/tools/quickbooks-online-review/">QuickBooks Online</a>'
+_bf_alt = _ac_and([_ac_rv(k) for k in ("xero", "zohobooks") if k in _ac_ranked])
+_bf_path = "<b>All apps</b> &gt; <b>Accounting</b> &gt; <b>Bank transactions</b>"
+_bf_err = [
+    ("101", "The connection has been inactive for about 12 months or more", "Select <b>Update</b> to wake the connection"),
+    ("102, 105", "QuickBooks can't reach your bank, usually maintenance or a server problem on the bank's side", "Wait (Intuit says 24 hours or more), then select <b>Update</b>; check the bank's site for outage notices"),
+    ("103", "The user ID or password QuickBooks has stored is wrong", "Edit icon &gt; <b>Edit account sign in</b>, type the credentials by hand, <b>Save and connect</b>"),
+    ("106", "The account is closed at the bank", "Disconnect it, then add the new account with <b>Link account</b>"),
+    ("108", "The bank needs you to complete an action on its website first", "Sign in to the bank, finish the prompt, then select <b>Update</b>"),
+    ("109", "The bank requires a new password", "Change it at the bank, then update it in <b>Edit account sign in</b>"),
+    ("179", "You're signed in to the bank somewhere else", "Sign out everywhere, wait 15 minutes, clear cache and cookies, retry"),
+    ("185, 187", "The bank needs extra verification (security question or one-time code); 187 means it was entered wrong", "Answer the prompt exactly as on the bank's site; allow pop-ups"),
+    ("192", "The bank needs sign-in information QuickBooks can't supply", "Upload transactions manually from a CSV file"),
+    ("324", "QuickBooks can no longer find the account at the bank", "<b>Fix now</b> &gt; <b>Manage connections</b> &gt; <b>Disconnect</b>, then link the new account"),
+    ("9999", "Transactions aren't updating for an unspecified reason", "Wait 48 hours, then contact QuickBooks support"),
+]
+_bf_err_rows = "".join(f"<tr><td>{c}</td><td>{m}</td><td>{f}</td></tr>" for c, m, f in _bf_err)
+
+guide_page({
+    "slug": "quickbooks-bank-feed-not-updating", "crumb": "QuickBooks bank feed not updating", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-20", "kicker": "How-to",
+    "title": "QuickBooks Online Bank Feed Not Updating? How to Fix It",
+    "seo_title": "QuickBooks Online Bank Feed Not Updating? Fix It | Vettlo",
+    "desc": "QuickBooks Online bank feed not updating? Fix it in order: select Update, re-enter your bank sign-in, clear errors 102, 103, 185 or 324, or upload a CSV.",
+    "card": "Eight fixes in the order Intuit recommends, plus what the common bank error codes mean and how long to wait.",
+    "answer": ("When a QuickBooks Online bank feed stops updating, go to All apps &gt; Accounting &gt; Bank transactions, select the account and select Update; if an error code appears, fix what it points to, usually your bank sign-in or an extra security check. "
+               "Errors 102 and 105 are on the bank's side and often clear within 24 to 48 hours, and while you wait you can download a CSV or QBO file from your bank and upload it so your books stay current."),
+    "sections": [
+        ("why", "Why is my QuickBooks Online bank feed not updating?", f"""<p>A QuickBooks Online bank feed not updating almost always has one of three causes: the bank changed something (a password, a security check, the account itself), the bank's systems are down, or the saved connection is stale. QuickBooks usually tells you which one with an error code on the account's tile.</p>
+<p>Bank feeds are what make reconciliation quick in any of the tools on our <a href="{_ac_cat}">best accounting software shortlist</a>, so a broken feed shows up fast: no new transactions in the account's <b>Pending</b> tab, an old "last updated" date on the tile, or a red error banner. The fix steps below are the same on {_bf_plan_txt}; Intuit's help articles don't tie bank connections to a plan.</p>
+<p>Start by sorting the problem into one of these groups, because the fix depends on it:</p>
+<ul>
+<li><b>Bank-side outage.</b> Errors 102, 105, 355 and similar. Nothing is wrong with your setup; waiting is the fix.</li>
+<li><b>Sign-in or verification.</b> Errors 103, 109, 185 and 187. The bank rejected the stored credentials or wants an extra step.</li>
+<li><b>Account changed.</b> Errors 106 and 324. The account was closed, renumbered or moved, so the feed can't be repaired and has to be replaced.</li>
+<li><b>No error, just no new transactions.</b> The connection may simply need a manual refresh, or the bank hasn't posted the transactions yet.</li>
+</ul>"""),
+        ("fix", "How do I fix a QuickBooks bank feed that won't update?", f"""<p>Work through these steps in order and stop when transactions start flowing again. They follow Intuit's own troubleshooting sequence for QuickBooks Online, with the menu names from its current help articles.</p>
+<ol>
+<li><b>Check Intuit's bank feed status page.</b> Intuit's troubleshooting article lists this as an early step. If your bank shows a known issue, skip to step 7 and upload manually until it's resolved.</li>
+<li><b>Refresh the feed.</b> Go to {_bf_path}, select the account and select <b>Update</b>. Follow any prompts; some banks ask you to sign in on their own site.</li>
+<li><b>Sign in to your bank directly.</b> Open the bank's website in a private or incognito window and log in with the same credentials. If that fails, the problem is the credentials, not QuickBooks. While you're there, check for messages or prompts the bank wants you to accept.</li>
+<li><b>Check third-party access.</b> Intuit notes that some banks require you to turn on access for third-party apps in your online banking settings before QuickBooks can connect.</li>
+<li><b>Re-enter the bank sign-in.</b> In {_bf_path}, select the account, select the edit (pencil) icon, then <b>Edit account sign in</b>. Clear anything your browser autofilled, type the user ID and password by hand and select <b>Save and connect</b>.</li>
+<li><b>Correct the account details.</b> If the account or routing number changed, use the same edit icon to update the details and save.</li>
+<li><b>Upload transactions manually.</b> Download the missing period from your bank's website as a .csv or .qbo file and upload it to the same account in QuickBooks. This keeps your books current while the connection is fixed.</li>
+<li><b>Contact support.</b> In QuickBooks Online go to <b>Help</b> and select <b>Contact Us</b>.</li>
+</ol>
+<p>If an error code is showing, jump to the table below first: it often tells you which of these steps will work.</p>"""),
+        ("errors", "What do QuickBooks Online bank error codes mean?", f"""<p>Each QuickBooks bank error code points to a specific cause, and some of them, such as 102 and 105, are on the bank's side, where the fix is to wait. This table summarizes Intuit's help articles for the codes that most often stop a feed. "Edit icon" means the pencil icon on the account in {_bf_path}.</p>
+<div class="table-wrap"><table><thead><tr><th>Error</th><th>What it means</th><th>What to do</th></tr></thead><tbody>{_bf_err_rows}</tbody></table></div>
+<p>For errors 102 and 105, Intuit gives slightly different waits in different help articles: one says errors "may resolve within 24 hours or more," another says to wait 24 to 48 hours, and a third says to try again after 2 to 3 hours if the error persists. A sensible approach is to retry <b>Update</b> once after a few hours and upload manually if it's still failing after two days.</p>
+<p>For error 185, Intuit says it's a bank security measure rather than a QuickBooks fault. If your bank sends a one-time code, expect to enter it each time the error appears; if it uses security questions, QuickBooks Online remembers the answers.</p>
+<p class="small muted">Error descriptions summarize Intuit's QuickBooks Online help articles checked Nov 20, 2026. Codes and wording can differ by country.</p>"""),
+        ("reconnect", "How do I disconnect and reconnect a bank account in QuickBooks Online?", f"""<p>Disconnecting and reconnecting is the fix when the account has changed at the bank (errors 106 and 324) or when Intuit's support asks you to rebuild the connection; review pending transactions first, or you risk duplicates when the feed downloads again.</p>
+<ol>
+<li><b>Review what's waiting.</b> In {_bf_path}, select the account and work through the transactions in the <b>Pending</b> tab: add, match or exclude each one.</li>
+<li><b>Disconnect.</b> Select the edit icon, then <b>Edit account details</b>. Tick <b>Disconnect this account on save</b>, select <b>Disconnect</b>, then <b>Save</b>. For error 324, Intuit's path is <b>Fix now</b>, which opens <b>Manage connections</b>, then <b>Disconnect</b>.</li>
+<li><b>Reconnect.</b> In {_bf_path}, select <b>Link account</b> (or <b>Connect account</b> if it's your first one), search for your bank, sign in with your current credentials and choose the account.</li>
+</ol>
+<p>Per Intuit, disconnecting removes the bank feed and no further transactions sync for that account until you link it again. After reconnecting, compare the first downloaded batch with what you already entered and exclude any duplicates before you <a href="/guides/bank-reconciliation/">reconcile the account</a>.</p>
+<p>A closed account (error 324 or 106) has to be disconnected before you add its replacement; Intuit notes that otherwise QuickBooks reports the account as already connected.</p>"""),
+        ("prevent", "How do I keep the bank feed from breaking again?", f"""<p>Most repeat failures come from the bank side changing without QuickBooks knowing, so the prevention is about telling QuickBooks when you change something.</p>
+<ul>
+<li><b>Update QuickBooks the same day you change your bank password</b> or security questions, using <b>Edit account sign in</b>. Record the answers exactly as the bank stores them; Intuit says they must match character for character.</li>
+<li><b>Don't use copied or autofilled passwords</b> when connecting. Intuit's troubleshooting steps say to type credentials by hand instead.</li>
+<li><b>Review the feed weekly.</b> A connection that stays unused for about 12 months triggers error 101, and a weekly look catches any other stall within days instead of at month-end.</li>
+<li><b>Watch for "Fix now" on the tile.</b> Some banks require you to re-authorize the connection periodically; QuickBooks shows this as an error you clear by confirming your credentials.</li>
+<li><b>Reconcile monthly.</b> A missed feed day shows up as a statement difference. The <a href="/guides/bank-reconciliation/">bank reconciliation guide</a> covers that monthly check.</li>
+</ul>"""),
+        ("alternatives", "What if your bank won't connect to QuickBooks at all?", f"""<p>If your bank has stopped supporting the connection (Intuit's error 155) or keeps failing, you can run QuickBooks on manual CSV or QBO uploads indefinitely, or move to software whose bank connection works with your bank.</p>
+<p>Manual uploads add a monthly chore: download the statement period, upload it and categorize the transactions. For an error 155, Intuit suggests asking your bank to escalate the connection to Intuit's financial institution services team.</p>
+<p>Before switching tools, check that your bank is supported by the alternative; bank coverage differs by provider. Our {_bf_qbrv} review covers QuickBooks' plans, the <a href="/tools/best-quickbooks-alternatives/">QuickBooks alternatives</a> page lists other options, and {_bf_alt} reviews describe their bank feed setups. <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> compares the two most common choices plan by plan.</p>"""),
+    ],
+    "faqs": [
+        ("How do I manually refresh bank transactions in QuickBooks Online?", "Go to All apps > Accounting > Bank transactions, select the bank or card account and select Update, then follow any prompts; some banks ask you to sign in on their own website. In QuickBooks Self-Employed the equivalent is Settings > Manage accounts > Refresh all."),
+        ("What does QuickBooks error 103 mean?", "Error 103 means the user ID or password QuickBooks has stored for your bank is wrong. Check the credentials by signing in to the bank in a private browser window, then in QuickBooks select the account's edit icon, choose Edit account sign in, type the credentials by hand and select Save and connect."),
+        ("How long does QuickBooks error 102 or 105 take to fix?", "Errors 102 and 105 mean QuickBooks can't reach your bank, usually because of maintenance on the bank's side. Intuit's help articles say they often clear within 24 to 48 hours; retry Update after a few hours and upload transactions manually if it's still failing after two days."),
+        ("Should I review transactions before disconnecting a bank account in QuickBooks?", "Yes. Intuit recommends reviewing or matching everything in the account's Pending tab before you disconnect, because the feed can download them again after you reconnect and create duplicates. Disconnecting removes the bank feed, and nothing new syncs for that account until you link it again."),
+    ],
+    "sources": [
+        ("QuickBooks: What to do if you get a bank error or can't download transactions in QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-ca/help-article/manage-workflows/get-bank-error-download-transactions-quickbooks/L0xmVo0w1_CA_en_CA"),
+        ("QuickBooks: Fix bank connection errors in QuickBooks", "https://quickbooks.intuit.com/learn-support/en-uk/help-article/bank-feeds/fix-bank-connection-errors-quickbooks/L39sZN1lJ_GB_en_GB"),
+        ("QuickBooks: Fix bank error 103 in QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-ca/help-article/banking/fix-bank-error-103/L5VJSg75w_CA_en_CA"),
+        ("QuickBooks: Fix your bank error 102 and 105", "https://quickbooks.intuit.com/learn-support/en-ca/help-article/banking/fix-bank-error-102-105/L5MRNfzfs_CA_en_CA"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+    ],
+})
