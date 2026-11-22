@@ -283,5 +283,20 @@
     "updated": "2026-11-19",
     "checked": "2026-11-19",
     "note": "Re-verified prices, plans and trials for all 7 BI tools on vendor pricing pages (no price changes: Power BI Pro $14 and Premium Per User $24, Tableau Creator $75/Explorer $42/Viewer $15, Qlik Starter $300, Metabase Starter $100, Data Studio Pro $9; Domo still quote-only; Zoho Analytics' pricing page shows no dollar figures, so its prices are unchanged and last fully confirmed Nov 3) and refreshed G2 review counts (ratings unchanged; Power BI 1,662 to 1,671, Tableau 4,235 to 4,237)."
+  },
+  "/tools/best-e-signature-software/": {
+    "updated": "2026-11-22",
+    "checked": "2026-11-22",
+    "note": "Re-verified Docusign, Adobe, SignWell and Dropbox Sign on vendor pricing pages: Dropbox Sign's yearly prices corrected to $10.05/mo Essentials and $17.50/user Standard (price & value score 3.5 to 4); Docusign's SMS bonus is now on Standard only; Adobe's trial wording updated. PandaDoc and signNow pages couldn't be read (unchanged). G2 review counts refreshed (ratings unchanged)."
+  },
+  "/tools/best-docusign-alternatives/": {
+    "updated": "2026-11-22",
+    "checked": "2026-11-22",
+    "note": "Re-verified Docusign, Adobe, SignWell and Dropbox Sign on vendor pricing pages: Dropbox Sign's yearly prices corrected to $10.05/mo Essentials and $17.50/user Standard (price & value score 3.5 to 4); Docusign's SMS bonus is now on Standard only; Adobe's trial wording updated. PandaDoc and signNow pages couldn't be read (unchanged). G2 review counts refreshed (ratings unchanged)."
+  },
+  "/compare/docusign-vs-pandadoc/": {
+    "updated": "2026-11-22",
+    "checked": "2026-11-04",
+    "note": "Docusign side re-verified Nov 22 (SMS bonus now on Standard only; Business Pro SMS through sales). PandaDoc's pricing page couldn't be read, so the comparison's prices stay as last fully verified Nov 4."
   }
 }

@@ -512,7 +512,7 @@
     ]
   },
   "Docusign": {
-    "checked": "2026-11-06",
+    "checked": "2026-11-22",
     "source": ["Docusign eSignature plans and pricing", "https://ecom.docusign.com/plans-and-pricing/esignature"],
     "plans": [
       ["Personal", "$11/month, billed annually ($132 a year)", "1 user, 5 envelopes a month, reusable templates, audit trail, mobile app"],
@@ -537,7 +537,7 @@
       "rows": [
         ["Users", "1", "Up to 50", "Up to 50", "50+"],
         ["Envelopes", "5 a month", "100 per user per year", "100 per user per year", "Custom"],
-        ["SMS and ID verification bonus", "Not listed", "5 each, one-time", "5 each, one-time", "Not listed"]
+        ["SMS and ID verification bonus", "Not listed", "5 each, one-time", "5 ID verifications, one-time; SMS through sales", "Not listed"]
       ]
     },
     "notes": [
@@ -1853,6 +1853,43 @@
       "Tax-advantaged accounts carry a $200 annual service charge, then $2.50/mo per HSA participant and $4/mo per FSA or commuter participant ($20/mo minimum).",
       "The R&D tax credit service costs 15% of the credits it identifies; state tax registration is priced by state.",
       "The pricing page lists no free trial for the payroll plans; only the Time & Attendance Plus add-on ($6/mo per person) mentions a free trial."
+    ]
+  },
+  "Salesloft": {
+    "checked": "2026-11-22",
+    "source": ["Salesloft Packages and Availability (Salesloft help center)", "https://help.salesloft.com/s/article/Salesloft-Packages-and-Availability"],
+    "plans": [
+      ["Advanced", "Pricing on request", "For revenue teams that need to build pipeline and grow revenue: Cadence, Conversations, Deals, Rhythm, Coaching and the Ask Salesloft Agent, plus sales email, automation, calendaring, CRM sync, analytics and mobile app access"],
+      ["Elite", "Pricing on request", "For complex organizations: everything in Advanced plus multi-team, sandbox and CRM signals for custom objects"]
+    ],
+    "first_plan": [
+      ["Cadence (multi-step sequences)", "Advanced"],
+      ["Conversations (call recording and intelligence)", "Advanced"],
+      ["Rhythm (prioritized rep actions)", "Advanced"],
+      ["Deals (Salesforce CRM customers only)", "Advanced"],
+      ["Coaching", "Advanced"],
+      ["Ask Salesloft Agent", "Advanced"],
+      ["Multi-team", "Elite"],
+      ["Sandbox", "Elite"],
+      ["CRM signals for custom objects", "Elite"]
+    ],
+    "limits": {
+      "cols": ["Advanced", "Elite"],
+      "rows": [
+        ["Price", "Pricing on request", "Pricing on request"],
+        ["Multiple teams", "Not included", "Included"],
+        ["Sandbox environment", "Not included", "Included"],
+        ["CRM signals for custom objects", "Not included", "Included"],
+        ["Deals", "Salesforce CRM only", "Salesforce CRM only"],
+        ["Add-ons (Forecasting, Account Agent, Coaching Agent, Dialer)", "Available", "Available"]
+      ]
+    },
+    "notes": [
+      "Salesloft's pricing page (salesloft.com/pricing) shows no plans or prices; it books a call with sales, and the help center points customers to their account representative for pricing.",
+      "Add-ons available with any package: Forecasting (forecast roll-up and submission with AI next-step recommendations for deals), Account Agent (buyer identification, account and person research agents), Coaching Agent (Sales Strategist Agent) and Dialer, priced in a separate Dialer Pricing Guide.",
+      "Calling from the Salesloft mobile app needs the Dialer add-on.",
+      "Legacy packages sold from February 2020 to August 2025 (Premier, Prospect, Sell, Engage, Enterprise, Essentials) are no longer sold; the legacy Essentials Conversations trial allowed 20 recordings per user over 6 months.",
+      "No free trial or minimum seat count is stated on Salesloft's pricing page or packages article."
     ]
   }
 }
