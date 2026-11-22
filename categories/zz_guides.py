@@ -2177,3 +2177,116 @@ guide_page({
         ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
     ],
 })
+
+
+# ---------- What is accounting software? (cluster explainer)
+# Recordkeeping rules from IRS pages fetched Nov 22, 2026. Plans, prices and first-plan features come from
+# ACC and data/review_depth.json, so they follow the daily pricing refresh.
+_wa_feats = [
+    ("Inventory tracking", r"inventory"),
+    ("Multi-currency", r"multi-currency"),
+    ("Projects or job costing", r"project|timesheet"),
+    ("Budgets", r"budget"),
+    ("Approval workflows", r"approval"),
+]
+_wa_cols = [k for k in ("quickbooks", "xero", "zohobooks") if k in _ac_ranked and _ac[k]["name"] in _ac_depth]
+
+
+def _wa_first(k, rx):
+    for feat, plan in _ac_depth[_ac[k]["name"]].get("first_plan", []):
+        if re.search(rx, feat, re.I):
+            return plan
+    return "Not listed"
+
+
+def _wa_entry(k):
+    p = _ac_depth[_ac[k]["name"]]["plans"]
+    paid = [x for x in p if not x[1].startswith("$0")]
+    return f"{paid[0][0]} ({_ac[k]['price']})" if paid else _ac[k]["price"]
+
+
+_wa_head = "".join(f"<th>{_ac_rv(k)}</th>" for k in _wa_cols)
+_wa_rows = f"<tr><td>Cheapest paid plan</td>{''.join(f'<td>{_wa_entry(k)}</td>' for k in _wa_cols)}</tr>" + "".join(
+    f"<tr><td>{lbl}</td>{''.join(f'<td>{_wa_first(k, rx)}</td>' for k in _wa_cols)}</tr>" for lbl, rx in _wa_feats)
+_wa_qb_lim = {r[0]: r[1:] for r in _ac_depth.get("QuickBooks Online", {}).get("limits", {}).get("rows", [])}
+_wa_qb_acct = _wa_qb_lim.get("Accountant users", [None])[0]
+_wa_free = _ac_and(_ac_free) if _ac_free else ""
+_wa_n = len(_ac_ranked)
+_wa_names = {k: _ac[k]["short"] for k in _ac_ranked}
+
+guide_page({
+    "slug": "what-is-accounting-software", "crumb": "What is accounting software?", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-22", "kicker": "Explainer",
+    "title": "What Is Accounting Software? What It Does and Who Needs It",
+    "seo_title": "What Is Accounting Software? Uses, Types and Plans | Vettlo",
+    "desc": "What is accounting software? The jobs it does, how it differs from bookkeeping apps, spreadsheets and ERP, and which plan adds inventory or multi-currency.",
+    "card": "The seven jobs accounting software does, the main types, and the plan where advanced features start.",
+    "answer": ("Accounting software is a program, now usually a cloud app, that records every money movement in a business as double-entry ledger entries and turns them into financial statements. "
+               "It imports bank and card transactions, sends invoices, tracks bills, reconciles accounts and produces the profit and loss and balance sheet your accountant and tax return rely on. "
+               "Any business that has outgrown a spreadsheet of income and expenses, or shares its books with an accountant, is the typical user."),
+    "sections": [
+        ("what", "What is accounting software?", f"""<p>Accounting software is the system a business uses to keep its books: it records income, spending, what customers owe and what the business owes, then summarizes all of it in reports. It replaces the paper ledger and the homemade spreadsheet, and it writes the debits and credits for you each time you save an invoice, a bill or a bank transaction.</p>
+<p>If you're ready to pick a product, our <a href="{_ac_cat}">ranking of the best accounting software</a> compares {_wa_n} tools on price and features. This guide explains what the category is, what it does day to day, and how it differs from the tools it's often confused with.</p>
+<p>Most small businesses now use cloud accounting software that runs in a browser and a phone app, billed monthly. Older desktop programs installed on one computer still exist, and Intuit stopped selling most QuickBooks Desktop editions to new US customers after September 30, 2024; our guide to <a href="/guides/quickbooks-desktop-discontinued/">whether QuickBooks Desktop is being discontinued</a> covers that change.</p>"""),
+        ("jobs", "What does accounting software do?", f"""<p>Accounting software does seven core jobs, and each one feeds the reports at the end. The table shows what the software automates in each, and where to read more about the underlying accounting.</p>
+<div class="table-wrap"><table><thead><tr><th>Job</th><th>What the software does</th><th>Where it shows up</th></tr></thead><tbody>
+<tr><td>Keep the ledger</td><td>Posts every transaction to accounts as balanced entries, using your <a href="/guides/chart-of-accounts/">chart of accounts</a></td><td>The <a href="/guides/general-ledger/">general ledger</a> and trial balance</td></tr>
+<tr><td>Import bank and card activity</td><td>Pulls transactions in daily through bank feeds and suggests a category for each</td><td>Bank and card account registers</td></tr>
+<tr><td>Reconcile accounts</td><td>Matches imported lines to what you recorded and flags differences against the statement</td><td>Reconciliation reports (see <a href="/guides/bank-reconciliation/">bank reconciliation</a>)</td></tr>
+<tr><td>Bill customers</td><td>Creates invoices, takes online payments, sends reminders and tracks what's unpaid</td><td>Accounts receivable aging (see <a href="/guides/accounts-receivable/">accounts receivable</a>)</td></tr>
+<tr><td>Track what you owe</td><td>Records supplier bills, schedules payments and stores receipts</td><td>Accounts payable aging (see <a href="/guides/accounts-payable-process/">accounts payable</a>)</td></tr>
+<tr><td>Handle sales tax</td><td>Adds tax to invoices and totals what you've collected</td><td>Sales tax liability report</td></tr>
+<tr><td>Report</td><td>Builds statements from the ledger for any date range, on a cash or accrual basis</td><td>Profit and loss, balance sheet, cash flow</td></tr>
+</tbody></table></div>
+<p>The ledger is the part that makes it accounting software rather than an invoicing app: every other job writes into it, which is why the reports always tie back to the same numbers. The mechanics are covered in <a href="/guides/double-entry-bookkeeping/">how double-entry bookkeeping works</a>, and the choice of reporting basis in <a href="/guides/cash-vs-accrual-accounting/">cash vs accrual accounting</a>.</p>
+<p>Around that core, plans add extras such as inventory, project costing, multi-currency, budgets and approvals; the plan table further down shows where they start. Payroll is usually a separate product or add-on that posts its totals into the ledger, rather than part of the accounting plan itself.</p>"""),
+        ("vs", "Accounting software vs bookkeeping software, spreadsheets and ERP", """<p>Accounting software sits between a spreadsheet, which only lists transactions, and an ERP system, which runs a whole company's operations. "Bookkeeping software" is mostly a marketing label for the same products, aimed at the person entering transactions rather than the accountant reviewing them.</p>
+<div class="table-wrap"><table><thead><tr><th></th><th>Spreadsheet</th><th>Accounting software</th><th>ERP</th></tr></thead><tbody>
+<tr><td>Records</td><td>One line per transaction, typed by hand</td><td>Balanced ledger entries, mostly created from bank feeds, invoices and bills</td><td>Ledger entries plus orders, inventory, purchasing and manufacturing</td></tr>
+<tr><td>Balance sheet</td><td>Only if you build one</td><td>Generated automatically</td><td>Generated automatically, often per entity</td></tr>
+<tr><td>Error checks</td><td>None unless you add formulas</td><td>Debits must equal credits; reconciliation against bank statements</td><td>Same, plus approval controls and audit trails</td></tr>
+<tr><td>Multiple users</td><td>Shared file; easy to overwrite</td><td>Separate logins, roles and accountant access</td><td>Fine-grained roles across departments</td></tr>
+<tr><td>Typical user</td><td>A new sole proprietor with a few transactions a month</td><td>Small and mid-sized businesses and their accountants</td><td>Larger companies with several entities or a finance team</td></tr>
+<tr><td>Setup</td><td>Minutes</td><td>An afternoon to a few days, including bank connections</td><td>Weeks to months, usually with an implementation partner</td></tr>
+</tbody></table></div>
+<p>Between the two right-hand columns sits mid-market financial software for companies with a controller and several entities, which is sold by quote rather than by monthly plan.</p>"""),
+        ("types", "What are the main types of accounting software?", f"""<p>Small business accounting software comes in four broad types, and most buyers can rule out two of them quickly based on size and how they bill customers.</p>
+<ul>
+<li><b>General small business accounting.</b> Full ledger, bank feeds, invoices, bills and reports, with higher plans for inventory and projects. {_ac_and([_ac_rv(k) for k in ("quickbooks", "xero", "zohobooks") if k in _ac_ranked])} are the main examples.</li>
+<li><b>Invoicing-first accounting for service businesses.</b> Built around clients, time and proposals, with the ledger in the background. {_ac_rv('freshbooks') if 'freshbooks' in _ac_ranked else 'FreshBooks'} is the example on our list; its plans are capped by the number of billable clients.</li>
+<li><b>Free accounting software.</b> {f"{_wa_free} have free plans in our ranking" if _wa_free else "Free plans exist"}; they cover the core books but put things like automatic bank imports or higher revenue on paid tiers.</li>
+<li><b>Mid-market financial management.</b> Multi-entity accounting and deeper reporting for a finance team. {_ac_rv('intacct') if 'intacct' in _ac_ranked else 'Sage Intacct'} is in this group, priced by quote.</li>
+</ul>
+<p>Two head-to-head pages cover the most common shortlists: <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> and <a href="/compare/freshbooks-vs-quickbooks/">FreshBooks vs QuickBooks</a>.</p>"""),
+        ("plans", "Which accounting features come on which plan?", f"""<p>Core bookkeeping is on every paid plan, but inventory, multi-currency, projects, budgets and approvals usually start one or two tiers up, so the plan you need depends on which of these you use. This is the first plan that lists each feature on the vendor's pricing page:</p>
+<div class="table-wrap"><table><thead><tr><th>Feature</th>{_wa_head}</tr></thead><tbody>{_wa_rows}</tbody></table></div>
+<p class="small muted">"Not listed" means the plan comparison on the vendor's pricing page, as recorded in our data, doesn't name the feature; it may still be available on some plans or through an add-on, so check the vendor's help docs. Regular US prices from our pricing data, not introductory offers; Zoho Books' price is billed annually.</p>
+<p>Users matter too: Xero has no per-user fees, while QuickBooks plans are capped by user count{f", and QuickBooks Simple Start includes {_wa_qb_acct} accountant users" if _wa_qb_acct else ""}. Every plan of every tool and what a team pays a year is in our <a href="/guides/accounting-software-cost/">accounting software cost guide</a>, so it isn't repeated here.</p>"""),
+        ("who", "Who needs accounting software?", f"""<p>The IRS doesn't require accounting software: it says you "may choose any recordkeeping system suited to your business that clearly shows your income and expenses," and that electronic systems must meet the same basic principles as paper books. In practice, most businesses switch from a spreadsheet once the record-keeping load or the number of people involved grows.</p>
+<p>Signs a spreadsheet has stopped working:</p>
+<ol>
+<li><b>You send more than a handful of invoices a month</b> and lose track of which are paid.</li>
+<li><b>You have bills to schedule</b>, not just card purchases.</li>
+<li><b>More than one person touches the books</b>, including an outside bookkeeper or accountant.</li>
+<li><b>You need a balance sheet</b> for a loan, an investor or a business tax return.</li>
+<li><b>Bank statements no longer match</b> your totals and you can't find out why.</li>
+<li><b>You collect sales tax</b> or carry inventory.</li>
+</ol>
+<p>Whatever system you use, the IRS's supporting-document rules don't change: keep invoices, deposit records, receipts, canceled checks or other proof of payment for income, purchases, expenses and assets. Its general rule is to keep records for 3 years, longer in some cases, and employment tax records for at least 4 years after the tax is due or paid, whichever is later. Most accounting software lets you attach receipts and bills to the transaction they support, which is the main recordkeeping advantage over a spreadsheet.</p>
+<p class="small muted">Summarizes IRS guidance checked Nov 22, 2026; this isn't tax or legal advice.</p>"""),
+    ],
+    "faqs": [
+        ("Is Excel accounting software?", "No. Excel is a spreadsheet, so it records whatever you type but doesn't post balanced entries, import bank transactions or produce a balance sheet on its own. Many very small businesses keep their books in a spreadsheet, and the IRS accepts any system that clearly shows income and expenses."),
+        ("Does a small business have to use accounting software?", "No. The IRS lets you choose any recordkeeping system that clearly shows your income and expenses, on paper or electronic. Electronic records must meet the same requirements as paper ones, and you still need the supporting documents such as invoices, receipts and proof of payment."),
+        ("What is the difference between accounting software and bookkeeping software?", "In practice they're the same products. Bookkeeping is the day-to-day recording of transactions, and accounting is analyzing and reporting on them; the software does both, and vendors use whichever label suits their audience."),
+        ("Can my accountant log in to my accounting software?", (f"Usually yes, at no extra cost. QuickBooks Online plans include {_wa_qb_acct} or more accountant users, and Xero doesn't charge per user, so an accountant can be added without raising the bill." if _wa_qb_acct else "Usually yes. Most plans include free access for an accountant or bookkeeper, separate from your paid users.")),
+    ],
+    "sources": [
+        ("IRS: What kind of records should I keep", "https://www.irs.gov/businesses/small-businesses-self-employed/what-kind-of-records-should-i-keep"),
+        ("IRS: How long should I keep records?", "https://www.irs.gov/businesses/small-businesses-self-employed/how-long-should-i-keep-records"),
+        ("IRS: Topic no. 305, Recordkeeping", "https://www.irs.gov/taxtopics/tc305"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+        ("Xero US pricing", "https://www.xero.com/us/pricing-plans/"),
+        ("Zoho Books pricing", "https://www.zoho.com/us/books/pricing/"),
+    ],
+})

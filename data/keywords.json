@@ -2207,7 +2207,9 @@
    "google_us_est": 100,
    "ads_competition": "low",
    "top_bid_try": 1072,
-   "priority": 40
+   "priority": 28,
+   "kd": 72,
+   "kd_source": "websearch estimate"
   },
   "how to do payroll": {
    "pillar": "payroll",

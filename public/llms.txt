@@ -289,6 +289,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [What Is a General Ledger? How It Works, With an Example](https://vettlo.com/guides/general-ledger/): How entries post to the general ledger, a worked 6-transaction example and the trial balance it produces.
 - [Double-Entry Bookkeeping: How Debits and Credits Work](https://vettlo.com/guides/double-entry-bookkeeping/): The debit and credit rules by account type, with 7 journal entries that keep the accounting equation balanced.
 - [QuickBooks Online Bank Feed Not Updating? How to Fix It](https://vettlo.com/guides/quickbooks-bank-feed-not-updating/): Eight fixes in the order Intuit recommends, plus what the common bank error codes mean and how long to wait.
+- [What Is Accounting Software? What It Does and Who Needs It](https://vettlo.com/guides/what-is-accounting-software/): The seven jobs accounting software does, the main types, and the plan where advanced features start.
 - [All guides](https://vettlo.com/guides/)
 
 ## Trust

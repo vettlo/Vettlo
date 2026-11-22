@@ -173,15 +173,17 @@
      "title": "What Is Accounting Software? What It Does and Who Needs It",
      "intent": "what is accounting software",
      "angle": "Core jobs (ledger, invoicing, bills, bank feeds, reports), accounting vs bookkeeping software, when a spreadsheet stops working; feature-to-plan mapping from category data.",
-     "status": "todo",
+     "status": "done",
      "url": "/guides/what-is-accounting-software/",
      "target_keyword": "what is accounting software",
      "bing_3m": 25,
      "bing_us_3m": 4,
      "google_us_range": "100-1K",
      "google_us_est": 100,
-     "kd": null,
-     "priority": 40
+     "kd": 72,
+     "priority": 28,
+     "date": "2026-11-22",
+     "kd_source": "websearch estimate"
     },
     {
      "slug": "profit-and-loss-statement",
