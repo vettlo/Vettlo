@@ -107,7 +107,7 @@ VC = {
         ("How much does Zoom cost?", "Zoom Workplace Pro is $14.16 per user per month billed annually ($16.99 monthly) for 100-participant meetings. Business is $18.33 billed annually ($21.99 monthly) for 300 participants. The Basic plan is free with a 40-minute limit."),
         ("Which video conferencing tool includes recording?", "Zoom Pro includes 10 GB of cloud recording per license, Teams Essentials includes recordings, Zoho Meeting Standard includes 5 GB per host, and Whereby Pro includes unlimited recording. Google Meet records from Workspace Business Standard ($14)."),
     ],
-    "related": [("/tools/best-zoom-alternatives/", "Best Zoom alternatives"), ("/collaboration-software/", "All collaboration software")],
+    "related": [("/tools/best-zoom-alternatives/", "Best Zoom alternatives"), ("/tools/best-webinar-software/", "Best webinar software"), ("/collaboration-software/", "All collaboration software")],
 }
 
 VC["others"] = [("GoTo Meeting", "Online meetings for up to 250 attendees, with a 14-day free trial."),

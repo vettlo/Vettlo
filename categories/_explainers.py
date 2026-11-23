@@ -153,6 +153,14 @@ EXPLAIN = {
                      ("AI notes and summaries", "Automatic meeting summaries, action items and in-meeting questions."),
                      ("Calendar and app integrations", "Join links added from Google Calendar or Outlook, plus admin controls such as SSO.")],
     },
+    "best-webinar-software": {
+        "what": "Webinar software runs one-to-many online events: attendees register on a landing page, receive reminder emails, watch a live or pre-recorded presentation and take part through chat, Q&A and polls, while hosts get registration and attendance reports. Unlike meeting tools, it separates presenters from the audience and is built to turn viewers into leads.",
+        "features": [("Registration pages and reminders", "Branded sign-up forms, confirmation and reminder emails, and source tracking."),
+                     ("Audience engagement", "Chat, moderated Q&A, polls, handouts and on-screen offers or calls to action."),
+                     ("Automated and on-demand webinars", "Recorded sessions replayed on a schedule (simulive) or watched on demand."),
+                     ("Attendee limits and session length", "Caps on live attendees and minutes per session, which decide the plan you need."),
+                     ("CRM and marketing integrations", "Registrants and attendance synced to HubSpot, Salesforce, Marketo or email tools.")],
+    },
     "best-issue-tracking-software": {
         "what": "Issue tracking software is where software teams log bugs, feature requests and tasks as issues, then assign, prioritize and move them through a workflow until they ship. Most trackers add sprint or cycle planning, links to commits and pull requests, and reports on how much work gets done each sprint.",
         "features": [("Issues and custom workflows", "Bugs, stories and tasks with statuses, priorities, assignees and custom fields."),

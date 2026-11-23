@@ -38,6 +38,7 @@ PILLAR_HEADS = {
     "/tools/best-time-tracking-software/": ["time tracking software", "time tracking app"],
     "/tools/best-expense-management-software/": ["expense management software"],
     "/tools/best-payroll-software/": ["payroll software", "payroll services", "full service payroll"],
+    "/tools/best-webinar-software/": ["webinar software", "webinar platform", "webinar platforms", "webinar tools"],
     "/tools/best-incident-management-software/": ["incident management software", "incident management tools", "incident response software", "on call software"],
 }
 STOP = {"the", "a", "an", "for", "of", "to", "and", "is", "are", "do", "does", "your", "in", "on", "with", "2026", "best", "software", "tool", "tools", "app"}

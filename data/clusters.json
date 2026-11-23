@@ -1077,6 +1077,77 @@
      "priority": null
     }
    ]
+  },
+  {
+   "pillar": "best-webinar-software",
+   "dept": "Marketing",
+   "why": "New pillar (Nov 23, 2026); no Search Console data yet. Opens webinars in the Marketing department next to email marketing and marketing automation.",
+   "articles": [
+    {
+     "slug": "what-is-a-webinar",
+     "type": "explainer",
+     "title": "What Is a Webinar? How Webinars Work and What They're Used For",
+     "intent": "what is a webinar",
+     "angle": "Definition; live vs simulive vs on-demand; roles (host, panelist, attendee); registration, reminders, Q&A and polls; how tools in the pillar implement each from category data.",
+     "status": "todo",
+     "url": "/guides/what-is-a-webinar/",
+     "target_keyword": "what is a webinar",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "webinar-software-cost",
+     "type": "pricing",
+     "title": "How Much Does Webinar Software Cost?",
+     "intent": "webinar software pricing",
+     "angle": "Per-license vs per-host vs attendee-credit pricing; yearly cost for one 100-person and one 500-person webinar a month, computed from category data; session-length caps and add-ons.",
+     "status": "todo",
+     "url": "/guides/webinar-software-cost/",
+     "target_keyword": "webinar software cost",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "how-to-host-a-webinar",
+     "type": "how-to",
+     "title": "How to Host a Webinar: Setup, Promotion and Follow-Up",
+     "intent": "how to host a webinar",
+     "angle": "Step-by-step: format, registration page, reminder cadence, rehearsal, running Q&A and polls, recording, follow-up emails and CRM sync; tool features from category data. No invented attendance statistics.",
+     "status": "todo",
+     "url": "/guides/how-to-host-a-webinar/",
+     "target_keyword": "how to host a webinar",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "webinar-vs-meeting",
+     "type": "buying",
+     "title": "Webinar vs Meeting: Which Zoom, Webex or Teams License You Need",
+     "intent": "webinar vs meeting",
+     "angle": "When a meeting license is enough and when a webinar license pays off: attendee caps, presenter/audience roles, registration and reports; plan facts from the video conferencing and webinar pillars.",
+     "status": "todo",
+     "url": "/guides/webinar-vs-meeting/",
+     "target_keyword": "webinar vs meeting",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    }
+   ]
   }
  ]
 }

@@ -197,7 +197,9 @@
    "type": "category",
    "slug": "best-compliance-management-software",
    "department": "Legal & compliance",
-   "status": "todo"
+   "status": "skipped",
+   "date": "2026-11-23",
+   "reason": "Compliance automation vendors (Vanta, Drata, Secureframe, Sprinto, Thoropass, Hyperproof) sell by quote only; most prices can't be verified on official pricing pages."
   },
   {
    "type": "alternatives",
@@ -209,7 +211,9 @@
    "type": "category",
    "slug": "best-webinar-software",
    "department": "Marketing",
-   "status": "todo"
+   "status": "done",
+   "date": "2026-11-23",
+   "url": "/tools/best-webinar-software/"
   },
   {
    "type": "category",

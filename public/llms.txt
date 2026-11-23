@@ -63,6 +63,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Toggl Alternatives](https://vettlo.com/tools/best-toggl-alternatives/): Five time trackers with bigger free plans, cheaper approvals or automatic tracking.
 - [Best Video Conferencing Software](https://vettlo.com/tools/best-video-conferencing-software/): Six meeting tools compared on free-plan limits, recording and per-user price.
 - [Best Zoom Alternatives](https://vettlo.com/tools/best-zoom-alternatives/): Five meeting tools with longer free meetings or lower prices.
+- [Best Webinar Software](https://vettlo.com/tools/best-webinar-software/): Five webinar platforms compared on attendee caps, automated replays and yearly cost.
 - [Asana vs monday.com](https://vettlo.com/compare/asana-vs-monday/): Asana and monday.com compared on price, features and fit.
 - [ClickUp vs Asana](https://vettlo.com/compare/clickup-vs-asana/): ClickUp and Asana compared on price, features and fit.
 - [Zendesk vs Freshdesk](https://vettlo.com/compare/zendesk-vs-freshdesk/): Zendesk and Freshdesk compared on price, features and fit.
@@ -265,6 +266,11 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Webex Review](https://vettlo.com/tools/webex-review/): Webex's pricing, pros, cons and score, from our video conferencing tools ranking.
 - [Zoho Meeting Review](https://vettlo.com/tools/zoho-meeting-review/): Zoho Meeting's pricing, pros, cons and score, from our video conferencing tools ranking.
 - [Whereby Review](https://vettlo.com/tools/whereby-review/): Whereby's pricing, pros, cons and score, from our video conferencing tools ranking.
+- [Zoom Webinars Review](https://vettlo.com/tools/zoom-webinars-review/): Zoom Webinars's pricing, pros, cons and score, from our webinar tools ranking.
+- [Livestorm Review](https://vettlo.com/tools/livestorm-review/): Livestorm's pricing, pros, cons and score, from our webinar tools ranking.
+- [Webex Webinars Review](https://vettlo.com/tools/webex-webinars-review/): Webex Webinars's pricing, pros, cons and score, from our webinar tools ranking.
+- [WebinarJam Review](https://vettlo.com/tools/webinarjam-review/): WebinarJam's pricing, pros, cons and score, from our webinar tools ranking.
+- [Demio Review](https://vettlo.com/tools/demio-review/): Demio's pricing, pros, cons and score, from our webinar tools ranking.
 - [All categories](https://vettlo.com/best-tools/)
 
 ## Guides
