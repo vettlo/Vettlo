@@ -1219,8 +1219,47 @@ function arrange(items, partners, find, make) {
   return out;
 }
 
+// Review pages carry the editorial order of each list they rank in (data-rk on the rank text). When a paid
+// placement moves the list, show the same position the list shows, so the review and the list never disagree.
+async function placeOnReview(env, response) {
+  const head = await response.clone().text();
+  if (!head.includes('data-rk="')) return response;
+  const all = await allSponsors(env);
+  let html = head, changed = false;
+  const live = {};  // category slug -> live order of ids
+  for (const [, slug, tool, order] of head.matchAll(/data-rk="([a-z0-9-]+)\|([a-z0-9-]+)\|([a-z0-9,-]+)"/g)) {
+    if (!(all[`/tools/${slug}/`] || []).length) continue;
+    const partners = (await sponsors(env, `/tools/${slug}/`)).filter((p) => p.position > 0);
+    if (!partners.length) continue;
+    const ids = order.split(",");
+    const out = arrange([...ids], partners, (id, p) => id === p.tool_id, (p) => `partner-${p.id}`);
+    live[slug] = out;
+    const r = out.indexOf(tool) + 1;
+    if (!r) continue;
+    changed = true;
+    html = html.replace(new RegExp(`(data-rk="${slug}\\|${tool}\\|[^"]*">)#\\d+ of \\d+`), `$1#${r} of ${out.length}`)
+      .replace(new RegExp(`(<span class="num" data-c="${slug}">)\\d+`), `$1${r}`);
+  }
+  if (!changed) return response;
+  // the "How it compares" table lists the first category's top tools: reorder and renumber it to match
+  html = html.replace(/(<section id="compare">[\s\S]*?<tbody>)([\s\S]*?)(<\/tbody>)/, (all0, a, inner, z) => {
+    const first = Object.keys(live)[0];
+    const rows = inner.match(/<tr data-t="[^"]+">[\s\S]*?<\/tr>/g) || [];
+    if (!first || !rows.length) return all0;
+    const rank = (r) => { const i = live[first].indexOf(r.match(/data-t="([^"]+)"/)[1]); return i < 0 ? 1e3 : i; };
+    return a + rows.sort((x, y) => rank(x) - rank(y)).map((r, i) => r.replace(/<td class="num">\d+<\/td>/, `<td class="num">${i + 1}</td>`)).join("") + z;
+  });
+  const headers = new Headers(response.headers);
+  headers.delete("content-length");
+  headers.set("cache-control", "public, max-age=0, must-revalidate");
+  return new Response(html, { status: 200, headers });
+}
+
 export async function placeOnShortlist(request, env, response, ctx) {
   const url = new URL(request.url);
+  if (/^\/tools\/[a-z0-9-]+-review\/$/.test(url.pathname) && env.DB && response.status === 200) {
+    try { return await placeOnReview(env, response); } catch { return response; }
+  }
   const m = url.pathname.match(/^\/tools\/(best-[a-z0-9-]+)\/$/);
   if (!m || !env.DB || response.status !== 200 || !(response.headers.get("content-type") || "").includes("text/html")) return response;
   const slug = m[1];

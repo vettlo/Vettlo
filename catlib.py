@@ -609,7 +609,8 @@ def review_pages(cats):
         if dd.get("checked"):
             date = max(date, dd["checked"])
         s0 = cat_score(cat, k)
-        ranks = " and ".join(f"#{r} of {len(c['_ranked'])} in our {_cat_link(c)} ({cat_score(c, kk)}/100)" for c, kk, r in entries)
+        # data-rk carries the editorial order so the Worker can show the live position when a paid placement moves the list.
+        ranks = " and ".join(f'<span class="rk" data-rk="{c["slug"]}|{kk}|{",".join(c["_ranked"])}">#{r} of {len(c["_ranked"])}</span> in our {_cat_link(c)} ({cat_score(c, kk)}/100)' for c, kk, r in entries)
         answer = f"{name} ranks {ranks}. {_cap(_bf(t['bf']))}. {_price_sentence(t)}"
         bd = "".join(f'<h3>{c["crumb"]} score: {cat_score(c, kk)}/100</h3><div class="criteria">{_breakdown(c, kk)}</div>' for c, kk, r in entries)
         comp_rows = ""
@@ -617,7 +618,7 @@ def review_pages(cats):
             for j, o in enumerate(c["_ranked"][:6], 1):
                 ot = c["tools"][o]
                 nm = f'<a href="{REVIEW_URL[ot["name"]]}">{ot["name"]}</a>' if ot["name"] != name else f'<b>{ot["name"]}</b>'
-                comp_rows += f'<tr><td class="num">{j}</td><td>{nm}</td><td>{_cap(ot["bf"].replace("Best for ", ""))}</td><td class="num">{ot["price"]}</td><td class="num"><b>{cat_score(c, o)}</b>/100</td></tr>'
+                comp_rows += f'<tr data-t="{o}"><td class="num">{j}</td><td>{nm}</td><td>{_cap(ot["bf"].replace("Best for ", ""))}</td><td class="num">{ot["price"]}</td><td class="num"><b>{cat_score(c, o)}</b>/100</td></tr>'
         links = []
         for c, kk, r in entries:
             links += COMPARES.get(f"{c['slug']}:{kk}", [])
@@ -641,7 +642,7 @@ def review_pages(cats):
 <header class="article-head"><span class="eyebrow">Review · {cat['crumb']}</span><h1>{h1}</h1>{_byline(url, dict(cat, date=date))}</header>
 <div class="layout"><div class="main-col">
 <section class="answer" id="answer" aria-label="Short answer"><h2>Short answer</h2><p>{answer}</p></section>
-<article class="tool" id="{k}"><div class="tool-head"><span class="num">{rank}</span><div><h3>{name}</h3><div class="bestfor">{t['bf']}</div></div>
+<article class="tool" id="{k}"><div class="tool-head"><span class="num" data-c="{cat['slug']}">{rank}</span><div><h3>{name}</h3><div class="bestfor">{t['bf']}</div></div>
 <a class="btn small" href="{t['url']}" target="_blank" rel="sponsored nofollow noopener">Visit website ↗</a></div>{_spec(cat, k)}</article>
 <section id="overview" class="prose"><h2>What is {name}?</h2><p>{t['what']}</p>
 <h3>Who it's best for</h3><p>{t['who']}</p><h3>Why we rank it</h3><p>{t['why']}</p></section>
