@@ -385,8 +385,8 @@
         <td>${money(c.paid_total)}</td><td><small>${D(c.last_paid_at)}<br>${esc(c.last_ref || "")}</small></td><td>${c.status === "cancelled" ? "" : `<button class="btn ghost small" data-sact="end">End now</button>`}</td></tr>`).join("") || `<tr><td colspan="10" class="muted">No customers yet. Add one with the form above.</td></tr>`}</tbody></table></div>
       <h2>Waitlist</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Page</th><th>Position</th><th>Product</th><th>Vendor</th><th>Joined</th></tr></thead><tbody>
       ${d.waitlist.map((w) => `<tr><td>${ptitle(w.page)}</td><td>${PLAN[w.plan]}</td><td>${esc(w.product_name)}</td><td>${esc(w.company)}</td><td>${D(w.created_at)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">Empty.</td></tr>`}</tbody></table></div>
-      <h2>Vendors</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Company</th><th>Email</th><th>Website</th><th>Joined</th></tr></thead><tbody>
-      ${d.vendors.map((v) => `<tr><td>${esc(v.company || "")}</td><td>${esc(v.email)}</td><td>${esc(v.website || "")}</td><td>${D(v.created_at)}</td></tr>`).join("")}</tbody></table></div>
+      <h2>Vendors</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Company</th><th>Email</th><th>Website</th><th>Joined</th><th></th></tr></thead><tbody>
+      ${d.vendors.map((v) => `<tr data-vid="${v.id}"><td>${esc(v.company || "")}</td><td><input name="vemail" type="email" value="${esc(v.email)}"></td><td>${esc(v.website || "")}</td><td>${D(v.created_at)}</td><td><button class="btn ghost small" data-vact="email">Save email</button></td></tr>`).join("")}</tbody></table></div>
       <h2>Sponsor traffic, last 30 days</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Day</th><th>Impressions</th><th>Visits</th></tr></thead><tbody>
       ${d.stats.map((c) => `<tr><td>${c.day}</td><td>${c.impressions}</td><td>${c.clicks}</td></tr>`).join("") || `<tr><td colspan="3" class="muted">No data yet.</td></tr>`}</tbody></table></div>`;
     labelTables($("#pt-view"));
@@ -394,6 +394,7 @@
     document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => { const tr = b.closest("tr, .pt-req");
       if (b.dataset.act === "approved" && !tr.querySelector("[name=tool]").value && !confirm("This product isn't matched to a tool on our list, so ranked positions won't show yet. Approve anyway?")) return;
       post(`/api/admin/listings/${tr.dataset.id}`, { status: b.dataset.act, tool_id: tr.querySelector("[name=tool]").value, review_note: tr.querySelector("[name=note]").value }); }));
+    document.querySelectorAll("[data-vact]").forEach((b) => b.addEventListener("click", () => { const tr = b.closest("tr"); post(`/api/admin/vendors/${tr.dataset.vid}`, { email: tr.querySelector("[name=vemail]").value }); }));
     document.querySelectorAll("[data-iact]").forEach((b) => b.addEventListener("click", () => { const tr = b.closest("tr"); post(`/api/admin/invoices/${tr.dataset.iid}`, { status: b.dataset.iact, ref: tr.querySelector("[name=ref]").value }); }));
     const of = $("#pt-order");
     const sum = () => { const f = of; const pg = pageOf(f.page.value); const per = f.plan.value === "basic" ? "year" : f.period.value;

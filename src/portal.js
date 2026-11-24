@@ -524,6 +524,17 @@ async function adminApi(request, env, vendor, path) {
     await clearPlacements();
     return json({ ok: true });
   }
+  // Change a vendor's contact email (billing reminders and sign-in links go to it).
+  m = path.match(/^\/api\/admin\/vendors\/(\d+)$/);
+  if (m && method === "POST") {
+    const email = oneLine(body.email, 200).toLowerCase();
+    if (!isEmail(email)) return json({ ok: false, error: "Enter a valid email." }, 400);
+    if (await env.DB.prepare("SELECT 1 FROM vendors WHERE email = ? AND id != ?").bind(email, Number(m[1])).first()) return json({ ok: false, error: "Another vendor already uses that email." }, 409);
+    const r = await env.DB.prepare("UPDATE vendors SET email = ? WHERE id = ?").bind(email, Number(m[1])).run();
+    if (!r.meta.changes) return json({ ok: false, error: "Vendor not found." }, 404);
+    await env.DB.prepare("DELETE FROM sessions WHERE vendor_id = ?").bind(Number(m[1])).run();  // old address can't stay signed in
+    return json({ ok: true });
+  }
   m = path.match(/^\/api\/admin\/invoices\/(\d+)$/);
   if (m && method === "POST") {
     const inv = await env.DB.prepare("SELECT * FROM invoices WHERE id = ?").bind(Number(m[1])).first();
