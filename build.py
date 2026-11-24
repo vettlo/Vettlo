@@ -86,7 +86,7 @@ FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <p>Independent reviews of the software businesses run on.</p></div>
 <div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/guides/">Guides</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
 <div><h4>Trust</h4><ul><li><a href="/methodology/">How we vet</a></li><li><a href="/how-we-make-money/">How we make money</a></li></ul></div>
-<div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li></ul></div>
+<div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li><li><a href="https://www.linkedin.com/company/vettlo/" rel="me noopener" target="_blank">LinkedIn</a></li></ul></div>
 </div>
 <div class="legal"><span>© {YEAR} Vettlo. All rights reserved.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/refunds/">Refunds</a></span></div>
 </div></footer>"""
@@ -167,7 +167,8 @@ def answer_box(lead, items):
 
 ORG = {"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo", "url": DOMAIN,
        "logo": DOMAIN + "/assets/logo.svg", "description": "Independent reviews of business software, scored on published criteria.",
-       "contactPoint": {"@type": "ContactPoint", "contactType": "editorial", "url": DOMAIN + "/contact/", "availableLanguage": "English"}}
+       "contactPoint": {"@type": "ContactPoint", "contactType": "editorial", "url": DOMAIN + "/contact/", "availableLanguage": "English"},
+       "sameAs": ["https://www.linkedin.com/company/vettlo/"]}
 
 DEPTS = [
     ("Sales", "Pipeline, prospecting and calling", [
