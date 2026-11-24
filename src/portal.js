@@ -81,7 +81,8 @@ const ALTERS = [
   "ALTER TABLE subs ADD COLUMN page TEXT",                             // the page the position is on, e.g. /tools/best-crm-software/
   "ALTER TABLE plan_waitlist ADD COLUMN page TEXT",
   "ALTER TABLE subs ADD COLUMN held_since TEXT",                       // paid, waiting for our review; paid time is added back on approval
-  "ALTER TABLE subs ADD COLUMN consent_at TEXT",                       // when the buyer accepted the terms (and Turkish pre-information form / contract) at checkout
+  "ALTER TABLE subs ADD COLUMN consent_at TEXT",
+  "ALTER TABLE subs ADD COLUMN show_unpaid INTEGER NOT NULL DEFAULT 0", // 1: live on the page before payment, until reserved_until (admin orders)                       // when the buyer accepted the terms (and Turkish pre-information form / contract) at checkout
 ];
 async function migrate(env) {
   if (migrated) return;
@@ -552,6 +553,14 @@ async function adminApi(request, env, vendor, path) {
     if (!paddleOn(env)) return json({ ok: false, error: "Paddle isn't connected yet (add the PADDLE_* settings in Cloudflare)." }, 400);
     try { const prices = await paddleSyncCatalog(env); return json({ ok: true, count: prices.length, sandbox: paddleSandbox(env), prices }); }
     catch (e) { return json({ ok: false, error: e.message }, 502); }
+  }
+  // Put an unpaid order on the page now; it comes off by itself if the invoice isn't paid by reserved_until.
+  m = path.match(/^\/api\/admin\/subs\/(\d+)\/show$/);
+  if (m && method === "POST") {
+    const r = await env.DB.prepare("UPDATE subs SET show_unpaid = 1, updated_at = ? WHERE id = ? AND status = 'reserved' AND reserved_until > ?").bind(now(), Number(m[1]), now()).run();
+    if (!r.meta.changes) return json({ ok: false, error: "Only unpaid orders that haven't expired can go live early." }, 400);
+    await clearPlacements();
+    return json({ ok: true });
   }
   m = path.match(/^\/api\/admin\/subs\/(\d+)\/end$/);
   if (m && method === "POST") {
@@ -1048,7 +1057,8 @@ async function adminCreateOrder(request, env, b) {
   const stt = (await planState(env, pg, v.id)).find((x) => x.plan === plan);
   if (!stt || !["available", "priority_other"].includes(stt.state)) return json({ ok: false, error: `${PLAN_NAME[plan]} on this page is taken.` }, 409);
   const hold = Math.min(30, Math.max(1, Number(b.hold_days) || 14));
-  const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, page, plan, period, status, price_cents, reserved_until, created_at, updated_at) VALUES (?,?,?,?,?,?, 'reserved', ?,?,?,?)")
+  // Admin orders go live straight away; if the invoice isn't paid within the hold, the position comes off the page by itself.
+  const r = await env.DB.prepare("INSERT INTO subs (vendor_id, listing_id, category, page, plan, period, status, price_cents, reserved_until, show_unpaid, created_at, updated_at) VALUES (?,?,?,?,?,?, 'reserved', ?,?, 1, ?,?)")
     .bind(v.id, l.id, l.category, pg.url, plan, period, amount, new Date(Date.now() + hold * 864e5).toISOString(), now(), now()).run();
   const subId = r.meta.last_row_id;
   const occ = await occupants(env, pg.url, plan);
@@ -1065,8 +1075,8 @@ async function adminCreateOrder(request, env, b) {
     const live = liveReady(l, plan);
     mailed = await mailVendor(env, email, `Your Vettlo order: ${PLAN_NAME[plan]} on ${pageLabel(pg)}`,
       `Hi,\n\nThank you for your order. Here are the details:\n\nProduct: ${product}\nPage: ${pageLabel(pg)} (https://vettlo.com${pg.url})\nPosition: ${PLAN_NAME[plan]}\nBilling: ${PERIOD_WORD[period]}, ${money(amount)}\n\n`
-      + (b.paid ? "We've received your payment. " : `You'll receive a payment request from Payoneer for ${money(amount)} shortly. You can pay it by card or bank transfer. `)
-      + (live ? "Your product goes live at this position as soon as the payment is confirmed.\n\n" : "We're researching your product and writing its review. Your paid time starts the day it goes live, so the review days don't count against your plan.\n\n")
+      + (b.paid ? "We've received your payment. " : `You'll receive an invoice for ${money(amount)} with a secure payment link shortly. You can pay it by card or bank transfer within ${hold} days. `)
+      + (b.paid ? "" : live ? "Your product is live at this position from today, and your 12 months start when the payment arrives.\n\n" : "We're researching your product and writing its review. Your paid time starts the day it goes live, so the review days don't count against your plan.\n\n")
       + `You can sign in at https://vettlo.com/vendors/login/ with this email address to see your listing and its traffic.\n\nTerms: https://vettlo.com/advertiser-terms/\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
   }
   await clearPlacements();
@@ -1092,17 +1102,23 @@ export async function billingDaily(env) {
     }
     lines.renew.push(`• ${s.company} <${s.email}>: ${money(inv.amount_cents)} for ${PLAN_NAME[s.plan]} (${PERIOD_WORD[s.period]}) on ${s.page}, ${s.product_name}. Ends ${s.paid_through.slice(0, 10)}.`);
     await mailVendor(env, s.email, `Your Vettlo plan renews on ${s.paid_through.slice(0, 10)}`,
-      `Hi,\n\nYour ${PLAN_NAME[s.plan]} for ${s.product_name} on https://vettlo.com${s.page} ends on ${s.paid_through.slice(0, 10)}.\n\nTo keep it, pay the ${PERIOD_WORD[s.period]} renewal of ${money(inv.amount_cents)}. You'll receive a payment request from Payoneer in the next day or two; you can pay it by card or bank transfer.\n\nIf you'd rather not renew, just reply and let us know. The position then ends on that date and opens up for other vendors.\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
+      `Hi,\n\nYour ${PLAN_NAME[s.plan]} for ${s.product_name} on https://vettlo.com${s.page} ends on ${s.paid_through.slice(0, 10)}.\n\nTo keep it, pay the ${PERIOD_WORD[s.period]} renewal of ${money(inv.amount_cents)}. You'll receive an invoice with a secure payment link in the next day or two; you can pay it by card or bank transfer.\n\nIf you'd rather not renew, just reply and let us know. The position then ends on that date and opens up for other vendors.\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
   }
   for (const s of (await env.DB.prepare(base + " AND s.paid_through > ? AND s.paid_through <= ? AND EXISTS (SELECT 1 FROM invoices i WHERE i.slot_id = s.id AND i.status = 'requested')").bind(t, day).all()).results) {
     if (!(await mark(s, "reminder"))) continue;
     lines.remind.push(`• ${s.company} <${s.email}>: ${PLAN_NAME[s.plan]} on ${s.page} ends ${s.paid_through.slice(0, 10)}, renewal still unpaid.`);
     await mailVendor(env, s.email, `Reminder: your Vettlo position ends ${s.paid_through.slice(0, 10)}`,
-      `Hi,\n\nA quick reminder: your ${PLAN_NAME[s.plan]} for ${s.product_name} on https://vettlo.com${s.page} ends on ${s.paid_through.slice(0, 10)} and the renewal hasn't been paid yet. You can pay it through the Payoneer payment request we sent.\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
+      `Hi,\n\nA quick reminder: your ${PLAN_NAME[s.plan]} for ${s.product_name} on https://vettlo.com${s.page} ends on ${s.paid_through.slice(0, 10)} and the renewal hasn't been paid yet. You can pay it through the payment link in the invoice we sent.\n\nLet me know if you have any questions.\n\nVettlo Vendor Relations`);
   }
   for (const s of (await env.DB.prepare(base + " AND s.paid_through <= ? AND s.paid_through > ?").bind(t, new Date(Date.now() - 3 * 864e5).toISOString()).all()).results) {
     if (!(await mark(s, "lapsed"))) continue;
     lines.lapsed.push(`• ${s.company}: ${PLAN_NAME[s.plan]} on ${s.page} ended ${s.paid_through.slice(0, 10)} unpaid and was taken off the page. A late payment still restarts it if the position is free.`);
+  }
+  // Admin orders shown before payment: say when one came off the page because the invoice wasn't paid in time.
+  for (const s of (await env.DB.prepare(`SELECT s.*, l.product_name, v.email, v.company FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
+    WHERE s.status = 'reserved' AND s.show_unpaid = 1 AND s.reserved_until <= ? AND s.reserved_until > ?`).bind(t, new Date(Date.now() - 3 * 864e5).toISOString()).all()).results) {
+    if (!(await env.DB.prepare("INSERT OR IGNORE INTO notices (sub_id, kind, period_end, created_at) VALUES (?,?,?,?)").bind(s.id, "unpaid_off", s.reserved_until, t).run()).meta.changes) continue;
+    lines.lapsed.push(`• ${s.company}: ${PLAN_NAME[s.plan]} on ${s.page} (${s.product_name}) wasn't paid by ${s.reserved_until.slice(0, 10)} and came off the page. Marking the invoice paid puts it back if the position is still free.`);
   }
   if (lines.renew.length || lines.remind.length || lines.lapsed.length) {
     await clearPlacements();
@@ -1181,8 +1197,9 @@ async function allSponsors(env) {
   try { const c = await caches.default.match(SPONSOR_KEY); if (c) v = await c.json(); } catch {}
   if (!v) {
     const rows = (await env.DB.prepare(`SELECT l.*, s.plan, COALESCE(s.page, '/tools/' || s.category || '/') AS sub_page FROM subs s JOIN listings l ON l.id = s.listing_id JOIN vendors v ON v.id = s.vendor_id
-      WHERE s.status = 'active' AND s.paid_through > ? AND l.status = 'approved' AND l.active = 1 AND v.status = 'active'
-      ORDER BY s.started_at ASC, s.id ASC`).bind(now()).all()).results;
+      WHERE ((s.status = 'active' AND s.paid_through > ?1) OR (s.status = 'reserved' AND s.show_unpaid = 1 AND s.reserved_until > ?1))
+        AND l.status = 'approved' AND l.active = 1 AND v.status = 'active'
+      ORDER BY COALESCE(s.started_at, s.created_at) ASC, s.id ASC`).bind(now()).all()).results;
     v = {};
     for (const r of rows) (v[r.sub_page] ||= []).push(r);
     try { await caches.default.put(SPONSOR_KEY, new Response(JSON.stringify(v), { headers: { "content-type": "application/json", "cache-control": "public, max-age=300" } })); } catch {}

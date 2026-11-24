@@ -346,7 +346,7 @@
     const toolOpts = (slug, cur) => `<option value="">Not on our list</option>` + ((CATS.find((c) => c.slug === slug) || {}).tools || []).map((t) => `<option value="${esc(t.id)}" ${t.id === cur ? "selected" : ""}>${esc(t.name)}</option>`).join("");
     const ptitle = (u) => esc((pageOf(u) || {}).title || u || "");
     const subsOf = (id) => d.subs.filter((x) => x.listing_id === id);
-    const stateOf = (c) => c.status === "cancelled" ? "Ended" : c.status === "reserved" ? "Awaiting payment" : c.paid_through <= d.now ? "Ended (unpaid)" : c.held_since ? "Paid, in review" : "Live";
+    const stateOf = (c) => c.status === "cancelled" ? "Ended" : c.status === "reserved" ? (c.show_unpaid && c.reserved_until > d.now ? "Live, awaiting payment" : c.reserved_until > d.now ? "Awaiting payment" : "Removed (unpaid)") : c.paid_through <= d.now ? "Ended (unpaid)" : c.held_since ? "Paid, in review" : "Live";
     const needs = d.listings.filter((l) => l.status === "pending" || (l.status === "approved" && !l.tool_id && subsOf(l.id).some((x) => x.plan !== "basic")));
     const reqCard = (l) => `<div class="pt-card pt-req" data-id="${l.id}"><div class="pt-card-head"><div>
         <h3>${esc(l.product_name)} <a class="small" href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.website)} ↗</a></h3>
@@ -357,7 +357,7 @@
       <div class="pt-actions"><button class="btn small" data-act="approved">Approve and publish</button><button class="btn ghost small" data-act="rejected">Reject</button></div></div>`;
     $("#pt-view").innerHTML = `
       <h2>New order</h2><form class="pt-card pt-order" id="pt-order" autocomplete="off">
-        <p class="muted small">For a deal you closed by email. It reserves the position, opens the invoice and, if you tick it, emails the vendor. Then send the Payoneer payment request for the amount shown and mark the invoice paid when it arrives.</p>
+        <p class="muted small">For a deal you closed by email. The product goes live at the position right away and the invoice opens; if it isn't paid within the hold days, it comes off the page by itself. Send the Ruul invoice for the amount shown and mark it paid when the money arrives.</p>
         <div class="pt-grid"><label>Company<input name="company" required maxlength="120"></label><label>Contact email<input name="email" type="email" required maxlength="200"></label>
         <label>Product name<input name="product_name" required maxlength="120"></label><label>Product website<input name="product_website" required placeholder="example.com" maxlength="300"></label>
         <label>Page<select name="page" required><option value="">Choose a page</option>${(PAGES || []).slice().sort((a, b) => a.title.localeCompare(b.title)).map((p) => `<option value="${esc(p.url)}">${esc(p.title)}</option>`).join("")}</select></label>
@@ -365,7 +365,7 @@
         <label>Billing<select name="period"><option value="year">Yearly</option><option value="month">Monthly</option></select></label>
         <label>Price (USD)<input name="price" inputmode="decimal" placeholder="list price"></label>
         <label>Matches tool on our list<select name="tool_id"><option value="">Not reviewed yet</option></select></label>
-        <label>Payoneer reference (if already paid)<input name="ref" maxlength="120"></label></div>
+        <label>Payment reference (if already paid)<input name="ref" maxlength="120"></label></div>
         <label class="pt-check"><input type="checkbox" name="paid"> Already paid</label>
         <label class="pt-check"><input type="checkbox" name="notify" checked> Email the order details to the vendor</label>
         <p class="small" id="pt-order-sum"></p>
@@ -374,15 +374,15 @@
       ${needs.length ? needs.map(reqCard).join("") : `<div class="pt-empty"><p>No requests waiting. New products and position requests appear here.</p></div>`}
       <h2>Invoices</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Date</th><th>Vendor</th><th>For</th><th>Amount</th><th>Status</th><th></th></tr></thead><tbody>
       ${d.invoices.map((i) => `<tr data-iid="${i.id}"><td>${D(i.created_at)}</td><td>${esc(i.company)}<br><small>${esc(i.email)}</small></td><td>${i.plan ? `${esc(i.product_name)} · ${PLAN[i.plan]} · ${ptitle(i.page)}` : ""}</td><td>${money(i.amount_cents)}</td><td>${esc(i.status)}</td>
-        <td>${i.status === "requested" ? `<input name="ref" placeholder="Payoneer ref"><button class="btn small" data-iact="paid">Mark paid</button> <button class="btn ghost small" data-iact="cancelled">Cancel</button>` : esc(i.provider_ref || "")}</td></tr>`).join("") || `<tr><td colspan="6" class="muted">No invoices.</td></tr>`}</tbody></table></div>
+        <td>${i.status === "requested" ? `<input name="ref" placeholder="Ruul invoice no."><button class="btn small" data-iact="paid">Mark paid</button> <button class="btn ghost small" data-iact="cancelled">Cancel</button>` : esc(i.provider_ref || "")}</td></tr>`).join("") || `<tr><td colspan="6" class="muted">No invoices.</td></tr>`}</tbody></table></div>
       <h2>All products</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Vendor</th><th>Product</th><th>Category</th><th>Copy</th><th>Matches tool</th><th>Status</th><th></th></tr></thead><tbody>
       ${d.listings.map((l) => `<tr data-id="${l.id}"><td>${esc(l.company)}<br><small>${esc(l.email)}</small></td><td><a href="${esc(l.website)}" target="_blank" rel="noopener">${esc(l.product_name)}</a></td><td>${esc(catName(l.category))}</td>
         <td class="small">${esc(l.best_for || "")}<br>${esc(l.description || "")}<br>${esc(l.starting_price || "")}</td><td><select name="tool">${toolOpts(l.category, l.tool_id)}</select></td><td>${esc(l.status)}</td>
         <td><input name="note" placeholder="Note to vendor" value="${esc(l.review_note || "")}"><button class="btn small" data-act="approved">Approve</button> <button class="btn ghost small" data-act="rejected">Reject</button></td></tr>`).join("") || `<tr><td colspan="7" class="muted">No listings.</td></tr>`}</tbody></table></div>
-      <h2>Customers <span class="pt-count">${(d.customers || []).filter((c) => stateOf(c) === "Live" || stateOf(c) === "Paid, in review").length} live</span></h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Customer</th><th>Product</th><th>Position</th><th>Billing</th><th>Status</th><th>Started</th><th>Paid until</th><th>Paid so far</th><th>Last payment</th><th></th></tr></thead><tbody>
+      <h2>Customers <span class="pt-count">${(d.customers || []).filter((c) => ["Live", "Live, awaiting payment", "Paid, in review"].includes(stateOf(c))).length} live</span></h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Customer</th><th>Product</th><th>Position</th><th>Billing</th><th>Status</th><th>Started</th><th>Paid until</th><th>Paid so far</th><th>Last payment</th><th></th></tr></thead><tbody>
       ${(d.customers || []).map((c) => `<tr data-sid="${c.id}"><td>${esc(c.company)}<br><small>${esc(c.email)}</small></td><td><a href="${esc(c.website)}" target="_blank" rel="noopener">${esc(c.product_name)}</a></td><td>${PLAN[c.plan]}<br><small>${ptitle(c.page)}</small></td>
         <td>${c.period === "month" ? "Monthly" : "Yearly"}<br><small>${money(c.price_cents)}</small></td><td>${stateOf(c)}${c.open_invoice ? `<br><small>Invoice open: ${money(c.open_amount)}</small>` : ""}</td><td>${D(c.started_at)}</td><td>${D(c.status === "active" ? c.paid_through : c.reserved_until)}</td>
-        <td>${money(c.paid_total)}</td><td><small>${D(c.last_paid_at)}<br>${esc(c.last_ref || "")}</small></td><td>${c.status === "cancelled" ? "" : `<button class="btn ghost small" data-sact="end">End now</button>`}</td></tr>`).join("") || `<tr><td colspan="10" class="muted">No customers yet. Add one with the form above.</td></tr>`}</tbody></table></div>
+        <td>${money(c.paid_total)}</td><td><small>${D(c.last_paid_at)}<br>${esc(c.last_ref || "")}</small></td><td>${c.status === "reserved" && !c.show_unpaid && c.reserved_until > d.now ? `<button class="btn ghost small" data-sact="show">Go live now</button> ` : ""}${c.status === "cancelled" ? "" : `<button class="btn ghost small" data-sact="end">End now</button>`}</td></tr>`).join("") || `<tr><td colspan="10" class="muted">No customers yet. Add one with the form above.</td></tr>`}</tbody></table></div>
       <h2>Waitlist</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Page</th><th>Position</th><th>Product</th><th>Vendor</th><th>Joined</th></tr></thead><tbody>
       ${d.waitlist.map((w) => `<tr><td>${ptitle(w.page)}</td><td>${PLAN[w.plan]}</td><td>${esc(w.product_name)}</td><td>${esc(w.company)}</td><td>${D(w.created_at)}</td></tr>`).join("") || `<tr><td colspan="5" class="muted">Empty.</td></tr>`}</tbody></table></div>
       <h2>Vendors</h2><div class="table-wrap"><table class="pt-table"><thead><tr><th>Company</th><th>Email</th><th>Website</th><th>Joined</th><th></th></tr></thead><tbody>
@@ -408,9 +408,11 @@
         page: f.page.value, plan: f.plan.value, period: f.period.value, price: f.price.value, tool_id: f.tool_id.value, paid: f.paid.checked, ref: f.ref.value, notify: f.notify.checked } });
       btn.disabled = false;
       if (!r.ok) { toast(r.error, true); return; }
-      toast(r.paid ? "Order created and marked paid." : `Order created. Send a Payoneer request for ${money(r.amount_cents)}.` + (f.notify.checked ? (r.mailed ? " Vendor emailed." : " The email couldn't be sent.") : ""));
+      toast(r.paid ? "Order created and marked paid." : `Order created and live. Send the Ruul invoice for ${money(r.amount_cents)}.` + (f.notify.checked ? (r.mailed ? " Vendor emailed." : " The email couldn't be sent.") : ""));
       renderAdmin(); });
-    document.querySelectorAll("[data-sact]").forEach((b) => b.addEventListener("click", () => { if (confirm("End this plan now? Its Paddle subscription is cancelled too. Refunds are issued in Paddle.")) post(`/api/admin/subs/${b.closest("tr").dataset.sid}/end`, {}); }));
+    document.querySelectorAll("[data-sact]").forEach((b) => b.addEventListener("click", () => { const sid = b.closest("tr").dataset.sid;
+      if (b.dataset.sact === "show") post(`/api/admin/subs/${sid}/show`, {});
+      else if (confirm("End this plan now? It comes off the page today.")) post(`/api/admin/subs/${sid}/end`, {}); }));
   }
 
   const mode = document.body.dataset.portal || ($("#pt-root") || {}).dataset?.portal;
