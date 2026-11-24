@@ -2290,3 +2290,176 @@ guide_page({
         ("Zoho Books pricing", "https://www.zoho.com/us/books/pricing/"),
     ],
 })
+
+
+# ---------- Profit and loss statement (supporting article for the accounting pillar)
+# Hypothetical online candle shop, two quarters side by side; every subtotal, change and margin is computed here.
+_pl_cols = ("April&ndash;June", "July&ndash;September")
+_pl_rev = [("Product sales", 42000, 48500), ("Shipping charged to customers", 2600, 3000), ("Returns and refunds", -1400, -2100)]
+_pl_cogs = [("Wax, wicks, jars and scents", 11800, 14100), ("Packaging", 2900, 3300), ("Shipping and fulfillment", 3100, 3700)]
+_pl_opex = [("Wages", 9000, 9000), ("Studio rent", 2700, 2700), ("Advertising", 4200, 6900),
+            ("Payment processing fees", 1300, 1480), ("Software subscriptions", 600, 600), ("Depreciation", 450, 450)]
+_pl_other = [("Interest expense", 300, 280)]
+_pl_sum = lambda rows, i: sum(r[i] for r in rows)
+_pl_R = [_pl_sum(_pl_rev, i) for i in (1, 2)]
+_pl_C = [_pl_sum(_pl_cogs, i) for i in (1, 2)]
+_pl_GP = [_pl_R[i] - _pl_C[i] for i in (0, 1)]
+_pl_O = [_pl_sum(_pl_opex, i) for i in (1, 2)]
+_pl_OI = [_pl_GP[i] - _pl_O[i] for i in (0, 1)]
+_pl_X = [_pl_sum(_pl_other, i) for i in (1, 2)]
+_pl_NI = [_pl_OI[i] - _pl_X[i] for i in (0, 1)]
+_pl_pct = lambda a, b: round(a / b * 100, 1)
+_pl_sg = lambda x: ("&minus;" if x < 0 else "") + _fmt(abs(x))
+def _pl_ch(a, b):
+    """Dollar change, and % change in the line's size (a deduction like returns that grows shows +)."""
+    if a == b:
+        return "$0", "0%"
+    pc = round((abs(b) - abs(a)) / abs(a) * 100, 1)
+    return f"{'+' if b > a else ''}{_pl_sg(b - a)}", f"{'+' if pc > 0 else '&minus;'}{abs(pc)}%"
+
+
+def _pl_row(label, a, b, bold=False, indent=True):
+    ch, pc = _pl_ch(a, b)
+    lab = f"<b>{label}</b>" if bold else (f'<span style="padding-left:1.2em">{label}</span>' if indent else label)
+    w = (lambda s: f"<b>{s}</b>") if bold else (lambda s: s)
+    return (f"<tr><td>{lab}</td><td>{w(_pl_sg(a))}</td><td>{w(_pl_sg(b))}</td><td>{ch}</td><td>{pc}</td>"
+            f"<td>{'&minus;' if b < 0 else ''}{abs(_pl_pct(b, _pl_R[1]))}%</td></tr>")
+
+
+_pl_rows = ('<tr><td colspan="6"><b>Revenue</b></td></tr>' + "".join(_pl_row(*r) for r in _pl_rev)
+            + _pl_row("Net revenue", *_pl_R, bold=True)
+            + '<tr><td colspan="6"><b>Cost of goods sold</b></td></tr>' + "".join(_pl_row(*r) for r in _pl_cogs)
+            + _pl_row("Total cost of goods sold", *_pl_C, bold=True)
+            + _pl_row("Gross profit", *_pl_GP, bold=True)
+            + '<tr><td colspan="6"><b>Operating expenses</b></td></tr>' + "".join(_pl_row(*r) for r in _pl_opex)
+            + _pl_row("Total operating expenses", *_pl_O, bold=True)
+            + _pl_row("Operating income", *_pl_OI, bold=True)
+            + '<tr><td colspan="6"><b>Other income and expenses</b></td></tr>' + "".join(_pl_row(*r) for r in _pl_other)
+            + _pl_row("Net income", *_pl_NI, bold=True))
+_pl_gm = [_pl_pct(_pl_GP[i], _pl_R[i]) for i in (0, 1)]
+_pl_om = [_pl_pct(_pl_OI[i], _pl_R[i]) for i in (0, 1)]
+_pl_nm = [_pl_pct(_pl_NI[i], _pl_R[i]) for i in (0, 1)]
+_pl_rev_up = round((_pl_R[1] - _pl_R[0]) / _pl_R[0] * 100, 1)
+_pl_ni_up = round((_pl_NI[1] - _pl_NI[0]) / _pl_NI[0] * 100, 1)
+_pl_ads = [r for r in _pl_opex if r[0] == "Advertising"][0]
+_pl_ret = _pl_rev[2]
+_pl_ret_pct = [_pl_pct(-_pl_ret[i], _pl_rev[0][i]) for i in (1, 2)]
+# Gross profit lost to the lower margin: Q3 revenue at Q2's gross margin, minus actual Q3 gross profit
+_pl_gm_gap = round(_pl_R[1] * _pl_GP[0] / _pl_R[0] - _pl_GP[1])
+assert _pl_R[1] > _pl_R[0] and _pl_gm[1] < _pl_gm[0] and abs(_pl_ni_up) < 5
+_pl_margin_rows = "".join(f"<tr><td>{n}</td><td>{f}</td><td>{a}%</td><td>{b}%</td></tr>" for n, f, a, b in [
+    ("Gross margin", "Gross profit &divide; net revenue", *_pl_gm),
+    ("Operating margin", "Operating income &divide; net revenue", *_pl_om),
+    ("Net margin", "Net income &divide; net revenue", *_pl_nm)])
+_pl_rv = lambda k: f'<a href="/tools/{_tslug(_ac[k]["name"])}-review/">{_ac[k]["name"]}</a>' if k in _ac else ""
+_pl_soft = [
+    ("quickbooks", "Profit and Loss, plus a separate Profit and Loss Comparison report",
+     "Reports &gt; Standard reports, then Find report by name",
+     "Accounting method: Accrual or Cash",
+     "Compare: Previous year (PY) and Previous period (PP); Calculations: $ change or % change. Intuit says the comparison report defaults to year-to-date against the same period last year."),
+    ("zohobooks", "Profit and Loss (Business Overview reports)",
+     "Reports &gt; Business Overview &gt; Profit and Loss, then Customize",
+     "Report Basis: Accrual or Cash",
+     "Compare with a specific period or year, reporting tags or projects; columns can be shown, hidden and reordered, and the setup saved as a custom report."),
+    ("freshbooks", "Profit and Loss (updated and legacy versions)",
+     "Reports &gt; Accounting Reports &gt; Profit and Loss",
+     "Updated report: Billed (Accrual) only; the legacy report adds Collected (Cash-Based)",
+     "Break Down Totals by month, quarter or year; % of Income; Compare Totals with the previous period or year as an amount or % change. The legacy Breakdown filter needs the Plus, Premium or Select plan."),
+    ("wave", "Profit &amp; Loss (Income Statement)",
+     "Reports &gt; Profit &amp; Loss (Income Statement), web version only",
+     "Report Type: Accrual (Paid and Unpaid) or Cash Basis (Paid)",
+     "Compare to a prior period, showing the dollar and percentage change in net profit; Summary and Details tabs."),
+]
+_pl_soft_rows = "".join(f"<tr><td>{_pl_rv(k)}</td><td>{r}</td><td>{w}</td><td>{b}</td><td>{c}</td></tr>" for k, r, w, b, c in _pl_soft if k in _ac)
+_pl_soft_n = sum(1 for k, *_r in _pl_soft if k in _ac)
+
+guide_page({
+    "slug": "profit-and-loss-statement", "crumb": "Profit and loss statement", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-24", "kicker": "Explainer",
+    "title": "Profit and Loss Statement: How to Read and Prepare One",
+    "seo_title": "Profit and Loss Statement: How to Read and Prepare It | Vettlo",
+    "desc": "What a profit and loss statement shows, the line order from revenue to net income, a two-quarter example with margins, and how to run one in your software.",
+    "card": "The P&L line by line, a worked two-quarter example with margins, and where the report lives in four accounting tools.",
+    "answer": ("A profit and loss statement (P&amp;L, also called an income statement) shows a business's revenue, costs and expenses over a period, such as a month, quarter or year, and ends with net income: whether the business made or lost money in that period. "
+               "It reads top to bottom: revenue, minus cost of goods sold, gives gross profit; minus operating expenses gives operating income; then other income and expenses (and, for businesses that pay it, income tax) give net income."),
+    "sections": [
+        ("what", "What is a profit and loss statement?", f"""<p>A profit and loss statement is the report that answers "did we make money?" for a stated stretch of time. It adds up every revenue and expense account in your books for that period and subtracts one from the other. Accountants also call it the income statement or the statement of operations; they're the same report.</p>
+<p>Any of the tools in our <a href="{_ac_cat}">ranking of the best accounting software</a> builds a P&amp;L automatically from the transactions you record, so the work is less about typing the report and more about making sure the numbers under it are right and knowing how to read it. This guide covers both.</p>
+<p>The P&amp;L is one of three core financial statements, and each answers a different question:</p>
+<div class="table-wrap"><table><thead><tr><th>Statement</th><th>Question it answers</th><th>Covers</th></tr></thead><tbody>
+<tr><td>Profit and loss (income statement)</td><td>Did the business earn more than it spent?</td><td>A period: a month, quarter or year</td></tr>
+<tr><td>Balance sheet</td><td>What does the business own and owe?</td><td>A single date</td></tr>
+<tr><td>Cash flow statement</td><td>Where did cash come from and go?</td><td>A period</td></tr>
+</tbody></table></div>
+<p>The P&amp;L draws only on revenue and expense accounts; assets, liabilities and equity sit on the balance sheet. Our <a href="/guides/chart-of-accounts/">chart of accounts guide</a> shows which accounts feed which statement.</p>"""),
+        ("lines", "What goes on a profit and loss statement, line by line?", """<p>A standard small business P&amp;L has six building blocks in a fixed order, with a subtotal after each group of costs.</p>
+<div class="table-wrap"><table><thead><tr><th>Line</th><th>What it includes</th><th>How it's calculated</th></tr></thead><tbody>
+<tr><td>Revenue (sales, income)</td><td>Sales of products and services, less returns, refunds and discounts</td><td>Gross sales &minus; returns and discounts = net revenue</td></tr>
+<tr><td>Cost of goods sold (COGS)</td><td>Direct costs of what you sold: materials, inventory, production labor, fulfillment</td><td>Listed by account</td></tr>
+<tr><td>Gross profit</td><td>What's left to run the business after direct costs</td><td>Net revenue &minus; COGS</td></tr>
+<tr><td>Operating expenses</td><td>Costs of running the business that don't vary directly with each sale: wages, rent, advertising, software, depreciation</td><td>Listed by account</td></tr>
+<tr><td>Operating income</td><td>Profit from the core business</td><td>Gross profit &minus; operating expenses</td></tr>
+<tr><td>Other income and expenses, taxes</td><td>Interest earned or paid, one-off gains or losses, and income tax for businesses taxed as corporations</td><td>Operating income &plusmn; other items &minus; tax = net income</td></tr>
+</tbody></table></div>
+<h3>Single-step vs multi-step format</h3>
+<p>The table above is the multi-step format: it shows gross profit and operating income as separate subtotals. A single-step P&amp;L lists all revenue, then all expenses, and shows only one result, net income. Service businesses with no inventory often have no COGS section at all, so their gross profit equals revenue and the two formats look almost the same. If you sell products, the multi-step layout is the useful one, because gross margin is the first number that tells you whether your pricing works.</p>
+<h3>Does a sole proprietorship's P&amp;L include income tax?</h3>
+<p>Usually not. A sole proprietorship doesn't pay income tax as a business: the owner reports the result on Schedule C (Form 1040), "Profit or Loss From Business," and the IRS instructions say to enter the net profit or loss on line 31 and include it on Schedule 1 (Form 1040), line 3. So a sole proprietor's P&amp;L normally ends at net income before tax. Partnerships and S corporations also pass income to their owners; C corporations show income tax expense on the P&amp;L.</p>"""),
+        ("example", "Profit and loss statement example, with margins", f"""<p>Here is a comparative P&amp;L for a hypothetical online candle shop, with two quarters side by side, the change between them and each line as a share of the latest quarter's revenue. The % change column shows how much each line grew or shrank, so returns that got larger show as an increase. Comparative columns like these are the most useful way to read any P&amp;L.</p>
+<div class="table-wrap"><table><thead><tr><th>Line</th><th>{_pl_cols[0]}</th><th>{_pl_cols[1]}</th><th>Change</th><th>% change</th><th>% of revenue ({_pl_cols[1]})</th></tr></thead><tbody>{_pl_rows}</tbody></table></div>
+<p class="small muted">Hypothetical example for illustration; amounts are not from a real business. Net income is before income tax, as for a sole proprietorship.</p>
+<p>The three margins sum it up:</p>
+<div class="table-wrap"><table><thead><tr><th>Margin</th><th>Formula</th><th>{_pl_cols[0]}</th><th>{_pl_cols[1]}</th></tr></thead><tbody>{_pl_margin_rows}</tbody></table></div>
+<h3>What this P&amp;L says</h3>
+<ul>
+<li><b>Sales grew, profit didn't.</b> Net revenue rose {_pl_rev_up}%, but net income moved only {'+' if _pl_ni_up >= 0 else '&minus;'}{abs(_pl_ni_up)}%, from {_fmt(_pl_NI[0])} to {_fmt(_pl_NI[1])}.</li>
+<li><b>Gross margin slipped</b> from {_pl_gm[0]}% to {_pl_gm[1]}%. Had the shop kept its earlier margin, the latest quarter would have produced about {_fmt(_pl_gm_gap)} more gross profit. Materials and fulfillment grew faster than sales, which points at supplier prices or shipping rates.</li>
+<li><b>Advertising absorbed the growth.</b> Ad spend went from {_fmt(_pl_ads[1])} to {_fmt(_pl_ads[2])}, which is most of the increase in operating expenses. The question for the owner is whether the extra sales came from those ads and will repeat.</li>
+<li><b>Returns rose faster than sales:</b> from {_pl_ret_pct[0]}% to {_pl_ret_pct[1]}% of product sales.</li>
+</ul>
+<p>None of that shows up if you look only at the bottom line, which is why the change and percentage columns matter more than the totals.</p>"""),
+        ("prepare", "How do you prepare a profit and loss statement?", f"""<p>To prepare a P&amp;L, get the period's books complete and correct, then let your software total the revenue and expense accounts; if you work in a spreadsheet, you do the same totals by hand from the general ledger.</p>
+<ol>
+<li><b>Pick the period and the accounting basis.</b> Monthly is the usual rhythm, with quarterly and annual roll-ups. Choose cash or accrual and stay consistent; our <a href="/guides/cash-vs-accrual-accounting/">cash vs accrual accounting guide</a> explains how the choice moves revenue and expenses between months.</li>
+<li><b>Record everything for the period.</b> Every invoice, sales receipt, bill and expense, including card charges and anything paid personally for the business.</li>
+<li><b>Reconcile the bank and card accounts</b> to their statements, so no transaction is missing or doubled. See our <a href="/guides/bank-reconciliation/">bank reconciliation guide</a>.</li>
+<li><b>Post adjusting entries</b> on accrual books: depreciation, prepaid expenses used up, and expenses incurred but not yet billed.</li>
+<li><b>Check the classification.</b> Direct costs belong in COGS, overhead in operating expenses. Uncategorized income or expense accounts with balances are a sign of transactions still waiting to be sorted.</li>
+<li><b>Run the report and compare it</b> with the previous period and the same period last year, then investigate any line that moved more than you expected.</li>
+</ol>
+<h3>Why a transaction might be missing from your P&amp;L</h3>
+<p>Some transactions never appear on a P&amp;L by design. Intuit's QuickBooks help lists the common cases: a customer payment on its own touches only accounts receivable and the bank account, and a bill payment touches only accounts payable and the bank account. Revenue appears when you record the invoice or sales receipt, and an expense when you record the bill, check or expense against an expense account. That's how double-entry books work; see our <a href="/guides/general-ledger/">general ledger guide</a> for how entries post.</p>"""),
+        ("read", "What doesn't belong on a profit and loss statement?", f"""<p>Anything that changes what the business owns or owes, rather than what it earned or spent, stays off the P&amp;L. Putting these items on it is the most common reason a small business P&amp;L looks wrong.</p>
+<div class="table-wrap"><table><thead><tr><th>Item</th><th>Where it goes instead</th><th>What reaches the P&amp;L</th></tr></thead><tbody>
+<tr><td>Loan proceeds and principal repayments</td><td>A loan liability on the balance sheet</td><td>Only the interest, as interest expense</td></tr>
+<tr><td>Equipment, vehicles and other long-lived assets</td><td>A fixed asset on the balance sheet</td><td>Depreciation, spread over the asset's useful life</td></tr>
+<tr><td>Owner's draws and owner contributions</td><td>Equity</td><td>Nothing</td></tr>
+<tr><td>Inventory you bought but haven't sold</td><td>Inventory, an asset</td><td>Cost of goods sold, when the items sell</td></tr>
+<tr><td>Sales tax collected from customers</td><td>A sales tax liability until you pay it</td><td>Nothing; it isn't your revenue</td></tr>
+<tr><td>Transfers between your own accounts</td><td>Both bank or card accounts</td><td>Nothing</td></tr>
+</tbody></table></div>
+<p>This is also why a profitable P&amp;L and a shrinking bank balance can both be true: loan repayments, equipment purchases, inventory build-up and owner's draws all use cash without touching profit. On accrual books, unpaid customer invoices count as revenue before the cash arrives; our <a href="/guides/accounts-receivable/">accounts receivable guide</a> covers keeping those collected.</p>
+<p class="small muted">General accounting guidance, not tax or legal advice; your accountant may classify some items differently.</p>"""),
+        ("software", "How do you run a profit and loss report in accounting software?", f"""<p>Every accounting app has a P&amp;L report under its Reports menu; what differs is the basis switch and how flexible the comparisons are. Here is how {_pl_soft_n} of the tools in our ranking describe theirs:</p>
+<div class="table-wrap"><table><thead><tr><th>Tool</th><th>Report</th><th>Where</th><th>Basis</th><th>Comparisons and views</th></tr></thead><tbody>{_pl_soft_rows}</tbody></table></div>
+<p class="small muted">From vendor help pages checked Nov 24, 2026 (QuickBooks article updated Aug 4, 2026). Menu labels can change between versions.</p>
+<p>For a monthly review, set up the comparison once (current month against the prior month and the same month last year, with % of revenue if the tool offers it) and save it as a favorite or custom report. To see how these tools differ beyond reports, read <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> and <a href="/compare/freshbooks-vs-quickbooks/">FreshBooks vs QuickBooks</a>; for prices, see our <a href="/guides/accounting-software-cost/">accounting software cost guide</a>.</p>"""),
+    ],
+    "faqs": [
+        ("Is a profit and loss statement the same as an income statement?", "Yes. Profit and loss statement, P&L, income statement and statement of operations are names for the same report: revenue minus costs and expenses over a period, ending in net income or net loss."),
+        ("What is the difference between gross profit and net income?", "Gross profit is revenue minus the direct cost of what you sold (cost of goods sold). Net income is what remains after also subtracting operating expenses, interest, other items and, for businesses that pay it, income tax. Gross profit shows whether your pricing covers direct costs; net income shows whether the whole business made money."),
+        ("How often should a small business run a P&L?", "Monthly is the common rhythm, after the bank and card accounts are reconciled, because a problem caught one month in is cheaper to fix than one found at tax time. Quarterly and year-to-date versions help with estimated taxes and year-over-year comparisons."),
+        ("Can I make a profit and loss statement in Excel or Google Sheets?", "Yes. List your revenue accounts, cost of goods sold and operating expenses with their totals for the period, then add formulas for gross profit, operating income and net income. The totals must come from complete, reconciled records, which is the part accounting software automates."),
+    ],
+    "sources": [
+        ("IRS: About Schedule C (Form 1040), Profit or Loss from Business (Sole Proprietorship)", "https://www.irs.gov/forms-pubs/about-schedule-c-form-1040"),
+        ("IRS: Instructions for Schedule C (Form 1040)", "https://www.irs.gov/instructions/i1040sc"),
+        ("QuickBooks: Run a profit and loss comparison report", "https://quickbooks.intuit.com/learn-support/en-us/help-article/report-management/run-profit-loss-comparison-report/L6GthoBhe_US_en_US"),
+        ("QuickBooks: Find missing income and expense transactions in your Profit and Loss report", "https://quickbooks.intuit.com/learn-support/en-us/help-article/missing-transactions/income-expense-transactions-missing-profit-loss/L8uuyWTB8_US_en_US"),
+        ("Zoho Books: Business Overview reports", "https://www.zoho.com/en-ng/books/help/reports/business-overview.html"),
+        ("Zoho Books: Profit and loss report by reporting tag", "https://www.zoho.com/in/books/kb/reports/profit-and-loss-report-reporting-tag-wise.html"),
+        ("FreshBooks support: What is a Profit and Loss report?", "https://support.freshbooks.com/hc/en-us/articles/219089507-What-is-a-Profit-and-Loss-report"),
+        ("Wave: View and understand your profit &amp; loss statement", "https://support.waveapps.com/hc/en-us/articles/360041575251"),
+        ("Xero: How to read a profit &amp; loss statement (US)", "https://www.xero.com/us/guides/profit-and-loss-statement/"),
+    ],
+})

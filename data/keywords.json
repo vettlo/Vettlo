@@ -2510,6 +2510,28 @@
     "techtarget.com"
    ],
    "priority": 0
+  },
+  "profit and loss statement": {
+   "pillar": "accounting",
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": null,
+   "google_us_est": null,
+   "priority": null,
+   "kd": 82,
+   "kd_source": "websearch estimate",
+   "serp_note": "Checked 2026-11-24: Shopify, NetSuite, TechTarget, Cornell LII, IONOS, BambooHR, Chase, Smartsheet, Paychex, BILL, SumUp, CFI, FreshBooks. Mostly definitions and templates; few show a comparative example with change columns or list what stays off the P&L."
+  },
+  "month end close": {
+   "pillar": "accounting",
+   "bing_3m": null,
+   "bing_us_3m": null,
+   "google_us_range": null,
+   "google_us_est": null,
+   "priority": null,
+   "kd": 72,
+   "kd_source": "websearch estimate",
+   "serp_note": "Checked 2026-11-24: university finance offices (Syracuse, Stanford, UW, UNC, Dartmouth, Brown), BlackLine, Shopify, QuickBooks, Paylocity, Tipalti, NetSuite, FloQast, Xero, Patriot. Mostly enterprise close-software vendors and university procedures; little aimed at a small business closing its own books."
   }
  }
 }
