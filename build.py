@@ -48,8 +48,8 @@ def byline(url, published, checked_iso):
             f'<span>Updated <time datetime="{updated}">{hdate(updated)}</time> · Prices verified {hdate(checked)}</span></div></div>')
 YEAR = 2026
 
-FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=swap">')
+# Geist is self-hosted (see @font-face in src/site.css); preloading the Latin file lets text render in it on first paint.
+FONTS = '<link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>'
 
 LOGO = ('<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--brand)"/>'
         '<path d="M8.5 10.5l6.2 12.2c.5 1 1.9 1 2.4 0L24.5 8" fill="none" stroke="var(--brand-ink)" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -123,13 +123,13 @@ def fit_title(*options, limit=62):
     return options[-1]
 
 
-# Security headers. Keep the CSP sources in sync with what pages load: Google Fonts, Google's favicon service for logos,
+# Security headers. Keep the CSP sources in sync with what pages load: Google's favicon service for logos,
 # Cloudflare Web Analytics. Inline scripts and styles are used on some pages, hence 'unsafe-inline'.
 CSP = "; ".join([
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
     "img-src 'self' data: https://www.google.com https://*.gstatic.com",
     "connect-src 'self' https://cloudflareinsights.com",
     "frame-ancestors 'none'", "base-uri 'self'", "form-action 'self'", "object-src 'none'", "upgrade-insecure-requests",
@@ -1436,6 +1436,15 @@ document.addEventListener("click",function(e){{if(!e.target.closest(".home-searc
 
 
 import hashlib
+def min_css(css):
+    """Small, safe CSS minifier: drops comments and collapses whitespace (never touches colons, so selectors keep their meaning)."""
+    import re as _r
+    css = _r.sub(r"/\*.*?\*/", "", css, flags=_r.S)
+    css = _r.sub(r"\s+", " ", css)
+    css = _r.sub(r"\s*([{};,>])\s*", r"\1", css)
+    return css.replace(";}", "}").strip()
+
+
 CSS_V = hashlib.md5((ROOT / "src" / "site.css").read_bytes()).hexdigest()[:8]
 
 
@@ -1602,7 +1611,10 @@ def build():
     site, prev = DIST / "site", DIST / "preview"
     for d in (site, prev):
         (d / "assets").mkdir(parents=True)
-        shutil.copy(ROOT / "src" / "site.css", d / "assets" / "site.css")
+        (d / "assets" / "site.css").write_text(min_css((ROOT / "src" / "site.css").read_text()))
+        (d / "assets" / "fonts").mkdir()
+        for _f in (ROOT / "src" / "fonts").iterdir():
+            shutil.copy(_f, d / "assets" / "fonts" / _f.name)
         (d / "badges").mkdir(exist_ok=True)
         for fn, svg in BADGE_FILES.items():
             (d / "badges" / fn).write_text(svg)
@@ -1705,7 +1717,10 @@ Scores are editorial only and based on published, weighted criteria per category
     (site / ".well-known").mkdir(exist_ok=True)
     (site / ".well-known" / "security.txt").write_text("Contact: https://vettlo.com/contact/\nExpires: 2027-11-17T00:00:00.000Z\nPreferred-Languages: en, tr\nCanonical: https://vettlo.com/.well-known/security.txt\n")
     # security headers for every static file (the Worker adds the same ones to the responses it builds itself)
-    (site / "_headers").write_text("/*\n" + "".join(f"  {k}: {v}\n" for k, v in SECURITY_HEADERS.items()) + ("  X-Robots-Tag: noindex, nofollow\n" if PRELAUNCH_NOINDEX else ""))
+    # Versioned files (site.css?v=hash, fonts renamed on change) can sit in browser and edge caches for a year.
+    (site / "_headers").write_text("/*\n" + "".join(f"  {k}: {v}\n" for k, v in SECURITY_HEADERS.items()) + ("  X-Robots-Tag: noindex, nofollow\n" if PRELAUNCH_NOINDEX else "")
+        + "\n/assets/site.css\n  Cache-Control: public, max-age=31536000, immutable\n"
+        + "\n/assets/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n  Access-Control-Allow-Origin: *\n")
     pub = ROOT / "public"
     if pub.exists():
         shutil.rmtree(pub)

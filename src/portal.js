@@ -1177,6 +1177,10 @@ async function allSponsors(env) {
   placementCache.set("*", { t: Date.now(), v });
   return v;
 }
+// Starts the (cached) sponsor lookup early so it overlaps the static-asset fetch; errors are left for placeOnShortlist.
+export function warmSponsors(env) {
+  return env.DB ? allSponsors(env).catch(() => null) : null;
+}
 async function clearPlacements() {
   placementCache.clear();
   try { await caches.default.delete(SPONSOR_KEY); } catch {}

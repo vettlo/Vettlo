@@ -26,7 +26,7 @@ def _card(n, m):
 <div class="pcard-head"><span class="pcard-n">#{n}</span><div><h3>Position #{n}</h3><p class="small muted">{note}</p></div></div>
 <ul class="pcard-feat"><li>Your product at #{n} on one shortlist or alternatives page</li><li>Same spot in the review cards and comparison table</li><li>Impressions and visits in your vendor portal</li></ul>
 <div class="pcard-prices"><div><b>{_usd(m)}</b><small>per month</small></div><div><b>{_usd(y)}</b><small>per year, 10% off</small></div></div>
-<div class="pcard-buy"><a class="btn small" href="/vendors/login/?new=1&amp;plan=p{n}&amp;period=month">Buy monthly</a><a class="btn ghost small" href="/vendors/login/?new=1&amp;plan=p{n}&amp;period=year">Buy yearly</a></div>
+<div class="pcard-buy"><a class="btn small" rel="nofollow" href="/vendors/login/?new=1&amp;plan=p{n}&amp;period=month">Buy monthly</a><a class="btn ghost small" rel="nofollow" href="/vendors/login/?new=1&amp;plan=p{n}&amp;period=year">Buy yearly</a></div>
 </article>"""
 
 
@@ -35,7 +35,7 @@ _cards += f"""<article class="pcard" id="basic">
 <div class="pcard-head"><span class="pcard-n">B</span><div><h3>Basic listing</h3><p class="small muted">First under “Other tools to consider”</p></div></div>
 <ul class="pcard-feat"><li>Your product listed first under “Other tools to consider” on one category shortlist</li><li>Link to your site</li><li>Impressions and visits in your vendor portal</li></ul>
 <div class="pcard-prices"><div><b>{_usd(_BASIC_YEAR)}</b><small>per year</small></div></div>
-<div class="pcard-buy"><a class="btn small" href="/vendors/login/?new=1&amp;plan=basic&amp;period=year">Buy yearly</a></div>
+<div class="pcard-buy"><a class="btn small" rel="nofollow" href="/vendors/login/?new=1&amp;plan=basic&amp;period=year">Buy yearly</a></div>
 </article>"""
 
 page("/vendors/pricing/", "Vendor Pricing: Positions #1 to #10 | Vettlo",

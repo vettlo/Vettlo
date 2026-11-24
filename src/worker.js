@@ -2,7 +2,7 @@
 // Mail goes through Cloudflare Email Routing's send_email binding to the verified
 // address stored in the FORM_TO variable (set in the Cloudflare dashboard, not in this repo).
 import { EmailMessage } from "cloudflare:email";
-import { handlePortalApi, handleGo, handleCheckoutPage, placeOnShortlist, rateLimited, billingDaily } from "./portal.js";
+import { handlePortalApi, handleGo, handleCheckoutPage, placeOnShortlist, warmSponsors, rateLimited, billingDaily } from "./portal.js";
 
 // Same security headers as public/_headers, added to everything the Worker returns (API, redirects, shortlist pages).
 const SECURITY = {
@@ -118,12 +118,15 @@ async function route(request, env, ctx) {
     if (url.pathname.startsWith("/api/")) return handlePortalApi(request, env, url.pathname);
     if (url.pathname.startsWith("/go/")) return handleGo(request, env, ctx);
     if (url.pathname === "/vendors/checkout/" || url.pathname === "/vendors/checkout") return handleCheckoutPage(request, env); // Paddle default payment link
-    if (!/\.[a-z0-9]+$/i.test(url.pathname)) {  // pages only, not assets
+    // Serve the page first; the retired-URL table is only consulted when nothing lives at this path,
+    // so live pages never wait on it. The sponsor lookup (memory/edge cached) runs alongside the asset fetch.
+    const tools = url.pathname.startsWith("/tools/");
+    const [res] = await Promise.all([env.ASSETS.fetch(request), tools ? warmSponsors(env) : null]);
+    if (res.status === 404 && !/\.[a-z0-9]+$/i.test(url.pathname)) {  // pages only, not assets
       const to = (await redirects(env, request))[url.pathname.endsWith("/") ? url.pathname : url.pathname + "/"];
       if (to) return new Response(null, { status: 301, headers: { location: new URL(to, url).toString() + url.search, "cache-control": "public, max-age=86400" } });
     }
-    const res = await env.ASSETS.fetch(request);
-    if (url.pathname.startsWith("/tools/")) {
+    if (tools) {
       try { return await placeOnShortlist(request, env, res, ctx); } catch (e) { return res; }
     }
     return res;
