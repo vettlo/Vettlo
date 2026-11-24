@@ -1,4 +1,4 @@
-# Email marketing software. Prices and G2 ratings checked Oct 26, 2026.
+# Email marketing software. Prices and G2 ratings checked Oct 26, 2026; EmailOctopus added Nov 24, 2026.
 EM = {
     "slug": "best-email-marketing-software",
     "plural": "Email Marketing Software",
@@ -8,11 +8,11 @@ EM = {
     "desc": "The best email marketing software, compared on automation, segmentation, deliverability and what you really pay at 1,000 contacts, including free plan limits.",
     "intro": [
         "Email marketing software sends your newsletters and campaigns, and runs the automations that welcome new subscribers, recover abandoned carts and nurture leads. Every tool here has a free plan or trial; the differences are in how far automation goes on the cheaper plans and how quickly the price climbs as your list grows.",
-        "We scored six tools on six weighted criteria and priced each at the same list size. At 1,000 contacts, entry plans run from $15 a month (ActiveCampaign Starter, billed yearly) to $33 (Kit Creator, billed yearly), and Brevo prices by emails sent rather than contacts.",
+        "We scored seven tools on six weighted criteria and priced each at the same list size. At 1,000 contacts, entry plans run from $12 a month (EmailOctopus Pro, billed yearly) to $33 (Kit Creator, billed yearly), and Brevo prices by emails sent rather than contacts.",
     ],
     "criteria": [("Email builder & templates", 15), ("Automation", 25), ("Segmentation & personalization", 15),
                  ("Deliverability & reporting", 15), ("Ease of use", 15), ("Price & value", 15)],
-    "price_footnote": "Starting prices are the cheapest paid plan on each vendor's pricing page on Oct 26, 2026, at the smallest list size shown, billed yearly where available. Prices rise with list size. Mailchimp and Klaviyo bill monthly; Brevo prices by monthly email volume rather than contacts. Re-verified Nov 15, 2026: Mailchimp's pricing page now shows its plan prices as \"/mo for 12 months\" and doesn't show the price after that; MailerLite's and ActiveCampaign's tier prices and Mailchimp's 1,500-contact price don't appear in their page text, so those figures are as last confirmed.",
+    "price_footnote": "Starting prices are the cheapest paid plan on each vendor's pricing page on Oct 26, 2026, at the smallest list size shown, billed yearly where available. Prices rise with list size. Mailchimp and Klaviyo bill monthly; Brevo prices by monthly email volume rather than contacts. Re-verified Nov 15, 2026: Mailchimp's pricing page now shows its plan prices as \"/mo for 12 months\" and doesn't show the price after that; MailerLite's and ActiveCampaign's tier prices and Mailchimp's 1,500-contact price don't appear in their page text, so those figures are as last confirmed. EmailOctopus prices are from its pricing page on Nov 24, 2026 (a Black Friday offer then took 30% off the first year of new annual Pro plans; the prices here are the regular ones).",
     "tools": {
         "mailerlite": {
             "name": "MailerLite", "short": "MailerLite", "url": "https://www.mailerlite.com/",
@@ -80,6 +80,19 @@ EM = {
             "skip": "Automation is central to your marketing and budget is tight.",
             "links": [("/tools/best-mailchimp-alternatives/", "Mailchimp alternatives")],
         },
+        "emailoctopus": {
+            "name": "EmailOctopus", "short": "EmailOctopus", "url": "https://emailoctopus.com/",
+            "bf": "Best for low-cost newsletters and simple automations",
+            "price": "$9/mo", "price_note": "Pro, up to 500 subscribers, billed yearly ($10 monthly); $12 at 1,000", "trial": "Free plan (2,500 subscribers, 10,000 emails a month); no free trial of Pro", "trial_short": "Free plan",
+            "g2": ("4.3", "46", "https://www.g2.com/products/emailoctopus/reviews"),
+            "scores": [3.5, 3.5, 3.5, 3.5, 5, 5],
+            "what": "EmailOctopus is an email marketing tool for newsletters, automated sequences, landing pages and signup forms, priced by subscribers with a monthly email allowance. The free Starter plan covers 2,500 subscribers and 10,000 emails a month; Pro removes EmailOctopus branding and adds unlimited users, landing pages and forms, smart send timing, gradual sending and reports kept forever. EmailOctopus Connect is a separate version that sends through your own Amazon SES account.",
+            "who": "Small businesses, nonprofits and newsletter senders that want a clean editor and simple automations at a low monthly price.",
+            "why": "It's the cheapest paid plan on this list at 1,000 subscribers, the free plan sends 10,000 emails a month to up to 2,500 subscribers, and Pro automations allow up to 650 steps with up to 3 triggers each.",
+            "pros": ["Pro is $12 a month at 1,000 subscribers, billed yearly", "Free plan covers 2,500 subscribers and 10,000 emails a month", "Unlimited users with roles on Pro"],
+            "cons": ["Up to 50 custom fields and 50 tags, even on Pro", "No ecommerce flows or built-in CRM", "A/B testing isn't listed among plan features on the pricing page"],
+            "skip": "You need store-driven flows, lead scoring or a built-in sales CRM.",
+        },
         "kit": {
             "name": "Kit", "short": "Kit", "url": "https://kit.com/",
             "bf": "Best for creators and newsletters",
@@ -95,7 +108,7 @@ EM = {
         },
     },
     "choose": [
-        ("Price at your list size, not the entry price.", "At 1,000 contacts MailerLite Comfort is $17.10 a month billed yearly, Klaviyo Email $30, Mailchimp Essentials $26.50 and ActiveCampaign Starter $15. Brevo prices by emails sent instead."),
+        ("Price at your list size, not the entry price.", "At 1,000 contacts EmailOctopus Pro is $12 a month and MailerLite Comfort $17.10, both billed yearly, Klaviyo Email $30, Mailchimp Essentials $26.50 and ActiveCampaign Starter $15. Brevo prices by emails sent instead."),
         ("Check automation limits on the cheaper plans.", "Mailchimp Essentials caps flows at 4 steps, ActiveCampaign Starter at 5 actions per automation, and Brevo Starter limits automation to 2,000 contacts."),
         ("Match the tool to your business model.", "Klaviyo is built around store data, ActiveCampaign around journeys and lead scoring, Kit around creators' newsletters."),
         ("Count the people who need access.", "Seats range from 1 on Brevo Starter to unlimited on MailerLite Power and Mailchimp Premium."),
@@ -103,8 +116,8 @@ EM = {
     ],
     "faqs": [
         ("What is the best email marketing software?", "MailerLite scores highest in our ranking for most small and mid-sized businesses. Klaviyo is the best pick for ecommerce brands and ActiveCampaign for advanced automation."),
-        ("What is the best free email marketing software?", "Kit's free plan covers up to 10,000 subscribers, Brevo's free plan sends 300 emails a day, and MailerLite's free plan includes 250 subscribers, 2,500 emails a month and 3 automations."),
-        ("How much does email marketing software cost for 1,000 contacts?", "On Oct 26, 2026: ActiveCampaign Starter $15 a month and MailerLite Comfort $17.10 (both billed yearly), Mailchimp Essentials $26.50, Klaviyo Email $30, and Kit Creator $33 billed yearly."),
+        ("What is the best free email marketing software?", "Kit's free plan covers up to 10,000 subscribers, EmailOctopus's covers 2,500 subscribers and 10,000 emails a month, Brevo's free plan sends 300 emails a day, and MailerLite's free plan includes 250 subscribers, 2,500 emails a month and 3 automations."),
+        ("How much does email marketing software cost for 1,000 contacts?", "On Oct 26, 2026: ActiveCampaign Starter $15 a month and MailerLite Comfort $17.10 (both billed yearly), EmailOctopus Pro $12 billed yearly (checked Nov 24, 2026), Mailchimp Essentials $26.50, Klaviyo Email $30, and Kit Creator $33 billed yearly."),
         ("Is Mailchimp still worth it?", "It's easy to use and integrates with almost everything, but automation is limited on Essentials and it costs more than MailerLite or Brevo at the same list size."),
     ],
     "related": [("/tools/best-mailchimp-alternatives/", "Best Mailchimp alternatives"), ("/marketing-software/", "All marketing software")],
@@ -142,6 +155,6 @@ alternatives_page(EM, "mailchimp", "best-mailchimp-alternatives",
     [("/tools/best-email-marketing-software/", "Best email marketing software"), ("/marketing-software/", "All marketing software")])
 
 CATEGORY_PAGES += [
-    ("/tools/best-email-marketing-software/", "Best Email Marketing Software", "Six email tools compared on automation and price at 1,000 contacts.", "Shortlist"),
+    ("/tools/best-email-marketing-software/", "Best Email Marketing Software", "Seven email tools compared on automation and price at 1,000 contacts.", "Shortlist"),
     ("/tools/best-mailchimp-alternatives/", "Best Mailchimp Alternatives", "Five email tools with lower prices or deeper automation.", "Alternatives"),
 ]

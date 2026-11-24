@@ -1891,5 +1891,48 @@
       "Legacy packages sold from February 2020 to August 2025 (Premier, Prospect, Sell, Engage, Enterprise, Essentials) are no longer sold; the legacy Essentials Conversations trial allowed 20 recordings per user over 6 months.",
       "No free trial or minimum seat count is stated on Salesloft's pricing page or packages article."
     ]
+  },
+  "EmailOctopus": {
+    "checked": "2026-11-24",
+    "source": ["EmailOctopus pricing", "https://emailoctopus.com/pricing"],
+    "plans": [
+      ["Starter", "$0", "Up to 2,500 subscribers, 10,000 emails a month, 1 user, 1 landing page and 1 form, EmailOctopus branding, reports kept 30 days"],
+      ["Pro", "$9/mo billed yearly ($108 a year) or $10 monthly, up to 500 subscribers", "10,000 emails a month, unlimited users, landing pages and forms, no EmailOctopus branding, reports kept forever, priority support"],
+      ["Pro, 1,000 subscribers", "$12/mo billed yearly ($144 a year) or $13.50 monthly", "10,000 emails a month; 2,500 subscribers is $18/mo billed yearly with 25,000 emails"],
+      ["Custom", "Quote", "More than 500,000 subscribers"]
+    ],
+    "first_plan": [
+      ["Drag-and-drop and HTML email builder", "Starter"],
+      ["Advanced segmentation on custom fields and campaign activity", "Starter"],
+      ["API access and Zapier and Make integrations", "Starter"],
+      ["Remove EmailOctopus branding", "Pro"],
+      ["Smart timing and gradual sending", "Pro"],
+      ["Multiple automation triggers", "Pro"],
+      ["Subscriber profile pages", "Pro"],
+      ["Extra users and user roles", "Pro"],
+      ["Priority support", "Pro"]
+    ],
+    "limits": {
+      "cols": ["Starter", "Pro"],
+      "rows": [
+        ["Subscribers", "2,500", "Priced by tier, up to 500,000"],
+        ["Monthly emails", "10,000", "10,000 up to 1,000 subscribers, then 10 per subscriber"],
+        ["Users", "1", "Unlimited"],
+        ["Automations", "Up to 3", "Unlimited"],
+        ["Triggers per automation", "1", "Up to 3"],
+        ["Steps per automation", "Up to 5", "Up to 650"],
+        ["Custom fields", "Up to 10", "Up to 50"],
+        ["Tags", "Up to 10", "Up to 50"],
+        ["Landing pages and forms", "1 of each", "Unlimited"],
+        ["Report history", "30 days", "Forever"],
+        ["Chat support", "First 30 days", "Priority chat and email"]
+      ]
+    },
+    "notes": [
+      "There's no free trial of Pro; the free Starter plan has no time limit and needs no card.",
+      "Pro moves up a tier automatically when your list grows, and EmailOctopus emails you when it does.",
+      "Nonprofits get a 20% lifetime discount.",
+      "Until Nov 30, 2026, new annual Pro plans get 30% off the first year as a Black Friday offer; they renew at the regular price."
+    ]
   }
 }

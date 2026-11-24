@@ -27,7 +27,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best Aircall Alternatives](https://vettlo.com/tools/best-aircall-alternatives/): Five options with more dialing modes or parallel dialing.
 - [Best E-Signature Software](https://vettlo.com/tools/best-e-signature-software/): Six e-signature tools compared on envelope caps, bulk send and real price.
 - [Best Docusign Alternatives](https://vettlo.com/tools/best-docusign-alternatives/): Five e-signature tools with lower prices, free plans or unlimited sending.
-- [Best Email Marketing Software](https://vettlo.com/tools/best-email-marketing-software/): Six email tools compared on automation and price at 1,000 contacts.
+- [Best Email Marketing Software](https://vettlo.com/tools/best-email-marketing-software/): Seven email tools compared on automation and price at 1,000 contacts.
 - [Best Mailchimp Alternatives](https://vettlo.com/tools/best-mailchimp-alternatives/): Five email tools with lower prices or deeper automation.
 - [Best Expense Management Software](https://vettlo.com/tools/best-expense-management-software/): Seven expense tools compared on cards, receipts, approvals and real price.
 - [Best Expensify Alternatives](https://vettlo.com/tools/best-expensify-alternatives/): Five expense tools with free cards, lower prices or built-in travel.
@@ -163,6 +163,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [ActiveCampaign Review](https://vettlo.com/tools/activecampaign-review/): ActiveCampaign's pricing, pros, cons and score, from our marketing automation tools ranking.
 - [Brevo Review](https://vettlo.com/tools/brevo-review/): Brevo's pricing, pros, cons and score, from our email marketing tools ranking.
 - [Mailchimp Review](https://vettlo.com/tools/mailchimp-review/): Mailchimp's pricing, pros, cons and score, from our email marketing tools ranking.
+- [EmailOctopus Review](https://vettlo.com/tools/emailoctopus-review/): EmailOctopus's pricing, pros, cons and score, from our email marketing tools ranking.
 - [Kit Review](https://vettlo.com/tools/kit-review/): Kit's pricing, pros, cons and score, from our email marketing tools ranking.
 - [Brex Review](https://vettlo.com/tools/brex-review/): Brex's pricing, pros, cons and score, from our expense management tools ranking.
 - [Ramp Review](https://vettlo.com/tools/ramp-review/): Ramp's pricing, pros, cons and score, from our expense management tools ranking.

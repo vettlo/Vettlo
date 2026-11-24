@@ -95,9 +95,9 @@
     "note": "Re-verified prices, plans, AI resolution pricing and trials for all 7 help desks on vendor pricing pages (no price changes; Zoho Desk's page still shows rupee prices only, so its euro prices are unchanged and last confirmed Oct 26) and refreshed G2 review counts (ratings unchanged; e.g. Freshdesk 3,921 to 3,977)."
   },
   "/tools/best-email-marketing-software/": {
-    "updated": "2026-11-18",
+    "updated": "2026-11-24",
     "checked": "2026-11-15",
-    "note": "Re-verified plans, limits and trials for all 6 tools on vendor pricing pages (no price changes: Brevo, Kit and Mailchimp starting prices confirmed, and Klaviyo's $20 Email plan at 500 profiles; MailerLite's and ActiveCampaign's tier prices aren't shown in page text, so they're unchanged and unconfirmed). Mailchimp's page now labels its prices as for the first 12 months, noted in the price note and footnote. Refreshed G2 review counts (ratings unchanged). Nov 18: Corrected Brevo Starter: Brevo's plan comparison shows marketing automation on Starter for up to 2,000 contacts (unlimited from Standard), so the text no longer says Starter has no automation."
+    "note": "Re-verified plans, limits and trials for all 6 tools on vendor pricing pages (no price changes: Brevo, Kit and Mailchimp starting prices confirmed, and Klaviyo's $20 Email plan at 500 profiles; MailerLite's and ActiveCampaign's tier prices aren't shown in page text, so they're unchanged and unconfirmed). Mailchimp's page now labels its prices as for the first 12 months, noted in the price note and footnote. Refreshed G2 review counts (ratings unchanged). Nov 18: Corrected Brevo Starter: Brevo's plan comparison shows marketing automation on Starter for up to 2,000 contacts (unlimited from Standard), so the text no longer says Starter has no automation. Nov 24: Added EmailOctopus (scored and priced from its pricing page on Nov 24, 2026; G2 4.3 from 46 reviews) and updated the intro, buying guide and FAQs to include it."
   },
   "/tools/best-mailchimp-alternatives/": {
     "updated": "2026-11-18",
