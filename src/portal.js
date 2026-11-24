@@ -188,6 +188,8 @@ async function requestLogin(request, env, data) {
   const email = oneLine(data.email, 200).toLowerCase();
   if (!isEmail(email)) return json({ ok: false, error: "Enter a valid work email." }, 400);
   if (clean(data.website_hp, 100)) return json({ ok: true }); // honeypot
+  // Admin sign-in page: only admin addresses get a link, and the reply never says whether an address is an admin.
+  if (data.admin && !isAdminEmail(env, email)) return json({ ok: true });
   let vendor = await env.DB.prepare("SELECT * FROM vendors WHERE email = ?").bind(email).first();
   if (!vendor && isAdminEmail(env, email)) {  // the site owner signs in without the vendor sign-up step
     await env.DB.prepare("INSERT INTO vendors (email, company, website, terms_accepted_at, created_at) VALUES (?, 'Vettlo', 'https://vettlo.com', ?, ?)").bind(email, now(), now()).run();

@@ -7,7 +7,7 @@
     const r = await fetch(path, { method: opts.method || "GET", credentials: "same-origin",
       headers: { "content-type": "application/json", "x-requested-with": "vettlo" }, body: opts.body ? JSON.stringify(opts.body) : undefined });
     const data = await r.json().catch(() => ({ ok: false, error: "Unexpected response." }));
-    if (data.auth) { location.href = "/vendors/login/"; throw new Error("auth"); }
+    if (data.auth) { if (!opts.quiet) location.href = "/vendors/login/"; throw new Error("auth"); }
     return data;
   };
   const toast = (msg, bad) => { const t = $("#pt-toast"); if (!t) return; t.textContent = msg; t.className = "pt-toast show" + (bad ? " bad" : ""); setTimeout(() => (t.className = "pt-toast"), 3500); };
@@ -318,9 +318,24 @@
   }
 
   // ---------- admin
+  // Admin sign-in lives on the admin page itself: no vendor sign-up, no redirect to the vendor login.
+  function adminLogin(note) {
+    $("#pt-view").innerHTML = `<form class="form pt-card" id="pt-admin-login" style="max-width:420px"><h2>Admin sign-in</h2>
+      ${note ? `<p class="small muted">${esc(note)}</p>` : ""}<label>Admin email<input name="email" type="email" autocomplete="email" required></label>
+      <button class="btn" type="submit">Send sign-in link</button><p class="small muted" id="pt-admin-msg" role="status"></p></form>`;
+    const f = $("#pt-admin-login"), msg = $("#pt-admin-msg");
+    f.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.textContent = "Sending…";
+      const r = await api("/api/auth/request", { method: "POST", quiet: true, body: { email: f.email.value, admin: true } }).catch(() => ({ ok: false, error: "Network error." }));
+      if (r.ok) { f.querySelector("label").hidden = true; f.querySelector("button").hidden = true; msg.innerHTML = `<b>Check your inbox.</b> If ${esc(f.email.value)} is an admin address, a sign-in link is on its way. It expires in 20 minutes.`; }
+      else msg.textContent = r.error || "Something went wrong.";
+    });
+  }
   async function initAdmin() {
-    const me = await api("/api/me");
-    if (!me.ok || !me.vendor.is_admin) { $("#pt-view").innerHTML = "<p>Admins only.</p>"; return; }
+    const me = await api("/api/me", { quiet: true }).catch(() => ({ ok: false }));
+    if (!me.ok) return adminLogin(new URLSearchParams(location.search).get("expired") ? "That link has expired or was already used. Request a new one." : "");
+    if (!me.vendor.is_admin) return adminLogin("You're signed in with a vendor account. Sign in with the admin email to continue.");
     CATS = (await api("/api/categories")).categories || [];
     const pd = await api("/api/pages"); PAGES = pd.pages || []; PRICES = pd.prices || {};
     renderAdmin();
