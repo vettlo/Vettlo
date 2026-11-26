@@ -57,6 +57,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Best monday.com Alternatives](https://vettlo.com/tools/best-monday-alternatives/): Five tools for teams hitting monday.com's seat minimum, automation caps or Enterprise-only portfolios.
 - [Best Sales Engagement Platforms](https://vettlo.com/tools/best-sales-engagement-software/): Outreach tools scored on sequencing, deliverability, data and price.
 - [Best Apollo.io Alternatives](https://vettlo.com/tools/best-apollo-alternatives/): Five tools for teams outgrowing Apollo's credits or sending limits.
+- [Best SEO Tools](https://vettlo.com/tools/best-seo-tools/): Five SEO platforms compared on keyword data, rank tracking limits and yearly cost.
 - [Best Team Chat Apps](https://vettlo.com/tools/best-team-chat-apps/): Seven chat apps compared on free-plan history, calls, SSO and per-user price.
 - [Best Slack Alternatives](https://vettlo.com/tools/best-slack-alternatives/): Five chat apps with unlimited free history, cheaper SSO or chat bundled with your suite.
 - [Best Time Tracking Software](https://vettlo.com/tools/best-time-tracking-software/): Seven time trackers compared on free plans, approvals and per-user price.
@@ -249,6 +250,11 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Reply.io Review](https://vettlo.com/tools/reply-review/): Reply.io's pricing, pros, cons and score, from our sales engagement platforms ranking.
 - [lemlist Review](https://vettlo.com/tools/lemlist-review/): lemlist's pricing, pros, cons and score, from our sales engagement platforms ranking.
 - [Instantly Review](https://vettlo.com/tools/instantly-review/): Instantly's pricing, pros, cons and score, from our sales engagement platforms ranking.
+- [Semrush Review](https://vettlo.com/tools/semrush-review/): Semrush's pricing, pros, cons and score, from our SEO tools ranking.
+- [SE Ranking Review](https://vettlo.com/tools/se-ranking-review/): SE Ranking's pricing, pros, cons and score, from our SEO tools ranking.
+- [Ahrefs Review](https://vettlo.com/tools/ahrefs-review/): Ahrefs's pricing, pros, cons and score, from our SEO tools ranking.
+- [Serpstat Review](https://vettlo.com/tools/serpstat-review/): Serpstat's pricing, pros, cons and score, from our SEO tools ranking.
+- [Ubersuggest Review](https://vettlo.com/tools/ubersuggest-review/): Ubersuggest's pricing, pros, cons and score, from our SEO tools ranking.
 - [Slack Review](https://vettlo.com/tools/slack-review/): Slack's pricing, pros, cons and score, from our team chat apps ranking.
 - [Microsoft Teams Review](https://vettlo.com/tools/microsoft-teams-review/): Microsoft Teams's pricing, pros, cons and score, from our video conferencing tools ranking.
 - [Google Chat Review](https://vettlo.com/tools/google-chat-review/): Google Chat's pricing, pros, cons and score, from our team chat apps ranking.

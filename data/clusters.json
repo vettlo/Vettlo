@@ -1181,6 +1181,77 @@
      "priority": null
     }
    ]
+  },
+  {
+   "pillar": "best-seo-tools",
+   "dept": "Marketing",
+   "why": "New pillar (Nov 26, 2026); no Search Console data yet. Opens search in the Marketing department next to email marketing, marketing automation and webinars.",
+   "articles": [
+    {
+     "slug": "what-is-seo-software",
+     "type": "explainer",
+     "title": "What Is SEO Software? What It Does and Who Needs It",
+     "intent": "what is seo software",
+     "angle": "Definition; the five jobs (keyword research, rank tracking, site audits, backlinks, AI search visibility); suites vs single-purpose tools like crawlers; how plan limits map to those jobs, from category data.",
+     "status": "todo",
+     "url": "/guides/what-is-seo-software/",
+     "target_keyword": "what is seo software",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "seo-tools-cost",
+     "type": "pricing",
+     "title": "How Much Do SEO Tools Cost?",
+     "intent": "seo tools pricing",
+     "angle": "Per-account vs per-user pricing, tracked-keyword and seat limits, annual vs monthly billing; yearly cost for one user tracking 500 and 2,000 keywords, computed from category data.",
+     "status": "todo",
+     "url": "/guides/seo-tools-cost/",
+     "target_keyword": "seo tools cost",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "seo-audit-checklist",
+     "type": "reference",
+     "title": "SEO Audit Checklist: What to Check and in What Order",
+     "intent": "seo audit checklist",
+     "angle": "Crawlability, indexing, redirects, titles and meta, internal links, page speed and structured data, with which issue types site-audit tools flag; facts only from official documentation (Google Search Central) fetched the same day.",
+     "status": "todo",
+     "url": "/guides/seo-audit-checklist/",
+     "target_keyword": "seo audit checklist",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    },
+    {
+     "slug": "how-to-choose-seo-software",
+     "type": "buying",
+     "title": "How to Choose SEO Software: Limits That Decide the Plan",
+     "intent": "how to choose seo software",
+     "angle": "Buying guide: estimate tracked keywords, update frequency, pages per audit, seats and AI prompts before comparing; trial checklist; switching tools without losing ranking history. Plan facts from the pillar.",
+     "status": "todo",
+     "url": "/guides/how-to-choose-seo-software/",
+     "target_keyword": "how to choose seo software",
+     "bing_3m": null,
+     "bing_us_3m": null,
+     "google_us_range": null,
+     "google_us_est": null,
+     "kd": null,
+     "priority": null
+    }
+   ]
   }
  ]
 }

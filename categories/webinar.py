@@ -93,7 +93,7 @@ WB = {
         ("Is there free webinar software?", "Livestorm has a permanent free plan with 30 attendee credits a year, 30-minute sessions and up to 10 events. The other tools here offer trials instead: Demio for 14 days (20 attendees, 1-hour sessions) and WebinarJam for $1 for 14 days."),
         ("Which webinar software supports automated webinars?", "WebinarJam includes its EverWebinar automated product from the Basic plan ($79 a month billed annually), Demio includes automated and on-demand webinars from Growth ($117 per host billed yearly), and Webex Webinars includes simulive and on-demand streaming on its 1,000-attendee license."),
     ],
-    "related": [("/tools/best-video-conferencing-software/", "Best video conferencing software"), ("/tools/best-marketing-automation-software/", "Best marketing automation software"), ("/tools/best-email-marketing-software/", "Best email marketing software"), ("/marketing-software/", "All marketing software")],
+    "related": [("/tools/best-video-conferencing-software/", "Best video conferencing software"), ("/tools/best-marketing-automation-software/", "Best marketing automation software"), ("/tools/best-email-marketing-software/", "Best email marketing software"), ("/tools/best-seo-tools/", "Best SEO tools"), ("/marketing-software/", "All marketing software")],
 }
 
 WB["others"] = [("GoTo Webinar", "Webinar platform with Reach, Elevate and Complete plans for up to 500, 1,000 and 3,000 participants, and a 7-day free trial."),

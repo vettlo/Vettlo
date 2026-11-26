@@ -185,7 +185,7 @@ DEPTS = [
     ("Marketing", "Email, automation and search", [
         ("best-email-marketing-software", "Email Marketing Software", "Newsletters, campaigns and automations", True),
         ("best-marketing-automation-software", "Marketing Automation", "Lead nurturing, scoring and journeys", True),
-        ("best-seo-tools", "SEO Tools", "Rank tracking, audits and keyword research", False),
+        ("best-seo-tools", "SEO Tools", "Rank tracking, audits and keyword research", True),
         ("best-social-media-management-tools", "Social Media Management", "Scheduling, inbox and analytics", False),
         ("best-landing-page-builders", "Landing Page Builders", "Pages, forms and A/B tests", False),
         ("best-webinar-software", "Webinar Software", "Live and on-demand events", True),

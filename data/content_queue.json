@@ -219,7 +219,9 @@
    "type": "category",
    "slug": "best-seo-tools",
    "department": "Marketing",
-   "status": "todo"
+   "status": "done",
+   "date": "2026-11-26",
+   "url": "/tools/best-seo-tools/"
   },
   {
    "type": "category",
@@ -297,6 +299,12 @@
    "status": "done",
    "date": "2026-11-16",
    "url": "/compare/freshbooks-vs-quickbooks/"
+  },
+  {
+   "type": "compare",
+   "slug": "semrush-vs-ahrefs",
+   "category": "best-seo-tools",
+   "status": "todo"
   }
  ],
  "guides": [

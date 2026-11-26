@@ -120,7 +120,7 @@ EM = {
         ("How much does email marketing software cost for 1,000 contacts?", "On Oct 26, 2026: ActiveCampaign Starter $15 a month and MailerLite Comfort $17.10 (both billed yearly), EmailOctopus Pro $12 billed yearly (checked Nov 24, 2026), Mailchimp Essentials $26.50, Klaviyo Email $30, and Kit Creator $33 billed yearly."),
         ("Is Mailchimp still worth it?", "It's easy to use and integrates with almost everything, but automation is limited on Essentials and it costs more than MailerLite or Brevo at the same list size."),
     ],
-    "related": [("/tools/best-mailchimp-alternatives/", "Best Mailchimp alternatives"), ("/marketing-software/", "All marketing software")],
+    "related": [("/tools/best-mailchimp-alternatives/", "Best Mailchimp alternatives"), ("/tools/best-seo-tools/", "Best SEO tools"), ("/marketing-software/", "All marketing software")],
 }
 
 EM["others"] = [('Constant Contact', 'Email, social and text marketing for small businesses.'), ('GetResponse', 'Email marketing and automation with landing pages.'), ('Omnisend', 'Email and SMS for online stores on Shopify, WooCommerce and similar platforms.'), ('Campaign Monitor', 'Email campaigns and automated journeys for small marketing teams and agencies.'), ('AWeber', 'Email marketing for small businesses, with automation and landing pages.'), ('beehiiv', 'Newsletter platform to write, grow and monetize an audience.')]

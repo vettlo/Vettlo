@@ -161,6 +161,14 @@ EXPLAIN = {
                      ("Attendee limits and session length", "Caps on live attendees and minutes per session, which decide the plan you need."),
                      ("CRM and marketing integrations", "Registrants and attendance synced to HubSpot, Salesforce, Marketo or email tools.")],
     },
+    "best-seo-tools": {
+        "what": "SEO tools collect search data a website can't see on its own: how many people search for a keyword, which pages rank for it, which sites link to a competitor and what technical problems stop pages from being indexed. All-in-one platforms combine keyword research, rank tracking, site audits and backlink data, and most now also track how often a brand is named in AI answers from ChatGPT, Gemini or Google's AI Overviews.",
+        "features": [("Keyword research", "Search volume, difficulty and related questions for the terms buyers type."),
+                     ("Rank tracking", "Daily or weekly positions for a set of tracked keywords, by device and location."),
+                     ("Site audit", "A crawler that flags broken links, redirect chains, missing tags and slow pages."),
+                     ("Backlink and competitor data", "Which sites link to a domain and which keywords send competitors traffic."),
+                     ("AI search visibility", "Tracked prompts that show whether a brand is cited in AI assistants' answers.")],
+    },
     "best-issue-tracking-software": {
         "what": "Issue tracking software is where software teams log bugs, feature requests and tasks as issues, then assign, prioritize and move them through a workflow until they ship. Most trackers add sprint or cycle planning, links to commits and pull requests, and reports on how much work gets done each sprint.",
         "features": [("Issues and custom workflows", "Bugs, stories and tasks with statuses, priorities, assignees and custom fields."),
