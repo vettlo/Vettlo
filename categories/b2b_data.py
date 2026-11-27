@@ -91,7 +91,7 @@ DATA = {
             "who": "Sales teams and agencies prospecting in France and Europe that want to pay only for contacts found, without a subscription.",
             "why": "You're charged only when data is found (1 credit = €1: €0.10 per email, €0.50 per phone), credits never expire, and mobiles are checked on WhatsApp to confirm the line is active.",
             "pros": ["Pay only for results: €0.10 per email and €0.50 per phone found", "Mobile lines checked on WhatsApp, not just format-validated", "Credits don't expire; volume discounts up to 60% based on cumulative spend"],
-            "cons": ["Only one G2 review so far, so the 85%+ enrichment rate is mostly the vendor's own figure", "No intent data or large searchable database for account-based prospecting"],
+            "cons": ["Only one G2 review so far", "No intent data or large searchable database for account-based prospecting"],
             "skip": "You need a large searchable database with intent data for account-based selling.",
         },
         "uplead": {
