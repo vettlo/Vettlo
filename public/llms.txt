@@ -305,6 +305,7 @@ Scores are editorial only and based on published, weighted criteria per category
 - [QuickBooks Online Bank Feed Not Updating? How to Fix It](https://vettlo.com/guides/quickbooks-bank-feed-not-updating/): Eight fixes in the order Intuit recommends, plus what the common bank error codes mean and how long to wait.
 - [What Is Accounting Software? What It Does and Who Needs It](https://vettlo.com/guides/what-is-accounting-software/): The seven jobs accounting software does, the main types, and the plan where advanced features start.
 - [Profit and Loss Statement: How to Read and Prepare One](https://vettlo.com/guides/profit-and-loss-statement/): The P&L line by line, a worked two-quarter example with margins, and where the report lives in four accounting tools.
+- [How to Undo a Reconciliation in QuickBooks Online](https://vettlo.com/guides/undo-reconciliation-quickbooks-online/): Who can undo a reconciliation, the exact steps, the one-transaction fix, and what the undo deletes for good.
 - [All guides](https://vettlo.com/guides/)
 
 ## Trust

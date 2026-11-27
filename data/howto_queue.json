@@ -14,9 +14,10 @@
       "tool": "QuickBooks Online", "pillar": "best-accounting-software", "kind": "How-to",
       "title": "How to Undo a Reconciliation in QuickBooks Online",
       "target_keyword": "how to undo a reconciliation in quickbooks online",
-      "help_doc": "https://quickbooks.intuit.com/learn-support/en-us/help-articles/undo-your-client-s-reconciliations-with-quickbooks-online/00/262360",
-      "status": "todo", "date": null, "url": null, "kd": null,
-      "note": "Check which user roles can undo (accountant user) and the single-transaction alternative."
+      "help_doc": "https://quickbooks.intuit.com/learn-support/en-us/help-article/balance-sheet/undo-entire-reconciliation-quickbooks-online/L8t48Iv10_US_en_US",
+      "status": "done", "date": "2026-11-27", "url": "/guides/undo-reconciliation-quickbooks-online/",
+      "kd": 70, "kd_source": "websearch estimate",
+      "note": "SERP 2026-11-27: Intuit help articles (several country versions), Intuit community threads and NerdWallet. Intuit's US article (updated Aug 5, 2026) now lets the primary admin undo, while older threads say only an accountant can; no page puts roles, the one-transaction fix and what gets deleted in one place. Original help_doc (262360) wasn't readable; replaced with the current US article."
     },
     {
       "tool": "Zoho Books", "pillar": "best-accounting-software", "kind": "How-to",
@@ -57,6 +58,14 @@
       "help_doc": "https://bitwarden.com/pdf/help-import-from-1password.pdf",
       "status": "todo", "date": null, "url": null, "kd": null,
       "note": "Distinct from the LastPass item: different export formats (1PUX/CSV). Fetch the HTML help page on the day."
+    },
+    {
+      "tool": "QuickBooks Online", "pillar": "best-accounting-software", "kind": "How-to",
+      "title": "How to Void a Check in QuickBooks Online",
+      "target_keyword": "how to void a check in quickbooks online",
+      "help_doc": "https://quickbooks.intuit.com/learn-support/en-us/help-article/write-checks/record-voided-checks/L4ZCBV0Dx_US_en_US",
+      "status": "todo", "date": null, "url": null, "kd": null,
+      "note": "Void vs delete, voiding a check from a closed or reconciled period, and the voided checks report. SERP 2026-11-27 includes TechRepublic and Intuit docs: confirm a gap before writing."
     }
   ]
 }

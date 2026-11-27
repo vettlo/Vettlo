@@ -2463,3 +2463,101 @@ guide_page({
         ("Xero: How to read a profit &amp; loss statement (US)", "https://www.xero.com/us/guides/profit-and-loss-statement/"),
     ],
 })
+
+
+# ---------- How to undo a reconciliation in QuickBooks Online (tool task guide, How-to)
+# Steps, menu names, roles and effects from Intuit's QuickBooks Online help articles fetched Nov 27, 2026
+# (US "Undo an entire reconciliation" updated Aug 5, 2026; "Undo or remove transactions from reconciliations"
+# updated Aug 24, 2026; accountant article updated Nov 9, 2026). Plans and accountant-user counts come from
+# data/review_depth.json so they follow the daily pricing refresh.
+_ur_qb = _ac_depth.get("QuickBooks Online", {})
+_ur_plans = [p for p, _s, _d in _ur_qb.get("plans", [])]
+_ur_plan_txt = f"{_ur_plans[0]} through {_ur_plans[-1]}" if len(_ur_plans) > 1 else "every plan"
+_ur_lim = _ur_qb.get("limits", {})
+_ur_acct = {}
+for _r in _ur_lim.get("rows", []):
+    if _r[0] == "Accountant users":
+        _ur_acct = dict(zip(_ur_lim.get("cols", []), _r[1:]))
+_ur_acct_vals = sorted(set(_ur_acct.values()), key=lambda v: int(v) if v.isdigit() else 0)
+if len(_ur_acct_vals) > 1:
+    _ur_acct_txt = (f"Every QuickBooks Online plan includes accountant users ({_ur_acct_vals[0]} on most plans, "
+                    + " ".join(f"{v} on {_ac_and([p for p, n in _ur_acct.items() if n == v])}" for v in _ur_acct_vals[1:]) + ")")
+elif _ur_acct_vals:
+    _ur_acct_txt = f"Every QuickBooks Online plan includes {_ur_acct_vals[0]} accountant users"
+else:
+    _ur_acct_txt = "QuickBooks Online plans include accountant users"
+_ur_qbrv = _ac_rv("quickbooks") if "quickbooks" in _ac_ranked else '<a href="/tools/quickbooks-online-review/">QuickBooks Online</a>'
+_ur_alt = _ac_and([_ac_rv(k) for k in ("xero", "zohobooks") if k in _ac_ranked])
+_ur_rec = "<b>All apps</b> &gt; <b>Accounting</b> &gt; <b>Reconcile</b>"
+_ur_reg = "<b>All apps</b> &gt; <b>Accounting</b> &gt; <b>Chart of accounts</b>"
+_ur_fx = [
+    ("Reconciled transactions", "Go back to uncleared or cleared (they lose the R)", "Yes: reconcile them again"),
+    ("Later reconciliations", "Undone too; you can't undo one month in the middle", "Yes: redo each one"),
+    ("Beginning balance", "Reverts to the ending balance of the reconciliation before the one you undid", "Follows from the redo"),
+    ("Service charges, interest and balance adjustments entered in that reconciliation", "Removed, per Intuit's accountant article", "Re-enter them when you redo it"),
+    ("Reconciliation report and its attachments", "Permanently deleted", "No: download them first"),
+    ("Transactions you reconciled by hand in the register", "Not changed by the undo", "Fix them one at a time in the register"),
+]
+_ur_fx_rows = "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>" for a, b, c in _ur_fx)
+
+guide_page({
+    "slug": "undo-reconciliation-quickbooks-online", "crumb": "Undo a reconciliation in QuickBooks Online", "dept": "Finance", "cats": ["best-accounting-software"],
+    "date": "2026-11-27", "kicker": "How-to",
+    "title": "How to Undo a Reconciliation in QuickBooks Online",
+    "seo_title": "How to Undo a Reconciliation in QuickBooks Online | Vettlo",
+    "desc": "How to undo a reconciliation in QuickBooks Online: who is allowed, the History by account steps, how to unreconcile one transaction, and what gets deleted.",
+    "card": "Who can undo a reconciliation, the exact steps, the one-transaction fix, and what the undo deletes for good.",
+    "answer": ("To undo a reconciliation in QuickBooks Online, sign in as the primary admin (or an accountant user), go to All apps &gt; Accounting &gt; Reconcile, select History by account, find the reconciliation, and in the Action column choose Undo, tick the checkbox and select Undo reconciliation. "
+               "That also undoes every later reconciliation for the account and permanently deletes their reports, so if only one transaction is wrong, unreconcile just that transaction in the account register instead."),
+    "sections": [
+        ("who", "Who can undo a reconciliation in QuickBooks Online?", f"""<p>In QuickBooks Online the primary admin can now undo an entire reconciliation; it's no longer a job only an accountant can do. Intuit's US article on undoing an entire reconciliation, updated August 5, 2026, lists three roles: the <b>primary admin</b>, an <b>in-house accountant</b>, and an <b>accountant user</b> with access to the company through QuickBooks Online Accountant.</p>
+<p>That matters because many older community answers about how to undo a reconciliation in QuickBooks Online say you need an accountant. Intuit's own help pages aren't fully aligned either: its article on removing transactions from reconciliations tells you to "consult your accountant or sign in as the Primary Admin user." If you aren't the primary admin, ask whoever is, or your accountant.</p>
+<p>The steps don't depend on the plan. Intuit's articles list no plan requirement, and they apply from {_ur_plan_txt}. {_ur_acct_txt}, so an outside bookkeeper can do this without taking one of your paid seats. Plan details are in our {_ur_qbrv} review; how reconciliation works in general, and how it compares across the tools on our <a href="{_ac_cat}">accounting software shortlist</a>, is in the <a href="/guides/bank-reconciliation/">bank reconciliation guide</a>.</p>"""),
+        ("entire", "How do I undo an entire reconciliation?", f"""<p>Undo a whole reconciliation from the reconciliation history, not from the register. Download the reconciliation report and any attachments first, because the undo deletes them and Intuit says the deletion can't be reversed.</p>
+<ol>
+<li><b>Save the reports.</b> Open each reconciliation you're about to undo (the one you pick and every later one for the account) and download or print its report and attachments.</li>
+<li><b>Open the history.</b> Sign in as the primary admin and go to {_ur_rec}. Select <b>History by account</b>.</li>
+<li><b>Find the reconciliation.</b> Choose the account and a date range that includes it; Intuit notes you may need to change the report period to see older ones.</li>
+<li><b>Undo it.</b> In the <b>Action</b> column, open the dropdown and select <b>Undo</b>.</li>
+<li><b>Confirm.</b> Review the warning, tick the checkbox and select <b>Undo reconciliation</b>, then <b>Done</b>. <b>Cancel</b> leaves everything as it was.</li>
+<li><b>Redo the months.</b> Start a new reconciliation from the earliest undone statement and work forward, re-entering any service charges or interest.</li>
+</ol>
+<p>Accountants working in Intuit Accountant Suite follow a similar route: from the gear icon, <b>Reconcile</b>, then <b>History by account</b>, then <b>View report</b> and <b>Batch undo</b> in the <b>Action</b> column, according to Intuit's accountant article updated November 9, 2026. If the client company has an accountant attached, a primary admin sees one extra screen asking them to talk to that accountant first.</p>"""),
+        ("single", "How do I unreconcile a single transaction in QuickBooks Online?", f"""<p>To unreconcile one transaction, open the account register and click the transaction's reconcile status box until it's blank, then save. This leaves every other reconciliation in place, so it's the safer fix when one entry is wrong.</p>
+<ol>
+<li>Go to {_ur_reg}.</li>
+<li>Find the bank or card account and select <b>View register</b>.</li>
+<li>Select the transaction to expand it.</li>
+<li>Click the box in the checkmark column. Each click cycles the status: <b>R</b> (reconciled), <b>C</b> (cleared), then blank (uncleared). Stop at the status you need.</li>
+<li>Select <b>Save</b>.</li>
+</ol>
+<p>Intuit gives two warnings here. Removing a cleared or reconciled transaction changes the beginning balance of your next reconciliation, so the next statement won't tie out until you deal with the difference. And check that the transaction really is the cause of the discrepancy before you change it: unreconciling the wrong line creates a second problem rather than fixing the first.</p>"""),
+        ("effects", "What happens when you undo a reconciliation?", f"""<p>Undoing a reconciliation reverses its effect on the account and on every reconciliation after it, and it deletes their reports for good. This table summarizes what changes, based on Intuit's US help articles checked November 27, 2026.</p>
+<div class="table-wrap"><table><thead><tr><th>Item</th><th>After the undo</th><th>Recoverable?</th></tr></thead><tbody>{_ur_fx_rows}</tbody></table></div>
+<p>Because of the last row, Intuit suggests checking the audit history after an undo: a transaction that someone reconciled or edited by hand in the register keeps that status, and it can still throw off the redone reconciliation.</p>
+<p>Undoing doesn't touch the transactions themselves. Amounts, dates, payees and categories stay the same; only their reconcile status and the account's beginning balance for reconciliation change.</p>"""),
+        ("instead", "Should you undo it? What to try first", f"""<p>Undo an entire reconciliation only when several months are genuinely wrong. For one bad entry or a beginning balance that's off, a smaller fix keeps your history and reports intact.</p>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>Better first step</th></tr></thead><tbody>
+<tr><td>One transaction was reconciled by mistake</td><td>Unreconcile it in the register (steps above)</td></tr>
+<tr><td>The beginning balance doesn't match the statement</td><td>Run the reconciliation discrepancy report; Intuit's accountant video suggests trying it before an undo</td></tr>
+<tr><td>You ticked the wrong items in a reconciliation you haven't finished</td><td>Clear the ticks, or use <b>Save for later</b> &gt; <b>Close without saving</b> and start again (Intuit's Australian help article)</td></tr>
+<tr><td>Several months were reconciled against the wrong statements</td><td>Undo the earliest wrong reconciliation, then redo each month</td></tr>
+<tr><td>Your accountant has already closed the books for the year</td><td>Ask them first; Intuit says to talk to your accountant before any undo</td></tr>
+</tbody></table></div>
+<p>The usual reasons balances drift, such as duplicates, missed fees and deposits in transit, are covered in <a href="/guides/bank-reconciliation/#mismatch">why a bank reconciliation doesn't balance</a>. If the gap comes from transactions that never downloaded, fix the feed first with our guide to a <a href="/guides/quickbooks-bank-feed-not-updating/">QuickBooks Online bank feed not updating</a>, then reconcile.</p>
+<p>If reconciliation keeps being the pain point, compare how other tools handle it: the {_ur_alt} reviews describe their reconciliation and bank feed setups, and <a href="/compare/quickbooks-vs-xero/">QuickBooks vs Xero</a> puts the two side by side.</p>"""),
+    ],
+    "faqs": [
+        ("Can I undo a reconciliation in QuickBooks Online without an accountant?", "Yes, if you're the primary admin. Intuit's US help article updated August 5, 2026 lists the primary admin, an in-house accountant and an accountant user as the roles that can undo an entire reconciliation, from Reconcile > History by account > Action > Undo."),
+        ("Can I undo just one month in the middle?", "No. Undoing a reconciliation also undoes every reconciliation completed after it for that account, so you have to redo the later months. To fix a single entry without that, unreconcile the one transaction in the account register."),
+        ("Can I get a deleted reconciliation report back?", "No. Intuit says undoing a reconciliation is irreversible and permanently deletes the reconciliation report and its attachments. Download or print every report you're about to undo before you start."),
+        ("What do R and C mean in the QuickBooks register?", "R means the transaction is reconciled and C means it's cleared; a blank box means uncleared. Clicking the box in the register's checkmark column cycles through R, C and blank, and you select Save to keep the change."),
+    ],
+    "sources": [
+        ("QuickBooks: Undo an entire reconciliation in QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-us/help-article/balance-sheet/undo-entire-reconciliation-quickbooks-online/L8t48Iv10_US_en_US"),
+        ("QuickBooks: Undo or remove transactions from reconciliations in QuickBooks Online", "https://quickbooks.intuit.com/learn-support/en-us/help-article/accounting-bookkeeping/undo-remove-transactions-reconciliations-online/L6ERlEXxn_US_en_US"),
+        ("QuickBooks: Undo a client's entire reconciliation in Intuit Accountant Suite", "https://quickbooks.intuit.com/learn-support/en-us/help-article/statement-reconciliation/undo-clients-reconciliation-quickbooks-online/L2rUvgAg6_US_en_US"),
+        ("QuickBooks (Australia): Avoid undoing a reconciliation", "https://quickbooks.intuit.com/learn-support/en-au/help-article/statement-reconciliation/avoid-undoing-reconciliation/L2EJ36kRN_AU_en_AU"),
+        ("QuickBooks Online pricing", "https://quickbooks.intuit.com/pricing/"),
+    ],
+})
