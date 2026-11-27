@@ -8,11 +8,11 @@ DATA = {
     "desc": "The best B2B contact data providers for sales teams, compared on coverage, phone data, enrichment, price and how credits work. Includes which vendors hide pricing.",
     "intro": [
         "Contact data is what your outbound team runs on: verified emails, direct dials and mobile numbers, plus company data to build lists and enrich the CRM. The hard part of comparing providers is pricing. Most sell credits, a phone number often costs several times more than an email, and the biggest vendors don't publish prices at all.",
-        "We scored seven providers on six weighted criteria and spell out how each one's credits work, so you can compare the real cost of the contacts you need.",
+        "We scored six providers on six weighted criteria and spell out how each one's credits work, so you can compare the real cost of the contacts you need.",
     ],
     "criteria": [("Coverage & accuracy", 30), ("Phone & mobile data", 15), ("Enrichment & integrations", 20),
                  ("Compliance & data sourcing", 10), ("Ease of use", 10), ("Price & value", 15)],
-    "price_footnote": "Starting prices are the lowest paid plan listed on each vendor's pricing page on Nov 8, 2026, billed annually where shown; Listar's pay-per-result prices were checked on Nov 27, 2026 and exclude VAT. ZoomInfo and Cognism list no public prices. Credit allowances differ by vendor; see each tool below.",
+    "price_footnote": "Starting prices are the lowest paid plan listed on each vendor's pricing page on Nov 8, 2026, billed annually where shown. ZoomInfo and Cognism list no public prices. Credit allowances differ by vendor; see each tool below.",
     "tools": {
         "apollo": {
             "name": "Apollo.io", "short": "Apollo.io", "url": "https://www.apollo.io/",
@@ -81,19 +81,6 @@ DATA = {
             "cons": ["Phone and direct email credits are capped per year", "Enrichment and integrations are lighter than enterprise vendors"],
             "skip": "You need large-scale CRM enrichment or intent data.",
         },
-        "listar": {
-            "name": "Listar", "short": "Listar", "url": "https://listar.fr/en",
-            "bf": "Best for pay-per-result enrichment with verified mobiles",
-            "price": "€0.10/email found", "price_note": "Pay as you go, €0.50 per phone found, excl. VAT; no subscription", "trial": "5 free credits on sign-up in eligible countries; no card needed", "trial_short": "5 free credits",
-            "g2": ("5.0", "1", "https://www.g2.com/products/listar/reviews"),
-            "scores": [3.5, 4, 4, 3.5, 4.5, 5],
-            "what": "Listar is a French enrichment tool that looks up work emails and direct mobile numbers across around thirty data sources plus its own database, starting from a name, a LinkedIn profile, a company name or a SIRET number. It enriches records in HubSpot, Salesforce, Pipedrive and Attio, and works through Zapier, Make, n8n, an API and AI assistants.",
-            "who": "Sales teams and agencies prospecting in France and Europe that want to pay only for contacts found, without a subscription.",
-            "why": "You're charged only when data is found (1 credit = €1: €0.10 per email, €0.50 per phone), credits never expire, and mobiles are checked on WhatsApp to confirm the line is active.",
-            "pros": ["Pay only for results: €0.10 per email and €0.50 per phone found", "Mobile lines checked on WhatsApp, not just format-validated", "Credits don't expire; volume discounts up to 60% based on cumulative spend"],
-            "cons": ["Only one G2 review so far", "No intent data or large searchable database for account-based prospecting"],
-            "skip": "You need a large searchable database with intent data for account-based selling.",
-        },
         "uplead": {
             "name": "UpLead", "short": "UpLead", "url": "https://www.uplead.com/",
             "bf": "Best for pay-as-you-grow list building",
@@ -118,8 +105,7 @@ DATA = {
     "faqs": [
         ("What is the best B2B data provider?", "For most startups and mid-market teams, Apollo.io: it scores highest in our ranking because it pairs a large database with outreach, a free plan and a $49 Basic plan. Enterprises running account-based programs usually shortlist ZoomInfo."),
         ("How much does ZoomInfo cost?", "ZoomInfo doesn't publish prices. Its pricing page says cost depends on features, number of licenses and credit usage, and offers a free trial of its sales editions."),
-        ("Which B2B data provider has a free plan?", "Apollo.io, Lusha (40 credits a month) and Kaspr all have free plans. UpLead offers a 7-day trial with 5 credits, and Listar gives 5 free credits on sign-up."),
-        ("Which provider charges only for data it finds?", "Listar bills per result with no subscription: €0.10 for each work email and €0.50 for each phone number found, excluding VAT, and nothing when no data is found. Its credits don't expire."),
+        ("Which B2B data provider has a free plan?", "Apollo.io, Lusha (40 credits a month) and Kaspr all have free plans. UpLead offers a 7-day trial with 5 credits."),
         ("Which provider is best for mobile numbers?", "Cognism focuses on phone-verified mobile numbers and offers on-demand verification on its Pro plan. For self-serve options, compare Lusha's 5-credit phone reveals with Kaspr's yearly phone allowance."),
         ("Do unused credits roll over?", "It depends on the vendor and billing cycle. Lusha's monthly plans roll unused credits over up to twice the limit, while its annual plans reset unused credits at the end of the year."),
     ],

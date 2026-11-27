@@ -1977,23 +1977,5 @@
       "Per that breakdown, people who only view incidents in Slack aren't billed; a user becomes a paid responder when they change an incident's status, accept or decline an incident, or take a role.",
       "Enterprise pricing is a custom proposal; Pro and Enterprise are sold through sales (\"Talk to an expert\")."
     ]
-  },
-  "Listar": {
-    "checked": "2026-11-27",
-    "source": ["Listar pricing", "https://listar.fr/en/pricing"],
-    "plans": [
-      ["Pay as you go", "1 credit = €1 excl. VAT; credit packs from €20", "Charged only for data found: work email €0.10, phone number €0.50, both €0.60; no result, no charge"],
-      ["LinkedIn profile", "Free with an email or mobile search", "€0.03 on its own, billed only when it adds new data"],
-      ["Company mapping", "+€0.05 per mapped contact found", "Firmographic data optional at €0.02"],
-      ["Volume discounts", "Automatic, by cumulative spend", "-5% from €500, -10% from €1,000, -20% from €10,000, up to -60% from €250,000 (email €0.04, phone €0.20)"]
-    ],
-    "notes": [
-      "There are no subscriptions or seat plans; you buy credits and they don't expire.",
-      "New organisations get 5 free credits on sign-up, depending on the country, with no card required.",
-      "All prices exclude VAT; 20% VAT is added at payment. The API uses the same prices as the app.",
-      "Listar checks mobile numbers on WhatsApp to confirm the line is active, and verifies work emails over SMTP.",
-      "Integrations listed on Listar's site: HubSpot, Salesforce, Pipedrive, Attio and User.com, plus Zapier, Make, n8n, a REST API with a TypeScript SDK, and MCP for Claude, ChatGPT and Gemini.",
-      "The 85%+ enrichment rate on Listar's site is the vendor's own figure; Listar has a single G2 review so far (5.0/5), too few to confirm it."
-    ]
   }
 }

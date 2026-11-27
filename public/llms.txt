@@ -120,7 +120,6 @@ Scores are editorial only and based on published, weighted criteria per category
 - [Apollo.io Review](https://vettlo.com/tools/apollo-review/): Apollo.io's pricing, pros, cons and score, from our B2B contact data providers ranking.
 - [ZoomInfo Review](https://vettlo.com/tools/zoominfo-review/): ZoomInfo's pricing, pros, cons and score, from our B2B contact data providers ranking.
 - [Lusha Review](https://vettlo.com/tools/lusha-review/): Lusha's pricing, pros, cons and score, from our B2B contact data providers ranking.
-- [Listar Review](https://vettlo.com/tools/listar-review/): Listar's pricing, pros, cons and score, from our B2B contact data providers ranking.
 - [Cognism Review](https://vettlo.com/tools/cognism-review/): Cognism's pricing, pros, cons and score, from our B2B contact data providers ranking.
 - [Kaspr Review](https://vettlo.com/tools/kaspr-review/): Kaspr's pricing, pros, cons and score, from our B2B contact data providers ranking.
 - [UpLead Review](https://vettlo.com/tools/uplead-review/): UpLead's pricing, pros, cons and score, from our B2B contact data providers ranking.
