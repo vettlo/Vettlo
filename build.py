@@ -83,7 +83,7 @@ def header(cur):
 FOOTER = f"""<footer class="site-foot"><div class="wrap">
 <div class="cols">
 <div><a class="brand" href="/">{LOGO}<b>vettlo</b></a>
-<p>Independent reviews of the software businesses run on.</p></div>
+<p>Reviews of the software businesses run on.</p></div>
 <div><h4>Tools</h4><ul><li><a href="/reviews/">All reviews</a></li><li><a href="/best-tools/">All categories</a></li><li><a href="/guides/">Guides</a></li><li><a href="/contact/">Suggest a tool</a></li></ul></div>
 <div><h4>Trust</h4><ul><li><a href="/methodology/">How we vet</a></li><li><a href="/how-we-make-money/">How we make money</a></li></ul></div>
 <div><h4>Company</h4><ul><li><a href="/about/">About Vettlo</a></li><li><a href="/vendors/">For vendors</a></li><li><a href="/badges/">Badges for vendors</a></li><li><a href="/write-for-us/">Write for us</a></li><li><a href="/contact/">Contact</a></li><li><a href="https://www.linkedin.com/company/vettlo/" rel="me noopener" target="_blank">LinkedIn</a></li></ul></div>
@@ -166,7 +166,7 @@ def answer_box(lead, items):
 
 
 ORG = {"@context": "https://schema.org", "@type": "Organization", "name": "Vettlo", "url": DOMAIN,
-       "logo": DOMAIN + "/assets/logo.svg", "description": "Independent reviews of business software, scored on published criteria.",
+       "logo": DOMAIN + "/assets/logo.svg", "description": "Reviews of business software, scored on published criteria.",
        "contactPoint": {"@type": "ContactPoint", "contactType": "editorial", "url": DOMAIN + "/contact/", "availableLanguage": "English"},
        "sameAs": ["https://www.linkedin.com/company/vettlo/"]}
 
@@ -316,13 +316,13 @@ def stack_grid(limit=None):
 
 
 # ---------- HOME
-page("/", "Vettlo: Independent Business Software Reviews and Comparisons",
-     "Independent reviews of business software, from CRM and accounting to payroll, help desk and security, scored on published criteria with verified prices.",
+page("/", "Vettlo: Business Software Reviews and Comparisons",
+     "Reviews of business software, from CRM and accounting to payroll, help desk and security, scored on published criteria with verified prices.",
      f"""
 <section class="hero hero-home"><div class="wrap">
 <div>
 <h1>Find the right software for your team.</h1>
-<p class="lede">Independent shortlists, reviews and head-to-head comparisons of the software companies run on. Every score uses published criteria and every price is checked on the vendor's own page.</p>
+<p class="lede">Shortlists, reviews and head-to-head comparisons of the software companies run on. Every score uses published criteria and every price is checked on the vendor's own page.</p>
 <!--HOMESEARCH-->
 </div>
 <!--SCOREBOARD-->
@@ -1000,7 +1000,7 @@ page("/how-we-make-money/", "How We Make Money (Affiliate Disclosure) | Vettlo",
 # ---------- ABOUT (facts)
 _ex = TOOLS[0]
 _ex_rows = "".join(f'<div class="crit"><span class="nm">{n}</span><span class="w">{r:g}/5</span><span class="bar"><i style="width:{r*20:.0f}%"></i></span></div>' for (n, w), r in zip(CRITERIA, SCORES[_ex["id"]]))
-page("/about/", "About Vettlo: Independent Business Software Reviews",
+page("/about/", "About Vettlo: Business Software Reviews",
      "Vettlo researches and scores business software for every team on published, weighted criteria, with prices checked on each vendor's own pricing page.",
      f"""<section class="about-hero"><div class="wrap">
 <div><span class="kicker">About Vettlo</span>
@@ -1032,7 +1032,7 @@ page("/about/", "About Vettlo: Independent Business Software Reviews",
 page("/team/", "Editorial Team: Who Researches and Writes Our Reviews | Vettlo",
      "Who writes Vettlo's business software reviews, how the editorial team researches and scores tools, and how to reach the editors with corrections.",
      f"""<div class="wrap"><div class="page-head" style="grid-template-columns:auto minmax(0,1fr);align-items:center;gap:1.25rem"><div class="avatar team-mark" style="width:88px;height:88px">{LOGO}</div>
-<div style="display:grid;gap:.4rem"><span class="eyebrow">Editorial team</span><h1>Vettlo Editorial Team</h1><p class="small muted">Independent business software reviews</p></div></div>
+<div style="display:grid;gap:.4rem"><span class="eyebrow">Editorial team</span><h1>Vettlo Editorial Team</h1><p class="small muted">Business software reviews</p></div></div>
 <div class="page-body prose">
 <p>The Vettlo Editorial Team researches, scores and writes every review on this site. We cover software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security.</p>
 <h2>How we work</h2>
@@ -1691,7 +1691,7 @@ def build():
     (site / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {DOMAIN}/sitemap.xml\n")
     (site / "llms.txt").write_text(f"""# Vettlo
 
-> Vettlo is an independent publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Tools are tested hands-on with trials and free plans, and prices are checked against each vendor's pricing page.
+> Vettlo is a publication that reviews business software for every team: sales, marketing, projects and operations, customer support, HR, finance, and IT and security. Tools are tested hands-on with trials and free plans, and prices are checked against each vendor's pricing page.
 
 Scores are editorial only and based on published, weighted criteria per category. Vendors cannot pay for a score or review wording. Partner compensation may affect which products we include and where they appear. Reviews are re-verified every 90 days.
 
