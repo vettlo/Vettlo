@@ -51,7 +51,7 @@ DATA = {
             "what": "Lusha is a self-serve contact data tool with a Chrome extension and CRM integrations. A verified email costs 1 credit and a phone number costs 5 credits.",
             "who": "SMB and mid-market reps who want to look up contacts quickly without a sales-led contract.",
             "why": "Transparent, self-serve plans and a permanent free plan make it easy to start, and its credit costs are spelled out on the pricing page.",
-            "pros": ["Permanent free plan with 40 credits a month", "Clear credit costs: 1 per email, 5 per phone", "Premium plan includes 5 free seats and team credit allocation"],
+            "pros": ["Permanent free plan with 40 credits a month", "Clear credit costs: 1 per email, 5 per phone", "Monthly Pro and Premium plans roll unused credits over, up to twice the monthly cap"],
             "cons": ["Phone numbers use credits five times faster than emails", "Unused annual credits reset at the end of the year"],
             "skip": "You need millions of records for bulk enrichment; look at the Scale plan or enterprise vendors.",
         },
