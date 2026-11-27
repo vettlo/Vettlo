@@ -7,13 +7,26 @@ def cat_score(cat, tid):
     return int(sum(w * r for (_, w), r in zip(cat["criteria"], cat["tools"][tid]["scores"])) / 5 + 0.5)
 
 
+def _g2v(t):
+    """G2 average for sorting; tools with no G2 listing sort after rated ties."""
+    return float(t["g2"][0]) if t.get("g2") else 0.0
+
+
+def _g2txt(t, count=False):
+    g = t.get("g2")
+    if not g:
+        return "Not rated"
+    return f"{g[0]}/5 ({g[1]} reviews)" if count else f"{g[0]}/5"
+
+
 def _spec(cat, tid, score_label="Vettlo score"):
     t = cat["tools"][tid]
     g = t["g2"]
     return (f'<div class="spec"><div><span class="label">Starting price</span><b>{t["price"]}</b><span class="small muted">{t["price_note"]}</span></div>'
             f'<div><span class="label">Free trial / plan</span><b>{t["trial"]}</b></div>'
             f'<div><span class="label">{score_label}</span><b>{cat_score(cat, tid)}/100</b></div>'
-            f'<div><span class="label">G2 user rating</span><b>{g[0]}/5</b><a class="small" href="{g[2]}" target="_blank" rel="noopener">{g[1]} reviews</a></div></div>')
+            + (f'<div><span class="label">G2 user rating</span><b>{g[0]}/5</b><a class="small" href="{g[2]}" target="_blank" rel="noopener">{g[1]} reviews</a></div></div>'
+               if g else '<div><span class="label">G2 user rating</span><b>Not rated</b><span class="small muted">No G2 reviews yet</span></div></div>'))
 
 
 def _breakdown(cat, tid):
@@ -72,7 +85,7 @@ def _noun(cat):
 
 def category_page(cat):
     tools = cat["tools"]
-    ranked = sorted([k for k in tools if cat_score(cat, k) >= THRESHOLD], key=lambda k: (-cat_score(cat, k), -float(tools[k]["g2"][0])))
+    ranked = sorted([k for k in tools if cat_score(cat, k) >= THRESHOLD], key=lambda k: (-cat_score(cat, k), -_g2v(tools[k])))
     excluded = [k for k in tools if cat_score(cat, k) < THRESHOLD]
     cat["_ranked"] = ranked
     if cat not in ALLCATS:
@@ -87,7 +100,7 @@ def category_page(cat):
     n = len(ranked)
     h1 = f"{n} Best {cat['plural']} in {YEAR}"
     short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{k}">{tools[k]["name"]}</a><br><span class="bf">{tools[k]["bf"]}</span></span><span class="sc">{cat_score(cat, k)}<small>/100</small></span><a class="btn ghost small" href="#{k}">Review</a></li>' for i, k in enumerate(ranked, 1))
-    rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{_cap(tools[k]["bf"].replace("Best for ", ""))}</td><td>{tools[k]["trial_short"]}</td><td class="num">{tools[k]["price"]}</td><td class="num">{tools[k]["g2"][0]}/5</td><td class="num"><b>{cat_score(cat, k)}</b>/100</td></tr>' for i, k in enumerate(ranked, 1))
+    rows = "".join(f'<tr><td class="num">{i}</td><td><a href="#{k}"><b>{tools[k]["name"]}</b></a></td><td>{_cap(tools[k]["bf"].replace("Best for ", ""))}</td><td>{tools[k]["trial_short"]}</td><td class="num">{tools[k]["price"]}</td><td class="num">{_g2txt(tools[k])}</td><td class="num"><b>{cat_score(cat, k)}</b>/100</td></tr>' for i, k in enumerate(ranked, 1))
     cards = []
     for i, k in enumerate(ranked, 1):
         t = tools[k]
@@ -218,7 +231,7 @@ def compare_page(cat, a, b, date, pick_a, pick_b, summary, cost_intro, cost_rows
             f"and <b>{B['name']}</b> scores <b>{sb}/100</b>. {summary}")
     li = lambda xs: "".join(f"<li>{x}</li>" for x in xs)
     cost = "".join(f'<tr><td>{n}</td><td>{ap}</td><td class="num">{ac}</td><td>{bp}</td><td class="num">{bc}</td></tr>' for n, ap, ac, bp, bc in cost_rows)
-    feats = feature_rows + [("G2 user rating", f"{A['g2'][0]}/5 ({A['g2'][1]} reviews)", f"{B['g2'][0]}/5 ({B['g2'][1]} reviews)"),
+    feats = feature_rows + [("G2 user rating", _g2txt(A, True), _g2txt(B, True)),
                             ("Vettlo score", f"{sa}/100", f"{sb}/100")]
     frows = "".join(f'<tr><td>{f}</td><td>{x}</td><td>{y}</td></tr>' for f, x, y in feats)
     strengths = lambda xs: "".join(f"<li><b>{h}</b> {t}</li>" for h, t in xs)
@@ -751,7 +764,7 @@ def variant_pages(cat):
     # --- small business (skip CRM, which has its own hand-built page)
     if slug != "best-crm-software":
         ws = _smb_weights(cat)
-        ranked = sorted([k for k in tools if _wscore(cat, k, ws) >= THRESHOLD], key=lambda k: (-_wscore(cat, k, ws), -float(tools[k]["g2"][0])))
+        ranked = sorted([k for k in tools if _wscore(cat, k, ws) >= THRESHOLD], key=lambda k: (-_wscore(cat, k, ws), -_g2v(tools[k])))
         if len(ranked) >= 3:
             url = f"/tools/{slug.replace('-for-business', '')}-for-small-business/"
             n = len(ranked)

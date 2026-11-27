@@ -25,9 +25,9 @@
     "note": "Re-verified HubSpot Sales Hub and Pipedrive plan prices, onboarding fees and trials on vendor pricing pages (no changes) and refreshed G2 review counts."
   },
   "/tools/best-b2b-data-providers/": {
-    "updated": "2026-11-08",
-    "checked": "2026-11-08",
-    "note": "Re-verified prices, plans, credit terms and trials for all 6 providers on vendor pages (no changes; Lusha's and Apollo.io's plan prices aren't shown in their pricing page text, so Lusha is unchanged and unconfirmed and Apollo's $49 Basic price is confirmed only by Apollo's own pricing explainer) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-27",
+    "checked": "2026-11-27",
+    "note": "Added Listar, a pay-per-result enrichment tool, after checking its pricing and product pages; the list now covers seven providers."
   },
   "/tools/best-zoominfo-alternatives/": {
     "updated": "2026-11-08",
