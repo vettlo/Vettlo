@@ -298,5 +298,20 @@
     "updated": "2026-11-22",
     "checked": "2026-11-04",
     "note": "Docusign side re-verified Nov 22 (SMS bonus now on Standard only; Business Pro SMS through sales). PandaDoc's pricing page couldn't be read, so the comparison's prices stay as last fully verified Nov 4."
+  },
+  "/tools/best-live-chat-software/": {
+    "updated": "2026-11-27",
+    "checked": "2026-11-27",
+    "note": "Re-verified all 7 vendor pricing pages and G2: Tidio moved to Lyro AI plans (Starter $33/mo, $390 billed annually, 50 AI + human conversations; was $24.17), tawk.to branding removal $29/mo annual ($39 monthly), LiveChat G2 821 to 828 reviews."
+  },
+  "/tools/best-intercom-alternatives/": {
+    "updated": "2026-11-27",
+    "checked": "2026-11-27",
+    "note": "Re-verified all 7 vendor pricing pages and G2: Tidio moved to Lyro AI plans (Starter $33/mo, $390 billed annually, 50 AI + human conversations; was $24.17), tawk.to branding removal $29/mo annual ($39 monthly), LiveChat G2 821 to 828 reviews."
+  },
+  "/compare/livechat-vs-intercom/": {
+    "updated": "2026-11-27",
+    "checked": "2026-11-27",
+    "note": "Re-verified LiveChat and Intercom pricing pages and G2: prices unchanged; LiveChat G2 821 to 828 reviews."
   }
 }

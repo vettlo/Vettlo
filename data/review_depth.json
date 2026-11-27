@@ -1934,5 +1934,48 @@
       "Nonprofits get a 20% lifetime discount.",
       "Until Nov 30, 2026, new annual Pro plans get 30% off the first year as a Black Friday offer; they renew at the regular price."
     ]
+  },
+  "incident.io": {
+    "checked": "2026-11-27",
+    "source": ["incident.io pricing", "https://incident.io/pricing"],
+    "plans": [
+      ["Basic", "Free, forever", "Slack or Microsoft Teams native incident response, single-team on-call, a status page and essential incident automation"],
+      ["Team", "$15 per user/mo billed annually ($19 monthly); on-call + $10 per user/mo", "Slack and Teams native incident response, multi-team on-call and alerting, and workflows"],
+      ["Pro", "$25 per user/mo; on-call + $20 per user/mo", "Everything in Team, plus advanced insights and custom dashboards, a customizable post-incident process and postmortems, and private incidents and policies"],
+      ["Enterprise", "Custom proposal (\"Let's talk\")", "Everything in Pro, plus a dedicated customer success manager, advanced access control and multiple environments, enterprise security and compliance, and a 99.99% uptime SLA"],
+      ["On-call (standalone)", "$20 per user/mo", "On-call sold as a standalone product, for teams that only need paging and schedules"]
+    ],
+    "first_plan": [
+      ["Slack or Microsoft Teams native incident response", "Basic"],
+      ["On-call for a single team", "Basic"],
+      ["Public status page", "Basic"],
+      ["Multi-team on-call and alerting", "Team (on-call add-on)"],
+      ["Workflows beyond the essential automation", "Team"],
+      ["Advanced insights and custom dashboards", "Pro"],
+      ["Customizable post-incident process and postmortems", "Pro"],
+      ["Private incidents and policies", "Pro"],
+      ["Advanced access control and multiple environments", "Enterprise"],
+      ["99.99% uptime SLA and dedicated customer success manager", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Basic", "Team", "Pro"],
+      "rows": [
+        ["Price per user a month", "Free", "$15 annual, $19 monthly", "$25"],
+        ["On-call add-on per user a month", "Included (single team)", "$10", "$20"],
+        ["Teams on on-call", "1", "Multiple", "Multiple"],
+        ["On-call schedules", "1", "2", "Unlimited"],
+        ["Workflows", "1", "3", "Unlimited"],
+        ["Integrations", "2", "Unlimited", "Unlimited"],
+        ["Custom fields", "Not listed", "3", "Unlimited"],
+        ["Custom Insights dashboards", "Not listed", "Not listed", "3"]
+      ]
+    },
+    "notes": [
+      "Team with on-call totals $25 per user a month on annual billing; Pro with on-call totals $45 per user a month.",
+      "On-call can be bought on its own for $20 per user a month, without the incident response product.",
+      "Schedule, workflow, integration, custom field and dashboard counts come from incident.io's own pricing breakdown (incident.io/blog/incident-io-pricing-breakdown, Jul 6, 2026); the pricing page itself lists plan features but not these counts.",
+      "Per that breakdown, people who only view incidents in Slack aren't billed; a user becomes a paid responder when they change an incident's status, accept or decline an incident, or take a role.",
+      "Enterprise pricing is a custom proposal; Pro and Enterprise are sold through sales (\"Talk to an expert\")."
+    ]
   }
 }
