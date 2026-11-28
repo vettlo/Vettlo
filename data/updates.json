@@ -1,18 +1,18 @@
 {
   "/tools/best-crm-software/": {
-    "updated": "2026-11-04",
-    "checked": "2026-11-04",
-    "note": "Re-verified list prices, plans and trials for all 8 CRMs on vendor pricing pages (no price changes; Zoho CRM's $14 Standard price confirmed on Zoho's own site) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-28",
+    "checked": "2026-11-28",
+    "note": "Re-verified all 8 CRMs on vendor pricing pages and G2 (Nov 28): Attio Plus is now priced per workspace ($40/mo with 1 user, extra users $35); Freshsales trial is 14 days (was 21); other prices unchanged; G2 counts refreshed, ratings unchanged. Zoho CRM's paid prices couldn't be read on Zoho's page and stay as verified Nov 4."
   },
   "/tools/best-pipedrive-alternatives/": {
-    "updated": "2026-11-04",
-    "checked": "2026-11-04",
-    "note": "Re-verified list prices, plans and trials for all 8 CRMs on vendor pricing pages (no price changes; Zoho CRM's $14 Standard price confirmed on Zoho's own site) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-28",
+    "checked": "2026-11-28",
+    "note": "Re-verified all 8 CRMs on vendor pricing pages and G2 (Nov 28): Attio Plus is now priced per workspace ($40/mo with 1 user, extra users $35); Freshsales trial is 14 days (was 21); other prices unchanged; G2 counts refreshed, ratings unchanged. Zoho CRM's paid prices couldn't be read on Zoho's page and stay as verified Nov 4."
   },
   "/tools/best-hubspot-alternatives/": {
-    "updated": "2026-11-04",
-    "checked": "2026-11-04",
-    "note": "Re-verified list prices, plans and trials for all 8 CRMs on vendor pricing pages (no price changes; Zoho CRM's $14 Standard price confirmed on Zoho's own site) and refreshed G2 review counts (ratings unchanged)."
+    "updated": "2026-11-28",
+    "checked": "2026-11-28",
+    "note": "Re-verified all 8 CRMs on vendor pricing pages and G2 (Nov 28): Attio Plus is now priced per workspace ($40/mo with 1 user, extra users $35); Freshsales trial is 14 days (was 21); other prices unchanged; G2 counts refreshed, ratings unchanged. Zoho CRM's paid prices couldn't be read on Zoho's page and stay as verified Nov 4."
   },
   "/tools/best-crm-for-small-business/": {
     "updated": "2026-11-04",
@@ -20,9 +20,9 @@
     "note": "Re-verified list prices, plans and trials for all 8 CRMs on vendor pricing pages (no price changes; Zoho CRM's $14 Standard price confirmed on Zoho's own site) and refreshed G2 review counts (ratings unchanged)."
   },
   "/compare/hubspot-vs-pipedrive/": {
-    "updated": "2026-11-04",
-    "checked": "2026-11-04",
-    "note": "Re-verified HubSpot Sales Hub and Pipedrive plan prices, onboarding fees and trials on vendor pricing pages (no changes) and refreshed G2 review counts."
+    "updated": "2026-11-28",
+    "checked": "2026-11-28",
+    "note": "Re-verified HubSpot Sales Hub (Starter $7/$20, Professional $90 + $1,500 onboarding, Enterprise $150 + $3,500) and Pipedrive (Lite $14 to Ultimate $79, 14-day trial) on vendor pricing pages: no changes. G2 counts refreshed (HubSpot 14,414, Pipedrive 5,133)."
   },
   "/tools/best-b2b-data-providers/": {
     "updated": "2026-11-08",

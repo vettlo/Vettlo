@@ -144,7 +144,7 @@ guide_page({
 
 # ---------- How much does CRM software cost?
 _cc_ranked = [t["id"] for t in TOOLS]
-_cc_usd = sorted((_money(PRICING[k]["price"]), SHORT[k]) for k in _cc_ranked if _money(PRICING[k]["price"]))
+_cc_usd = sorted(((cost10(k) / 120 if k in WORKSPACE else _money(PRICING[k]["price"])), SHORT[k]) for k in _cc_ranked if _money(PRICING[k]["price"]))  # workspace-priced plans: 10-user average
 _cc_lo, _cc_hi = _cc_usd[0][0], _cc_usd[-1][0]
 _cc_lo_n = " and ".join(n for v, n in _cc_usd if v == _cc_lo)
 _cc_hi_n = " and ".join(n for v, n in _cc_usd if v == _cc_hi)
@@ -154,8 +154,9 @@ _cc_mo = []  # (tool, annual-billing price, month-to-month price) where the vend
 for k in _cc_ranked:
     _m = re.search(r"\(\$([\d.]+) monthly\)", PRICING[k]["note"])
     if _m and _money(PRICING[k]["price"]):
-        _cc_mo.append((SHORT[k], _money(PRICING[k]["price"]), float(_m.group(1))))
-_cc_mo_li = "".join(f"<li><b>{n}:</b> {_fmt(a)} billed annually vs {_fmt(m)} month to month, {_fmt((m - a) * 10 * 12)} more a year for 10 users</li>" for n, a, m in _cc_mo)
+        _cc_mo.append((SHORT[k], _money(PRICING[k]["price"]), float(_m.group(1)), (cost10(k, True) - cost10(k)) if k in WORKSPACE else None))
+_cc_mo_li = "".join(f"<li><b>{n}:</b> {_fmt(a)} billed annually vs {_fmt(m)} month to month, {_fmt(d if d is not None else (m - a) * 10 * 12)} more a year for 10 users</li>" for n, a, m, d in _cc_mo)
+_cc_ws = "".join(f" {SHORT[k]} prices its entry plan per workspace ({_fmt(w['base'])} a month with 1 user, then {_fmt(w['extra'])} per extra user), so its figure is the 10-user average." for k, w in WORKSPACE.items() if k in _cc_ranked)
 _cc_free = [f"{SHORT[k]}: {PRICING[k]['trial'][0].lower() + PRICING[k]['trial'][1:]}" for k in _cc_ranked if PRICING[k]["trial"].lower().startswith("free")]
 _cc_faq = dict(FAQS)
 
@@ -176,6 +177,7 @@ guide_page({
 <p class="small muted">Starting prices from each vendor's pricing page, checked {PRICES_CHECKED}.</p>"""),
         ("example", "What a 10-person sales team pays per year", f"""<p>Ten users on each vendor's entry plan, at the annual-billing prices above (taxes, add-ons and onboarding fees excluded):</p>
 <div class="table-wrap"><table><thead><tr><th>CRM</th><th>Per user per month</th><th>10 users per year</th></tr></thead><tbody>{_cc_ex}</tbody></table></div>
+<p class="small muted">{_cc_ws.strip()}</p>
 <p>These totals compare entry plans only, and entry plans differ a lot in what they include. Check the plan that covers the workflows your team needs: our <a href="/compare/hubspot-vs-pipedrive/">HubSpot vs Pipedrive</a> comparison prices a 10-rep team on the plans that include sequences, automation and forecasting, and <a href="/compare/salesforce-vs-hubspot/">Salesforce vs HubSpot</a> does the same with Salesforce's suites.</p>"""),
         ("billing", "Annual vs monthly billing", (f"""<p>The prices above assume annual billing. Where a vendor also lists a month-to-month price for the same plan, paying monthly costs noticeably more:</p>
 <ul>{_cc_mo_li}</ul>

@@ -427,21 +427,21 @@ PRICING = {
     "salesforce": dict(price="$25/user/mo", note="Starter Suite, monthly or annual", trial="Free Suite + free trial", short="Free Suite + trial"),
     "zoho":       dict(price="$14/user/mo", note="Standard, billed annually ($20 monthly)", trial="Free for 3 users; 15-day trial", short="Free for 3 users"),
     "close":      dict(price="$35/user/mo", note="Essentials, billed annually ($9 Solo plan for 1 user)", trial="14-day free trial", short="14-day trial"),
-    "attio":      dict(price="$35/user/mo", note="Plus, billed annually ($44 monthly)", trial="Free plan (3 seats); 14-day Pro trial", short="Free plan for 3 seats"),
-    "freshsales": dict(price="$9/user/mo", note="Growth, billed annually", trial="21-day free trial", short="21-day trial"),
+    "attio":      dict(price="$40/mo", note="Plus, per workspace with 1 user, billed annually ($50 monthly); extra users $35 each ($44 monthly)", trial="Free plan (3 seats); 14-day Pro trial", short="Free plan for 3 seats"),
+    "freshsales": dict(price="$9/user/mo", note="Growth, billed annually", trial="14-day free trial", short="14-day trial"),
     "folk":       dict(price="$24/user/mo", note="Standard, billed annually ($30 monthly)", trial="14-day free trial", short="14-day trial"),
 }
-PRICES_CHECKED = "Nov 4, 2026"
+PRICES_CHECKED = "Nov 28, 2026"
 
 G2 = {
-    "hubspot":    ("4.4", "14,397", "https://www.g2.com/products/hubspot-sales-hub/reviews"),
-    "pipedrive":  ("4.3", "5,110",  "https://www.g2.com/products/pipedrive/reviews"),
-    "salesforce": ("4.4", "27,592", "https://www.g2.com/products/agentforce-sales-formerly-salesforce-sales-cloud/reviews"),
-    "zoho":       ("4.1", "2,957",  "https://www.g2.com/products/zoho-crm/reviews"),
-    "close":      ("4.7", "2,144",  "https://www.g2.com/products/close/reviews"),
-    "attio":      ("4.3", "600",    "https://www.g2.com/products/attio/reviews"),
+    "hubspot":    ("4.4", "14,414", "https://www.g2.com/products/hubspot-sales-hub/reviews"),
+    "pipedrive":  ("4.3", "5,133",  "https://www.g2.com/products/pipedrive/reviews"),
+    "salesforce": ("4.4", "27,607", "https://www.g2.com/products/agentforce-sales-formerly-salesforce-sales-cloud/reviews"),
+    "zoho":       ("4.1", "2,966",  "https://www.g2.com/products/zoho-crm/reviews"),
+    "close":      ("4.7", "2,172",  "https://www.g2.com/products/close/reviews"),
+    "attio":      ("4.3", "599",    "https://www.g2.com/products/attio/reviews"),
     "freshsales": ("4.5", "1,243",  "https://www.g2.com/products/freshsales/reviews"),
-    "folk":       ("4.5", "346",    "https://www.g2.com/products/folk-folk/reviews"),
+    "folk":       ("4.5", "347",    "https://www.g2.com/products/folk-folk/reviews"),
 }
 
 
@@ -607,6 +607,16 @@ TOOL_BY_ID = {t["id"]: t for t in CONSIDERED}
 SHORT = {"hubspot": "HubSpot", "pipedrive": "Pipedrive", "salesforce": "Salesforce", "zoho": "Zoho CRM",
          "close": "Close", "attio": "Attio", "freshsales": "Freshsales", "folk": "folk"}
 ENTRY_PRICE = {"hubspot": 7, "pipedrive": 14, "salesforce": 25, "zoho": 14, "close": 35, "attio": 35, "freshsales": 9}
+# Entry plans priced per workspace with 1 user included, plus a price per extra user (annual, monthly). Attio pricing page, Nov 28, 2026.
+WORKSPACE = {"attio": dict(base=40, extra=35, base_mo=50, extra_mo=44)}
+
+
+def cost10(tid, monthly=False):
+    """Year-one list cost for 10 users on the entry plan."""
+    w = WORKSPACE.get(tid)
+    if w:
+        return (w["base_mo"] + 9 * w["extra_mo"]) * 12 if monthly else (w["base"] + 9 * w["extra"]) * 12
+    return ENTRY_PRICE[tid] * 120
 
 
 def alt_page(target, slug, lede, reasons, picks, faqs, related):
@@ -616,9 +626,9 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
     n = len(picks)
     short = "".join(f'<li><span class="rank">{i}</span><span><a class="nm" href="#{tid}">{TOOL_BY_ID[tid]["name"]}</a><br><span class="bf">{fit}</span></span><span class="sc">{score(tid)}<small>/100</small></span><a class="btn ghost small" href="#{tid}">Details</a></li>'
                     for i, (tid, fit, _, _) in enumerate(picks, 1))
-    rows = "".join(f'<tr><td><a href="#{tid}"><b>{TOOL_BY_ID[tid]["name"]}</b></a></td><td>{fit}</td><td class="num">From {PRICING[tid]["price"]}</td><td>{PRICING[tid]["short"]}</td><td class="num">${ENTRY_PRICE[tid]*120:,}</td><td class="num"><b>{score(tid)}</b>/100</td></tr>'
+    rows = "".join(f'<tr><td><a href="#{tid}"><b>{TOOL_BY_ID[tid]["name"]}</b></a></td><td>{fit}</td><td class="num">From {PRICING[tid]["price"]}</td><td>{PRICING[tid]["short"]}</td><td class="num">${cost10(tid):,}</td><td class="num"><b>{score(tid)}</b>/100</td></tr>'
                    for tid, fit, _, _ in picks)
-    rows = (f'<tr class="ref"><td><b>{tfull}</b> <span class="small muted">(for reference)</span></td><td>{TOOL_BY_ID[target]["bf"].replace("Best for ", "").capitalize()}</td><td class="num">From {PRICING[target]["price"]}</td><td>{PRICING[target]["short"]}</td><td class="num">${ENTRY_PRICE[target]*120:,}</td><td class="num"><b>{score(target)}</b>/100</td></tr>' + rows)
+    rows = (f'<tr class="ref"><td><b>{tfull}</b> <span class="small muted">(for reference)</span></td><td>{TOOL_BY_ID[target]["bf"].replace("Best for ", "").capitalize()}</td><td class="num">From {PRICING[target]["price"]}</td><td>{PRICING[target]["short"]}</td><td class="num">${cost10(target):,}</td><td class="num"><b>{score(target)}</b>/100</td></tr>' + rows)
     cards = []
     for i, (tid, fit, gain, lose) in enumerate(picks, 1):
         t = TOOL_BY_ID[tid]
@@ -651,7 +661,7 @@ def alt_page(target, slug, lede, reasons, picks, faqs, related):
 <section id="shortlist"><h2>The shortlist</h2><ol class="shortlist">{short}</ol></section>
 <section id="compare"><h2>{tname} alternatives compared</h2>
 <div class="table-wrap"><table><thead><tr><th>Tool</th><th>Why pick it</th><th>Starting price</th><th>Free plan / trial</th><th>10 seats, year one*</th><th>Vettlo score</th></tr></thead><tbody>{rows}</tbody></table></div>
-<p class="small muted">*Entry plan list price × 10 seats × 12 months, billed annually, from each vendor's pricing page on {PRICES_CHECKED}. Entry plans differ in features; see each tool below. Scores use the same six weighted criteria as our <a href="/tools/best-crm-software/">CRM rankings</a>.</p></section>
+<p class="small muted">*Entry plan list price × 10 seats × 12 months, billed annually, from each vendor's pricing page on {PRICES_CHECKED}. Attio: $40 workspace + 9 × $35. Entry plans differ in features; see each tool below. Scores use the same six weighted criteria as our <a href="/tools/best-crm-software/">CRM rankings</a>.</p></section>
 <section id="reviews"><h2>The alternatives</h2>{''.join(cards)}</section>
 <section class="prose" id="how"><h2>How we picked these alternatives</h2><p>Every tool here is from our <a href="/tools/best-crm-software/">CRM shortlist</a> and cleared our 70-point bar. We ordered them by how well each one solves the most common reasons teams leave {tname}, not only by overall score. See our <a href="/methodology/">methodology</a>.</p></section>
 <section id="faq"><h2>{tname} alternatives FAQ</h2><div>{faq_html}</div></section>
@@ -725,7 +735,7 @@ alt_page("hubspot", "best-hubspot-alternatives",
            ["Workflow automation, territories and analytics at lower prices", "Free edition for up to 3 users"],
            ["A denser interface", "Thinner third-party integrations"]),
           ("freshsales", "Best for an all-in-one sales CRM at a low price",
-           ["Built-in phone, email and AI-assisted lead scoring", "Entry price of $9/user/mo billed annually", "21-day free trial"],
+           ["Built-in phone, email and AI-assisted lead scoring", "Entry price of $9/user/mo billed annually", "14-day free trial"],
            ["Narrower customization", "Reporting depth varies by tier"]),
           ("salesforce", "Best for enterprises with complex processes",
            ["Deepest customization and largest ecosystem", "Scales to very large organizations"],
@@ -814,7 +824,7 @@ def sb_page():
 <p class="small muted">*Entry plan list price × 5 users × 12 months, billed annually, from each vendor's pricing page on {PRICES_CHECKED}. Entry plans differ in features; check each tool below.</p></section>
 <section class="prose" id="free"><h2>Best free CRMs for small businesses</h2>
 <ul><li><b>HubSpot:</b> free plan for up to 2 users, no credit card required.</li><li><b>Zoho CRM:</b> free edition for up to 3 users.</li><li><b>Attio:</b> free plan for up to 3 seats.</li></ul>
-<p>Pipedrive, Freshsales, Close and folk offer free trials of 14 to 21 days instead. Salesforce offers a Free Suite and a free trial.</p></section>
+<p>Pipedrive, Freshsales, Close and folk offer 14-day free trials instead. Salesforce offers a Free Suite and a free trial.</p></section>
 <section id="reviews"><h2>The reviews</h2>{''.join(cards)}</section>
 <section id="weights"><h2>How we scored CRMs for small businesses</h2>
 <p class="prose">Each tool keeps the same 0 to 5 ratings it has in our <a href="/tools/best-crm-software/">main CRM ranking</a>. For this guide we changed only the weights, then included every tool that scores 70 or higher. See our <a href="/methodology/">methodology</a>.</p>

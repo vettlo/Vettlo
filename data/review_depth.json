@@ -1977,5 +1977,49 @@
       "Per that breakdown, people who only view incidents in Slack aren't billed; a user becomes a paid responder when they change an incident's status, accept or decline an incident, or take a role.",
       "Enterprise pricing is a custom proposal; Pro and Enterprise are sold through sales (\"Talk to an expert\")."
     ]
+  },
+  "Rootly": {
+    "checked": "2026-11-28",
+    "source": ["Rootly pricing", "https://rootly.com/pricing"],
+    "plans": [
+      ["Incident Response", "$20 per user/mo", "Rootly agent in Slack, Teams or Google Chat, AI Related Incidents and timelines, AI Scribe and AI Retrospectives, Insights, Workflows and Catalog, MCP integration, 1 external and 1 internal status page"],
+      ["On-Call", "$20 per user/mo", "Paging in Slack and Teams, AI-suggested coverage, related alert grouping, rotations with holidays, PTO and shadowing, mobile shift swaps and overrides, up to 20 schedules and escalation policies, 1 live call routing number"],
+      ["AI SRE", "Pricing on request (\"Let's talk\"); requires Incident Response", "Probable root cause with evidence, autonomous agents, remediation steps and draft PRs, AI connectors and MCP, integration with Claude, Codex and other assistants"],
+      ["Enterprise", "Custom volume pricing for any mix of products", "Everything, plus SCIM and audit logs, status pages and unlimited schedules, bring-your-own AI key and custom data retention, private incidents and advanced workflows, dedicated success team and priority 24/7 support"]
+    ],
+    "first_plan": [
+      ["Incident response in Slack, Microsoft Teams or Google Chat", "Incident Response"],
+      ["AI Scribe and AI Retrospectives", "Incident Response"],
+      ["External and internal status page (1 each)", "Incident Response"],
+      ["SSO and SAML", "Incident Response, On-Call or AI SRE"],
+      ["Paging, rotations with PTO and shadowing", "On-Call"],
+      ["Live call routing (1 number)", "On-Call"],
+      ["Probable root cause and draft PRs", "AI SRE"],
+      ["SCIM and audit logs", "Enterprise"],
+      ["Private incidents and advanced workflows", "Enterprise"],
+      ["Unlimited schedules and escalation policies", "Enterprise"]
+    ],
+    "limits": {
+      "cols": ["Incident Response", "On-Call", "Enterprise"],
+      "rows": [
+        ["Price per user a month", "$20", "$20", "Custom"],
+        ["Schedules and escalation policies", "Not listed", "20", "Unlimited"],
+        ["Live call routing numbers", "Not listed", "1", "5"],
+        ["Status pages", "1 external, 1 internal", "Not listed", "Included"],
+        ["Organizations", "1", "1", "Unlimited"],
+        ["Workflows", "Basic", "Basic", "Advanced"],
+        ["Alert grouping and noise reduction", "Not listed", "Basic", "Advanced"],
+        ["Retrospective processes", "Smart default", "Not listed", "Custom"],
+        ["Role-based access control", "Built-in", "Built-in", "Custom"],
+        ["Authentication", "SSO + SAML", "SSO + SAML", "SSO + SAML + SCIM"]
+      ]
+    },
+    "notes": [
+      "Prices are additive: Incident Response ($20 per user a month, status pages included) plus On-Call (another $20 per user a month) totals $40 per user a month.",
+      "AI SRE requires Incident Response and is priced on request; Enterprise includes it. Rootly says to ask about bundle pricing when buying all three.",
+      "No free plan is listed. Rootly's FAQ says a trial typically lasts two weeks and can be extended.",
+      "Startup program: up to 50% off for companies under 100 employees, under $50M raised and under 5 years old; \"pay what you can\" (from $1) for companies under 25 employees, including Y Combinator startups.",
+      "The pricing page doesn't say whether the per-user prices are billed monthly or annually. Rootly is also sold through AWS Marketplace."
+    ]
   }
 }
